@@ -92,4 +92,3 @@ function parsedToJson(parsed) {
 //console.log(lineInfo);
 //ui.parsedDataViewer.setValue(parsedJsonRes.json);
 //ui.hexViewer.setIntervals(parsedJsonRes.intervals);
-//# sourceMappingURL=parsedToJson.js.map
