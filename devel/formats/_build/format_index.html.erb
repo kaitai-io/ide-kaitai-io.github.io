@@ -1,0 +1,65 @@
+<nav>
+    <div class="container">
+    <ol class="breadcrumb">
+        <li class="active">Format Gallery</li>
+    </ol>
+    </div>
+</nav>
+
+<section id="format-index-header" class="format">
+    <div class="container">
+        <h1>Format Gallery</h1>
+
+        <p>All formats in this gallery have formal specifications in <a href="http://kaitai.io">Kaitai Struct</a> language. They can be used:</p>
+
+        <ul>
+            <li>as is — as a concise text reference,</li>
+            <li>as visual block diagram (thanks to GraphViz),</li>
+            <li>to explore hex dump in detail (with a visualizer),</li>
+            <li>as a ready-made library in any of supported target programming languages (after compiling it with Kaitai Struct compiler).</li>
+        </ul>
+    </div>
+</section>
+
+<section id="format-index" class="format">
+    <div class="container">
+        <% @by_cat.keys.sort.each_slice(2) { |cat_names| %>
+        <div class="row">
+            <% cat_names.each { |cat_name| %>
+            <%   cat = @by_cat[cat_name] %>
+            <%   cat_desc = CATS[cat_name] || {} %>
+            <div class="col-md-6">
+                <div class="media">
+                    <div class="media-left"><i class="fa fa-fw fa-3x fa-<%= cat_desc[:icon] || 'cogs' %>"></i></div>
+                    <div class="media-body">
+                        <h4><%= cat_desc[:title] || cat_name %></h4>
+                        <% cat.sort { |a, b| a[:id] <=> b[:id] }.each_with_index { |fmt, i| %>
+                        <% if i > 0 %>, <% end %>
+                        <a href="<%= fmt[:id] %>/index.html"><%= fmt[:id] %></a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+</section>
+
+<section id="format-index-footer" class="format">
+    <div class="container">
+        <h1>Contributing</h1>
+
+        <p>
+            If you've done any format specs using Kaitai Struct that
+            you won't mind to share with the rest of the community —
+            you're most welcome to do so! It's very easy to do:
+        </p>
+
+        <ol>
+            <li>Fork our <a href="https://github.com/kaitai-io/kaitai_struct_formats">format gallery repo</a> at GitHub</li>
+            <li>Choose a relevant folder and add your <code>.ksy</code> spec into it</li>
+            <li>Create a "pull request" at GitHub to pull your specs into central format gallery repo</li>
+        </ol>
+    </div>
+</section>
