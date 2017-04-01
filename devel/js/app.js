@@ -118,13 +118,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             var srcYaml = app_layout_1.ui.ksyEditor.getValue();
             var changed = lastKsyContent !== srcYaml;
             var copyPromise = Promise.resolve();
-            if (changed && (ksyFsItem.fsType === 'kaitai' || ksyFsItem.fsType === 'static')) {
-                var newFn = ksyFsItem.fn.split('/').last().replace('.ksy', '_modified.ksy');
-                copyPromise = app_files_1.fss.local.put(newFn, srcYaml).then(fsItem => {
-                    ksyFsItem = fsItem;
-                    return localforage.setItem(ksyFsItemName, fsItem);
-                }).then(() => app_files_1.addKsyFile('localStorage', newFn, ksyFsItem));
-            }
+            if (changed && (ksyFsItem.fsType === 'kaitai' || ksyFsItem.fsType === 'static'))
+                copyPromise = app_files_1.addKsyFile('localStorage', ksyFsItem.fn.replace('.ksy', '_modified.ksy'), srcYaml).then(fsItem => localforage.setItem(ksyFsItemName, fsItem));
             return copyPromise.then(() => changed ? app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml) : Promise.resolve()).then(() => {
                 return compile(srcYaml, 'javascript', 'both').then(compiled => {
                     if (!compiled)
@@ -140,6 +135,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     var selectedInTree = false, blockRecursive = false;
     function reparse() {
+        app_errors_1.handleError(null);
         return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([exports.inputReady, exports.formatReady]).then(() => {
             var debugCode = app_layout_1.ui.genCodeDebugViewer.getValue();
             var jsClassName = kaitaiIde.ksySchema.meta.id.split('_').map(x => x.ucFirst()).join('');
@@ -179,7 +175,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 localforage.setItem(ksyFsItemName, fsItem);
                 lastKsyFsItem = fsItem;
                 lastKsyContent = content;
-                app_layout_1.ui.ksyEditor.setValue(content, -1);
+                if (app_layout_1.ui.ksyEditor.getValue() !== content)
+                    app_layout_1.ui.ksyEditor.setValue(content, -1);
                 app_layout_1.getLayoutNodeById("ksyEditor").container.setTitle(fsItem.fn);
                 return Promise.resolve();
             }

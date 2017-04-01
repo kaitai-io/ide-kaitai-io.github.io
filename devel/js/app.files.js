@@ -91,8 +91,12 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
         });
     }
     exports.refreshFsNodes = refreshFsNodes;
-    function addKsyFile(parent, name, fsItem) {
-        app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: 'glyphicon glyphicon-list-alt' }, "last", node => app_layout_1.ui.fileTree.activate_node(node, null));
+    function addKsyFile(parent, ksyFn, content) {
+        var name = ksyFn.split('/').last();
+        return exports.fss.local.put(name, content).then(fsItem => {
+            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: 'glyphicon glyphicon-list-alt' }, "last", node => app_layout_1.ui.fileTree.activate_node(node, null));
+            return app_1.loadFsItem(fsItem, true);
+        });
     }
     exports.addKsyFile = addKsyFile;
     var fileTreeCont;
@@ -230,10 +234,7 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
             $('#newKsyModal').modal('hide');
             var ksyName = $('#newKsyName').val();
             var parentData = app_layout_1.ui.fileTree.get_node(ksyParent).data;
-            exports.fss[parentData.fsType].put((parentData.fn ? `${parentData.fn}/` : '') + `${ksyName}.ksy`, `meta:\n  id: ${ksyName}\n  file-extension: ${ksyName}\n`).then(fsItem => {
-                addKsyFile(ksyParent, `${ksyName}.ksy`, fsItem);
-                return app_1.loadFsItem(fsItem);
-            });
+            addKsyFile(ksyParent, (parentData.fn ? `${parentData.fn}/` : '') + `${ksyName}.ksy`, `meta:\n  id: ${ksyName}\n  file-extension: ${ksyName}\n`);
         });
         fileTreeCont.bind("dblclick.jstree", function (event) {
             app_1.loadFsItem(app_layout_1.ui.fileTree.get_node(event.target).data);
@@ -242,7 +243,7 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
             var fsItem = getSelectedData();
             var newFn = fsItem.fn.replace('.ksy', '_' + new Date().format('Ymd_His') + '.ksy');
             console.log('newFn', newFn);
-            exports.fss[fsItem.fsType].get(fsItem.fn).then(content => exports.fss[fsItem.fsType].put(newFn, content).then(fsItem => addKsyFile('localStorage', newFn.split('/').last(), fsItem)));
+            exports.fss[fsItem.fsType].get(fsItem.fn).then(content => addKsyFile('localStorage', newFn, content));
         });
     });
 });
