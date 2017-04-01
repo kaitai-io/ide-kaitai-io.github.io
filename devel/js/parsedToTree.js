@@ -140,22 +140,35 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 text = (showProp ? s `<span class="propName">${propName}</span> = ` : '') + this.primitiveToText(item);
             return { text: text, children: isObject || isArray, data: this.addNodeData({ exported: item }) };
         }
-        exportedToNodes(exported, showProp) {
+        exportedToNodes(exported, nodeData, showProp) {
             if (exported.type === ObjectType.Undefined)
                 return [];
             if (exported.type === ObjectType.Primitive || exported.type === ObjectType.TypedArray)
                 return [this.childItemToNode(exported, showProp)];
             else if (exported.type === ObjectType.Array) {
-                const maxItemToDisplay = 3000;
-                //if (exported.arrayItems.length > 3000) {
-                //    console.warn("Too much array items to display.");
-                //    return [{ text: "Too much array items to display.", children: false, data: addNodeData({ exported: exported }) }];
-                //}
-                //else
-                var result = exported.arrayItems.slice(0, maxItemToDisplay).map((item, i) => this.childItemToNode(item, true));
-                if (exported.arrayItems.length > maxItemToDisplay)
-                    result.push({ text: "Too much array items to display.", children: false, data: this.addNodeData({ exported: { path: [] } }) });
-                return result;
+                var arrStart = nodeData && nodeData.arrayStart || 0;
+                var arrEnd = nodeData && nodeData.arrayEnd || exported.arrayItems.length - 1;
+                var items = exported.arrayItems.slice(arrStart, arrEnd + 1);
+                const levelItemLimit = 100;
+                if (items.length > 1000) {
+                    var childLevelItems = 1;
+                    var currentLevelItems = items.length;
+                    while (currentLevelItems > levelItemLimit) {
+                        childLevelItems *= levelItemLimit;
+                        currentLevelItems /= levelItemLimit;
+                    }
+                    var result = [];
+                    for (var i = 0; i < currentLevelItems; i++) {
+                        var data = {
+                            exported: exported,
+                            arrayStart: arrStart + i * childLevelItems,
+                            arrayEnd: Math.min(arrStart + (i + 1) * childLevelItems, exported.arrayItems.length) - 1
+                        };
+                        result.push({ text: `[${data.arrayStart} … ${data.arrayEnd}]`, children: true, data: this.addNodeData(data), id: this.getNodeId(data) });
+                    }
+                    return result;
+                }
+                return items.map((item, i) => this.childItemToNode(item, true));
             }
             else if (exported.type === ObjectType.Object) {
                 var obj = exported.object;
@@ -212,7 +225,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                                 map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
                         }
                         if (intervals.length > 400000)
-                            console.warn("Too much item for interval tree: " + intervals.length);
+                            console.warn("Too many items for interval tree: " + intervals.length);
                         else
                             this.intervalHandler.addSorted(intervals);
                     };
@@ -230,18 +243,21 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 }
                 if (!exp.parent)
                     fillParents(exp, nodeData && nodeData.parent);
-                var nodes = this.exportedToNodes(exp, true);
-                nodes.forEach(node => node.id = this.getNodeId(node));
+                var nodes = this.exportedToNodes(exp, nodeData, true);
+                nodes.forEach(node => node.id = node.id || this.getNodeId(node));
                 return nodes;
             });
         }
-        getNodeId(node) {
-            var nodeData = this.getNodeData(node);
-            return 'inputField_' + (nodeData.exported ? nodeData.exported.path : nodeData.instance.path).join('_');
+        getNodeId(nodeOrNodeData) {
+            var nodeData = nodeOrNodeData.data ? this.getNodeData(nodeOrNodeData) : nodeOrNodeData;
+            var path = nodeData.exported ? nodeData.exported.path : nodeData.instance.path;
+            if (nodeData.arrayStart || nodeData.arrayEnd)
+                path = path.concat([`${nodeData.arrayStart || 0}`, `${nodeData.arrayEnd || 0}`]);
+            return 'inputField_' + path.join('_');
         }
         openNodes(nodesToOpen) {
             return new Promise((resolve, reject) => {
-                var saveOpenedNodesDisabled = true;
+                this.saveOpenedNodesDisabled = true;
                 var origAnim = this.jstree.settings.core.animation;
                 this.jstree.settings.core.animation = 0;
                 //console.log('saveOpenedNodesDisabled = true');
@@ -270,7 +286,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                         });
                     else if (openCallCounter === 0) {
                         //console.log('saveOpenedNodesDisabled = false');
-                        saveOpenedNodesDisabled = false;
+                        this.saveOpenedNodesDisabled = false;
                         e && this.jstree.off(e);
                         this.jstree.settings.core.animation = origAnim;
                         this.saveOpenedNodes();
