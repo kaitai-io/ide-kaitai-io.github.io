@@ -18,13 +18,13 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
                                         { type: 'component', componentName: 'ksyEditor', title: '.ksy editor', isClosable: false },
                                         { type: 'stack', activeItemIndex: 0, content: [
                                                 //{ type: 'component', componentName: 'parsedDataViewer', title: 'parsed as JSON', isClosable: false },
-                                                { type: 'component', componentName: 'parsedDataTree', title: 'parsed as tree', isClosable: false },
+                                                { type: 'component', componentName: 'parsedDataTree', title: 'object tree', isClosable: false },
                                             ] },
                                     ] },
                                 { type: 'stack', id: 'codeTab', activeItemIndex: 2, content: [
                                         { type: 'component', componentName: 'genCodeViewer', title: 'JS code', isClosable: false },
                                         { type: 'component', componentName: 'genCodeDebugViewer', title: 'JS code (debug)', isClosable: false },
-                                        { type: 'column', isClosable: false, title: 'input binary', content: [
+                                        { type: 'column', isClosable: false, id: "inputBinaryTab", title: 'input binary', content: [
                                                 { type: 'component', componentName: 'hexViewer', title: 'hex viewer', isClosable: false },
                                                 { type: 'row', isClosable: false, height: 35, content: [
                                                         { type: 'component', componentName: 'infoPanel', title: 'info panel', isClosable: false, width: 40 },
@@ -39,7 +39,7 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
         ]
     });
     function getLayoutNodeById(id) {
-        return myLayout._getAllContentItems().filter(x => x.config.id === id)[0];
+        return myLayout._getAllContentItems().filter(x => x.config.id === id || x.componentName === id)[0];
     }
     exports.getLayoutNodeById = getLayoutNodeById;
     var dynCompId = 1;
@@ -50,6 +50,7 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
     }
     exports.addEditorTab = addEditorTab;
     var ui = {
+        layout: myLayout,
         ksyEditor: null,
         genCodeViewer: null,
         genCodeDebugViewer: null,

@@ -180,6 +180,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 lastKsyFsItem = fsItem;
                 lastKsyContent = content;
                 app_layout_1.ui.ksyEditor.setValue(content, -1);
+                app_layout_1.getLayoutNodeById("ksyEditor").container.setTitle(fsItem.fn);
                 return Promise.resolve();
             }
             else {
@@ -192,6 +193,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                     get(offset, length) { return new Uint8Array(content, offset, length); },
                 };
                 app_layout_1.ui.hexViewer.setDataProvider(exports.dataProvider);
+                app_layout_1.getLayoutNodeById("inputBinaryTab").setTitle(fsItem.fn);
                 return app_worker_1.workerCall({ type: 'eval', args: ['wi.inputBuffer = args; void(0)', content] }).then(() => refreshGui ? reparse().then(() => app_layout_1.ui.hexViewer.resize()) : Promise.resolve());
             }
         });
@@ -286,6 +288,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             var newFn = `${inputFsItem.fn.split('/').last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;
             saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
         });
+        kaitaiIde.ui = app_layout_1.ui;
         kaitaiIde.exportToJson = (useHex = false) => {
             var indentLen = 2;
             var result = "";
