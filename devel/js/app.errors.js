@@ -3,7 +3,7 @@ define(["require", "exports", "./app.layout"], function (require, exports, app_l
     Object.defineProperty(exports, "__esModule", { value: true });
     var lastErrWndSize = 100; // 34
     function showError(...args) {
-        console.log.apply(window, args);
+        console.error.apply(window, args);
         var errMsg = args.filter(x => x.toString() !== {}.toString()).join(' ');
         var container = app_layout_1.getLayoutNodeById('mainArea');
         if (!app_layout_1.ui.errorWindow) {

@@ -55,7 +55,7 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
         genCodeDebugViewer: null,
         //parsedDataViewer: <AceAjax.Editor>null,
         parsedDataTreeCont: null,
-        parsedDataTree: null,
+        parsedDataTreeHandler: null,
         hexViewer: null,
         errorWindow: null,
         infoPanel: null,
