@@ -148,7 +148,6 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             //console.log('recompiled');
             PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerCall({ type: "reparse", args: [app_layout_1.isPracticeMode || $("#disableLazyParsing").is(':checked')] })).then((exportedRoot) => {
                 //console.log('reparse exportedRoot', exportedRoot);
-                exports.itree = new IntervalTree(exports.dataProvider.length / 2);
                 kaitaiIde.root = exportedRoot;
                 app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, exports.ksyTypes);
                 PerformanceHelper_1.performanceHelper.measureAction("Tree / interval handling", app_layout_1.ui.parsedDataTreeHandler.initNodeReopenHandling()).then(() => app_layout_1.ui.hexViewer.onSelectionChanged(), e => app_errors_1.handleError(e));
@@ -223,12 +222,12 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             var hasSelection = start !== -1;
             $('#infoPanel .selectionText').text(hasSelection ? `selection:` : 'no selection');
             app_selectionInput_1.refreshSelectionInput();
-            if (exports.itree && hasSelection && !selectedInTree) {
-                var intervals = exports.itree.search(app_layout_1.ui.hexViewer.mouseDownOffset || start);
-                if (intervals.length > 0) {
+            if (app_layout_1.ui.parsedDataTreeHandler && hasSelection && !selectedInTree) {
+                var intervals = app_layout_1.ui.parsedDataTreeHandler.intervalHandler.searchRange(app_layout_1.ui.hexViewer.mouseDownOffset || start);
+                if (intervals.items.length > 0) {
                     //console.log('selected node', intervals[0].id);
                     blockRecursive = true;
-                    app_layout_1.ui.parsedDataTreeHandler.activatePath(JSON.parse(intervals[0].id).path).then(() => blockRecursive = false);
+                    app_layout_1.ui.parsedDataTreeHandler.activatePath(intervals.items[0].exp.path).then(() => blockRecursive = false);
                 }
             }
             app_converterPanel_1.refreshConverterPanel(app_layout_1.ui.converterPanel, exports.dataProvider, start);

@@ -67,7 +67,7 @@ define(["require", "exports"], function (require, exports) {
             this.contentOuter.append($(`<div class="header"><span class="hex">${charSpans}</span><span class="ascii">${charSpans}</span></div>`));
             this.content = $('<div class="content"></div>').appendTo(this.contentOuter).on('mousedown', e => this.cellMouseAction(e));
             $(document).mouseup(e => this.cellMouseAction(e));
-            this.intervalTree = null;
+            this.intervals = null;
             this.scrollbox.on('scroll', e => {
                 var scrollTop = this.scrollbox.scrollTop();
                 this.contentOuter.css('top', scrollTop + 'px');
@@ -152,8 +152,9 @@ define(["require", "exports"], function (require, exports) {
         refresh() {
             if (!this.dataProvider)
                 return false;
-            var intervals = this.intervalTree ? this.intervalTree.search(this.visibleOffsetStart, this.visibleOffsetEnd + this.bytesPerLine * 2) : [];
-            var intIdxBase = intervals.length === 0 ? 0 : JSON.parse(intervals[0].id).id;
+            var searchResult = this.intervals ? this.intervals.searchRange(this.visibleOffsetStart, this.visibleOffsetEnd + this.bytesPerLine * 2) : null;
+            var intervals = searchResult ? searchResult.items : [];
+            var intBaseIdx = searchResult ? searchResult.idx : 0;
             var intIdx = 0;
             //console.log('intervals', intervals);
             var viewData = this.dataProvider.get(this.visibleOffsetStart, Math.min(this.rowCount * this.bytesPerLine, this.dataProvider.length - this.visibleOffsetStart));
@@ -188,7 +189,7 @@ define(["require", "exports"], function (require, exports) {
                         var intIn = int && int.start <= dataOffset && dataOffset <= int.end;
                         var intStart = intIn && int.start === dataOffset;
                         var intEnd = intIn && int.end === dataOffset;
-                        hexCell.levels[level].className = `l${this.maxLevel - 1 - level} ${((intIdxBase + intIdx) % 2 === 0) ? "even" : "odd"}` +
+                        hexCell.levels[level].className = `l${this.maxLevel - 1 - level} ${((intBaseIdx + intIdx) % 2 === 0) ? "even" : "odd"}` +
                             (intIn ? ` m${level}` : "") + (intStart ? " start" : "") + (intEnd ? " end" : "") + (isSelected ? " selected" : "");
                         if (intEnd)
                             skipInt++;
@@ -197,8 +198,8 @@ define(["require", "exports"], function (require, exports) {
                 }
             }
         }
-        setIntervalTree(itree) {
-            this.intervalTree = itree;
+        setIntervals(intervals) {
+            this.intervals = intervals;
             this.refresh();
         }
         setDataProvider(dataProvider) {

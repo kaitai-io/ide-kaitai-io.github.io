@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app", "./app.worker", "./app.errors"], function (require, exports, app_layout_1, app_1, app_worker_1, app_errors_1) {
+define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", "./utils/IntervalHelper"], function (require, exports, app_layout_1, app_worker_1, app_errors_1, IntervalHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
@@ -16,6 +16,7 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker", "./app.er
             this.jstree.on = (...args) => this.jstree.element.on(...args);
             this.jstree.off = (...args) => this.jstree.element.off(...args);
             this.jstree.on('keyup.jstree', e => this.jstree.activate_node(e.target.id, null));
+            this.intervalHandler = new IntervalHelper_1.IntervalHandler();
         }
         saveOpenedNodes() {
             if (this.saveOpenedNodesDisabled)
@@ -184,38 +185,39 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker", "./app.er
                 if (isRoot || isInstance) {
                     this.fillKsyTypes(exp);
                     var intId = 0;
-                    function fillIntervals(exp) {
+                    var intervals = [];
+                    var fillIntervals = (exp) => {
                         var objects = collectAllObjects(exp);
-                        var typedArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64);
-                        var intervals = objects.filter(exp => (exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray) && exp.start < exp.end)
-                            .map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1, id: JSON.stringify({ id: intId++, path: exp.path.join('/') }) }))
-                            .sort((a, b) => a.start - b.start);
-                        var intervalsFiltered = [];
-                        if (intervals.length > 0) {
-                            intervalsFiltered = [intervals[0]];
-                            intervals.slice(1).forEach(int => {
-                                if (int.start > intervalsFiltered.last().end)
-                                    intervalsFiltered.push(int);
-                            });
+                        var lastEnd = -1;
+                        for (let exp of objects) {
+                            if (!(exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray))
+                                continue;
+                            var start = exp.ioOffset + exp.start;
+                            var end = exp.ioOffset + exp.end - 1;
+                            if (start <= lastEnd || start > end)
+                                continue;
+                            lastEnd = end;
+                            intervals.push({ start: start, end: end, exp: exp });
                         }
                         if (!isInstance) {
                             var nonParsed = [];
                             var lastEnd = -1;
-                            intervalsFiltered.forEach(i => {
+                            intervals.forEach(i => {
                                 if (i.start !== lastEnd + 1)
                                     nonParsed.push({ start: lastEnd + 1, end: i.start - 1 });
                                 lastEnd = i.end;
                             });
                             app_layout_1.ui.unparsedIntSel.setIntervals(nonParsed);
-                            app_layout_1.ui.bytesIntSel.setIntervals(typedArrays.map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
+                            app_layout_1.ui.bytesIntSel.setIntervals(objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
+                                map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
                         }
-                        if (intervalsFiltered.length > 400000)
-                            console.warn("Too much item for interval tree: " + intervalsFiltered.length);
+                        if (intervals.length > 400000)
+                            console.warn("Too much item for interval tree: " + intervals.length);
                         else
-                            intervalsFiltered.forEach(i => app_1.itree.add(i.start, i.end, i.id));
-                    }
+                            this.intervalHandler.addSorted(intervals);
+                    };
                     fillIntervals(exp);
-                    app_layout_1.ui.hexViewer.setIntervalTree(app_1.itree);
+                    app_layout_1.ui.hexViewer.setIntervals(this.intervalHandler);
                 }
                 function fillParents(value, parent) {
                     //console.log('fillParents', value.path.join('/'), value, parent);
@@ -280,7 +282,7 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker", "./app.er
             });
         }
         activatePath(path) {
-            var pathParts = path.split('/');
+            var pathParts = typeof path === "string" ? path.split('/') : path;
             var expandNodes = [];
             var pathStr = 'inputField';
             for (var i = 0; i < pathParts.length; i++) {
