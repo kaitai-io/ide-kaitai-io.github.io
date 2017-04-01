@@ -243,6 +243,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 }
                 if (!exp.parent)
                     fillParents(exp, nodeData && nodeData.parent);
+                this.jstree.set_text(node, this.childItemToNode(exp, true).text);
                 var nodes = this.exportedToNodes(exp, nodeData, true);
                 nodes.forEach(node => node.id = node.id || this.getNodeId(node));
                 return nodes;

@@ -84,7 +84,7 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
     }
     function refreshFsNodes() {
         var localStorageNode = app_layout_1.ui.fileTree.get_node('localStorage');
-        exports.localFs.getRootNode().then(root => {
+        return exports.localFs.getRootNode().then(root => {
             app_layout_1.ui.fileTree.delete_node(localStorageNode.children);
             if (root)
                 genChildNodes(root).forEach(node => app_layout_1.ui.fileTree.create_node(localStorageNode, node));

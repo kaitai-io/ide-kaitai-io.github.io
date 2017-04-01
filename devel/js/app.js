@@ -197,13 +197,11 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     exports.loadFsItem = loadFsItem;
     function addNewFiles(files) {
-        return Promise.all(files.map(file => {
-            return (isKsyFile(file.file.name) ? file.read('text') : file.read('arrayBuffer')).then(content => {
-                return app_files_1.localFs.put(file.file.name, content).then(fsItem => {
-                    return files.length == 1 ? loadFsItem(fsItem) : Promise.resolve(null);
-                });
-            });
-        })).then(app_files_1.refreshFsNodes);
+        return Promise.all(files.map(file => (isKsyFile(file.file.name) ? file.read('text') : file.read('arrayBuffer')).then(content => app_files_1.localFs.put(file.file.name, content))))
+            .then(fsItems => {
+            app_files_1.refreshFsNodes();
+            return fsItems.length === 1 ? loadFsItem(fsItems[0]) : Promise.resolve(null);
+        });
     }
     exports.addNewFiles = addNewFiles;
     localStorage.setItem('lastVersion', kaitaiIde.version);
