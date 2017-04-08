@@ -19,6 +19,7 @@ define(["require", "exports"], function (require, exports) {
                 }
                 else
                     resolve(response.result);
+                //console.info(`[performance] [${(new Date()).format('H:i:s.u')}] Got worker response: ${Date.now()}.`);
             };
             worker.postMessage(request);
         });

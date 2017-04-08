@@ -1,10 +1,53 @@
-define(["require", "exports", "./app.layout", "./app", "./app.worker"], function (require, exports, app_layout_1, app_1, app_worker_1) {
+define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", "./utils/IntervalHelper"], function (require, exports, app_layout_1, app_worker_1, app_errors_1, IntervalHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
     ;
-    function parsedToTree(jsTreeElement, exportedRoot, ksyTypes, handleError, cb) {
-        function primitiveToText(exported, detailed = true) {
+    class ParsedTreeHandler {
+        constructor(jsTreeElement, exportedRoot, ksyTypes) {
+            this.jsTreeElement = jsTreeElement;
+            this.exportedRoot = exportedRoot;
+            this.ksyTypes = ksyTypes;
+            this.parsedTreeOpenedNodes = {};
+            this.saveOpenedNodesDisabled = false;
+            this.nodeDatas = [];
+            jsTreeElement.jstree("destroy");
+            this.jstree = jsTreeElement.jstree({ core: { data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_errors_1.handleError(e)), themes: { icons: false }, multiple: false, force_text: false } }).jstree(true);
+            this.jstree.on = (...args) => this.jstree.element.on(...args);
+            this.jstree.off = (...args) => this.jstree.element.off(...args);
+            this.jstree.on('keyup.jstree', e => this.jstree.activate_node(e.target.id, null));
+            this.intervalHandler = new IntervalHelper_1.IntervalHandler();
+        }
+        saveOpenedNodes() {
+            if (this.saveOpenedNodesDisabled)
+                return;
+            //parsedTreeOpenedNodes = {};
+            //getAllNodes(ui.parsedDataTree).filter(x => x.state.opened).forEach(x => parsedTreeOpenedNodes[x.id] = true);
+            //console.log('saveOpenedNodes');
+            localStorage.setItem('parsedTreeOpenedNodes', Object.keys(this.parsedTreeOpenedNodes).join(','));
+        }
+        initNodeReopenHandling() {
+            var parsedTreeOpenedNodesStr = localStorage.getItem('parsedTreeOpenedNodes');
+            if (parsedTreeOpenedNodesStr)
+                parsedTreeOpenedNodesStr.split(',').forEach(x => this.parsedTreeOpenedNodes[x] = true);
+            return new Promise((resolve, reject) => {
+                this.jstree.on('ready.jstree', e => {
+                    this.openNodes(Object.keys(this.parsedTreeOpenedNodes)).then(() => {
+                        this.jstree.on('open_node.jstree', (e, te) => {
+                            var node = te.node;
+                            this.parsedTreeOpenedNodes[this.getNodeId(node)] = true;
+                            this.saveOpenedNodes();
+                        }).on('close_node.jstree', (e, te) => {
+                            var node = te.node;
+                            delete this.parsedTreeOpenedNodes[this.getNodeId(node)];
+                            this.saveOpenedNodes();
+                        });
+                        resolve();
+                    }, e => reject(e));
+                });
+            });
+        }
+        primitiveToText(exported, detailed = true) {
             if (exported.type === ObjectType.Primitive) {
                 var value = exported.primitiveValue;
                 if (Number.isInteger(value)) {
@@ -31,7 +74,7 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
             else
                 throw new Error("primitiveToText: object is not primitive!");
         }
-        function reprObject(obj) {
+        reprObject(obj) {
             var repr = obj.object.ksyType && obj.object.ksyType["-webide-representation"];
             if (!repr)
                 return "";
@@ -55,7 +98,7 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
                 if (!currItem)
                     return "";
                 if (currItem.type === ObjectType.Object)
-                    return reprObject(currItem);
+                    return this.reprObject(currItem);
                 else if (format.str && currItem.type === ObjectType.TypedArray)
                     return s `"${asciiEncode(currItem.bytes)}"`;
                 else if (format.hex && currItem.type === ObjectType.TypedArray)
@@ -64,27 +107,25 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
                     return s `${currItem.primitiveValue}`;
                 else if (currItem.type === ObjectType.Array) {
                     var escapedSep = s `${format.sep}`;
-                    return currItem.arrayItems.map(item => reprObject(item)).join(escapedSep);
+                    return currItem.arrayItems.map(item => this.reprObject(item)).join(escapedSep);
                 }
                 else
-                    return primitiveToText(currItem, false);
+                    return this.primitiveToText(currItem, false);
             });
         }
-        var nodeDatas = [];
-        kaitaiIde.nodeDatas = nodeDatas;
-        function addNodeData(data) {
-            var idx = nodeDatas.length;
-            nodeDatas.push(data);
+        addNodeData(data) {
+            var idx = this.nodeDatas.length;
+            this.nodeDatas.push(data);
             return { idx: idx };
         }
-        function getNodeData(node) {
+        getNodeData(node) {
             if (!node || !node.data) {
                 console.log('no node data', node);
                 return null;
             }
-            return nodeDatas[node.data.idx];
+            return this.nodeDatas[node.data.idx];
         }
-        function childItemToNode(item, showProp) {
+        childItemToNode(item, showProp) {
             var propName = item.path.last();
             var isObject = item.type === ObjectType.Object;
             var isArray = item.type === ObjectType.Array;
@@ -92,77 +133,104 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
             if (isArray)
                 text = s `${propName}`;
             else if (isObject) {
-                var repr = reprObject(item);
+                var repr = this.reprObject(item);
                 text = s `${propName} [<span class="className">${item.object.class}</span>]` + (repr ? `: ${repr}` : '');
             }
             else
-                text = (showProp ? s `<span class="propName">${propName}</span> = ` : '') + primitiveToText(item);
-            return { text: text, children: isObject || isArray, data: addNodeData({ exported: item }) };
+                text = (showProp ? s `<span class="propName">${propName}</span> = ` : '') + this.primitiveToText(item);
+            return { text: text, children: isObject || isArray, data: this.addNodeData({ exported: item }) };
         }
-        function exportedToNodes(exported, showProp) {
+        exportedToNodes(exported, nodeData, showProp) {
             if (exported.type === ObjectType.Undefined)
                 return [];
             if (exported.type === ObjectType.Primitive || exported.type === ObjectType.TypedArray)
-                return [childItemToNode(exported, showProp)];
-            else if (exported.type === ObjectType.Array)
-                return exported.arrayItems.map((item, i) => childItemToNode(item, true));
+                return [this.childItemToNode(exported, showProp)];
+            else if (exported.type === ObjectType.Array) {
+                var arrStart = nodeData && nodeData.arrayStart || 0;
+                var arrEnd = nodeData && nodeData.arrayEnd || exported.arrayItems.length - 1;
+                var items = exported.arrayItems.slice(arrStart, arrEnd + 1);
+                const levelItemLimit = 100;
+                if (items.length > 1000) {
+                    var childLevelItems = 1;
+                    var currentLevelItems = items.length;
+                    while (currentLevelItems > levelItemLimit) {
+                        childLevelItems *= levelItemLimit;
+                        currentLevelItems /= levelItemLimit;
+                    }
+                    var result = [];
+                    for (var i = 0; i < currentLevelItems; i++) {
+                        var data = {
+                            exported: exported,
+                            arrayStart: arrStart + i * childLevelItems,
+                            arrayEnd: Math.min(arrStart + (i + 1) * childLevelItems, exported.arrayItems.length) - 1
+                        };
+                        result.push({ text: `[${data.arrayStart} … ${data.arrayEnd}]`, children: true, data: this.addNodeData(data), id: this.getNodeId(data) });
+                    }
+                    return result;
+                }
+                return items.map((item, i) => this.childItemToNode(item, true));
+            }
             else if (exported.type === ObjectType.Object) {
                 var obj = exported.object;
-                return Object.keys(obj.fields).map(fieldName => childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({ text: s `${propName}`, children: true, data: addNodeData({ instance: obj.instances[propName], parent: exported }) })));
+                return Object.keys(obj.fields).map(fieldName => this.childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({ text: s `${propName}`, children: true, data: this.addNodeData({ instance: obj.instances[propName], parent: exported }) })));
             }
             else
                 throw new Error(`Unknown object type: ${exported.type}`);
         }
-        function getProp(path) {
+        getProp(path) {
             return app_worker_1.workerCall({ type: 'get', args: [path] });
         }
-        function getNode(node, cb) {
-            var isRoot = node.id === '#';
-            var nodeData = getNodeData(node);
-            var expNode = isRoot ? exportedRoot : nodeData.exported;
-            function fillKsyTypes(val) {
-                if (val.type === ObjectType.Object) {
-                    val.object.ksyType = ksyTypes[val.object.class];
-                    Object.keys(val.object.fields).forEach(fieldName => fillKsyTypes(val.object.fields[fieldName]));
-                }
-                else if (val.type === ObjectType.Array)
-                    val.arrayItems.forEach(item => fillKsyTypes(item));
+        fillKsyTypes(val) {
+            if (val.type === ObjectType.Object) {
+                val.object.ksyType = this.ksyTypes[val.object.class];
+                Object.keys(val.object.fields).forEach(fieldName => this.fillKsyTypes(val.object.fields[fieldName]));
             }
+            else if (val.type === ObjectType.Array)
+                val.arrayItems.forEach(item => this.fillKsyTypes(item));
+        }
+        getNode(node) {
+            var isRoot = node.id === '#';
+            var nodeData = this.getNodeData(node);
+            var expNode = isRoot ? this.exportedRoot : nodeData.exported;
             var isInstance = !expNode;
-            var valuePromise = isInstance ? getProp(nodeData.instance.path).then(exp => nodeData.exported = exp) : Promise.resolve(expNode);
-            valuePromise.then(exp => {
+            var valuePromise = isInstance ? this.getProp(nodeData.instance.path).then(exp => nodeData.exported = exp) : Promise.resolve(expNode);
+            return valuePromise.then(exp => {
                 if (isRoot || isInstance) {
-                    fillKsyTypes(exp);
+                    this.fillKsyTypes(exp);
                     var intId = 0;
-                    function fillIntervals(exp) {
+                    var intervals = [];
+                    var fillIntervals = (exp) => {
                         var objects = collectAllObjects(exp);
-                        var typedArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64);
-                        var intervals = objects.filter(exp => (exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray) && exp.start < exp.end)
-                            .map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1, id: JSON.stringify({ id: intId++, path: exp.path.join('/') }) }))
-                            .sort((a, b) => a.start - b.start);
-                        var intervalsFiltered = [];
-                        if (intervals.length > 0) {
-                            intervalsFiltered = [intervals[0]];
-                            intervals.slice(1).forEach(int => {
-                                if (int.start > intervalsFiltered.last().end)
-                                    intervalsFiltered.push(int);
-                            });
+                        var lastEnd = -1;
+                        for (let exp of objects) {
+                            if (!(exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray))
+                                continue;
+                            var start = exp.ioOffset + exp.start;
+                            var end = exp.ioOffset + exp.end - 1;
+                            if (start <= lastEnd || start > end)
+                                continue;
+                            lastEnd = end;
+                            intervals.push({ start: start, end: end, exp: exp });
                         }
                         if (!isInstance) {
                             var nonParsed = [];
                             var lastEnd = -1;
-                            intervalsFiltered.forEach(i => {
+                            intervals.forEach(i => {
                                 if (i.start !== lastEnd + 1)
                                     nonParsed.push({ start: lastEnd + 1, end: i.start - 1 });
                                 lastEnd = i.end;
                             });
                             app_layout_1.ui.unparsedIntSel.setIntervals(nonParsed);
-                            app_layout_1.ui.bytesIntSel.setIntervals(typedArrays.map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
+                            app_layout_1.ui.bytesIntSel.setIntervals(objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
+                                map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
                         }
-                        intervalsFiltered.forEach(i => app_1.itree.add(i.start, i.end, i.id));
-                    }
+                        if (intervals.length > 400000)
+                            console.warn("Too many items for interval tree: " + intervals.length);
+                        else
+                            this.intervalHandler.addSorted(intervals);
+                    };
                     fillIntervals(exp);
-                    app_layout_1.ui.hexViewer.setIntervalTree(app_1.itree);
+                    app_layout_1.ui.hexViewer.setIntervals(this.intervalHandler);
                 }
                 function fillParents(value, parent) {
                     //console.log('fillParents', value.path.join('/'), value, parent);
@@ -175,105 +243,73 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
                 }
                 if (!exp.parent)
                     fillParents(exp, nodeData && nodeData.parent);
-                var nodes = exportedToNodes(exp, true);
-                nodes.forEach(node => node.id = getNodeId(node));
-                //console.log(exp, nodeData);
-                cb(nodes);
-                handleError(null);
-            }).catch(err => {
-                cb([]);
-                handleError(err);
+                this.jstree.set_text(node, this.childItemToNode(exp, true).text);
+                var nodes = this.exportedToNodes(exp, nodeData, true);
+                nodes.forEach(node => node.id = node.id || this.getNodeId(node));
+                return nodes;
             });
         }
-        function getNodeId(node) {
-            var nodeData = getNodeData(node);
-            return 'inputField_' + (nodeData.exported ? nodeData.exported.path : nodeData.instance.path).join('_');
+        getNodeId(nodeOrNodeData) {
+            var nodeData = nodeOrNodeData.data ? this.getNodeData(nodeOrNodeData) : nodeOrNodeData;
+            var path = nodeData.exported ? nodeData.exported.path : nodeData.instance.path;
+            if (nodeData.arrayStart || nodeData.arrayEnd)
+                path = path.concat([`${nodeData.arrayStart || 0}`, `${nodeData.arrayEnd || 0}`]);
+            return 'inputField_' + path.join('_');
         }
-        var parsedTreeOpenedNodes = {};
-        var parsedTreeOpenedNodesStr = localStorage.getItem('parsedTreeOpenedNodes');
-        if (parsedTreeOpenedNodesStr)
-            parsedTreeOpenedNodesStr.split(',').forEach(x => parsedTreeOpenedNodes[x] = true);
-        var saveOpenedNodesDisabled = false;
-        function saveOpenedNodes() {
-            if (saveOpenedNodesDisabled)
-                return;
-            //parsedTreeOpenedNodes = {};
-            //getAllNodes(ui.parsedDataTree).filter(x => x.state.opened).forEach(x => parsedTreeOpenedNodes[x.id] = true);
-            //console.log('saveOpenedNodes');
-            localStorage.setItem('parsedTreeOpenedNodes', Object.keys(parsedTreeOpenedNodes).join(','));
-        }
-        jsTreeElement.jstree("destroy");
-        var jstree = jsTreeElement.jstree({ core: { data: (node, cb) => getNode(node, cb), themes: { icons: false }, multiple: false, force_text: false } }).jstree(true);
-        jstree.getNodeData = getNodeData;
-        jstree.on = (...args) => jstree.element.on(...args);
-        jstree.off = (...args) => jstree.element.off(...args);
-        jstree.on('keyup.jstree', e => jstree.activate_node(e.target.id));
-        jstree.on('ready.jstree', e => {
-            jstree.openNodes(Object.keys(parsedTreeOpenedNodes), () => {
-                jstree.on('open_node.jstree', (e, te) => {
-                    var node = te.node;
-                    parsedTreeOpenedNodes[getNodeId(node)] = true;
-                    saveOpenedNodes();
-                }).on('close_node.jstree', (e, te) => {
-                    var node = te.node;
-                    delete parsedTreeOpenedNodes[getNodeId(node)];
-                    saveOpenedNodes();
-                });
-                cb();
-            });
-        });
-        jstree.openNodes = (nodesToOpen, cb) => {
-            saveOpenedNodesDisabled = true;
-            var origAnim = jstree.settings.core.animation;
-            jstree.settings.core.animation = 0;
-            //console.log('saveOpenedNodesDisabled = true');
-            var openCallCounter = 1;
-            function openRound(e) {
-                openCallCounter--;
-                //console.log('openRound', openCallCounter, nodesToOpen);
-                var newNodesToOpen = [];
-                var existingNodes = [];
-                nodesToOpen.forEach(nodeId => {
-                    var node = jstree.get_node(nodeId);
-                    if (node) {
-                        if (!node.state.opened)
-                            existingNodes.push(node);
-                    }
-                    else
-                        newNodesToOpen.push(nodeId);
-                });
-                nodesToOpen = newNodesToOpen;
-                //console.log('existingNodes', existingNodes, 'openCallCounter', openCallCounter);
-                if (existingNodes.length > 0)
-                    existingNodes.forEach(node => {
-                        openCallCounter++;
-                        //console.log(`open_node called on ${node.id}`)
-                        jstree.open_node(node);
+        openNodes(nodesToOpen) {
+            return new Promise((resolve, reject) => {
+                this.saveOpenedNodesDisabled = true;
+                var origAnim = this.jstree.settings.core.animation;
+                this.jstree.settings.core.animation = 0;
+                //console.log('saveOpenedNodesDisabled = true');
+                var openCallCounter = 1;
+                var openRound = (e) => {
+                    openCallCounter--;
+                    //console.log('openRound', openCallCounter, nodesToOpen);
+                    var newNodesToOpen = [];
+                    var existingNodes = [];
+                    nodesToOpen.forEach(nodeId => {
+                        var node = this.jstree.get_node(nodeId);
+                        if (node) {
+                            if (!node.state.opened)
+                                existingNodes.push(node);
+                        }
+                        else
+                            newNodesToOpen.push(nodeId);
                     });
-                else if (openCallCounter === 0) {
-                    //console.log('saveOpenedNodesDisabled = false');
-                    saveOpenedNodesDisabled = false;
-                    e && jstree.off(e);
-                    jstree.settings.core.animation = origAnim;
-                    saveOpenedNodes();
-                    cb && cb(nodesToOpen.length === 0);
-                }
-            }
-            jstree.on('open_node.jstree', e => openRound(e));
-            openRound(null);
-        };
-        jstree.activatePath = (path, cb) => {
-            var path = path.split('/');
+                    nodesToOpen = newNodesToOpen;
+                    //console.log('existingNodes', existingNodes, 'openCallCounter', openCallCounter);
+                    if (existingNodes.length > 0)
+                        existingNodes.forEach(node => {
+                            openCallCounter++;
+                            //console.log(`open_node called on ${node.id}`)
+                            this.jstree.open_node(node);
+                        });
+                    else if (openCallCounter === 0) {
+                        //console.log('saveOpenedNodesDisabled = false');
+                        this.saveOpenedNodesDisabled = false;
+                        e && this.jstree.off(e);
+                        this.jstree.settings.core.animation = origAnim;
+                        this.saveOpenedNodes();
+                        resolve(nodesToOpen.length === 0);
+                    }
+                };
+                this.jstree.on('open_node.jstree', e => openRound(e));
+                openRound(null);
+            });
+        }
+        activatePath(path) {
+            var pathParts = typeof path === "string" ? path.split('/') : path;
             var expandNodes = [];
             var pathStr = 'inputField';
-            for (var i = 0; i < path.length; i++) {
-                pathStr += '_' + path[i];
+            for (var i = 0; i < pathParts.length; i++) {
+                pathStr += '_' + pathParts[i];
                 expandNodes.push(pathStr);
             }
             var activateId = expandNodes.pop();
-            jstree.openNodes(expandNodes, foundAll => {
+            return this.openNodes(expandNodes).then(foundAll => {
                 //console.log('activatePath', foundAll, activateId);
-                jstree.activate_node(activateId, null);
+                this.jstree.activate_node(activateId, null);
                 if (foundAll) {
                     var element = $(`#${activateId}`).get(0);
                     if (element)
@@ -282,10 +318,10 @@ define(["require", "exports", "./app.layout", "./app", "./app.worker"], function
                         console.log('element not found', activateId);
                     }
                 }
-                cb && cb(foundAll);
+                return foundAll;
             });
-        };
-        return jstree;
+        }
+        ;
     }
-    exports.parsedToTree = parsedToTree;
+    exports.ParsedTreeHandler = ParsedTreeHandler;
 });

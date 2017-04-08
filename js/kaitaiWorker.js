@@ -1,4 +1,5 @@
-var application, ioInput, root, parseError, KaitaiStream, exported, module, inputBuffer, MainClass, ksyTypes;
+var wi = { ioInput: null, root: null, parseError: null, exported: null, inputBuffer: null, MainClass: null, ksyTypes: null };
+var KaitaiStream, module;
 class IDebugInfo {
 }
 function isUndef(obj) { return typeof obj === "undefined"; }
@@ -46,7 +47,7 @@ function exportValue(obj, debug, path, noLazy) {
             result.end -= childIoOffset;
         }
         result.object = { class: obj.constructor.name, instances: {}, fields: {} };
-        var ksyType = ksyTypes[result.object.class];
+        var ksyType = wi.ksyTypes[result.object.class];
         Object.keys(obj).filter(x => x[0] !== '_').forEach(key => result.object.fields[key] = exportValue(obj[key], obj._debug[key], path.concat(key), noLazy));
         Object.getOwnPropertyNames(obj.constructor.prototype).filter(x => x[0] !== '_' && x !== "constructor").forEach(propName => {
             var ksyInstanceData = ksyType && ksyType.instancesByJsName[propName];
@@ -69,20 +70,22 @@ define.amd = true;
 var apiMethods = {
     eval: (code, args) => eval(code),
     reparse: (eagerMode) => {
-        ioInput = new KaitaiStream(inputBuffer, 0);
-        parseError = null;
-        root = new MainClass(ioInput);
-        root._read();
-        exported = exportValue(root, { start: 0, end: inputBuffer.byteLength }, [], eagerMode);
-        return exported;
+        var start = performance.now();
+        wi.ioInput = new KaitaiStream(wi.inputBuffer, 0);
+        wi.parseError = null;
+        wi.root = new wi.MainClass(wi.ioInput);
+        wi.root._read();
+        wi.exported = exportValue(wi.root, { start: 0, end: wi.inputBuffer.byteLength }, [], eagerMode);
+        //console.log('parse before return', performance.now() - start, 'date', Date.now());
+        return wi.exported;
     },
     get: (path) => {
-        var obj = root;
+        var obj = wi.root;
         var parent = null;
         path.forEach(key => { parent = obj; obj = obj[key]; });
         var debug = parent._debug['_m_' + path[path.length - 1]];
-        exported = exportValue(obj, debug, path, false); //
-        return exported;
+        wi.exported = exportValue(obj, debug, path, false); //
+        return wi.exported;
     }
 };
 self.onmessage = ev => {
