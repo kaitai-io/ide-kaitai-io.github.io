@@ -22,6 +22,9 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
             this.name = this.path.substring(split + 1, usableLen + 1);
             this.parentPath = this.path.substr(0, split + 1);
         }
+        changePath(newPath) {
+            return new FsUri(`${this.providerName}://${this.providerData.join('/')}${newPath}`, this.providerData.length);
+        }
     }
     exports.FsUri = FsUri;
     class FsUriTests {
