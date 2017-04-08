@@ -6,7 +6,7 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
             this.fs = fs;
             this.entity = entity;
             this.uri = new FsUri_1.FsUri(uri, 2);
-            this.repo = this.fs.client.getRepo(this.uri.providerData[1], this.uri.providerData[0]);
+            this.repo = this.fs.client.getRepo(this.uri.fsData[1], this.uri.fsData[0]);
         }
         read() {
             return this.repo.downloadFile(this.uri.path);
@@ -19,7 +19,6 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         }
         list() {
             return this.repo.getContents(this.uri.path).then(items => {
-                console.log(items);
                 return items.filter(item => item.type === 'file' || item.type === 'dir')
                     .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === 'dir' ? '/' : ''), item));
             });
@@ -29,6 +28,7 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     class GithubFileSystem {
         constructor(client) {
             this.client = client;
+            this.scheme = 'github';
         }
         getFsItem(uri) {
             return new GithubFsItem(this, uri);

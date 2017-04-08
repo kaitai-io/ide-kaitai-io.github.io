@@ -8,6 +8,7 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     }
     class RemoteFileSystem {
         constructor() {
+            this.scheme = 'remote';
             this.mappings = {};
         }
         getFsUri(uri) { return new FsUri_1.FsUri(uri, 2); }
@@ -37,10 +38,10 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         }
         execute(method, uri, binaryResponse = false, postData = null) {
             var fsUri = this.getFsUri(uri);
-            var host = fsUri.providerData[0];
+            var host = fsUri.fsData[0];
             if (host.indexOf(':') === -1)
                 host += '8001';
-            var mapping = fsUri.providerData[1] || 'default';
+            var mapping = fsUri.fsData[1] || 'default';
             var mappingConfig = this.mappings[`${host}/${mapping}`];
             var url = `http://${host}/files/${mapping}${fsUri.path}`;
             return this.request(method, url, { 'Authorization': 'MappingSecret ' + mappingConfig.secret }, binaryResponse ? 'arraybuffer' : null, postData);

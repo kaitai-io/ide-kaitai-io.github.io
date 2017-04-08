@@ -8,12 +8,13 @@ define(["require", "exports", "./FsUri", "localforage"], function (require, expo
     }
     class LocalFileSystem {
         constructor() {
+            this.scheme = 'local';
             this.lfCache = {};
             localforage.createInstance({ name: "kaitai_files" });
         }
         execute(uri, action) {
             var fsUri = new FsUri_1.FsUri(uri, 1);
-            var name = "kaitai_files" + (fsUri.providerData[0] ? '_' + fsUri.providerData[0] : '');
+            var name = "kaitai_files" + (fsUri.fsData[0] ? '_' + fsUri.fsData[0] : '');
             if (!this.lfCache[name])
                 this.lfCache[name] = localforage.createInstance({ name: name });
             return action(this.lfCache[name], fsUri);

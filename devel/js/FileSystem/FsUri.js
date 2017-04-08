@@ -12,9 +12,9 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
         constructor(uri, providerDataLen = 0) {
             this.uri = uri;
             var uriParts = uri.split('://', 2);
-            this.providerName = uriParts[0];
+            this.fsScheme = uriParts[0];
             var pathParts = uriParts[1].split('/');
-            this.providerData = pathParts.slice(0, providerDataLen);
+            this.fsData = pathParts.slice(0, providerDataLen);
             this.path = '/' + pathParts.slice(providerDataLen).join('/');
             this.type = this.path.endsWith('/') ? 'directory' : 'file';
             var usableLen = this.path.length - 1 - (this.type === 'directory' ? 1 : 0);
@@ -23,7 +23,7 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
             this.parentPath = this.path.substr(0, split + 1);
         }
         changePath(newPath) {
-            return new FsUri(`${this.providerName}://${this.providerData.join('/')}${newPath}`, this.providerData.length);
+            return new FsUri(`${this.fsScheme}://${this.fsData.join('/')}${newPath}`, this.fsData.length);
         }
     }
     exports.FsUri = FsUri;
