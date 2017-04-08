@@ -3,9 +3,8 @@ function downloadFile(url) {
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
     return new Promise((resolve, reject) => {
-        xhr.onload = function (e) {
-            resolve(this.response);
-        };
+        xhr.onload = e => resolve(xhr.response);
+        xhr.onerror = reject;
         xhr.send();
     });
 }
