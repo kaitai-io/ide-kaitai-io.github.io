@@ -1,6 +1,13 @@
-define(["require", "exports", "./TestHelper"], function (require, exports, TestHelper_1) {
+define(["require", "exports", "../utils/TestHelper"], function (require, exports, TestHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * Rules:
+     *  - path format example: <providerName>://<providerData>/<folder>/<subfolder>/<file>
+     *  - if type == 'directory' then path.endswith($`/{name}/`) === true
+     *     - except for root where path === '/'
+     *  - if type == 'file' then path.endswith($`/{name}`) === true
+     */
     class FsUri {
         constructor(uri, providerDataLen = 0) {
             this.uri = uri;
