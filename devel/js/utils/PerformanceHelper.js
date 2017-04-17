@@ -47,3 +47,4 @@ define(["require", "exports"], function (require, exports) {
     })(PerformanceHelper || (PerformanceHelper = {}));
     exports.performanceHelper = new PerformanceHelper();
 });
+//# sourceMappingURL=PerformanceHelper.js.map

@@ -42,3 +42,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.GithubClient = GithubClient;
 });
+//# sourceMappingURL=GithubClient.js.map

@@ -4,3 +4,4 @@ function checkModifications() {
 }
 if (location.hostname === '127.0.0.1')
     checkModifications();
+//# sourceMappingURL=autorefresh.js.map

@@ -52,3 +52,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.refreshConverterPanel = refreshConverterPanel;
 });
+//# sourceMappingURL=app.converterPanel.js.map

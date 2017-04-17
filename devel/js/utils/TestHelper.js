@@ -30,3 +30,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.TestHelper = TestHelper;
 });
+//# sourceMappingURL=TestHelper.js.map

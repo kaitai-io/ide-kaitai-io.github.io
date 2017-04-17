@@ -30,3 +30,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.FsSelector = FsSelector;
 });
+//# sourceMappingURL=FsSelector.js.map

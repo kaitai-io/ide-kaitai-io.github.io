@@ -30,3 +30,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.workerEval = workerEval;
 });
+//# sourceMappingURL=app.worker.js.map

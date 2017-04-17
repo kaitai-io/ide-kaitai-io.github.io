@@ -1,11 +1,6 @@
-define(["require", "exports", "./FsUri", "localforage"], function (require, exports, FsUri_1, localforage) {
+define(["require", "exports", "./FsUri", "./Common", "localforage"], function (require, exports, FsUri_1, Common_1, localforage) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class LocalFsItem {
-        constructor(uri) {
-            this.uri = uri;
-        }
-    }
     class LocalFileSystem {
         constructor() {
             this.scheme = 'local';
@@ -29,18 +24,9 @@ define(["require", "exports", "./FsUri", "localforage"], function (require, expo
             return this.execute(uri, (lf, fsUri) => lf.removeItem(fsUri.path));
         }
         list(uri) {
-            return this.execute(uri, (lf, fsUri) => {
-                return lf.keys().then(keys => {
-                    var itemNames = {};
-                    keys.filter(x => x.startsWith(fsUri.path)).forEach(key => {
-                        var keyParts = key.substr(fsUri.path.length).split('/');
-                        var name = keyParts[0] + (keyParts.length === 1 ? '' : '/');
-                        itemNames[name] = true;
-                    });
-                    return Object.keys(itemNames).map(name => new LocalFsItem(new FsUri_1.FsUri(fsUri.uri + name, 1)));
-                });
-            });
+            return this.execute(uri, (lf, fsUri) => lf.keys().then(keys => FsUri_1.FsUri.getChildUris(keys, fsUri).map(uri => new Common_1.FsItem(uri))));
         }
     }
     exports.LocalFileSystem = LocalFileSystem;
 });
+//# sourceMappingURL=LocalFileSystem.js.map

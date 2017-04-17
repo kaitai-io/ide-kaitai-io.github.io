@@ -1,4 +1,4 @@
-define(["require", "exports", "goldenlayout", "HexViewer"], function (require, exports, GoldenLayout, HexViewer_1) {
+define(["require", "exports", "goldenlayout", "./HexViewer"], function (require, exports, GoldenLayout, HexViewer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var practiceChallNameMatch = /practice=([a-z0-9]+)/.exec(location.href);
@@ -117,3 +117,4 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
     addExistingDiv('practicePanel');
     myLayout.init();
 });
+//# sourceMappingURL=app.layout.js.map

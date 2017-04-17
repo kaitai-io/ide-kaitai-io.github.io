@@ -350,3 +350,4 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
     });
 });
+//# sourceMappingURL=app.js.map

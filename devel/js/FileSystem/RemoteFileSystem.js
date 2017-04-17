@@ -1,11 +1,6 @@
-define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
+define(["require", "exports", "./FsUri", "./Common"], function (require, exports, FsUri_1, Common_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class RemoteFsItem {
-        constructor(uri) {
-            this.uri = uri;
-        }
-    }
     class RemoteFileSystem {
         constructor() {
             this.scheme = 'remote';
@@ -57,9 +52,10 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         }
         list(uri) {
             return this.execute('GET', uri).then(response => {
-                return response.files.map(item => new RemoteFsItem(this.getFsUri(uri + item.fn + (item.isDir ? '/' : ''))));
+                return response.files.map(item => new Common_1.FsItem(this.getFsUri(uri + item.fn + (item.isDir ? '/' : ''))));
             });
         }
     }
     exports.RemoteFileSystem = RemoteFileSystem;
 });
+//# sourceMappingURL=RemoteFileSystem.js.map

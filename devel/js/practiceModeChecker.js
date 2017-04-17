@@ -112,3 +112,4 @@ module.exports = function convert(userObj, solObj) {
     toJson(userObj, solObj);
     return { json, lines, allMatch };
 };
+//# sourceMappingURL=practiceModeChecker.js.map

@@ -156,3 +156,4 @@ function collectAllObjects(root) {
     process(root);
     return objects;
 }
+//# sourceMappingURL=utils.js.map
