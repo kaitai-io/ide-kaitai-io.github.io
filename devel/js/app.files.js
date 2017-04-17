@@ -87,14 +87,14 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
         return exports.localFs.getRootNode().then(root => {
             app_layout_1.ui.fileTree.delete_node(localStorageNode.children);
             if (root)
-                genChildNodes(root).forEach(node => app_layout_1.ui.fileTree.create_node(localStorageNode, node));
+                genChildNodes(root).forEach((node) => app_layout_1.ui.fileTree.create_node(localStorageNode, node));
         });
     }
     exports.refreshFsNodes = refreshFsNodes;
     function addKsyFile(parent, ksyFn, content) {
         var name = ksyFn.split('/').last();
-        return exports.fss.local.put(name, content).then(fsItem => {
-            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: 'glyphicon glyphicon-list-alt' }, "last", node => app_layout_1.ui.fileTree.activate_node(node, null));
+        return exports.fss.local.put(name, content).then((fsItem) => {
+            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: 'glyphicon glyphicon-list-alt' }, "last", (node) => app_layout_1.ui.fileTree.activate_node(node, null));
             return app_1.loadFsItem(fsItem, true);
         });
     }
@@ -144,7 +144,7 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
         function convertTreeNode(treeNode) {
             var data = treeNode.data;
             data.children = {};
-            treeNode.children.forEach(child => data.children[child.text] = convertTreeNode(child));
+            treeNode.children.forEach((child) => data.children[child.text] = convertTreeNode(child));
             return data;
         }
         function saveTree() {
@@ -184,18 +184,18 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
         }
         ctxAction(uiFiles.createFolder, e => {
             var parentData = getSelectedData();
-            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(contextMenuTarget), { data: { fsType: parentData.fsType, type: 'folder' }, icon: 'glyphicon glyphicon-folder-open' }, "last", node => {
+            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(contextMenuTarget), { data: { fsType: parentData.fsType, type: 'folder' }, icon: 'glyphicon glyphicon-folder-open' }, "last", (node) => {
                 app_layout_1.ui.fileTree.activate_node(node, null);
                 setTimeout(function () { app_layout_1.ui.fileTree.edit(node); }, 0);
             });
         });
-        ctxAction(uiFiles.deleteItem, e => app_layout_1.ui.fileTree.delete_node(app_layout_1.ui.fileTree.get_selected()));
-        ctxAction(uiFiles.openItem, e => $(contextMenuTarget).trigger('dblclick'));
+        ctxAction(uiFiles.deleteItem, () => app_layout_1.ui.fileTree.delete_node(app_layout_1.ui.fileTree.get_selected()));
+        ctxAction(uiFiles.openItem, () => $(contextMenuTarget).trigger('dblclick'));
         ctxAction(uiFiles.generateParser, e => {
             var fsItem = getSelectedData();
             var linkData = $(e.target).data();
             //console.log(fsItem, linkData);
-            exports.fss[fsItem.fsType].get(fsItem.fn).then(content => {
+            exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
                 return app_1.compile(content, linkData.kslang, !!linkData.ksdebug).then(compiled => {
                     Object.keys(compiled).forEach(fileName => {
                         //var title = fsItem.fn.split('/').last() + ' [' + $(e.target).text() + ']' + (compiled.length == 1 ? '' : ` ${i + 1}/${compiled.length}`);
@@ -243,7 +243,7 @@ define(["require", "exports", "app.layout", "./app", "localforage"], function (r
             var fsItem = getSelectedData();
             var newFn = fsItem.fn.replace('.ksy', '_' + new Date().format('Ymd_His') + '.ksy');
             console.log('newFn', newFn);
-            exports.fss[fsItem.fsType].get(fsItem.fn).then(content => addKsyFile('localStorage', newFn, content));
+            exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => addKsyFile('localStorage', newFn, content));
         });
     });
 });

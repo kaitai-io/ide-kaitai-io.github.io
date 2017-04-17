@@ -13,7 +13,9 @@ define(["require", "exports"], function (require, exports) {
             return this.zeroFill(address.toString(16), addrHexLen);
         }
         static byteAscii(bt) {
-            return bt == 32 ? '\u00a0' : bt < 32 || (0x7f <= bt && bt <= 0xa0) || bt == 0xad ? '.' : String.fromCharCode(bt);
+            return bt === 32 ? '\u00a0' :
+                bt < 32 || (0x7f <= bt && bt <= 0xa0) || bt === 0xad ? '.' :
+                    String.fromCharCode(bt);
         }
         static byteHex(bt) {
             return this.zeroFill(bt.toString(16), 2);
@@ -99,26 +101,26 @@ define(["require", "exports"], function (require, exports) {
         cellMouseAction(e) {
             if (e.which !== 1)
                 return; // only handle left mouse button actions
-            if (e.type == "mouseup")
+            if (e.type === "mouseup")
                 this.content.unbind('mousemove');
             var cell = e.target;
             if (!('dataOffset' in cell)) {
                 var cells = $(cell).find('.hexcell, .asciicell');
-                if (cells.length == 1)
+                if (cells.length === 1)
                     cell = cells.get(0);
             }
             if ('dataOffset' in cell) {
-                if (e.type == "mousedown") {
-                    this.canDeselect = this.selectionStart == cell.dataOffset && this.selectionEnd == cell.dataOffset;
+                if (e.type === "mousedown") {
+                    this.canDeselect = this.selectionStart === cell.dataOffset && this.selectionEnd === cell.dataOffset;
                     this.mouseDownOffset = cell.dataOffset;
                     this.content.on('mousemove', e => this.cellMouseAction(e));
                     this.setSelection(cell.dataOffset, cell.dataOffset);
                 }
-                else if (e.type == "mousemove") {
+                else if (e.type === "mousemove") {
                     this.setSelection(this.mouseDownOffset, cell.dataOffset);
                     this.canDeselect = false;
                 }
-                else if (e.type == "mouseup" && this.canDeselect && this.mouseDownOffset == cell.dataOffset)
+                else if (e.type === "mouseup" && this.canDeselect && this.mouseDownOffset === cell.dataOffset)
                     this.deselect();
                 this.contentOuter.focus();
                 e.preventDefault();
