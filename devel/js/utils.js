@@ -32,6 +32,9 @@ class Delayed {
         }, this.delay);
     }
 }
+Promise.delay = function (timeoutMs) {
+    return new Promise((resolve, reject) => setTimeout(resolve, timeoutMs));
+};
 String.prototype.ucFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
