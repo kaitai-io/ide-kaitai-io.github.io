@@ -38,8 +38,8 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
         closeSelected() {
             if (this.selectedItem.open)
                 this.selectedItem.toggle();
-            else if (this.selectedItem.parent.toggle)
-                this.selectedItem.parent.toggle();
+            else if (this.selectedItem.parent.parent)
+                this.setSelected(this.selectedItem.parent);
         }
         selectNode(node, dir) {
             if (dir === "next") {
