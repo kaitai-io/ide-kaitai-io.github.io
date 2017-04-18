@@ -1,3 +1,3 @@
 var kaitaiIde = kaitaiIde || {};
-kaitaiIde.version = '0.1.0.1916';
+kaitaiIde.version = '0.1.0.1920';
 //# sourceMappingURL=config.js.map
