@@ -29,11 +29,72 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
         created() {
             this.model.loadChildren();
         }
+        openSelected() {
+            if (!this.selectedItem.open)
+                this.selectedItem.toggle();
+            else
+                this.selectNextNode();
+        }
+        closeSelected() {
+            if (this.selectedItem.open)
+                this.selectedItem.toggle();
+            else if (this.selectedItem.parent.toggle)
+                this.selectedItem.parent.toggle();
+        }
+        selectNode(node, dir) {
+            if (dir === "next") {
+                if (node.children && node.children.length > 0)
+                    this.setSelected(node.children[0]);
+                else {
+                    while (node.parent) {
+                        var children = node.parent.children;
+                        var thisIdx = children.indexOf(node);
+                        if (thisIdx + 1 < children.length) {
+                            this.setSelected(children[thisIdx + 1]);
+                            break;
+                        }
+                        else
+                            node = node.parent;
+                    }
+                }
+            }
+            else if (dir === "prev") {
+                if (node.parent) {
+                    var children = node.parent.children;
+                    var thisIdx = children.indexOf(node);
+                    if (thisIdx - 1 >= 0) {
+                        var selChildren = children[thisIdx - 1];
+                        while (selChildren.children && selChildren.children.length > 0)
+                            selChildren = selChildren.children.last();
+                        this.setSelected(selChildren);
+                    }
+                    else if (node.parent.parent) {
+                        this.setSelected(node.parent);
+                    }
+                }
+            }
+        }
+        selectNextNode(fromNode) {
+            this.selectNode(this.selectedItem, "next");
+        }
+        selectPrevNode() {
+            this.selectNode(this.selectedItem, "prev");
+        }
+        scrollSelectedIntoView() {
+            var target = this.selectedItem.$el;
+            var rect = target.getBoundingClientRect();
+            var parentRect = this.$el.getBoundingClientRect();
+            if (rect.bottom > parentRect.bottom)
+                target.scrollIntoView(false);
+            else if (rect.top < parentRect.top)
+                target.scrollIntoView();
+        }
         setSelected(newSelected) {
             if (this.selectedItem)
                 this.selectedItem.selected = false;
             this.selectedItem = newSelected;
             this.selectedItem.selected = true;
+            this.scrollSelectedIntoView();
         }
     };
     TreeView = __decorate([
@@ -56,12 +117,13 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             return null;
         }
         get children() { return this.$children; }
+        get parent() { return this.$parent; }
         toggle() {
             if (this.model.isFolder) {
                 this.open = !this.open;
                 if (this.open && !this.model.children) {
                     this.childrenLoading = true;
-                    this.model.loadChildren().then(() => this.childrenLoading = false);
+                    setTimeout(() => this.model.loadChildren().then(() => this.childrenLoading = false), 0);
                 }
             }
             this.treeView.setSelected(this);
@@ -70,18 +132,6 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
     TreeViewItem = __decorate([
         Component_1.default
     ], TreeViewItem);
-    class DummyFsTreeNode {
-        constructor(text) {
-            this.text = text;
-            this.children = [];
-        }
-        get isFolder() { return this.children && this.children.length > 0; }
-        add(children) {
-            this.children.push(...children);
-            return this;
-        }
-        loadChildren() { return Promise.resolve(); }
-    }
     class FsTreeNode {
         constructor(fs, uri) {
             this.fs = fs;
@@ -91,24 +141,13 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             this.isFolder = uri.type === 'directory';
         }
         loadChildren() {
-            return Promise.delay(this.uri.name === '/' ? 0 : 500).then(() => this.fs.list(this.uri.uri)).then(children => {
+            return this.fs.list(this.uri.uri).then(children => {
                 this.children = children.map(fsItem => new FsTreeNode(this.fs, fsItem.uri));
             });
         }
     }
-    var dummyData = new DummyFsTreeNode('/').add([
-        new DummyFsTreeNode('folder1').add([
-            new DummyFsTreeNode('folder2').add([
-                new DummyFsTreeNode('file1'),
-                new DummyFsTreeNode('file2')
-            ]),
-            new DummyFsTreeNode('file1'),
-            new DummyFsTreeNode('file2')
-        ]),
-        new DummyFsTreeNode('file1'),
-        new DummyFsTreeNode('file2')
-    ]);
     var fsData = new FsTreeNode(fss, new FsUri_1.FsUri('static:///'));
+    //var fsData = new FsTreeNode(fss, new FsUri('github://koczkatamas/kaitai_struct_formats/'));
     var demo = new Vue({
         el: '#tree',
         data: { treeData: fsData }
@@ -116,8 +155,8 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
     window['demo'] = demo;
     var treeView = demo.$refs['treeView'];
     setTimeout(() => {
-        treeView.children[0].toggle();
+        treeView.children[1].toggle();
         treeView.children[6].toggle();
-    }, 50);
+    }, 500);
 });
 //# sourceMappingURL=sandbox.js.map
