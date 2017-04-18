@@ -68,9 +68,8 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
                             selChildren = selChildren.children.last();
                         this.setSelected(selChildren);
                     }
-                    else if (node.parent.parent) {
+                    else if (node.parent.parent)
                         this.setSelected(node.parent);
-                    }
                 }
             }
         }
@@ -126,6 +125,8 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
                     setTimeout(() => this.model.loadChildren().then(() => this.childrenLoading = false), 0);
                 }
             }
+        }
+        select() {
             this.treeView.setSelected(this);
         }
     };
