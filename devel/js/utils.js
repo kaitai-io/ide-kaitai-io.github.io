@@ -159,4 +159,12 @@ function collectAllObjects(root) {
     process(root);
     return objects;
 }
+function precallHook(parent, name, callback) {
+    var original = parent[name];
+    parent[name] = function () {
+        callback();
+        original.apply(this, arguments);
+    };
+    parent[name].prototype = original.prototype;
+}
 //# sourceMappingURL=utils.js.map

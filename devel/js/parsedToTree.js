@@ -18,7 +18,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 }
             }).jstree(true);
             this.jstree.on = (...args) => this.jstree.element.on(...args);
-            this.jstree.off = (...args) => this.jstree.jstree.element.off(...args);
+            this.jstree.off = (...args) => this.jstree.element.off(...args);
             this.jstree.on('keyup.jstree', e => this.jstree.activate_node(e.target.id, null));
             this.intervalHandler = new IntervalHelper_1.IntervalHandler();
         }

@@ -86,6 +86,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             filterOutExtensions(compilerSchema);
         }
         catch (parseErr) {
+            ga('compile', 'error', `yaml: ${parseErr}`);
             app_errors_1.showError("YAML parsing error: ", parseErr);
             return;
         }
@@ -101,10 +102,12 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             //console.log('rReleasePromise', rReleasePromise, 'rDebugPromise', rDebugPromise);
             return perfCompile.done(Promise.all([rReleasePromise, rDebugPromise]))
                 .then(([rRelease, rDebug]) => {
+                ga('compile', 'success');
                 //console.log('rRelease', rRelease, 'rDebug', rDebug);
                 return rRelease && rDebug ? { debug: rDebug, release: rRelease } : rRelease ? rRelease : rDebug;
             })
                 .catch(compileErr => {
+                ga('compile', 'error', `kaitai: ${compileErr}`);
                 app_errors_1.showError("KS compilation error: ", compileErr);
                 return;
             });
@@ -348,6 +351,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         $("#disableLazyParsing").on('click', reparse);
         app_layout_1.ui.unparsedIntSel = new IntervalViewer("unparsed");
         app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
+        precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, 'DragProxy', () => ga('layout', 'window_drag'));
+        $('body').on('mousedown', '.lm_drag_handle', () => { ga('layout', 'splitter_drag'); });
     });
 });
 //# sourceMappingURL=app.js.map
