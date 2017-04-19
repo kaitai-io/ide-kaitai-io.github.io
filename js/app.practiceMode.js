@@ -1,4 +1,4 @@
-define(["require", "exports", "app.layout"], function (require, exports, app_layout_1) {
+define(["require", "exports", "./app.layout"], function (require, exports, app_layout_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var practiceDiff, aceRange, markers = [];
@@ -156,3 +156,4 @@ define(["require", "exports", "app.layout"], function (require, exports, app_lay
         $('#practicePanel .description').html(app_layout_1.practiceChall.description);
     });
 });
+//# sourceMappingURL=app.practiceMode.js.map

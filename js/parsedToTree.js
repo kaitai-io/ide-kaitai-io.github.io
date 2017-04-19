@@ -12,7 +12,11 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
             this.saveOpenedNodesDisabled = false;
             this.nodeDatas = [];
             jsTreeElement.jstree("destroy");
-            this.jstree = jsTreeElement.jstree({ core: { data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_errors_1.handleError(e)), themes: { icons: false }, multiple: false, force_text: false } }).jstree(true);
+            this.jstree = jsTreeElement.jstree({
+                core: {
+                    data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_errors_1.handleError(e)), themes: { icons: false }, multiple: false, force_text: false
+                }
+            }).jstree(true);
             this.jstree.on = (...args) => this.jstree.element.on(...args);
             this.jstree.off = (...args) => this.jstree.element.off(...args);
             this.jstree.on('keyup.jstree', e => this.jstree.activate_node(e.target.id, null));
@@ -21,9 +25,6 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
         saveOpenedNodes() {
             if (this.saveOpenedNodesDisabled)
                 return;
-            //parsedTreeOpenedNodes = {};
-            //getAllNodes(ui.parsedDataTree).filter(x => x.state.opened).forEach(x => parsedTreeOpenedNodes[x.id] = true);
-            //console.log('saveOpenedNodes');
             localStorage.setItem('parsedTreeOpenedNodes', Object.keys(this.parsedTreeOpenedNodes).join(','));
         }
         initNodeReopenHandling() {
@@ -325,3 +326,4 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
     }
     exports.ParsedTreeHandler = ParsedTreeHandler;
 });
+//# sourceMappingURL=parsedToTree.js.map

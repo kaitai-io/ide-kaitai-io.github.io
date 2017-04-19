@@ -3,9 +3,8 @@ function downloadFile(url) {
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
     return new Promise((resolve, reject) => {
-        xhr.onload = function (e) {
-            resolve(this.response);
-        };
+        xhr.onload = e => resolve(xhr.response);
+        xhr.onerror = reject;
         xhr.send();
     });
 }
@@ -33,6 +32,9 @@ class Delayed {
         }, this.delay);
     }
 }
+Promise.delay = function (timeoutMs) {
+    return new Promise((resolve, reject) => setTimeout(resolve, timeoutMs));
+};
 String.prototype.ucFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -139,15 +141,6 @@ function openFilesWithDialog(callback) {
         callback(files);
     }).click();
 }
-function getAllNodes(tree) {
-    function collectNodes(node, result) {
-        result.push(node);
-        node.children.forEach(child => collectNodes(child, result));
-    }
-    var allNodes = [];
-    var json = tree.get_json().forEach(item => collectNodes(item, allNodes));
-    return allNodes;
-}
 function s(strings, ...values) {
     var result = strings[0];
     for (var i = 1; i < strings.length; i++)
@@ -166,3 +159,12 @@ function collectAllObjects(root) {
     process(root);
     return objects;
 }
+function precallHook(parent, name, callback) {
+    var original = parent[name];
+    parent[name] = function () {
+        callback();
+        original.apply(this, arguments);
+    };
+    parent[name].prototype = original.prototype;
+}
+//# sourceMappingURL=utils.js.map

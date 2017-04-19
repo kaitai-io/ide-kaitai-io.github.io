@@ -49,7 +49,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             kaitaiIde.ksySchema = ksySchema = YAML.parse(srcYaml);
             function collectKsyTypes(schema) {
                 var types = {};
-                function ksyNameToJsName(ksyName, isProp) { return ksyName.split('_').map((x, i) => i == 0 && isProp ? x : x.ucFirst()).join(''); }
+                function ksyNameToJsName(ksyName, isProp) { return ksyName.split('_').map((x, i) => i === 0 && isProp ? x : x.ucFirst()).join(''); }
                 function collectTypes(parent) {
                     if (parent.types) {
                         parent.typesByJsName = {};
@@ -86,6 +86,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             filterOutExtensions(compilerSchema);
         }
         catch (parseErr) {
+            ga('compile', 'error', `yaml: ${parseErr}`);
             app_errors_1.showError("YAML parsing error: ", parseErr);
             return;
         }
@@ -101,10 +102,12 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             //console.log('rReleasePromise', rReleasePromise, 'rDebugPromise', rDebugPromise);
             return perfCompile.done(Promise.all([rReleasePromise, rDebugPromise]))
                 .then(([rRelease, rDebug]) => {
+                ga('compile', 'success');
                 //console.log('rRelease', rRelease, 'rDebug', rDebug);
                 return rRelease && rDebug ? { debug: rDebug, release: rRelease } : rRelease ? rRelease : rDebug;
             })
                 .catch(compileErr => {
+                ga('compile', 'error', `kaitai: ${compileErr}`);
                 app_errors_1.showError("KS compilation error: ", compileErr);
                 return;
             });
@@ -138,7 +141,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         app_errors_1.handleError(null);
         return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([exports.inputReady, exports.formatReady]).then(() => {
             var debugCode = app_layout_1.ui.genCodeDebugViewer.getValue();
-            var jsClassName = kaitaiIde.ksySchema.meta.id.split('_').map(x => x.ucFirst()).join('');
+            var jsClassName = kaitaiIde.ksySchema.meta.id.split('_').map((x) => x.ucFirst()).join('');
             return app_worker_1.workerCall({ type: 'eval', args: [`wi.ksyTypes = args.ksyTypes;\n${debugCode}\nwi.MainClass = ${jsClassName};void(0)`, { ksyTypes: exports.ksyTypes }] });
         })).then(() => {
             //console.log('recompiled');
@@ -170,7 +173,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     function loadFsItem(fsItem, refreshGui = true) {
         if (!fsItem || fsItem.type !== 'file')
             return Promise.resolve();
-        return app_files_1.fss[fsItem.fsType].get(fsItem.fn).then(content => {
+        return app_files_1.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
             if (isKsyFile(fsItem.fn)) {
                 localforage.setItem(ksyFsItemName, fsItem);
                 lastKsyFsItem = fsItem;
@@ -348,5 +351,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         $("#disableLazyParsing").on('click', reparse);
         app_layout_1.ui.unparsedIntSel = new IntervalViewer("unparsed");
         app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
+        precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, 'DragProxy', () => ga('layout', 'window_drag'));
+        $('body').on('mousedown', '.lm_drag_handle', () => { ga('layout', 'splitter_drag'); });
     });
 });
+//# sourceMappingURL=app.js.map

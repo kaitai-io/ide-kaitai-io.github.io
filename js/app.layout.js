@@ -1,4 +1,4 @@
-define(["require", "exports", "goldenlayout", "HexViewer"], function (require, exports, GoldenLayout, HexViewer_1) {
+define(["require", "exports", "goldenlayout", "./HexViewer"], function (require, exports, GoldenLayout, HexViewer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var practiceChallNameMatch = /practice=([a-z0-9]+)/.exec(location.href);
@@ -39,13 +39,13 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
         ]
     });
     function getLayoutNodeById(id) {
-        return myLayout._getAllContentItems().filter(x => x.config.id === id || x.componentName === id)[0];
+        return myLayout._getAllContentItems().filter((x) => x.config.id === id || x.componentName === id)[0];
     }
     exports.getLayoutNodeById = getLayoutNodeById;
     var dynCompId = 1;
     function addEditorTab(title, data, lang = null, parent = 'codeTab') {
         var componentName = `dynComp${dynCompId++}`;
-        addEditor(componentName, lang, true, editor => editor.setValue(data, -1));
+        addEditor(componentName, lang, true, (editor) => editor.setValue(data, -1));
         getLayoutNodeById(parent).addChild({ type: 'component', componentName, title });
     }
     exports.addEditorTab = addEditorTab;
@@ -68,6 +68,7 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
         bytesIntSel: null,
     };
     exports.ui = ui;
+    var uiAny = ui;
     function addComponent(name, generatorCallback) {
         var editor;
         myLayout.registerComponent(name, function (container, componentState) {
@@ -76,17 +77,17 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
             if (generatorCallback) {
                 container.on('resize', () => { if (editor && editor.resize)
                     editor.resize(); });
-                container.on('open', () => { ui[name] = editor = generatorCallback(container) || container; });
+                container.on('open', () => { uiAny[name] = editor = generatorCallback(container) || container; });
             }
             else
-                ui[name + 'Cont'] = container;
+                uiAny[name + 'Cont'] = container;
         });
     }
     function addExistingDiv(name) {
         myLayout.registerComponent(name, function (container, componentState) {
-            ui[name + 'Cont'] = container;
-            ui[name] = $(`#${name}`).appendTo(container.getElement());
-            $(() => ui[name].show());
+            uiAny[name + 'Cont'] = container;
+            uiAny[name] = $(`#${name}`).appendTo(container.getElement());
+            $(() => uiAny[name].show());
         });
     }
     function addEditor(name, lang, isReadOnly = false, callback = null) {
@@ -116,3 +117,4 @@ define(["require", "exports", "goldenlayout", "HexViewer"], function (require, e
     addExistingDiv('practicePanel');
     myLayout.init();
 });
+//# sourceMappingURL=app.layout.js.map

@@ -11,7 +11,8 @@ define(["require", "exports", "./app.layout"], function (require, exports, app_l
             app_layout_1.ui.errorWindow.setSize(0, lastErrWndSize);
         }
         app_layout_1.ui.errorWindow.on('resize', () => lastErrWndSize = app_layout_1.ui.errorWindow.getElement().outerHeight());
-        app_layout_1.ui.errorWindow.on('close', () => app_layout_1.ui.errorWindow = null);
+        app_layout_1.ui.errorWindow.on('destroy', () => { ga('errorwnd', 'destroy'); });
+        app_layout_1.ui.errorWindow.on('close', () => { ga('errorwnd', 'close'); app_layout_1.ui.errorWindow = null; });
         app_layout_1.ui.errorWindow.getElement().children().html(htmlescape(errMsg).replace(/\n|\\n/g, '<br>'));
     }
     exports.showError = showError;
@@ -32,3 +33,4 @@ define(["require", "exports", "./app.layout"], function (require, exports, app_l
     }
     exports.handleError = handleError;
 });
+//# sourceMappingURL=app.errors.js.map

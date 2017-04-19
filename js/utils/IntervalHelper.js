@@ -51,3 +51,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.IntervalHandler = IntervalHandler;
 });
+//# sourceMappingURL=IntervalHelper.js.map
