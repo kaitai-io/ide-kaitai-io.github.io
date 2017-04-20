@@ -1,3 +1,5 @@
+// issue: https://github.com/Microsoft/TypeScript/issues/582
+var myself = self;
 var wi = {
     MainClass: null,
     ksyTypes: null,
@@ -6,8 +8,6 @@ var wi = {
     root: null,
     exported: null,
 };
-class IDebugInfo {
-}
 function isUndef(obj) { return typeof obj === "undefined"; }
 function getObjectType(obj) {
     if (obj instanceof Uint8Array)
@@ -97,7 +97,7 @@ var apiMethods = {
         return wi.exported;
     }
 };
-self.onmessage = (ev) => {
+myself.onmessage = (ev) => {
     var msg = ev.data;
     //console.log('[Worker] Got msg', msg, ev);
     if (apiMethods.hasOwnProperty(msg.type)) {
@@ -113,6 +113,6 @@ self.onmessage = (ev) => {
         msg.error = "msg.type is unknown";
     }
     //console.log('[Worker] Send response', msg, ev);
-    self.postMessage(msg);
+    myself.postMessage(msg);
 };
 //# sourceMappingURL=kaitaiWorker.js.map
