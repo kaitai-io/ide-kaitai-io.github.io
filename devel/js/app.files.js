@@ -205,8 +205,8 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
                 });
             });
         });
-        fileTreeCont.on('rename_node.jstree', () => ga('filetree', 'rename'));
-        fileTreeCont.on('move_node.jstree', () => ga('filetree', 'move'));
+        fileTreeCont.on('rename_node.jstree', () => app_1.ga('filetree', 'rename'));
+        fileTreeCont.on('move_node.jstree', () => app_1.ga('filetree', 'move'));
         fileTreeCont.on('create_node.jstree rename_node.jstree delete_node.jstree move_node.jstree paste.jstree', saveTree);
         fileTreeCont.on('move_node.jstree', (e, data) => app_layout_1.ui.fileTree.open_node(app_layout_1.ui.fileTree.get_node(data.parent)));
         fileTreeCont.on('select_node.jstree', (e, selectNodeArgs) => {
@@ -216,7 +216,7 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
         var lastMultiSelectReport = 0;
         fileTreeCont.on('select_node.jstree', (e, args) => {
             if (e.timeStamp - lastMultiSelectReport > 1000 && args.selected.length > 1)
-                ga('filetree', 'multi_select');
+                app_1.ga('filetree', 'multi_select');
             lastMultiSelectReport = e.timeStamp;
         });
         var ksyParent;

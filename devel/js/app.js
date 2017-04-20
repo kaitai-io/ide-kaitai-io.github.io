@@ -4,6 +4,11 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.baseUrl = location.href.split('?')[0].split('/').slice(0, -1).join('/') + '/';
     $.jstree.defaults.core.force_text = true;
+    function ga(category, action, label, value) {
+        console.log(`[GA Event] cat:${category} act:${action} lab:${label || ''}`);
+        typeof window["_ga"] !== "undefined" && window["_ga"]('send', 'event', category, action, label, value);
+    }
+    exports.ga = ga;
     class IntervalViewer {
         constructor(htmlIdPrefix) {
             this.htmlIdPrefix = htmlIdPrefix;
@@ -95,7 +100,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             return Promise.resolve();
         else {
             var perfCompile = PerformanceHelper_1.performanceHelper.measureAction("Compilation");
-            var ks = io.kaitai.struct.MainJs();
+            var ks = new io.kaitai.struct.MainJs();
             var rReleasePromise = (debug === false || debug === 'both') ? ks.compile(kslang, compilerSchema, jsImporter, false) : Promise.resolve(null);
             var rDebugPromise = (debug === true || debug === 'both') ? ks.compile(kslang, compilerSchema, jsImporter, true) : Promise.resolve(null);
             //console.log('rReleasePromise', rReleasePromise, 'rDebugPromise', rDebugPromise);
@@ -206,7 +211,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     localStorage.setItem('lastVersion', kaitaiIde.version);
     $(() => {
         $('#webIdeVersion').text(kaitaiIde.version);
-        $('#compilerVersion').text(io.kaitai.struct.MainJs().version + " (" + io.kaitai.struct.MainJs().buildDate + ")");
+        $('#compilerVersion').text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
         $('#welcomeDoNotShowAgain').click(() => localStorage.setItem('doNotShowWelcome', 'true'));
         if (localStorage.getItem('doNotShowWelcome') !== 'true')
             $('#welcomeModal').modal();

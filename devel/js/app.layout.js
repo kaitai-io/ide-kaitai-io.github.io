@@ -11,7 +11,6 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
                                 { type: 'column', content: [
                                         { type: 'component', componentName: 'ksyEditor', title: '.ksy editor', isClosable: false },
                                         { type: 'stack', activeItemIndex: 0, content: [
-                                                //{ type: 'component', componentName: 'parsedDataViewer', title: 'parsed as JSON', isClosable: false },
                                                 { type: 'component', componentName: 'parsedDataTree', title: 'object tree', isClosable: false },
                                             ] },
                                     ] },

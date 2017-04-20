@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./utils"], function (require, exports, app_layout_1, utils_1) {
+define(["require", "exports", "./app.layout", "./utils", "./app"], function (require, exports, app_layout_1, utils_1, app_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var lastErrWndSize = 100; // 34
@@ -11,8 +11,8 @@ define(["require", "exports", "./app.layout", "./utils"], function (require, exp
             app_layout_1.ui.errorWindow.setSize(0, lastErrWndSize);
         }
         app_layout_1.ui.errorWindow.on('resize', () => lastErrWndSize = app_layout_1.ui.errorWindow.getElement().outerHeight());
-        app_layout_1.ui.errorWindow.on('destroy', () => { ga('errorwnd', 'destroy'); });
-        app_layout_1.ui.errorWindow.on('close', () => { ga('errorwnd', 'close'); app_layout_1.ui.errorWindow = null; });
+        app_layout_1.ui.errorWindow.on('destroy', () => { app_1.ga('errorwnd', 'destroy'); });
+        app_layout_1.ui.errorWindow.on('close', () => { app_1.ga('errorwnd', 'close'); app_layout_1.ui.errorWindow = null; });
         app_layout_1.ui.errorWindow.getElement().children().html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, '<br>'));
     }
     exports.showError = showError;
