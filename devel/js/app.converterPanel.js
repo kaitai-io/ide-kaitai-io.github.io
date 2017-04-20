@@ -1,8 +1,8 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "bigInt"], function (require, exports, bigInt) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function refreshConverterPanel(panel, dataProvider, offset) {
-        if (dataProvider && offset != -1) {
+        if (dataProvider && offset !== -1) {
             var data = dataProvider.get(offset, Math.min(dataProvider.length - offset, 64)).slice(0);
             function numConv(len, signed, bigEndian) {
                 if (len > data.length)
@@ -21,11 +21,15 @@ define(["require", "exports"], function (require, exports) {
                         num = maxVal.minus(num).negate();
                 }
                 //console.log('numConv', arr, len, signed ? 'signed' : 'unsigned', bigEndian ? 'big-endian' : 'little-endian', num, typeof num);
-                return num;
+                return num.toString();
             }
-            [1, 2, 4, 8].forEach(len => [false, true].forEach(signed => [false, true].forEach(bigEndian => panel.find(`.i${len * 8}${len == 1 ? '' : bigEndian ? 'be' : 'le'} .${signed ? 'signed' : 'unsigned'}`).text(numConv(len, signed, bigEndian).toString()))));
+            [1, 2, 4, 8].forEach(len => [false, true].forEach(signed => [false, true].forEach(bigEndian => {
+                var el = panel.find(`.i${len * 8}${len === 1 ? '' : bigEndian ? 'be' : 'le'} .${signed ? 'signed' : 'unsigned'}`);
+                var convRes = numConv(len, signed, bigEndian);
+                el.text(convRes);
+            })));
             var u32le = numConv(4, false, false);
-            var unixtsDate = new Date(u32le * 1000);
+            var unixtsDate = new Date(parseInt(u32le) * 1000);
             panel.find(`.float .val`).text(data.length >= 4 ? new Float32Array(data.buffer.slice(0, 4))[0] : '');
             panel.find(`.double .val`).text(data.length >= 8 ? new Float64Array(data.buffer.slice(0, 8))[0] : '');
             panel.find(`.unixts .val`).text(unixtsDate.format('Y-m-d H:i:s'));
