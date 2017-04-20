@@ -1,5 +1,4 @@
 /// <reference path="../lib/ts-types/goldenlayout.d.ts" />
-// /// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
 define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "localforage", "./FileDrop", "./utils/PerformanceHelper"], function (require, exports, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, localforage, FileDrop_1, PerformanceHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -115,7 +114,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     exports.compile = compile;
     function isKsyFile(fn) { return fn.toLowerCase().endsWith('.ksy'); }
-    var ksyFsItemName = app_layout_1.isPracticeMode ? `ksyFsItem_practice_${app_layout_1.practiceChallName}` : 'ksyFsItem';
+    var ksyFsItemName = 'ksyFsItem';
     function recompile() {
         return localforage.getItem(ksyFsItemName).then(ksyFsItem => {
             var srcYaml = app_layout_1.ui.ksyEditor.getValue();
@@ -145,7 +144,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             return app_worker_1.workerCall({ type: 'eval', args: [`wi.ksyTypes = args.ksyTypes;\n${debugCode}\nwi.MainClass = ${jsClassName};void(0)`, { ksyTypes: exports.ksyTypes }] });
         })).then(() => {
             //console.log('recompiled');
-            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerCall({ type: "reparse", args: [app_layout_1.isPracticeMode || $("#disableLazyParsing").is(':checked')] })).then((exportedRoot) => {
+            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerCall({ type: "reparse", args: [$("#disableLazyParsing").is(':checked')] })).then((exportedRoot) => {
                 //console.log('reparse exportedRoot', exportedRoot);
                 kaitaiIde.root = exportedRoot;
                 app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, exports.ksyTypes);
@@ -163,8 +162,6 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                         selectedInTree = false;
                     }
                 });
-                //if (isPracticeMode)
-                //    practiceExportedChanged(exportedRoot);
             }, error => app_errors_1.handleError(error));
         });
     }
@@ -186,8 +183,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             else {
                 inputFsItem = fsItem;
                 inputContent = content;
-                if (!app_layout_1.isPracticeMode)
-                    localforage.setItem('inputFsItem', fsItem);
+                localforage.setItem('inputFsItem', fsItem);
                 exports.dataProvider = {
                     length: content.byteLength,
                     get(offset, length) { return new Uint8Array(content, offset, length); },
@@ -238,21 +234,12 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
             exec: function (editor) { reparse(); }
         });
-        if (!app_layout_1.isPracticeMode)
-            FileDrop_1.initFileDrop('fileDrop', addNewFiles);
+        FileDrop_1.initFileDrop('fileDrop', addNewFiles);
         function loadCachedFsItem(cacheKey, defFsType, defSample) {
             return localforage.getItem(cacheKey).then((fsItem) => loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: 'file' }, false));
         }
-        if (app_layout_1.isPracticeMode) {
-            exports.inputReady = loadFsItem({ fsType: 'kaitai', fn: app_layout_1.practiceChall.inputFn, type: 'file' });
-            var startKsyFn = `practice_${app_layout_1.practiceChallName}.ksy`;
-            app_files_1.staticFs.put(startKsyFn, app_layout_1.practiceChall.starterKsy.trim());
-            exports.formatReady = loadCachedFsItem(ksyFsItemName, 'static', startKsyFn);
-        }
-        else {
-            exports.inputReady = loadCachedFsItem('inputFsItem', 'kaitai', 'samples/sample1.zip');
-            exports.formatReady = loadCachedFsItem(ksyFsItemName, 'kaitai', 'formats/archive/zip.ksy');
-        }
+        exports.inputReady = loadCachedFsItem('inputFsItem', 'kaitai', 'samples/sample1.zip');
+        exports.formatReady = loadCachedFsItem(ksyFsItemName, 'kaitai', 'formats/archive/zip.ksy');
         exports.inputReady.then(() => {
             var storedSelection = JSON.parse(localStorage.getItem('selection'));
             if (storedSelection)
