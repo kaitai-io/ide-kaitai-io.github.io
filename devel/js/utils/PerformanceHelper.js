@@ -26,7 +26,7 @@ define(["require", "exports"], function (require, exports) {
         actionDone(action, failed) {
             if (!this.logPerformance)
                 return;
-            console.info(`[performance/${(new Date()).format('s.u')}] ${action.name} took ${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
+            console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took ${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
         }
     }
     (function (PerformanceHelper) {

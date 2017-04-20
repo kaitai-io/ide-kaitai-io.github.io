@@ -4,7 +4,7 @@ define(["require", "exports", "./Common", "./FsUri"], function (require, exports
     class StaticFileSystem {
         constructor(files = {}) {
             this.files = files;
-            this.scheme = 'static';
+            this.scheme = "static";
         }
         getUri(uri) { return new FsUri_1.FsUri(uri, 0, this.scheme); }
         read(uri) { return Promise.resolve(this.files[this.getUri(uri).path]); }

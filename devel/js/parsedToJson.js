@@ -1,8 +1,9 @@
+"use strict";
 function parsedToJson(parsed) {
     var intervals = [];
     var padLen = 2;
     var commentOffset = 60;
-    function commentPad(str) { return str.length < commentOffset ? str + ' '.repeat(commentOffset - str.length) : str; }
+    function commentPad(str) { return str.length < commentOffset ? str + " ".repeat(commentOffset - str.length) : str; }
     var lineInfo = { currLine: 0, lineStart: 0, lines: {} };
     var json = "";
     function nl() {
@@ -13,7 +14,7 @@ function parsedToJson(parsed) {
     function comment(str) {
         var padLen = commentOffset - (json.length - lineInfo.lineStart);
         if (padLen > 0)
-            json += ' '.repeat(padLen);
+            json += " ".repeat(padLen);
         json += ` // ${str}`;
     }
     function getLenComment(debug, addInterval = false) {
@@ -61,7 +62,7 @@ function parsedToJson(parsed) {
                     var isObject = toJson(obj[key], childDebug, pad + 1);
                     json += (i == keys.length - 1 ? "" : ",");
                     if (!isObject)
-                        comment(' ' + getLenComment(childDebug, true));
+                        comment(" " + getLenComment(childDebug, true));
                 }
                 nl();
                 json += objPad + (isArray ? `]` : `}`);
@@ -79,7 +80,7 @@ function parsedToJson(parsed) {
 }
 // REMOVED CODE
 //var lineInfo = null;
-//ui.parsedDataViewer.getSession().selection.on('changeCursor', (e1, e2) => {
+//ui.parsedDataViewer.getSession().selection.on("changeCursor", (e1, e2) => {
 //    var lineIdx = e2.selectionLead.row;
 //    var debug = lineInfo ? lineInfo.lines[lineIdx] : null;
 //    if (debug && debug.start <= debug.end)

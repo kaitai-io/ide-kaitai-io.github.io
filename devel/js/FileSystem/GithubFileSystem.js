@@ -19,8 +19,8 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         }
         list() {
             return this.repo.getContents(this.uri.path).then(items => {
-                return items.filter(item => item.type === 'file' || item.type === 'dir')
-                    .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === 'dir' ? '/' : ''), item));
+                return items.filter(item => item.type === "file" || item.type === "dir")
+                    .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === "dir" ? "/" : ""), item));
             });
         }
     }
@@ -28,7 +28,7 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     class GithubFileSystem {
         constructor(client) {
             this.client = client;
-            this.scheme = 'github';
+            this.scheme = "github";
         }
         getFsItem(uri) {
             return new GithubFsItem(this, uri);

@@ -1,3 +1,4 @@
+"use strict";
 class ObjectType {
 }
 ObjectType.Primitive = "Primitive";

@@ -14,28 +14,28 @@ define(["require", "exports"], function (require, exports) {
             request.msgId = ++lastMsgId;
             msgHandlers[request.msgId] = response => {
                 if (response.error) {
-                    console.log('error', response.error);
+                    console.log("error", response.error);
                     reject(response.error);
                 }
                 else
                     resolve(response.result);
-                //console.info(`[performance] [${(new Date()).format('H:i:s.u')}] Got worker response: ${Date.now()}.`);
+                //console.info(`[performance] [${(new Date()).format("H:i:s.u")}] Got worker response: ${Date.now()}.`);
             };
             worker.postMessage(request);
         });
     }
     exports.workerMethods = {
         initCode: (sourceCode, mainClassName, ksyTypes) => {
-            return workerCall({ type: 'initCode', args: [sourceCode, mainClassName, ksyTypes] });
+            return workerCall({ type: "initCode", args: [sourceCode, mainClassName, ksyTypes] });
         },
         setInput: (inputBuffer) => {
-            return workerCall({ type: 'setInput', args: [inputBuffer] });
+            return workerCall({ type: "setInput", args: [inputBuffer] });
         },
         reparse: (eagerMode) => {
-            return workerCall({ type: 'reparse', args: [eagerMode] });
+            return workerCall({ type: "reparse", args: [eagerMode] });
         },
         get: (path) => {
-            return workerCall({ type: 'get', args: [path] });
+            return workerCall({ type: "get", args: [path] });
         }
     };
 });

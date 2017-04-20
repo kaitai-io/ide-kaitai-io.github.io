@@ -4,16 +4,16 @@ define(["require", "exports", "./app.layout", "./utils", "./app"], function (req
     var lastErrWndSize = 100; // 34
     function showError(...args) {
         console.error.apply(window, args);
-        var errMsg = args.filter(x => x.toString() !== {}.toString()).join(' ');
-        var container = app_layout_1.getLayoutNodeById('mainArea');
+        var errMsg = args.filter(x => x.toString() !== {}.toString()).join(" ");
+        var container = app_layout_1.getLayoutNodeById("mainArea");
         if (!app_layout_1.ui.errorWindow) {
-            container.addChild({ type: 'component', componentName: 'errorWindow', title: 'Errors' });
+            container.addChild({ type: "component", componentName: "errorWindow", title: "Errors" });
             app_layout_1.ui.errorWindow.setSize(0, lastErrWndSize);
         }
-        app_layout_1.ui.errorWindow.on('resize', () => lastErrWndSize = app_layout_1.ui.errorWindow.getElement().outerHeight());
-        app_layout_1.ui.errorWindow.on('destroy', () => { app_1.ga('errorwnd', 'destroy'); });
-        app_layout_1.ui.errorWindow.on('close', () => { app_1.ga('errorwnd', 'close'); app_layout_1.ui.errorWindow = null; });
-        app_layout_1.ui.errorWindow.getElement().children().html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, '<br>'));
+        app_layout_1.ui.errorWindow.on("resize", () => lastErrWndSize = app_layout_1.ui.errorWindow.getElement().outerHeight());
+        app_layout_1.ui.errorWindow.on("destroy", () => { app_1.ga("errorwnd", "destroy"); });
+        app_layout_1.ui.errorWindow.on("close", () => { app_1.ga("errorwnd", "close"); app_layout_1.ui.errorWindow = null; });
+        app_layout_1.ui.errorWindow.getElement().children().html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, "<br>"));
     }
     exports.showError = showError;
     function hideErrors() {
@@ -27,7 +27,7 @@ define(["require", "exports", "./app.layout", "./utils", "./app"], function (req
     }
     function handleError(error) {
         if (error)
-            showError('Parse error' + (error.name ? ` (${error.name})` : '') + `: ${error.message}\nCall stack: ${error.stack}`, error);
+            showError("Parse error" + (error.name ? ` (${error.name})` : "") + `: ${error.message}\nCall stack: ${error.stack}`, error);
         else
             hideErrors();
     }

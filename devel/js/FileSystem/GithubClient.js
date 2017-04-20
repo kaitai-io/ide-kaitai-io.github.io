@@ -6,7 +6,7 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             this.client = client;
             this.name = name;
             this.owner = owner;
-            var nameParts = name.split('/');
+            var nameParts = name.split("/");
             if (nameParts.length === 2) {
                 this.owner = nameParts[0];
                 this.name = nameParts[1];
@@ -17,7 +17,7 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             repo.entity = entity;
             return repo;
         }
-        getContents(path = '/') {
+        getContents(path = "/") {
             return this.client.req(`/repos/${this.owner}/${this.name}/contents${path}`);
         }
         downloadFile(path) {
@@ -34,7 +34,7 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             return new Promise((resolve, reject) => $.getJSON(`https://api.github.com${path}?access_token=${this.accessToken}`).then(json => resolve(json), reject));
         }
         listRepos() {
-            return this.req('/user/repos').then(repos => repos.map(entity => Repository.fromEntity(this, entity)));
+            return this.req("/user/repos").then(repos => repos.map(entity => Repository.fromEntity(this, entity)));
         }
         getRepo(name, owner) {
             return new Repository(this, name, owner || this.owner);

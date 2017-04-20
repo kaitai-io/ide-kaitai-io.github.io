@@ -8,7 +8,7 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var queryParams = {};
-    location.search.substr(1).split('&').map(x => x.split('=')).forEach(x => queryParams[x[0]] = x[1]);
+    location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => queryParams[x[0]] = x[1]);
     var fss = new FsSelector_1.FsSelector();
     fss.addFs(new LocalFileSystem_1.LocalFileSystem());
     var remoteFs = new RemoteFileSystem_1.RemoteFileSystem();
@@ -139,7 +139,7 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             this.uri = uri;
             this.children = null;
             this.text = uri.name;
-            this.isFolder = uri.type === 'directory';
+            this.isFolder = uri.type === "directory";
         }
         loadChildren() {
             return this.fs.list(this.uri.uri).then(children => {
@@ -147,14 +147,14 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             });
         }
     }
-    var fsData = new FsTreeNode(fss, new FsUri_1.FsUri('static:///'));
-    //var fsData = new FsTreeNode(fss, new FsUri('github://koczkatamas/kaitai_struct_formats/'));
+    var fsData = new FsTreeNode(fss, new FsUri_1.FsUri("static:///"));
+    //var fsData = new FsTreeNode(fss, new FsUri("github://koczkatamas/kaitai_struct_formats/"));
     var demo = new Vue({
-        el: '#tree',
+        el: "#tree",
         data: { treeData: fsData }
     });
-    window['demo'] = demo;
-    var treeView = demo.$refs['treeView'];
+    window["demo"] = demo;
+    var treeView = demo.$refs["treeView"];
     setTimeout(() => {
         treeView.children[1].toggle();
         treeView.children[6].toggle();

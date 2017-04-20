@@ -3,8 +3,8 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     function downloadFile(url) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'arraybuffer';
+        xhr.open("GET", url, true);
+        xhr.responseType = "arraybuffer";
         return new Promise((resolve, reject) => {
             xhr.onload = e => resolve(xhr.response);
             xhr.onerror = reject;
@@ -41,7 +41,7 @@ define(["require", "exports"], function (require, exports) {
     exports.Delayed = Delayed;
     function asciiEncode(bytes) {
         var len = bytes.byteLength;
-        var binary = '';
+        var binary = "";
         for (var i = 0; i < len; i++)
             binary += String.fromCharCode(bytes[i]);
         return binary;
@@ -49,7 +49,7 @@ define(["require", "exports"], function (require, exports) {
     exports.asciiEncode = asciiEncode;
     function hexEncode(bytes) {
         var len = bytes.byteLength;
-        var binary = '0x';
+        var binary = "0x";
         for (var i = 0; i < len; i++)
             binary += bytes[i].toString(16);
         return binary;
@@ -66,7 +66,7 @@ define(["require", "exports"], function (require, exports) {
             var reader = new FileReader();
             reader.onload = function () { resolve(reader.result); };
             reader.onerror = function (e) { reject(e); };
-            reader['readAs' + mode[0].toUpperCase() + mode.substr(1)](blob, ...args);
+            reader["readAs" + mode[0].toUpperCase() + mode.substr(1)](blob, ...args);
         });
     }
     exports.readBlob = readBlob;
@@ -86,7 +86,7 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.processFiles = processFiles;
     function openFilesWithDialog(callback) {
-        $('<input type="file" multiple />').on('change', e => {
+        $(`<input type="file" multiple />`).on("change", e => {
             var files = processFiles(e.target.files);
             callback(files);
         }).click();

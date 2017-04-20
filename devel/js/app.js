@@ -1,20 +1,21 @@
-/// <reference path="../lib/ts-types/goldenlayout.d.ts" />
 define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "localforage", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils"], function (require, exports, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, localforage, FileDrop_1, PerformanceHelper_1, utils_1, utils_2) {
+    /// <reference path="../lib/ts-types/goldenlayout.d.ts" />
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.baseUrl = location.href.split('?')[0].split('/').slice(0, -1).join('/') + '/';
+    exports.baseUrl = location.href.split("?")[0].split("/").slice(0, -1).join("/") + "/";
     $.jstree.defaults.core.force_text = true;
     function ga(category, action, label, value) {
-        console.log(`[GA Event] cat:${category} act:${action} lab:${label || ''}`);
-        typeof window["_ga"] !== "undefined" && window["_ga"]('send', 'event', category, action, label, value);
+        console.log(`[GA Event] cat:${category} act:${action} lab:${label || ""}`);
+        if (typeof window["_ga"] !== "undefined")
+            window["_ga"]("send", "event", category, action, label, value);
     }
     exports.ga = ga;
     class IntervalViewer {
         constructor(htmlIdPrefix) {
             this.htmlIdPrefix = htmlIdPrefix;
             ["Curr", "Total", "Prev", "Next"].forEach(control => this[`html${control}`] = $(`#${htmlIdPrefix}${control}`));
-            this.htmlNext.on('click', () => this.move(+1));
-            this.htmlPrev.on('click', () => this.move(-1));
+            this.htmlNext.on("click", () => this.move(+1));
+            this.htmlPrev.on("click", () => this.move(-1));
         }
         move(direction) {
             if (this.intervals.length === 0)
@@ -52,7 +53,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             kaitaiIde.ksySchema = ksySchema = YAML.parse(srcYaml);
             function collectKsyTypes(schema) {
                 var types = {};
-                function ksyNameToJsName(ksyName, isProp) { return ksyName.split('_').map((x, i) => i === 0 && isProp ? x : x.ucFirst()).join(''); }
+                function ksyNameToJsName(ksyName, isProp) { return ksyName.split("_").map((x, i) => i === 0 && isProp ? x : x.ucFirst()).join(""); }
                 function collectTypes(parent) {
                     if (parent.types) {
                         parent.typesByJsName = {};
@@ -89,51 +90,52 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             filterOutExtensions(compilerSchema);
         }
         catch (parseErr) {
-            ga('compile', 'error', `yaml: ${parseErr}`);
+            ga("compile", "error", `yaml: ${parseErr}`);
             app_errors_1.showError("YAML parsing error: ", parseErr);
             return;
         }
         perfYamlParse.done();
-        //console.log('ksySchema', ksySchema);
-        if (kslang === 'json')
+        //console.log("ksySchema", ksySchema);
+        if (kslang === "json")
             return Promise.resolve();
         else {
             var perfCompile = PerformanceHelper_1.performanceHelper.measureAction("Compilation");
             var ks = new io.kaitai.struct.MainJs();
-            var rReleasePromise = (debug === false || debug === 'both') ? ks.compile(kslang, compilerSchema, jsImporter, false) : Promise.resolve(null);
-            var rDebugPromise = (debug === true || debug === 'both') ? ks.compile(kslang, compilerSchema, jsImporter, true) : Promise.resolve(null);
-            //console.log('rReleasePromise', rReleasePromise, 'rDebugPromise', rDebugPromise);
+            var rReleasePromise = (debug === false || debug === "both") ? ks.compile(kslang, compilerSchema, jsImporter, false) : Promise.resolve(null);
+            var rDebugPromise = (debug === true || debug === "both") ? ks.compile(kslang, compilerSchema, jsImporter, true) : Promise.resolve(null);
+            //console.log("rReleasePromise", rReleasePromise, "rDebugPromise", rDebugPromise);
             return perfCompile.done(Promise.all([rReleasePromise, rDebugPromise]))
                 .then(([rRelease, rDebug]) => {
-                ga('compile', 'success');
-                //console.log('rRelease', rRelease, 'rDebug', rDebug);
+                ga("compile", "success");
+                //console.log("rRelease", rRelease, "rDebug", rDebug);
                 return rRelease && rDebug ? { debug: rDebug, release: rRelease } : rRelease ? rRelease : rDebug;
             })
                 .catch(compileErr => {
-                ga('compile', 'error', `kaitai: ${compileErr}`);
+                ga("compile", "error", `kaitai: ${compileErr}`);
                 app_errors_1.showError("KS compilation error: ", compileErr);
                 return;
             });
         }
     }
     exports.compile = compile;
-    function isKsyFile(fn) { return fn.toLowerCase().endsWith('.ksy'); }
-    var ksyFsItemName = 'ksyFsItem';
+    function isKsyFile(fn) { return fn.toLowerCase().endsWith(".ksy"); }
+    var ksyFsItemName = "ksyFsItem";
     function recompile() {
         return localforage.getItem(ksyFsItemName).then(ksyFsItem => {
             var srcYaml = app_layout_1.ui.ksyEditor.getValue();
             var changed = lastKsyContent !== srcYaml;
             var copyPromise = Promise.resolve();
-            if (changed && (ksyFsItem.fsType === 'kaitai' || ksyFsItem.fsType === 'static'))
-                copyPromise = app_files_1.addKsyFile('localStorage', ksyFsItem.fn.replace('.ksy', '_modified.ksy'), srcYaml).then(fsItem => localforage.setItem(ksyFsItemName, fsItem));
+            if (changed && (ksyFsItem.fsType === "kaitai" || ksyFsItem.fsType === "static"))
+                copyPromise = app_files_1.addKsyFile("localStorage", ksyFsItem.fn.replace(".ksy", "_modified.ksy"), srcYaml)
+                    .then(fsItem => localforage.setItem(ksyFsItemName, fsItem));
             return copyPromise.then(() => changed ? app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml) : Promise.resolve()).then(() => {
-                return compile(srcYaml, 'javascript', 'both').then(compiled => {
+                return compile(srcYaml, "javascript", "both").then(compiled => {
                     if (!compiled)
                         return;
                     var fileNames = Object.keys(compiled.release);
-                    console.log('ksyFsItem', ksyFsItem);
-                    app_layout_1.ui.genCodeViewer.setValue(fileNames.map(x => compiled.release[x]).join(''), -1);
-                    app_layout_1.ui.genCodeDebugViewer.setValue(fileNames.map(x => compiled.debug[x]).join(''), -1);
+                    console.log("ksyFsItem", ksyFsItem);
+                    app_layout_1.ui.genCodeViewer.setValue(fileNames.map(x => compiled.release[x]).join(""), -1);
+                    app_layout_1.ui.genCodeDebugViewer.setValue(fileNames.map(x => compiled.debug[x]).join(""), -1);
                     return reparse();
                 });
             });
@@ -144,24 +146,25 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         app_errors_1.handleError(null);
         return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([exports.inputReady, exports.formatReady]).then(() => {
             var debugCode = app_layout_1.ui.genCodeDebugViewer.getValue();
-            var jsClassName = kaitaiIde.ksySchema.meta.id.split('_').map((x) => x.ucFirst()).join('');
+            var jsClassName = kaitaiIde.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
             return app_worker_1.workerMethods.initCode(debugCode, jsClassName, exports.ksyTypes);
         })).then(() => {
-            //console.log('recompiled');
-            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse($("#disableLazyParsing").is(':checked')).then(exportedRoot => {
-                //console.log('reparse exportedRoot', exportedRoot);
+            //console.log("recompiled");
+            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse($("#disableLazyParsing").is(":checked")).then(exportedRoot => {
+                //console.log("reparse exportedRoot", exportedRoot);
                 kaitaiIde.root = exportedRoot;
                 app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, exports.ksyTypes);
-                PerformanceHelper_1.performanceHelper.measureAction("Tree / interval handling", app_layout_1.ui.parsedDataTreeHandler.initNodeReopenHandling()).then(() => app_layout_1.ui.hexViewer.onSelectionChanged(), e => app_errors_1.handleError(e));
-                app_layout_1.ui.parsedDataTreeHandler.jstree.on('select_node.jstree', function (e, selectNodeArgs) {
+                PerformanceHelper_1.performanceHelper.measureAction("Tree / interval handling", app_layout_1.ui.parsedDataTreeHandler.initNodeReopenHandling())
+                    .then(() => app_layout_1.ui.hexViewer.onSelectionChanged(), e => app_errors_1.handleError(e));
+                app_layout_1.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", function (e, selectNodeArgs) {
                     var node = selectNodeArgs.node;
-                    //console.log('node', node);
+                    //console.log("node", node);
                     var exp = app_layout_1.ui.parsedDataTreeHandler.getNodeData(node).exported;
                     if (exp && exp.path)
-                        $("#parsedPath").text(exp.path.join('/'));
+                        $("#parsedPath").text(exp.path.join("/"));
                     if (!blockRecursive && exp && exp.start < exp.end) {
                         selectedInTree = true;
-                        //console.log('setSelection', exp.ioOffset, exp.start);
+                        //console.log("setSelection", exp.ioOffset, exp.start);
                         app_layout_1.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
                         selectedInTree = false;
                     }
@@ -171,7 +174,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     var lastKsyContent, inputContent, inputFsItem, lastKsyFsItem;
     function loadFsItem(fsItem, refreshGui = true) {
-        if (!fsItem || fsItem.type !== 'file')
+        if (!fsItem || fsItem.type !== "file")
             return Promise.resolve();
         return app_files_1.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
             if (isKsyFile(fsItem.fn)) {
@@ -186,7 +189,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             else {
                 inputFsItem = fsItem;
                 inputContent = content;
-                localforage.setItem('inputFsItem', fsItem);
+                localforage.setItem("inputFsItem", fsItem);
                 exports.dataProvider = {
                     length: content.byteLength,
                     get(offset, length) { return new Uint8Array(content, offset, length); },
@@ -199,32 +202,33 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     exports.loadFsItem = loadFsItem;
     function addNewFiles(files) {
-        return Promise.all(files.map(file => (isKsyFile(file.file.name) ? file.read('text') : file.read('arrayBuffer')).then(content => app_files_1.localFs.put(file.file.name, content))))
+        return Promise.all(files.map(file => (isKsyFile(file.file.name) ? file.read("text") : file.read("arrayBuffer"))
+            .then(content => app_files_1.localFs.put(file.file.name, content))))
             .then(fsItems => {
             app_files_1.refreshFsNodes();
             return fsItems.length === 1 ? loadFsItem(fsItems[0]) : Promise.resolve(null);
         });
     }
     exports.addNewFiles = addNewFiles;
-    localStorage.setItem('lastVersion', kaitaiIde.version);
+    localStorage.setItem("lastVersion", kaitaiIde.version);
     $(() => {
-        $('#webIdeVersion').text(kaitaiIde.version);
-        $('#compilerVersion').text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
-        $('#welcomeDoNotShowAgain').click(() => localStorage.setItem('doNotShowWelcome', 'true'));
-        if (localStorage.getItem('doNotShowWelcome') !== 'true')
-            $('#welcomeModal').modal();
-        $('#aboutWebIde').on('click', () => $('#welcomeModal').modal());
+        $("#webIdeVersion").text(kaitaiIde.version);
+        $("#compilerVersion").text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
+        $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
+        if (localStorage.getItem("doNotShowWelcome") !== "true")
+            $("#welcomeModal").modal();
+        $("#aboutWebIde").on("click", () => $("#welcomeModal").modal());
         app_layout_1.ui.hexViewer.onSelectionChanged = () => {
-            //console.log('setSelection', ui.hexViewer.selectionStart, ui.hexViewer.selectionEnd);
-            localStorage.setItem('selection', JSON.stringify({ start: app_layout_1.ui.hexViewer.selectionStart, end: app_layout_1.ui.hexViewer.selectionEnd }));
-            var start = app_layout_1.ui.hexViewer.selectionStart, end = app_layout_1.ui.hexViewer.selectionEnd;
+            //console.log("setSelection", ui.hexViewer.selectionStart, ui.hexViewer.selectionEnd);
+            localStorage.setItem("selection", JSON.stringify({ start: app_layout_1.ui.hexViewer.selectionStart, end: app_layout_1.ui.hexViewer.selectionEnd }));
+            var start = app_layout_1.ui.hexViewer.selectionStart;
             var hasSelection = start !== -1;
-            $('#infoPanel .selectionText').text(hasSelection ? `selection:` : 'no selection');
+            $("#infoPanel .selectionText").text(hasSelection ? `selection:` : "no selection");
             app_selectionInput_1.refreshSelectionInput();
             if (app_layout_1.ui.parsedDataTreeHandler && hasSelection && !selectedInTree) {
                 var intervals = app_layout_1.ui.parsedDataTreeHandler.intervalHandler.searchRange(app_layout_1.ui.hexViewer.mouseDownOffset || start);
                 if (intervals.items.length > 0) {
-                    //console.log('selected node', intervals[0].id);
+                    //console.log("selected node", intervals[0].id);
                     blockRecursive = true;
                     app_layout_1.ui.parsedDataTreeHandler.activatePath(intervals.items[0].exp.path).then(() => blockRecursive = false);
                 }
@@ -237,43 +241,43 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
             exec: function (editor) { reparse(); }
         });
-        FileDrop_1.initFileDrop('fileDrop', addNewFiles);
+        FileDrop_1.initFileDrop("fileDrop", addNewFiles);
         function loadCachedFsItem(cacheKey, defFsType, defSample) {
-            return localforage.getItem(cacheKey).then((fsItem) => loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: 'file' }, false));
+            return localforage.getItem(cacheKey).then((fsItem) => loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: "file" }, false));
         }
-        exports.inputReady = loadCachedFsItem('inputFsItem', 'kaitai', 'samples/sample1.zip');
-        exports.formatReady = loadCachedFsItem(ksyFsItemName, 'kaitai', 'formats/archive/zip.ksy');
+        exports.inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
+        exports.formatReady = loadCachedFsItem(ksyFsItemName, "kaitai", "formats/archive/zip.ksy");
         exports.inputReady.then(() => {
-            var storedSelection = JSON.parse(localStorage.getItem('selection'));
+            var storedSelection = JSON.parse(localStorage.getItem("selection"));
             if (storedSelection)
                 app_layout_1.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);
         });
         var editDelay = new utils_2.Delayed(500);
-        app_layout_1.ui.ksyEditor.on('change', () => editDelay.do(() => recompile()));
-        var inputContextMenu = $('#inputContextMenu');
-        var downloadInput = $('#inputContextMenu .downloadItem');
-        $("#hexViewer").on('contextmenu', e => {
-            downloadInput.toggleClass('disabled', app_layout_1.ui.hexViewer.selectionStart === -1);
+        app_layout_1.ui.ksyEditor.on("change", () => editDelay.do(() => recompile()));
+        var inputContextMenu = $("#inputContextMenu");
+        var downloadInput = $("#inputContextMenu .downloadItem");
+        $("#hexViewer").on("contextmenu", e => {
+            downloadInput.toggleClass("disabled", app_layout_1.ui.hexViewer.selectionStart === -1);
             inputContextMenu.css({ display: "block", left: e.pageX, top: e.pageY });
             return false;
         });
         function ctxAction(obj, callback) {
-            obj.find('a').on('click', e => {
-                if (!obj.hasClass('disabled')) {
+            obj.find("a").on("click", e => {
+                if (!obj.hasClass("disabled")) {
                     inputContextMenu.hide();
                     callback(e);
                 }
             });
         }
-        $(document).on('mouseup', e => {
-            if ($(e.target).parents('.dropdown-menu').length === 0)
-                $('.dropdown').hide();
+        $(document).on("mouseup", e => {
+            if ($(e.target).parents(".dropdown-menu").length === 0)
+                $(".dropdown").hide();
         });
         ctxAction(downloadInput, e => {
             var start = app_layout_1.ui.hexViewer.selectionStart, end = app_layout_1.ui.hexViewer.selectionEnd;
-            //var fnParts = /^(.*?)(\.[^.]+)?$/.exec(inputFsItem.fn.split('/').last());
+            //var fnParts = /^(.*?)(\.[^.]+)?$/.exec(inputFsItem.fn.split("/").last());
             //var newFn = `${fnParts[1]}_0x${start.toString(16)}-0x${end.toString(16)}${fnParts[2] || ""}`;
-            var newFn = `${inputFsItem.fn.split('/').last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;
+            var newFn = `${inputFsItem.fn.split("/").last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;
             utils_1.saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.ui = app_layout_1.ui;
@@ -302,10 +306,9 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 }
                 else if (value.type === ObjectType.TypedArray) {
                     if (value.bytes.length <= 64)
-                        result += "[" + Array.from(value.bytes).join(', ') + "]";
-                    else {
+                        result += "[" + Array.from(value.bytes).join(", ") + "]";
+                    else
                         result += `{ "$start": ${value.ioOffset + value.start}, "$end": ${value.ioOffset + value.end - 1} }`;
-                    }
                 }
                 else if (value.type === ObjectType.Primitive) {
                     if (value.enumStringValue)
@@ -316,33 +319,18 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                         result += `${JSON.stringify(value.primitiveValue)}`;
                 }
             }
-            function getParsedIntervals(root) {
-                var objects = utils_1.collectAllObjects(root).slice(1);
-                //console.log('objects', objects);
-                var allInts = objects.map(x => ({ start: x.ioOffset + x.start, end: x.ioOffset + x.end - 1 })).filter(x => !isNaN(x.start) && !isNaN(x.end)).sort((a, b) => a.start - b.start);
-                //console.log('allInts', allInts);
-                var intervals = [];
-                intervals.push(allInts[0]);
-                for (var i = 1; i < allInts.length; i++) {
-                    if (intervals.last().end < allInts[i].start)
-                        intervals.push(allInts[i]);
-                    else
-                        intervals.last().end = Math.max(intervals.last().end, allInts[i].end);
-                }
-                return intervals;
-            }
             app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
-                console.log('exported', exportedRoot);
+                console.log("exported", exportedRoot);
                 expToNative(exportedRoot);
-                app_layout_1.addEditorTab('json export', result, 'json');
+                app_layout_1.addEditorTab("json export", result, "json");
             }, error => app_errors_1.handleError(error));
         };
-        $("#exportToJson, #exportToJsonHex").on('click', e => kaitaiIde.exportToJson(e.target.id === "exportToJsonHex"));
-        $("#disableLazyParsing").on('click', reparse);
+        $("#exportToJson, #exportToJsonHex").on("click", e => kaitaiIde.exportToJson(e.target.id === "exportToJsonHex"));
+        $("#disableLazyParsing").on("click", reparse);
         app_layout_1.ui.unparsedIntSel = new IntervalViewer("unparsed");
         app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
-        utils_1.precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, 'DragProxy', () => ga('layout', 'window_drag'));
-        $('body').on('mousedown', '.lm_drag_handle', () => { ga('layout', 'splitter_drag'); });
+        utils_1.precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, "DragProxy", () => ga("layout", "window_drag"));
+        $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });
 });
 //# sourceMappingURL=app.js.map

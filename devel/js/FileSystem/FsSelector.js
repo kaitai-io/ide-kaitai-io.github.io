@@ -9,7 +9,7 @@ define(["require", "exports"], function (require, exports) {
             this.filesystems[fs.scheme] = fs;
         }
         getFs(uri) {
-            var scheme = uri.split('://')[0];
+            var scheme = uri.split("://")[0];
             var fs = this.filesystems[scheme];
             if (!fs)
                 throw `FileSystem not found for uri: ${uri}`;

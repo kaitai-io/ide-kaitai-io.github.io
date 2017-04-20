@@ -2,18 +2,18 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$internalHooks = [
-        'data',
-        'beforeCreate',
-        'created',
-        'beforeMount',
-        'mounted',
-        'beforeDestroy',
-        'destroyed',
-        'beforeUpdate',
-        'updated',
-        'activated',
-        'deactivated',
-        'render'
+        "data",
+        "beforeCreate",
+        "created",
+        "beforeMount",
+        "mounted",
+        "beforeDestroy",
+        "destroyed",
+        "beforeUpdate",
+        "updated",
+        "activated",
+        "deactivated",
+        "render"
     ];
     // Property, method and parameter decorators created by `createDecorator` helper
     // will enqueue functions that update component options for lazy processing.
@@ -24,7 +24,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
         // prototype props.
         const proto = Component.prototype;
         Object.getOwnPropertyNames(proto).forEach(function (key) {
-            if (key === 'constructor') {
+            if (key === "constructor") {
                 return;
             }
             // hooks
@@ -33,7 +33,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 return;
             }
             const descriptor = Object.getOwnPropertyDescriptor(proto, key);
-            if (typeof descriptor.value === 'function') {
+            if (typeof descriptor.value === "function") {
                 // methods
                 (options.methods || (options.methods = {}))[key] = descriptor.value;
             }
@@ -45,7 +45,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 };
             }
         });
-        // add data hook to collect class properties as Vue instance's data
+        // add data hook to collect class properties as Vue instance"s data
         (options.mixins || (options.mixins = [])).push({
             data() {
                 return collectDataFromConstructor(this, Component);
@@ -83,7 +83,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 }
             }
             keys.forEach(key => {
-                if (key.charAt(0) !== '_') {
+                if (key.charAt(0) !== "_") {
                     Object.defineProperty(this, key, {
                         get: () => vm[key],
                         set: value => vm[key] = value
@@ -104,7 +104,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     }
     exports.collectDataFromConstructor = collectDataFromConstructor;
     function Component(options) {
-        if (typeof options === 'function') {
+        if (typeof options === "function") {
             return componentFactory(options);
         }
         return function (Component) {
@@ -121,7 +121,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     exports.noop = () => { };
     function createDecorator(factory) {
         return (_, key, index) => {
-            if (typeof index !== 'number') {
+            if (typeof index !== "number") {
                 index = undefined;
             }
             exports.$decoratorQueue.push(options => factory(options, key, index));
@@ -129,8 +129,8 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     }
     exports.createDecorator = createDecorator;
     function warn(message) {
-        if (typeof console !== 'undefined') {
-            console.warn('[vue-class-component] ' + message);
+        if (typeof console !== "undefined") {
+            console.warn("[vue-class-component] " + message);
         }
     }
     exports.warn = warn;
