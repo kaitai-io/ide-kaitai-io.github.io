@@ -12,10 +12,6 @@
 
         _ga('create', 'UA-76299550-3', 'auto');
         _ga('send', 'pageview');
-        function ga(category, action, label, value) {
-            console.log(`[GA Event] cat:${category} act:${action} lab:${label || ''}`);
-            _ga('send', 'event', category, action, label, value);
-        }
     </script>
     <!-- End Google Analytics -->
     <script>
@@ -23,6 +19,11 @@
         var loc = location.toString();
         if (loc.indexOf("http://ide.kaitai.io/") === 0)
             location = "https" + loc.substring(4);
+        
+        function ga(category, action, label, value) {
+            console.log(`[GA Event] cat:${category} act:${action} lab:${label || ''}`);
+            typeof _ga !== "undefined" && _ga('send', 'event', category, action, label, value);
+        }            
     </script>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/contextmenu.css" />
