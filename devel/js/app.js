@@ -1,8 +1,6 @@
-define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "localforage", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils"], function (require, exports, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, localforage, FileDrop_1, PerformanceHelper_1, utils_1, utils_2) {
-    /// <reference path="../lib/ts-types/goldenlayout.d.ts" />
+define(["require", "exports", "localforage", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils"], function (require, exports, localforage, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.baseUrl = location.href.split("?")[0].split("/").slice(0, -1).join("/") + "/";
     $.jstree.defaults.core.force_text = true;
     function ga(category, action, label, value) {
         console.log(`[GA Event] cat:${category} act:${action} lab:${label || ""}`);
@@ -34,6 +32,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     exports.IntervalViewer = IntervalViewer;
     var ksySchema;
+    var ksyTypes;
     class JsImporter {
         importYaml(name, mode) {
             return new Promise(function (resolve, reject) {
@@ -75,7 +74,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 types[ksyNameToJsName(schema.meta.id, false)] = schema;
                 return types;
             }
-            kaitaiIde.ksyTypes = exports.ksyTypes = collectKsyTypes(ksySchema);
+            kaitaiIde.ksyTypes = ksyTypes = collectKsyTypes(ksySchema);
             compilerSchema = YAML.parse(srcYaml); // we have to modify before sending into the compiler so we need a copy
             function removeWebIdeKeys(obj) {
                 Object.keys(obj).filter(x => x.startsWith("-webide-")).forEach(keyName => delete obj[keyName]);
@@ -142,20 +141,22 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             });
         });
     }
-    exports.formatReady = null, exports.inputReady = null;
-    var selectedInTree = false, blockRecursive = false;
+    var formatReady = null;
+    var inputReady = null;
+    var selectedInTree = false;
+    var blockRecursive = false;
     function reparse() {
         app_errors_1.handleError(null);
-        return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([exports.inputReady, exports.formatReady]).then(() => {
+        return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([inputReady, formatReady]).then(() => {
             var debugCode = app_layout_1.ui.genCodeDebugViewer.getValue();
             var jsClassName = kaitaiIde.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
-            return app_worker_1.workerMethods.initCode(debugCode, jsClassName, exports.ksyTypes);
+            return app_worker_1.workerMethods.initCode(debugCode, jsClassName, ksyTypes);
         })).then(() => {
             //console.log("recompiled");
             PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse($("#disableLazyParsing").is(":checked")).then(exportedRoot => {
                 //console.log("reparse exportedRoot", exportedRoot);
                 kaitaiIde.root = exportedRoot;
-                app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, exports.ksyTypes);
+                app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, ksyTypes);
                 PerformanceHelper_1.performanceHelper.measureAction("Tree / interval handling", app_layout_1.ui.parsedDataTreeHandler.initNodeReopenHandling())
                     .then(() => app_layout_1.ui.hexViewer.onSelectionChanged(), e => app_errors_1.handleError(e));
                 app_layout_1.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", function (e, selectNodeArgs) {
@@ -207,7 +208,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     exports.loadFsItem = loadFsItem;
     function addNewFiles(files) {
         return Promise.all(files.map(file => (isKsyFile(file.file.name) ? file.read("text") : file.read("arrayBuffer"))
-            .then(content => app_files_1.localFs.put(file.file.name, content))))
+            .then(content => app_files_1.fss.local.put(file.file.name, content))))
             .then(fsItems => {
             app_files_1.refreshFsNodes();
             return fsItems.length === 1 ? loadFsItem(fsItems[0]) : Promise.resolve(null);
@@ -249,9 +250,9 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         function loadCachedFsItem(cacheKey, defFsType, defSample) {
             return localforage.getItem(cacheKey).then((fsItem) => loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: "file" }, false));
         }
-        exports.inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
-        exports.formatReady = loadCachedFsItem(ksyFsItemName, "kaitai", "formats/archive/zip.ksy");
-        exports.inputReady.then(() => {
+        inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
+        formatReady = loadCachedFsItem(ksyFsItemName, "kaitai", "formats/archive/zip.ksy");
+        inputReady.then(() => {
             var storedSelection = JSON.parse(localStorage.getItem("selection"));
             if (storedSelection)
                 app_layout_1.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);

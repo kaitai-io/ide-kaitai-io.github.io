@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"], function (require, exports, app_layout_1, app_1, localforage, utils_1) {
+define(["require", "exports", "localforage", "./app.layout", "./app", "./utils"], function (require, exports, localforage, app_layout_1, app_1, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /* tslint:enable */
@@ -69,10 +69,10 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
     var kaitaiRoot = { fsType: "kaitai" };
     kaitaiFsFiles.forEach(fn => fsHelper.selectNode(kaitaiRoot, fn));
     var kaitaiFs = new KaitaiFs(kaitaiRoot);
-    exports.staticFs = new StaticFs();
-    exports.localFs = new LocalStorageFs("fs");
+    var staticFs = new StaticFs();
+    var localFs = new LocalStorageFs("fs");
     /* tslint:disable */
-    exports.fss = { local: exports.localFs, kaitai: kaitaiFs, static: exports.staticFs };
+    exports.fss = { local: localFs, kaitai: kaitaiFs, static: staticFs };
     /* tslint:enable */
     function genChildNode(obj, fn) {
         var isFolder = obj.type === "folder";
@@ -88,7 +88,7 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
     }
     function refreshFsNodes() {
         var localStorageNode = app_layout_1.ui.fileTree.get_node("localStorage");
-        return exports.localFs.getRootNode().then(root => {
+        return localFs.getRootNode().then(root => {
             app_layout_1.ui.fileTree.delete_node(localStorageNode.children);
             if (root)
                 genChildNodes(root).forEach((node) => app_layout_1.ui.fileTree.create_node(localStorageNode, node));
@@ -170,7 +170,7 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
             return data;
         }
         function saveTree() {
-            exports.localFs.setRootNode(convertTreeNode(app_layout_1.ui.fileTree.get_json()[1]));
+            localFs.setRootNode(convertTreeNode(app_layout_1.ui.fileTree.get_json()[1]));
         }
         var contextMenuTarget = null;
         function getSelectedData() {
