@@ -170,7 +170,6 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             }, error => app_errors_1.handleError(error));
         });
     }
-    window.kt = { workerEval: app_worker_1.workerEval };
     var lastKsyContent, inputContent, inputFsItem, lastKsyFsItem;
     function loadFsItem(fsItem, refreshGui = true) {
         if (!fsItem || fsItem.type !== 'file')

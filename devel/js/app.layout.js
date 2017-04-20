@@ -60,7 +60,6 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
         bytesIntSel: null,
     };
     exports.ui = ui;
-    var uiAny = ui;
     function addComponent(name, generatorCallback) {
         var editor;
         myLayout.registerComponent(name, function (container, componentState) {
@@ -69,17 +68,17 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
             if (generatorCallback) {
                 container.on('resize', () => { if (editor && editor.resize)
                     editor.resize(); });
-                container.on('open', () => { uiAny[name] = editor = generatorCallback(container) || container; });
+                container.on('open', () => { ui[name] = editor = generatorCallback(container) || container; });
             }
             else
-                uiAny[name + 'Cont'] = container;
+                ui[name + 'Cont'] = container;
         });
     }
     function addExistingDiv(name) {
         myLayout.registerComponent(name, function (container, componentState) {
-            uiAny[name + 'Cont'] = container;
-            uiAny[name] = $(`#${name}`).appendTo(container.getElement());
-            $(() => uiAny[name].show());
+            ui[name + 'Cont'] = container;
+            ui[name] = $(`#${name}`).appendTo(container.getElement());
+            $(() => ui[name].show());
         });
     }
     function addEditor(name, lang, isReadOnly = false, callback = null) {
