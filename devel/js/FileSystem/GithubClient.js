@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../utils"], function (require, exports, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Repository {
@@ -21,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
             return this.client.req(`/repos/${this.owner}/${this.name}/contents${path}`);
         }
         downloadFile(path) {
-            return downloadFile(`https://raw.githubusercontent.com/koczkatamas/kaitai_struct_formats/master${path}`);
+            return utils_1.downloadFile(`https://raw.githubusercontent.com/koczkatamas/kaitai_struct_formats/master${path}`);
         }
     }
     exports.Repository = Repository;

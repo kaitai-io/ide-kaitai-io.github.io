@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./utils"], function (require, exports, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function initFileDrop(containerId, callback) {
@@ -26,7 +26,7 @@ define(["require", "exports"], function (require, exports) {
             event.stopPropagation();
             fileDropShadow.hide();
             var files = event.originalEvent.dataTransfer.files;
-            var resFiles = processFiles(files);
+            var resFiles = utils_1.processFiles(files);
             callback(resFiles);
         });
     }

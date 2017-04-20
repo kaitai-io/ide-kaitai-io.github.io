@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", "./utils/IntervalHelper"], function (require, exports, app_layout_1, app_worker_1, app_errors_1, IntervalHelper_1) {
+define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", "./utils/IntervalHelper", "./utils"], function (require, exports, app_layout_1, app_worker_1, app_errors_1, IntervalHelper_1, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
@@ -52,12 +52,12 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
             if (exported.type === ObjectType.Primitive) {
                 var value = exported.primitiveValue;
                 if (Number.isInteger(value)) {
-                    value = s `${value < 0 ? '-' : ''}0x${Math.abs(value).toString(16).toUpperCase()}` + (detailed ? s `<span class="intVal"> = ${value}</span>` : '');
+                    value = utils_1.s `${value < 0 ? '-' : ''}0x${Math.abs(value).toString(16).toUpperCase()}` + (detailed ? utils_1.s `<span class="intVal"> = ${value}</span>` : '');
                     if (exported.enumStringValue)
-                        value = `${htmlescape(exported.enumStringValue)}` + (detailed ? ` <span class="enumDesc">(${value})</span>` : '');
+                        value = `${utils_1.htmlescape(exported.enumStringValue)}` + (detailed ? ` <span class="enumDesc">(${value})</span>` : '');
                 }
                 else
-                    value = s `${value}`;
+                    value = utils_1.s `${value}`;
                 return `<span class="primitiveValue">${value}</span>`;
             }
             else if (exported.type === ObjectType.TypedArray) {
@@ -70,7 +70,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                     text += (i === 0 ? '' : ', ') + exported.bytes[i];
                 }
                 text += ']';
-                return s `${text}`;
+                return utils_1.s `${text}`;
             }
             else
                 throw new Error("primitiveToText: object is not primitive!");
@@ -80,7 +80,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
             if (!repr)
                 return "";
             function ksyNameToJsName(ksyName) { return ksyName.split('_').map((x, i) => (i === 0 ? x : x.ucFirst())).join(''); }
-            return htmlescape(repr).replace(/{(.*?)}/g, (g0, g1) => {
+            return utils_1.htmlescape(repr).replace(/{(.*?)}/g, (g0, g1) => {
                 var currItem = obj;
                 var parts = g1.split(':');
                 var format = { sep: ', ' };
@@ -101,13 +101,13 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 if (currItem.type === ObjectType.Object)
                     return this.reprObject(currItem);
                 else if (format.str && currItem.type === ObjectType.TypedArray)
-                    return s `"${asciiEncode(currItem.bytes)}"`;
+                    return utils_1.s `"${utils_1.asciiEncode(currItem.bytes)}"`;
                 else if (format.hex && currItem.type === ObjectType.TypedArray)
-                    return s `${hexEncode(currItem.bytes)}`;
+                    return utils_1.s `${utils_1.hexEncode(currItem.bytes)}`;
                 else if (format.dec && currItem.type === ObjectType.Primitive && Number.isInteger(currItem.primitiveValue))
-                    return s `${currItem.primitiveValue}`;
+                    return utils_1.s `${currItem.primitiveValue}`;
                 else if (currItem.type === ObjectType.Array) {
-                    var escapedSep = s `${format.sep}`;
+                    var escapedSep = utils_1.s `${format.sep}`;
                     return currItem.arrayItems.map(item => this.reprObject(item)).join(escapedSep);
                 }
                 else
@@ -132,13 +132,13 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
             var isArray = item.type === ObjectType.Array;
             var text;
             if (isArray)
-                text = s `${propName}`;
+                text = utils_1.s `${propName}`;
             else if (isObject) {
                 var repr = this.reprObject(item);
-                text = s `${propName} [<span class="className">${item.object.class}</span>]` + (repr ? `: ${repr}` : '');
+                text = utils_1.s `${propName} [<span class="className">${item.object.class}</span>]` + (repr ? `: ${repr}` : '');
             }
             else
-                text = (showProp ? s `<span class="propName">${propName}</span> = ` : '') + this.primitiveToText(item);
+                text = (showProp ? utils_1.s `<span class="propName">${propName}</span> = ` : '') + this.primitiveToText(item);
             return { text: text, children: isObject || isArray, data: this.addNodeData({ exported: item }) };
         }
         exportedToNodes(exported, nodeData, showProp) {
@@ -173,7 +173,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
             }
             else if (exported.type === ObjectType.Object) {
                 var obj = exported.object;
-                return Object.keys(obj.fields).map(fieldName => this.childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({ text: s `${propName}`, children: true, data: this.addNodeData({ instance: obj.instances[propName], parent: exported }) })));
+                return Object.keys(obj.fields).map(fieldName => this.childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({ text: utils_1.s `${propName}`, children: true, data: this.addNodeData({ instance: obj.instances[propName], parent: exported }) })));
             }
             else
                 throw new Error(`Unknown object type: ${exported.type}`);
@@ -201,7 +201,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                     var intId = 0;
                     var intervals = [];
                     var fillIntervals = (exp) => {
-                        var objects = collectAllObjects(exp);
+                        var objects = utils_1.collectAllObjects(exp);
                         var lastEnd = -1;
                         for (let exp of objects) {
                             if (!(exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray))

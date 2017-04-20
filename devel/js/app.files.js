@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app", "localforage"], function (require, exports, app_layout_1, app_1, localforage) {
+define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"], function (require, exports, app_layout_1, app_1, localforage, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var fsHelper = {
@@ -54,7 +54,7 @@ define(["require", "exports", "./app.layout", "./app", "localforage"], function 
             if (fn.toLowerCase().endsWith('.ksy'))
                 return Promise.resolve($.ajax({ url: fn }));
             else
-                return downloadFile(fn);
+                return utils_1.downloadFile(fn);
         }
         put(fn, data) { return Promise.reject('KaitaiFs.put is not implemented!'); }
     }
@@ -230,12 +230,12 @@ define(["require", "exports", "./app.layout", "./app", "localforage"], function 
         function downloadFiles() {
             app_layout_1.ui.fileTree.get_selected().forEach(nodeId => {
                 var fsItem = app_layout_1.ui.fileTree.get_node(nodeId).data;
-                exports.fss[fsItem.fsType].get(fsItem.fn).then(content => saveFile(content, fsItem.fn.split('/').last()));
+                exports.fss[fsItem.fsType].get(fsItem.fn).then(content => utils_1.saveFile(content, fsItem.fn.split('/').last()));
             });
         }
         ctxAction(uiFiles.downloadItem, () => downloadFiles());
         uiFiles.downloadFile.on('click', () => downloadFiles());
-        uiFiles.uploadFile.on('click', () => openFilesWithDialog(app_1.addNewFiles));
+        uiFiles.uploadFile.on('click', () => utils_1.openFilesWithDialog(app_1.addNewFiles));
         $('#newKsyModal').on('shown.bs.modal', () => { $('#newKsyModal input').focus(); });
         $('#newKsyModal form').submit(function (event) {
             event.preventDefault();

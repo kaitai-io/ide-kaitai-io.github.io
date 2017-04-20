@@ -1,5 +1,5 @@
 /// <reference path="../lib/ts-types/goldenlayout.d.ts" />
-define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "localforage", "./FileDrop", "./utils/PerformanceHelper"], function (require, exports, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, localforage, FileDrop_1, PerformanceHelper_1) {
+define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "localforage", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils"], function (require, exports, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, localforage, FileDrop_1, PerformanceHelper_1, utils_1, utils_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.baseUrl = location.href.split('?')[0].split('/').slice(0, -1).join('/') + '/';
@@ -245,7 +245,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             if (storedSelection)
                 app_layout_1.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);
         });
-        var editDelay = new Delayed(500);
+        var editDelay = new utils_2.Delayed(500);
         app_layout_1.ui.ksyEditor.on('change', () => editDelay.do(() => recompile()));
         var inputContextMenu = $('#inputContextMenu');
         var downloadInput = $('#inputContextMenu .downloadItem');
@@ -271,7 +271,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             //var fnParts = /^(.*?)(\.[^.]+)?$/.exec(inputFsItem.fn.split('/').last());
             //var newFn = `${fnParts[1]}_0x${start.toString(16)}-0x${end.toString(16)}${fnParts[2] || ""}`;
             var newFn = `${inputFsItem.fn.split('/').last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;
-            saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
+            utils_1.saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.ui = app_layout_1.ui;
         kaitaiIde.exportToJson = (useHex = false) => {
@@ -314,7 +314,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 }
             }
             function getParsedIntervals(root) {
-                var objects = collectAllObjects(root).slice(1);
+                var objects = utils_1.collectAllObjects(root).slice(1);
                 //console.log('objects', objects);
                 var allInts = objects.map(x => ({ start: x.ioOffset + x.start, end: x.ioOffset + x.end - 1 })).filter(x => !isNaN(x.start) && !isNaN(x.end)).sort((a, b) => a.start - b.start);
                 //console.log('allInts', allInts);
@@ -338,7 +338,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         $("#disableLazyParsing").on('click', reparse);
         app_layout_1.ui.unparsedIntSel = new IntervalViewer("unparsed");
         app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
-        precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, 'DragProxy', () => ga('layout', 'window_drag'));
+        utils_1.precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, 'DragProxy', () => ga('layout', 'window_drag'));
         $('body').on('mousedown', '.lm_drag_handle', () => { ga('layout', 'splitter_drag'); });
     });
 });
