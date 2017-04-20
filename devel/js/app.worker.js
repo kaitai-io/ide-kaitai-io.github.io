@@ -5,7 +5,8 @@ define(["require", "exports"], function (require, exports) {
     var msgHandlers = {};
     worker.onmessage = (ev) => {
         var msg = ev.data;
-        msgHandlers[msg.msgId] && msgHandlers[msg.msgId](msg);
+        if (msgHandlers[msg.msgId])
+            msgHandlers[msg.msgId](msg);
         delete msgHandlers[msg.msgId];
     };
     var lastMsgId = 0;

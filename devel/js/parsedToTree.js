@@ -52,7 +52,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
             if (exported.type === ObjectType.Primitive) {
                 var value = exported.primitiveValue;
                 if (Number.isInteger(value)) {
-                    value = utils_1.s `${value < 0 ? "-" : ""}0x${Math.abs(value).toString(16).toUpperCase()}` + (detailed ? utils_1.s `<span class="intVal"> = ${value}</span>` : "");
+                    value = utils_1.s `${value < 0 ? "-" : ""}0x${Math.abs(value).toString(16).toUpperCase()}`
+                        + (detailed ? utils_1.s `<span class="intVal"> = ${value}</span>` : "");
                     if (exported.enumStringValue)
                         value = `${utils_1.htmlescape(exported.enumStringValue)}` + (detailed ? ` <span class="enumDesc">(${value})</span>` : "");
                 }
@@ -165,7 +166,12 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
                             arrayStart: arrStart + i * childLevelItems,
                             arrayEnd: Math.min(arrStart + (i + 1) * childLevelItems, exported.arrayItems.length) - 1
                         };
-                        result.push({ text: `[${data.arrayStart} … ${data.arrayEnd}]`, children: true, data: this.addNodeData(data), id: this.getNodeId(data) });
+                        result.push({
+                            text: `[${data.arrayStart} … ${data.arrayEnd}]`,
+                            children: true,
+                            data: this.addNodeData(data),
+                            id: this.getNodeId(data)
+                        });
                     }
                     return result;
                 }
@@ -173,7 +179,14 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
             }
             else if (exported.type === ObjectType.Object) {
                 var obj = exported.object;
-                return Object.keys(obj.fields).map(fieldName => this.childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({ text: utils_1.s `${propName}`, children: true, data: this.addNodeData({ instance: obj.instances[propName], parent: exported }) })));
+                return Object.keys(obj.fields).map(fieldName => this.childItemToNode(obj.fields[fieldName], true)).concat(Object.keys(obj.instances).map(propName => ({
+                    text: utils_1.s `${propName}`,
+                    children: true,
+                    data: this.addNodeData({
+                        instance: obj.instances[propName],
+                        parent: exported
+                    })
+                })));
             }
             else
                 throw new Error(`Unknown object type: ${exported.type}`);
@@ -198,7 +211,6 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
             return valuePromise.then(exp => {
                 if (isRoot || isInstance) {
                     this.fillKsyTypes(exp);
-                    var intId = 0;
                     var intervals = [];
                     var fillIntervals = (exp) => {
                         var objects = utils_1.collectAllObjects(exp);
@@ -289,7 +301,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
                     else if (openCallCounter === 0) {
                         //console.log("saveOpenedNodesDisabled = false");
                         this.saveOpenedNodesDisabled = false;
-                        e && this.jstree.off(e);
+                        if (e)
+                            this.jstree.off(e);
                         this.jstree.settings.core.animation = origAnim;
                         this.saveOpenedNodes();
                         resolve(nodesToOpen.length === 0);

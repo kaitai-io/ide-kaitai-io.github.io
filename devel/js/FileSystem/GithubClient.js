@@ -31,7 +31,8 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             this.owner = owner;
         }
         req(path) {
-            return new Promise((resolve, reject) => $.getJSON(`https://api.github.com${path}?access_token=${this.accessToken}`).then(json => resolve(json), reject));
+            return new Promise((resolve, reject) => $.getJSON(`https://api.github.com${path}?access_token=${this.accessToken}`)
+                .then(json => resolve(json), reject));
         }
         listRepos() {
             return this.req("/user/repos").then(repos => repos.map(entity => Repository.fromEntity(this, entity)));

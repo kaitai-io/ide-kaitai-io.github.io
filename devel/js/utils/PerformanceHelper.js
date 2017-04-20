@@ -7,7 +7,7 @@ define(["require", "exports"], function (require, exports) {
         }
         measureAction(actionName, donePromiseOrAction) {
             var actionMeasurement = new PerformanceHelper.ActionMeasurement(this, actionName, performance.now());
-            if (typeof donePromiseOrAction == "function") {
+            if (typeof donePromiseOrAction === "function") {
                 try {
                     var result = donePromiseOrAction();
                     this.actionDone(actionMeasurement, false);
@@ -26,7 +26,8 @@ define(["require", "exports"], function (require, exports) {
         actionDone(action, failed) {
             if (!this.logPerformance)
                 return;
-            console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took ${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
+            console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took `
+                + `${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
         }
     }
     (function (PerformanceHelper) {

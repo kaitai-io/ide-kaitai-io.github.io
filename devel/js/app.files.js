@@ -1,6 +1,7 @@
 define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"], function (require, exports, app_layout_1, app_1, localforage, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    /* tslint:enable */
     var fsHelper = {
         selectNode(root, fn) {
             var currNode = root;
@@ -30,7 +31,8 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
         getRootNode() {
             if (this.root)
                 return Promise.resolve(this.root);
-            this.rootPromise = localforage.getItem(this.filesKey()).then(x => x || { fsType: "local", type: "folder", children: {} }).then(r => this.root = r);
+            this.rootPromise = localforage.getItem(this.filesKey())
+                .then(x => x || { fsType: "local", type: "folder", children: {} }).then(r => this.root = r);
             return this.rootPromise;
         }
         setRootNode(newRoot) {
@@ -69,7 +71,9 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
     var kaitaiFs = new KaitaiFs(kaitaiRoot);
     exports.staticFs = new StaticFs();
     exports.localFs = new LocalStorageFs("fs");
+    /* tslint:disable */
     exports.fss = { local: exports.localFs, kaitai: kaitaiFs, static: exports.staticFs };
+    /* tslint:enable */
     function genChildNode(obj, fn) {
         var isFolder = obj.type === "folder";
         return {
@@ -109,7 +113,8 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
                 check_callback: function (operation, node, node_parent, node_position, more) {
                     var result = true;
                     if (operation === "move_node")
-                        result = !!node.data && node.data.fsType === "local" && !!node_parent.data && node_parent.data.fsType === "local" && node_parent.data.type === "folder";
+                        result = !!node.data && node.data.fsType === "local" &&
+                            !!node_parent.data && node_parent.data.fsType === "local" && node_parent.data.type === "folder";
                     return result;
                 },
                 themes: { name: "default-dark", dots: false, icons: true, variant: "small" },
@@ -119,11 +124,28 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
                         icon: "glyphicon glyphicon-cloud",
                         state: { opened: true },
                         children: [
-                            { text: "formats", icon: "glyphicon glyphicon-book", children: genChildNodes(kaitaiRoot.children["formats"]), state: { opened: true } },
-                            { text: "samples", icon: "glyphicon glyphicon-cd", children: genChildNodes(kaitaiRoot.children["samples"]), state: { opened: true } },
+                            {
+                                text: "formats",
+                                icon: "glyphicon glyphicon-book",
+                                children: genChildNodes(kaitaiRoot.children["formats"]),
+                                state: { opened: true }
+                            },
+                            {
+                                text: "samples",
+                                icon: "glyphicon glyphicon-cd",
+                                children: genChildNodes(kaitaiRoot.children["samples"]),
+                                state: { opened: true }
+                            },
                         ]
                     },
-                    { text: "Local storage", id: "localStorage", icon: "glyphicon glyphicon-hdd", state: { opened: true }, children: [], data: { fsType: "local", type: "folder" } }
+                    {
+                        text: "Local storage",
+                        id: "localStorage",
+                        icon: "glyphicon glyphicon-hdd",
+                        state: { opened: true },
+                        children: [],
+                        data: { fsType: "local", type: "folder" }
+                    }
                 ],
             },
             plugins: ["wholerow", "dnd"]
@@ -184,7 +206,10 @@ define(["require", "exports", "./app.layout", "./app", "localforage", "./utils"]
         }
         ctxAction(uiFiles.createFolder, e => {
             var parentData = getSelectedData();
-            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(contextMenuTarget), { data: { fsType: parentData.fsType, type: "folder" }, icon: "glyphicon glyphicon-folder-open" }, "last", (node) => {
+            app_layout_1.ui.fileTree.create_node(app_layout_1.ui.fileTree.get_node(contextMenuTarget), {
+                data: { fsType: parentData.fsType, type: "folder" },
+                icon: "glyphicon glyphicon-folder-open"
+            }, "last", (node) => {
                 app_layout_1.ui.fileTree.activate_node(node, null);
                 setTimeout(function () { app_layout_1.ui.fileTree.edit(node); }, 0);
             });

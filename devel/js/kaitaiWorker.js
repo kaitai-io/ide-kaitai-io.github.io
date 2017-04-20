@@ -87,7 +87,7 @@ var apiMethods = {
     },
     setInput: (inputBuffer) => wi.inputBuffer = inputBuffer,
     reparse: (eagerMode) => {
-        var start = performance.now();
+        //var start = performance.now();
         wi.ioInput = new KaitaiStream(wi.inputBuffer, 0);
         wi.root = new wi.MainClass(wi.ioInput);
         wi.root._read();

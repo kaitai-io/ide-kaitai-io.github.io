@@ -120,6 +120,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     exports.compile = compile;
     function isKsyFile(fn) { return fn.toLowerCase().endsWith(".ksy"); }
     var ksyFsItemName = "ksyFsItem";
+    var lastKsyContent = null;
     function recompile() {
         return localforage.getItem(ksyFsItemName).then(ksyFsItem => {
             var srcYaml = app_layout_1.ui.ksyEditor.getValue();
@@ -141,6 +142,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             });
         });
     }
+    exports.formatReady = null, exports.inputReady = null;
     var selectedInTree = false, blockRecursive = false;
     function reparse() {
         app_errors_1.handleError(null);
@@ -172,7 +174,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             }, error => app_errors_1.handleError(error)));
         });
     }
-    var lastKsyContent, inputContent, inputFsItem, lastKsyFsItem;
+    var inputContent, inputFsItem, lastKsyFsItem;
     function loadFsItem(fsItem, refreshGui = true) {
         if (!fsItem || fsItem.type !== "file")
             return Promise.resolve();
@@ -192,7 +194,9 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 localforage.setItem("inputFsItem", fsItem);
                 exports.dataProvider = {
                     length: content.byteLength,
-                    get(offset, length) { return new Uint8Array(content, offset, length); },
+                    get(offset, length) {
+                        return new Uint8Array(content, offset, length);
+                    }
                 };
                 app_layout_1.ui.hexViewer.setDataProvider(exports.dataProvider);
                 app_layout_1.getLayoutNodeById("inputBinaryTab").setTitle(fsItem.fn);
