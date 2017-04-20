@@ -1,5 +1,11 @@
-var wi = { ioInput: null, root: null, parseError: null, exported: null, inputBuffer: null, MainClass: null, ksyTypes: null };
-var KaitaiStream, module;
+var wi = {
+    MainClass: null,
+    ksyTypes: null,
+    inputBuffer: null,
+    ioInput: null,
+    root: null,
+    exported: null,
+};
 class IDebugInfo {
 }
 function isUndef(obj) { return typeof obj === "undefined"; }
@@ -68,11 +74,14 @@ function define(name, deps, getter) { this[name] = getter(); }
 ;
 define.amd = true;
 var apiMethods = {
-    eval: (code, args) => eval(code),
+    initCode: (sourceCode, mainClassName, ksyTypes) => {
+        wi.ksyTypes = ksyTypes;
+        eval(`${sourceCode}\nwi.MainClass = ${mainClassName};`);
+    },
+    setInput: (inputBuffer) => wi.inputBuffer = inputBuffer,
     reparse: (eagerMode) => {
         var start = performance.now();
         wi.ioInput = new KaitaiStream(wi.inputBuffer, 0);
-        wi.parseError = null;
         wi.root = new wi.MainClass(wi.ioInput);
         wi.root._read();
         wi.exported = exportValue(wi.root, { start: 0, end: wi.inputBuffer.byteLength }, [], eagerMode);
@@ -88,7 +97,7 @@ var apiMethods = {
         return wi.exported;
     }
 };
-self.onmessage = ev => {
+self.onmessage = (ev) => {
     var msg = ev.data;
     //console.log('[Worker] Got msg', msg, ev);
     if (apiMethods.hasOwnProperty(msg.type)) {

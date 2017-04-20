@@ -33,7 +33,6 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     }
     exports.IntervalViewer = IntervalViewer;
     var ksySchema;
-    ;
     class JsImporter {
         importYaml(name, mode) {
             return new Promise(function (resolve, reject) {
@@ -146,10 +145,10 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([exports.inputReady, exports.formatReady]).then(() => {
             var debugCode = app_layout_1.ui.genCodeDebugViewer.getValue();
             var jsClassName = kaitaiIde.ksySchema.meta.id.split('_').map((x) => x.ucFirst()).join('');
-            return app_worker_1.workerCall({ type: 'eval', args: [`wi.ksyTypes = args.ksyTypes;\n${debugCode}\nwi.MainClass = ${jsClassName};void(0)`, { ksyTypes: exports.ksyTypes }] });
+            return app_worker_1.workerMethods.initCode(debugCode, jsClassName, exports.ksyTypes);
         })).then(() => {
             //console.log('recompiled');
-            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerCall({ type: "reparse", args: [$("#disableLazyParsing").is(':checked')] })).then((exportedRoot) => {
+            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse($("#disableLazyParsing").is(':checked')).then(exportedRoot => {
                 //console.log('reparse exportedRoot', exportedRoot);
                 kaitaiIde.root = exportedRoot;
                 app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, exports.ksyTypes);
@@ -167,7 +166,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                         selectedInTree = false;
                     }
                 });
-            }, error => app_errors_1.handleError(error));
+            }, error => app_errors_1.handleError(error)));
         });
     }
     var lastKsyContent, inputContent, inputFsItem, lastKsyFsItem;
@@ -194,7 +193,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 };
                 app_layout_1.ui.hexViewer.setDataProvider(exports.dataProvider);
                 app_layout_1.getLayoutNodeById("inputBinaryTab").setTitle(fsItem.fn);
-                return app_worker_1.workerCall({ type: 'eval', args: ['wi.inputBuffer = args; void(0)', content] }).then(() => refreshGui ? reparse().then(() => app_layout_1.ui.hexViewer.resize()) : Promise.resolve());
+                return app_worker_1.workerMethods.setInput(content).then(() => refreshGui ? reparse().then(() => app_layout_1.ui.hexViewer.resize()) : Promise.resolve());
             }
         });
     }
@@ -332,7 +331,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 }
                 return intervals;
             }
-            app_worker_1.workerCall({ type: 'reparse', args: [true] }).then((exportedRoot) => {
+            app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
                 console.log('exported', exportedRoot);
                 expToNative(exportedRoot);
                 app_layout_1.addEditorTab('json export', result, 'json');

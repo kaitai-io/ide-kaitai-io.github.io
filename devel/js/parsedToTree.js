@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", "./utils/IntervalHelper", "./utils"], function (require, exports, app_layout_1, app_worker_1, app_errors_1, IntervalHelper_1, utils_1) {
+define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalHelper", "./utils", "./app.worker"], function (require, exports, app_layout_1, app_errors_1, IntervalHelper_1, utils_1, app_worker_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
@@ -179,7 +179,7 @@ define(["require", "exports", "./app.layout", "./app.worker", "./app.errors", ".
                 throw new Error(`Unknown object type: ${exported.type}`);
         }
         getProp(path) {
-            return app_worker_1.workerCall({ type: 'get', args: [path] });
+            return app_worker_1.workerMethods.get(path);
         }
         fillKsyTypes(val) {
             if (val.type === ObjectType.Object) {
