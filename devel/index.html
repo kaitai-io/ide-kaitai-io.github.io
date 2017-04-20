@@ -18,6 +18,12 @@
         }
     </script>
     <!-- End Google Analytics -->
+    <script>
+        // HTTPS redirect
+        var loc = location.toString();
+        if (loc.indexOf("http://ide.kaitai.io/") === 0)
+            location = "https" + loc.substring(4);
+    </script>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/contextmenu.css" />
     <link rel="stylesheet" type="text/css" href="lib/goldenlayout/goldenlayout-base.css" />
