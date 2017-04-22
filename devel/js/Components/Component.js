@@ -15,10 +15,6 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
         "deactivated",
         "render"
     ];
-    // Property, method and parameter decorators created by `createDecorator` helper
-    // will enqueue functions that update component options for lazy processing.
-    // They will be executed just before creating component constructor.
-    exports.$decoratorQueue = [];
     function componentFactory(Component, options = {}) {
         options.name = options.name || Component._componentTag || Component.name;
         // prototype props.
@@ -45,10 +41,10 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 };
             }
         });
-        // add data hook to collect class properties as Vue instance"s data
+        // add data hook to collect class properties as Vue instance's data
         (options.mixins || (options.mixins = [])).push({
-            data(this2) {
-                return collectDataFromConstructor(this2, Component);
+            data() {
+                return collectDataFromConstructor(this, Component);
             }
         });
         if (!options.template)
@@ -57,10 +53,6 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
             options.props = {};
         if (!options.props["model"])
             options.props["model"] = Object;
-        // decorate options
-        exports.$decoratorQueue.forEach(fn => fn(options));
-        // reset for other component decoration
-        exports.$decoratorQueue = [];
         // find super
         const superProto = Object.getPrototypeOf(Component.prototype);
         const Super = superProto instanceof Vue ? superProto.constructor : Vue;
@@ -71,7 +63,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     exports.componentFactory = componentFactory;
     function collectDataFromConstructor(vm, Component) {
         // override _init to prevent to init as Vue instance
-        Component.prototype._init = function (this2) {
+        Component.prototype._init = function () {
             // proxy to actual vm
             const keys = Object.getOwnPropertyNames(vm);
             // 2.2.0 compat (props are no longer exposed as self properties)
@@ -84,7 +76,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
             }
             keys.forEach(key => {
                 if (key.charAt(0) !== "_") {
-                    Object.defineProperty(this2, key, {
+                    Object.defineProperty(this, key, {
                         get: () => vm[key],
                         set: value => vm[key] = value
                     });
@@ -118,22 +110,5 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
         Component.registerHooks = registerHooks;
     })(Component || (Component = {}));
     exports.default = Component;
-    exports.noop = () => { };
-    function createDecorator(factory) {
-        return (_, key, index) => {
-            if (typeof index !== "number") {
-                index = undefined;
-            }
-            exports.$decoratorQueue.push(options => factory(options, key, index));
-        };
-    }
-    exports.createDecorator = createDecorator;
-    function warn(message) {
-        if (typeof console !== "undefined") {
-            console.warn("[vue-class-component] " + message);
-        }
-    }
-    exports.warn = warn;
-    ;
 });
 //# sourceMappingURL=Component.js.map

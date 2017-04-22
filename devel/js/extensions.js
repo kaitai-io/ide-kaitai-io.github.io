@@ -62,4 +62,11 @@ if (!String.prototype.repeat) {
 Promise.delay = function (timeoutMs) {
     return new Promise((resolve, reject) => setTimeout(resolve, timeoutMs));
 };
+RegExp.prototype.matches = function (value) {
+    var matches = [];
+    var match;
+    while (match = this.exec(value))
+        matches.push(match);
+    return matches;
+};
 //# sourceMappingURL=extensions.js.map

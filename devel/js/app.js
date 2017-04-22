@@ -1,4 +1,4 @@
-define(["require", "exports", "localforage", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./app.converterPanel", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils"], function (require, exports, localforage, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, app_converterPanel_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2) {
+define(["require", "exports", "localforage", "vue", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./Components/TemplateLoader", "./Components/ConverterPanel/ConverterPanel"], function (require, exports, localforage, Vue, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, TemplateLoader_1, ConverterPanel_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
@@ -216,6 +216,7 @@ define(["require", "exports", "localforage", "./app.layout", "./app.errors", "./
     }
     exports.addNewFiles = addNewFiles;
     localStorage.setItem("lastVersion", kaitaiIde.version);
+    var converterPanelModel = new ConverterPanel_1.ConverterPanelModel();
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#compilerVersion").text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
@@ -238,8 +239,11 @@ define(["require", "exports", "localforage", "./app.layout", "./app.errors", "./
                     app_layout_1.ui.parsedDataTreeHandler.activatePath(intervals.items[0].exp.path).then(() => blockRecursive = false);
                 }
             }
-            app_converterPanel_1.refreshConverterPanel(app_layout_1.ui.converterPanel, exports.dataProvider, start);
+            converterPanelModel.update(exports.dataProvider, start);
         };
+        TemplateLoader_1.componentLoader.load(["ConverterPanel"]).then(() => {
+            new Vue({ el: "#converterPanel", data: { converterPanelModel: converterPanelModel } });
+        });
         app_selectionInput_1.refreshSelectionInput();
         app_layout_1.ui.genCodeDebugViewer.commands.addCommand({
             name: "compile",
