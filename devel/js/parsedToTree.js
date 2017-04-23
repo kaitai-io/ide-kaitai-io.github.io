@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalHelper", "./utils", "./app.worker"], function (require, exports, app_layout_1, app_errors_1, IntervalHelper_1, utils_1, app_worker_1) {
+define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalHelper", "./utils", "./app.worker", "./app"], function (require, exports, app_layout_1, app_errors_1, IntervalHelper_1, utils_1, app_worker_1, app_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
@@ -233,9 +233,9 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
                                     nonParsed.push({ start: lastEnd + 1, end: i.start - 1 });
                                 lastEnd = i.end;
                             });
-                            app_layout_1.ui.unparsedIntSel.setIntervals(nonParsed);
-                            app_layout_1.ui.bytesIntSel.setIntervals(objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
-                                map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
+                            app_1.app.unparsed = nonParsed;
+                            app_1.app.byteArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
+                                map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 }));
                         }
                         if (intervals.length > 400000)
                             console.warn("Too many items for interval tree: " + intervals.length);

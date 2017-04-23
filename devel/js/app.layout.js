@@ -56,8 +56,6 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
         fileTreeCont: null,
         fileTree: null,
         converterPanel: null,
-        unparsedIntSel: null,
-        bytesIntSel: null,
     };
     exports.ui = ui;
     function addComponent(name, generatorCallback) {
@@ -105,6 +103,6 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
     addComponent("fileTreeCont", cont => cont.getElement().append($("#fileTreeCont").children()));
     addExistingDiv("infoPanel");
     addExistingDiv("converterPanel");
-    myLayout.init();
+    ui.layout.init();
 });
 //# sourceMappingURL=app.layout.js.map

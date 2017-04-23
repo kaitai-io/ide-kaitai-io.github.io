@@ -1,4 +1,10 @@
-define(["require", "exports", "localforage", "vue", "./app.layout", "./app.errors", "./app.files", "./app.selectionInput", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./Components/TemplateLoader", "./Components/ConverterPanel/ConverterPanel"], function (require, exports, localforage, Vue, app_layout_1, app_errors_1, app_files_1, app_selectionInput_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, TemplateLoader_1, ConverterPanel_1) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define(["require", "exports", "localforage", "vue", "./app.layout", "./app.errors", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./ui/ComponentLoader", "./ui/Components/ConverterPanel", "./ExportToJson", "./ui/Component"], function (require, exports, localforage, Vue, app_layout_1, app_errors_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
@@ -8,29 +14,6 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             window["_ga"]("send", "event", category, action, label, value);
     }
     exports.ga = ga;
-    class IntervalViewer {
-        constructor(htmlIdPrefix) {
-            this.htmlIdPrefix = htmlIdPrefix;
-            ["Curr", "Total", "Prev", "Next"].forEach(control => this[`html${control}`] = $(`#${htmlIdPrefix}${control}`));
-            this.htmlNext.on("click", () => this.move(+1));
-            this.htmlPrev.on("click", () => this.move(-1));
-        }
-        move(direction) {
-            if (this.intervals.length === 0)
-                return;
-            this.currentIdx = (this.intervals.length + this.currentIdx + direction) % this.intervals.length;
-            var curr = this.intervals[this.currentIdx];
-            app_layout_1.ui.hexViewer.setSelection(curr.start, curr.end);
-            this.htmlCurr.text(this.currentIdx + 1);
-        }
-        setIntervals(intervals) {
-            this.intervals = intervals;
-            this.currentIdx = -1;
-            this.htmlCurr.text("-");
-            this.htmlTotal.text(this.intervals.length);
-        }
-    }
-    exports.IntervalViewer = IntervalViewer;
     var ksySchema;
     var ksyTypes;
     class JsImporter {
@@ -217,6 +200,25 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
     exports.addNewFiles = addNewFiles;
     localStorage.setItem("lastVersion", kaitaiIde.version);
     var converterPanelModel = new ConverterPanel_1.ConverterPanelModel();
+    let App = class App extends Vue {
+        constructor() {
+            super(...arguments);
+            this.selectionStart = -1;
+            this.selectionEnd = -1;
+            this.unparsed = [];
+            this.byteArrays = [];
+        }
+        selectInterval(interval) {
+            this.selectionChanged(interval.start, interval.end);
+        }
+        selectionChanged(start, end) {
+            app_layout_1.ui.hexViewer.setSelection(start, end);
+        }
+    };
+    App = __decorate([
+        Component_1.default
+    ], App);
+    exports.app = new App();
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#compilerVersion").text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
@@ -224,13 +226,20 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
         if (localStorage.getItem("doNotShowWelcome") !== "true")
             $("#welcomeModal").modal();
         $("#aboutWebIde").on("click", () => $("#welcomeModal").modal());
+        ComponentLoader_1.componentLoader.load(["ConverterPanel", "Stepper", "SelectionInput"]).then(() => {
+            new Vue({ el: "#converterPanel", data: { model: converterPanelModel } });
+            exports.app.$mount("#infoPanel");
+        });
+        function refreshSelectionInput() {
+            exports.app.selectionStart = app_layout_1.ui.hexViewer.selectionStart;
+            exports.app.selectionEnd = app_layout_1.ui.hexViewer.selectionEnd;
+        }
         app_layout_1.ui.hexViewer.onSelectionChanged = () => {
             //console.log("setSelection", ui.hexViewer.selectionStart, ui.hexViewer.selectionEnd);
             localStorage.setItem("selection", JSON.stringify({ start: app_layout_1.ui.hexViewer.selectionStart, end: app_layout_1.ui.hexViewer.selectionEnd }));
             var start = app_layout_1.ui.hexViewer.selectionStart;
             var hasSelection = start !== -1;
-            $("#infoPanel .selectionText").text(hasSelection ? `selection:` : "no selection");
-            app_selectionInput_1.refreshSelectionInput();
+            refreshSelectionInput();
             if (app_layout_1.ui.parsedDataTreeHandler && hasSelection && !selectedInTree) {
                 var intervals = app_layout_1.ui.parsedDataTreeHandler.intervalHandler.searchRange(app_layout_1.ui.hexViewer.mouseDownOffset || start);
                 if (intervals.items.length > 0) {
@@ -241,10 +250,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             }
             converterPanelModel.update(exports.dataProvider, start);
         };
-        TemplateLoader_1.componentLoader.load(["ConverterPanel"]).then(() => {
-            new Vue({ el: "#converterPanel", data: { converterPanelModel: converterPanelModel } });
-        });
-        app_selectionInput_1.refreshSelectionInput();
+        refreshSelectionInput();
         app_layout_1.ui.genCodeDebugViewer.commands.addCommand({
             name: "compile",
             bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
@@ -290,54 +296,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             utils_1.saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.ui = app_layout_1.ui;
-        kaitaiIde.exportToJson = (useHex = false) => {
-            var indentLen = 2;
-            var result = "";
-            function expToNative(value, padLvl = 0) {
-                var pad = " ".repeat((padLvl + 0) * indentLen);
-                var childPad = " ".repeat((padLvl + 1) * indentLen);
-                var isArray = value.type === ObjectType.Array;
-                if (value.type === ObjectType.Object || isArray) {
-                    result += isArray ? "[" : "{";
-                    var keys = isArray ? value.arrayItems : Object.keys(value.object.fields);
-                    if (keys.length > 0) {
-                        result += `\n${childPad}`;
-                        keys.forEach((arrItem, i) => {
-                            result += (isArray ? "" : `"${arrItem}": `);
-                            expToNative(isArray ? arrItem : value.object.fields[arrItem], padLvl + 1);
-                            var lineCont = isArray && arrItem.type === ObjectType.Primitive && typeof arrItem.primitiveValue !== "string" && i % 16 !== 15;
-                            var last = i === keys.length - 1;
-                            result += last ? "\n" : "," + (lineCont ? " " : `\n${childPad}`);
-                        });
-                        result += `${pad}`;
-                    }
-                    result += isArray ? "]" : "}";
-                }
-                else if (value.type === ObjectType.TypedArray) {
-                    if (value.bytes.length <= 64)
-                        result += "[" + Array.from(value.bytes).join(", ") + "]";
-                    else
-                        result += `{ "$start": ${value.ioOffset + value.start}, "$end": ${value.ioOffset + value.end - 1} }`;
-                }
-                else if (value.type === ObjectType.Primitive) {
-                    if (value.enumStringValue)
-                        result += `{ "name": ${JSON.stringify(value.enumStringValue)}, "value": ${value.primitiveValue} }`;
-                    else if (typeof value.primitiveValue === "number")
-                        result += useHex ? `0x${value.primitiveValue.toString(16)}` : `${value.primitiveValue}`;
-                    else
-                        result += `${JSON.stringify(value.primitiveValue)}`;
-                }
-            }
-            app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
-                console.log("exported", exportedRoot);
-                expToNative(exportedRoot);
-                app_layout_1.addEditorTab("json export", result, "json");
-            }, error => app_errors_1.handleError(error));
-        };
-        $("#exportToJson, #exportToJsonHex").on("click", e => kaitaiIde.exportToJson(e.target.id === "exportToJsonHex"));
+        $("#exportToJson, #exportToJsonHex").on("click", e => ExportToJson_1.exportToJson(e.target.id === "exportToJsonHex"));
         $("#disableLazyParsing").on("click", reparse);
-        app_layout_1.ui.unparsedIntSel = new IntervalViewer("unparsed");
-        app_layout_1.ui.bytesIntSel = new IntervalViewer("bytes");
         utils_1.precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, "DragProxy", () => ga("layout", "window_drag"));
         $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });

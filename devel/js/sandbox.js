@@ -1,4 +1,4 @@
-define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubFileSystem", "./FileSystem/LocalFileSystem", "./FileSystem/RemoteFileSystem", "./FileSystem/StaticFileSystem", "./FileSystem/FsUri", "./FileSystem/FsSelector", "vue", "./Components/TemplateLoader"], function (require, exports, GithubClient_1, GithubFileSystem_1, LocalFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, FsUri_1, FsSelector_1, Vue, TemplateLoader_1) {
+define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubFileSystem", "./FileSystem/LocalFileSystem", "./FileSystem/RemoteFileSystem", "./FileSystem/StaticFileSystem", "./FileSystem/FsUri", "./FileSystem/FsSelector", "vue", "./ui/ComponentLoader"], function (require, exports, GithubClient_1, GithubFileSystem_1, LocalFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, FsUri_1, FsSelector_1, Vue, ComponentLoader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var queryParams = {};
@@ -32,7 +32,7 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
     }
     var fsData = new FsTreeNode(fss, new FsUri_1.FsUri("static:///"));
     //var fsData = new FsTreeNode(fss, new FsUri("github://koczkatamas/kaitai_struct_formats/"));
-    TemplateLoader_1.componentLoader.load(["TreeView"]).then(() => {
+    ComponentLoader_1.componentLoader.load(["TreeView"]).then(() => {
         var demo = new Vue({ el: "#tree", data: { treeData: fsData } });
         window["demo"] = demo;
     });
