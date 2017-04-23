@@ -14,17 +14,20 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
         }
         get children() { return this.$children; }
         created() {
-            this.model.loadChildren();
+            this.$watch("model", () => {
+                if (this.model)
+                    this.model.loadChildren();
+            });
         }
         openSelected() {
             if (!this.selectedItem.open)
-                this.selectedItem.toggle();
+                this.selectedItem.dblclick();
             else
                 this.selectNextNode();
         }
         closeSelected() {
             if (this.selectedItem.open)
-                this.selectedItem.toggle();
+                this.selectedItem.dblclick();
             else if (this.selectedItem.parent.parent)
                 this.setSelected(this.selectedItem.parent);
         }
@@ -67,7 +70,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
             this.selectNode(this.selectedItem, "prev");
         }
         scrollSelectedIntoView() {
-            var target = this.selectedItem.$el;
+            var target = this.selectedItem.$el.children[0];
             var rect = target.getBoundingClientRect();
             var parentRect = this.$el.getBoundingClientRect();
             if (rect.bottom > parentRect.bottom)
@@ -94,6 +97,11 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
             this.selected = false;
             this.childrenLoading = false;
         }
+        get icon() {
+            return this.model["icon"] ? this.model["icon"] :
+                this.model.isFolder ? (this.open ? "glyphicon-folder-open" : "glyphicon-folder-close") : "glyphicon-list-alt";
+        }
+        ;
         get treeView() {
             var res = this;
             while (res) {
@@ -105,7 +113,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
         }
         get children() { return this.$children; }
         get parent() { return this.$parent; }
-        toggle() {
+        dblclick() {
             if (this.model.isFolder) {
                 this.open = !this.open;
                 if (this.open && !this.model.children) {
@@ -113,8 +121,11 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                     setTimeout(() => this.model.loadChildren().then(() => this.childrenLoading = false), 0);
                 }
             }
+            else {
+                this.treeView.$emit("openfile", this.model);
+            }
         }
-        select() {
+        click() {
             this.treeView.setSelected(this);
         }
     };

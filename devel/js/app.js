@@ -136,7 +136,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             return app_worker_1.workerMethods.initCode(debugCode, jsClassName, ksyTypes);
         })).then(() => {
             //console.log("recompiled");
-            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse($("#disableLazyParsing").is(":checked")).then(exportedRoot => {
+            PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse(exports.app.disableLazyParsing).then(exportedRoot => {
                 //console.log("reparse exportedRoot", exportedRoot);
                 kaitaiIde.root = exportedRoot;
                 app_layout_1.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(app_layout_1.ui.parsedDataTreeCont.getElement(), exportedRoot, ksyTypes);
@@ -207,13 +207,12 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             this.selectionEnd = -1;
             this.unparsed = [];
             this.byteArrays = [];
+            this.disableLazyParsing = false;
         }
-        selectInterval(interval) {
-            this.selectionChanged(interval.start, interval.end);
-        }
-        selectionChanged(start, end) {
-            app_layout_1.ui.hexViewer.setSelection(start, end);
-        }
+        selectInterval(interval) { this.selectionChanged(interval.start, interval.end); }
+        selectionChanged(start, end) { app_layout_1.ui.hexViewer.setSelection(start, end); }
+        exportToJson(hex) { ExportToJson_1.exportToJson(hex); }
+        about() { $("#welcomeModal").modal(); }
     };
     App = __decorate([
         Component_1.default
@@ -225,10 +224,10 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
         if (localStorage.getItem("doNotShowWelcome") !== "true")
             $("#welcomeModal").modal();
-        $("#aboutWebIde").on("click", () => $("#welcomeModal").modal());
         ComponentLoader_1.componentLoader.load(["ConverterPanel", "Stepper", "SelectionInput"]).then(() => {
             new Vue({ el: "#converterPanel", data: { model: converterPanelModel } });
             exports.app.$mount("#infoPanel");
+            exports.app.$watch("disableLazyParsing", () => reparse());
         });
         function refreshSelectionInput() {
             exports.app.selectionStart = app_layout_1.ui.hexViewer.selectionStart;
@@ -296,8 +295,6 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.error
             utils_1.saveFile(new Uint8Array(inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.ui = app_layout_1.ui;
-        $("#exportToJson, #exportToJsonHex").on("click", e => ExportToJson_1.exportToJson(e.target.id === "exportToJsonHex"));
-        $("#disableLazyParsing").on("click", reparse);
         utils_1.precallHook(kaitaiIde.ui.layout.constructor.__lm.controls, "DragProxy", () => ga("layout", "window_drag"));
         $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });

@@ -1,4 +1,10 @@
-define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubFileSystem", "./FileSystem/LocalFileSystem", "./FileSystem/RemoteFileSystem", "./FileSystem/StaticFileSystem", "./FileSystem/FsUri", "./FileSystem/FsSelector", "vue", "./ui/ComponentLoader"], function (require, exports, GithubClient_1, GithubFileSystem_1, LocalFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, FsUri_1, FsSelector_1, Vue, ComponentLoader_1) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubFileSystem", "./FileSystem/LocalFileSystem", "./FileSystem/RemoteFileSystem", "./FileSystem/StaticFileSystem", "./FileSystem/FsUri", "./FileSystem/FsSelector", "vue", "./ui/ComponentLoader", "./ui/Component"], function (require, exports, GithubClient_1, GithubFileSystem_1, LocalFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, FsUri_1, FsSelector_1, Vue, ComponentLoader_1, Component_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var queryParams = {};
@@ -21,6 +27,7 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             this.fs = fs;
             this.uri = uri;
             this.children = null;
+            this.icon = null;
             this.text = uri.name;
             this.isFolder = uri.type === "directory";
         }
@@ -30,16 +37,52 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             });
         }
     }
-    var fsData = new FsTreeNode(fss, new FsUri_1.FsUri("static:///"));
+    class FsRootNode {
+        constructor(children = []) {
+            this.children = children;
+            this.text = "/";
+            this.isFolder = true;
+        }
+        loadChildren() { return Promise.resolve(); }
+    }
+    function addRootNode(text, icon, uri) {
+        var node = new FsTreeNode(fss, new FsUri_1.FsUri(uri));
+        node.text = text;
+        node.icon = icon;
+        return node;
+    }
+    var fsData = new FsRootNode([
+        addRootNode("kaitai.io", "glyphicon-cloud", "static:///"),
+        addRootNode("koczkatamas/formats", "fa fa-github", "github://koczkatamas/kaitai_struct_formats/"),
+        addRootNode("browser", "glyphicon-cloud", "local:///"),
+    ]);
     //var fsData = new FsTreeNode(fss, new FsUri("github://koczkatamas/kaitai_struct_formats/"));
+    let App = class App extends Vue {
+        //var fsData = new FsTreeNode(fss, new FsUri("github://koczkatamas/kaitai_struct_formats/"));
+        constructor() {
+            super(...arguments);
+            this.fsTree = null;
+            this.selectedUri = null;
+        }
+        openFile(file) {
+            this.selectedUri = file.uri.uri;
+            console.log('openFile', file);
+        }
+    };
+    App = __decorate([
+        Component_1.default
+    ], App);
     ComponentLoader_1.componentLoader.load(["TreeView"]).then(() => {
-        var demo = new Vue({ el: "#tree", data: { treeData: fsData } });
-        window["demo"] = demo;
+        var app = new App({ el: "#app" });
+        app.fsTree = fsData;
+        console.log(fsData.children);
+        window["app"] = app;
+        var treeView = app.$refs["treeView"];
+        setTimeout(() => {
+            treeView.children[0].dblclick();
+            //treeView.children[0].children[3].dblclick();
+            //treeView.children[6].dblclick();
+        }, 500);
     });
 });
-//var treeView = <TreeView<IFsTreeNode>>demo.$refs["treeView"];
-//setTimeout(() => {
-//    treeView.children[1].toggle();
-//    treeView.children[6].toggle();
-//}, 500);
 //# sourceMappingURL=sandbox.js.map
