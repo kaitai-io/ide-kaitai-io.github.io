@@ -1,6 +1,12 @@
 meta:
   id: standard_midi_file
+  title: Standard MIDI file
+  file-extension:
+    - mid
+    - smf
   endian: be
+  imports:
+    - /common/vlq_base128_be
 seq:
   - id: hdr
     type: header

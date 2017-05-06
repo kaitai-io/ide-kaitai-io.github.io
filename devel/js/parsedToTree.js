@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalHelper", "./utils", "./app.worker", "./app"], function (require, exports, app_layout_1, app_errors_1, IntervalHelper_1, utils_1, app_worker_1, app_1) {
+define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker", "./app"], function (require, exports, IntervalHelper_1, utils_1, app_worker_1, app_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ;
@@ -14,7 +14,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
             jsTreeElement.jstree("destroy");
             this.jstree = jsTreeElement.jstree({
                 core: {
-                    data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_errors_1.handleError(e)), themes: { icons: false }, multiple: false, force_text: false
+                    data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_1.app.errors.handle(e)), themes: { icons: false }, multiple: false, force_text: false
                 }
             }).jstree(true);
             this.jstree.on = (...args) => this.jstree.element.on(...args);
@@ -233,8 +233,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
                                     nonParsed.push({ start: lastEnd + 1, end: i.start - 1 });
                                 lastEnd = i.end;
                             });
-                            app_1.app.unparsed = nonParsed;
-                            app_1.app.byteArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
+                            app_1.app.vm.unparsed = nonParsed;
+                            app_1.app.vm.byteArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
                                 map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 }));
                         }
                         if (intervals.length > 400000)
@@ -243,7 +243,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./utils/IntervalH
                             this.intervalHandler.addSorted(intervals);
                     };
                     fillIntervals(exp);
-                    app_layout_1.ui.hexViewer.setIntervals(this.intervalHandler);
+                    app_1.app.ui.hexViewer.setIntervals(this.intervalHandler);
                 }
                 function fillParents(value, parent) {
                     //console.log("fillParents", value.path.join("/"), value, parent);

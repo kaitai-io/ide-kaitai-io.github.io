@@ -1,3 +1,4 @@
+// -*- mode: js; js-indent-level: 2; -*-
 /**
   KaitaiStream is an implementation of Kaitai Struct API for JavaScript.
   Based on DataStream - https://github.com/kig/DataStream.js
@@ -573,6 +574,46 @@ KaitaiStream.mod = function(a, b) {
   if (r < 0)
     r += b;
   return r;
+}
+
+KaitaiStream.arrayMin = function(arr) {
+  var min = arr[0];
+  var x;
+  for (var i = 1, n = arr.length; i < n; ++i) {
+    x = arr[i];
+    if (x < min) min = x;
+  }
+  return min;
+}
+
+KaitaiStream.arrayMax = function(arr) {
+  var max = arr[0];
+  var x;
+  for (var i = 1, n = arr.length; i < n; ++i) {
+    x = arr[i];
+    if (x > max) max = x;
+  }
+  return max;
+}
+
+KaitaiStream.byteArrayCompare = function(a, b) {
+  if (a === b)
+    return 0;
+  var al = a.length;
+  var bl = b.length;
+  var minLen = al < bl ? al : bl;
+  for (var i = 0; i < minLen; i++) {
+    var cmp = a[i] - b[i];
+    if (cmp != 0)
+      return cmp;
+  }
+
+  // Reached the end of at least one of the arrays
+  if (al == bl) {
+    return 0;
+  } else {
+    return al - bl;
+  }
 }
 
 // ========================================================================

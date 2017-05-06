@@ -1,36 +1,55 @@
-define(["require", "exports", "./app.layout", "./utils", "./app"], function (require, exports, app_layout_1, utils_1, app_1) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+define(["require", "exports", "./utils", "./app"], function (require, exports, utils_1, app_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var lastErrWndSize = 100; // 34
-    function showError(...args) {
-        console.error.apply(window, args);
-        var errMsg = args.filter(x => x.toString() !== {}.toString()).join(" ");
-        var container = app_layout_1.getLayoutNodeById("mainArea");
-        if (!app_layout_1.ui.errorWindow) {
-            container.addChild({ type: "component", componentName: "errorWindow", title: "Errors" });
-            app_layout_1.ui.errorWindow.setSize(0, lastErrWndSize);
+    class ErrorWindowHandler {
+        constructor(parentContainer) {
+            this.parentContainer = parentContainer;
+            this.lastErrWndSize = 100; // 34
+            this.errorWnd = null;
         }
-        app_layout_1.ui.errorWindow.on("resize", () => lastErrWndSize = app_layout_1.ui.errorWindow.getElement().outerHeight());
-        app_layout_1.ui.errorWindow.on("destroy", () => { app_1.ga("errorwnd", "destroy"); });
-        app_layout_1.ui.errorWindow.on("close", () => { app_1.ga("errorwnd", "close"); app_layout_1.ui.errorWindow = null; });
-        app_layout_1.ui.errorWindow.getElement().children().html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, "<br>"));
-    }
-    exports.showError = showError;
-    function hideErrors() {
-        if (app_layout_1.ui.errorWindow) {
-            try {
-                app_layout_1.ui.errorWindow.close();
+        show(...args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                console.error.apply(window, args);
+                console.log('errorWnd', this.errorWnd);
+                var errMsg = args.filter(x => x.toString() !== {}.toString()).join(" ");
+                if (!this.errorWnd) {
+                    var newPanel = app_1.app.ui.layout.addPanel();
+                    this.parentContainer.addChild({ type: "component", componentName: newPanel.componentName, title: "Errors" });
+                    this.errorWnd = yield newPanel.donePromise;
+                    console.log('errorWnd', this.errorWnd);
+                    this.errorWnd.setSize(0, this.lastErrWndSize);
+                    this.errorWnd.getElement().addClass('errorWindow');
+                }
+                this.errorWnd.on("resize", () => this.lastErrWndSize = this.errorWnd.getElement().outerHeight());
+                this.errorWnd.on("destroy", () => { app_1.ga("errorwnd", "destroy"); this.errorWnd = null; });
+                this.errorWnd.on("close", () => { app_1.ga("errorwnd", "close"); this.errorWnd = null; });
+                this.errorWnd.getElement().empty().append($("<div>").html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, "<br>")));
+            });
+        }
+        hide() {
+            if (this.errorWnd) {
+                try {
+                    this.errorWnd.close();
+                }
+                catch (e) { }
+                this.errorWnd = null;
             }
-            catch (e) { }
-            app_layout_1.ui.errorWindow = null;
+        }
+        handle(error) {
+            if (error)
+                this.show("Parse error" + (error.name ? ` (${error.name})` : "") + `: ${error.message}\nCall stack: ${error.stack}`, error);
+            else
+                this.hide();
         }
     }
-    function handleError(error) {
-        if (error)
-            showError("Parse error" + (error.name ? ` (${error.name})` : "") + `: ${error.message}\nCall stack: ${error.stack}`, error);
-        else
-            hideErrors();
-    }
-    exports.handleError = handleError;
+    exports.ErrorWindowHandler = ErrorWindowHandler;
 });
 //# sourceMappingURL=app.errors.js.map

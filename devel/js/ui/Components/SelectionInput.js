@@ -58,11 +58,11 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
             this.setAddrInput(ctrl, (ctrl.value || this.startPart.value || 0) + dir);
         }
         inputChanged(ctrl) {
-            if (ctrl.value)
+            if (ctrl.value !== null)
                 this.useHexAddr = ctrl.text.startsWith("0x");
             var start = this.startPart.value;
             var end = this.endPart.value;
-            this.$emit("selectionchanged", start || -1, (end === null || end < start ? start : end) || -1);
+            this.$emit("selectionchanged", start !== null ? start : -1, end === null || end < start ? start : end);
         }
     };
     SelectionInput = __decorate([

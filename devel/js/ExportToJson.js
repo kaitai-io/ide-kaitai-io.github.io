@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.worker", "./app.layout", "./app.errors"], function (require, exports, app_worker_1, app_layout_1, app_errors_1) {
+define(["require", "exports", "./app.worker"], function (require, exports, app_worker_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function exportToJson(useHex = false) {
@@ -39,11 +39,11 @@ define(["require", "exports", "./app.worker", "./app.layout", "./app.errors"], f
                     result += `${JSON.stringify(value.primitiveValue)}`;
             }
         }
-        app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
+        return app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
             console.log("exported", exportedRoot);
             expToNative(exportedRoot);
-            app_layout_1.addEditorTab("json export", result, "json");
-        }, error => app_errors_1.handleError(error));
+            return result;
+        });
     }
     exports.exportToJson = exportToJson;
     ;

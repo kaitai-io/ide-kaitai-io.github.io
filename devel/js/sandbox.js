@@ -66,7 +66,7 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
         }
         openFile(file) {
             this.selectedUri = file.uri.uri;
-            console.log('openFile', file);
+            console.log("openFile", file);
         }
     };
     App = __decorate([
