@@ -7,6 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubFileSystem", "./FileSystem/LocalFileSystem", "./FileSystem/RemoteFileSystem", "./FileSystem/StaticFileSystem", "./FileSystem/FsUri", "./FileSystem/FsSelector", "vue", "./ui/ComponentLoader", "./ui/Component"], function (require, exports, GithubClient_1, GithubFileSystem_1, LocalFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, FsUri_1, FsSelector_1, Vue, ComponentLoader_1, Component_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    for (var i = 0; i < 200; i++)
+        kaitaiFsFiles.push(`formats/archive/test_${i}.ksy`);
     var queryParams = {};
     location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => queryParams[x[0]] = x[1]);
     var fss = new FsSelector_1.FsSelector();
@@ -78,8 +80,19 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
         console.log(fsData.children);
         window["app"] = app;
         var treeView = app.$refs["treeView"];
+        require(["jquery.mCustomScrollbar"], function (mcs) {
+            console.log('mcs', mcs);
+            $("#treeView").mCustomScrollbar({
+                theme: "minimal",
+                autoDraggerLength: false,
+                scrollInertia: 100,
+                mouseWheel: { enable: true, scrollAmount: 25 },
+                keyboard: { enable: false }
+            });
+        });
         setTimeout(() => {
             treeView.children[0].dblclick();
+            $("#treeView").mCustomScrollbar("update");
             //treeView.children[0].children[3].dblclick();
             //treeView.children[6].dblclick();
         }, 500);

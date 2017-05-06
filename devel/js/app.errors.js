@@ -18,13 +18,11 @@ define(["require", "exports", "./utils", "./app"], function (require, exports, u
         show(...args) {
             return __awaiter(this, void 0, void 0, function* () {
                 console.error.apply(window, args);
-                console.log('errorWnd', this.errorWnd);
                 var errMsg = args.filter(x => x.toString() !== {}.toString()).join(" ");
                 if (!this.errorWnd) {
                     var newPanel = app_1.app.ui.layout.addPanel();
                     this.parentContainer.addChild({ type: "component", componentName: newPanel.componentName, title: "Errors" });
                     this.errorWnd = yield newPanel.donePromise;
-                    console.log('errorWnd', this.errorWnd);
                     this.errorWnd.setSize(0, this.lastErrWndSize);
                     this.errorWnd.getElement().addClass('errorWindow');
                 }
