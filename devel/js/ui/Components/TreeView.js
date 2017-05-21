@@ -7,6 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "vue", "../Component", "../UIHelper"], function (require, exports, Vue, Component_1, UIHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Vue.config.keyCodes["pageup"] = 33;
+    Vue.config.keyCodes["pagedown"] = 34;
     let TreeView = class TreeView extends Vue {
         constructor() {
             super(...arguments);
@@ -23,7 +25,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             if (!this.selectedItem.open)
                 this.selectedItem.dblclick();
             else
-                this.selectNextNode();
+                this.selectNode("next");
             this.scrollSelectedIntoView();
         }
         closeSelected() {
@@ -33,7 +35,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.setSelected(this.selectedItem.parent);
             this.scrollSelectedIntoView();
         }
-        selectNode(node, dir) {
+        selectRelativeNode(node, dir) {
             if (dir === "next") {
                 if (node.open && node.children && node.children.length > 0)
                     this.setSelected(node.children[0]);
@@ -65,11 +67,10 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 }
             }
         }
-        selectNextNode(fromNode) {
-            this.selectNode(this.selectedItem, "next");
-        }
-        selectPrevNode() {
-            this.selectNode(this.selectedItem, "prev");
+        selectNode(dir, pageJump = false) {
+            console.log('selectNode', dir, pageJump);
+            for (var i = 0; i < (pageJump ? 25 : 1); i++)
+                this.selectRelativeNode(this.selectedItem, dir);
         }
         scrollIntoView(target, alignToTop) {
             target.scrollIntoView(false);
