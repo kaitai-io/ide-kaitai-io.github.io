@@ -66,34 +66,47 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
             this.fsTree = null;
             this.selectedUri = null;
         }
-        openFile(file) {
-            this.selectedUri = file.uri.uri;
-            console.log("openFile", file);
+        get ctxMenu() { return this.$refs["ctxMenu"]; }
+        get fsTreeView() { return this.$refs["fsTree"]; }
+        get selectedFsItem() { return this.fsTreeView.selectedItem.model; }
+        openFile() {
+            console.log('openFile', this.selectedFsItem);
+            this.selectedUri = this.selectedFsItem.uri.uri;
+        }
+        showContextMenu(event) {
+            this.contextMenuNode = this.selectedFsItem;
+            this.ctxMenu.open(event, this.contextMenuNode);
+        }
+        createFolder() {
+            console.log('createFolder');
+        }
+        createKsyFile() {
+        }
+        cloneKsyFile() {
+        }
+        downloadFile() {
+        }
+        deleteFile() {
+        }
+        generateParser(lang) {
+            console.log('generateParser', lang, this.contextMenuNode);
+        }
+        updated() {
+            var fsTreeScrollbar = Scrollbar.init(this.fsTreeView.$el);
+            this.fsTreeView.scrollIntoView = (el, alignToTop) => fsTreeScrollbar.scrollIntoView(el, { alignToTop: alignToTop });
+            console.log(this.fsTreeView);
         }
     };
     App = __decorate([
         Component_1.default
     ], App);
-    ComponentLoader_1.componentLoader.load(["TreeView"]).then(() => {
+    ComponentLoader_1.componentLoader.load(["TreeView", "ContextMenu"]).then(() => {
         var app = new App({ el: "#app" });
         app.fsTree = fsData;
         console.log(fsData.children);
         window["app"] = app;
-        var treeView = app.$refs["treeView"];
-        //require(["jquery.mCustomScrollbar"],
-        //    function (mcs) {
-        //        console.log('mcs', mcs);
-        //        $("#treeView").mCustomScrollbar({
-        //            theme: "minimal",
-        //            autoDraggerLength: false,
-        //            scrollInertia: 100,
-        //            mouseWheel: { enable: true/*, scrollAmount: 110*/ },
-        //            keyboard: { enable: false }
-        //        });
-        //    });
         setTimeout(() => {
-            treeView.children[0].dblclick();
-            Scrollbar.init(document.getElementById('treeView'));
+            app.fsTreeView.children[0].dblclick();
             //$("#treeView").mCustomScrollbar("update");
             //treeView.children[0].children[3].dblclick();
             //treeView.children[6].dblclick();

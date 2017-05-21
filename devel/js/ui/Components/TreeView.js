@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "vue", "../Component"], function (require, exports, Vue, Component_1) {
+define(["require", "exports", "vue", "../Component", "../UIHelper"], function (require, exports, Vue, Component_1, UIHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let TreeView = class TreeView extends Vue {
@@ -24,12 +24,14 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                 this.selectedItem.dblclick();
             else
                 this.selectNextNode();
+            this.scrollSelectedIntoView();
         }
         closeSelected() {
             if (this.selectedItem.open)
                 this.selectedItem.dblclick();
             else if (this.selectedItem.parent.parent)
                 this.setSelected(this.selectedItem.parent);
+            this.scrollSelectedIntoView();
         }
         selectNode(node, dir) {
             if (dir === "next") {
@@ -69,14 +71,17 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
         selectPrevNode() {
             this.selectNode(this.selectedItem, "prev");
         }
+        scrollIntoView(target, alignToTop) {
+            target.scrollIntoView(false);
+        }
         scrollSelectedIntoView() {
             var target = this.selectedItem.$el.children[0];
             var rect = target.getBoundingClientRect();
             var parentRect = this.$el.getBoundingClientRect();
             if (rect.bottom > parentRect.bottom)
-                target.scrollIntoView(false);
+                this.scrollIntoView(target, false);
             else if (rect.top < parentRect.top)
-                target.scrollIntoView();
+                this.scrollIntoView(target, true);
         }
         setSelected(newSelected) {
             if (this.selectedItem)
@@ -102,15 +107,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                 this.model.isFolder ? (this.open ? "glyphicon-folder-open" : "glyphicon-folder-close") : "glyphicon-list-alt";
         }
         ;
-        get treeView() {
-            var res = this;
-            while (res) {
-                if (res instanceof TreeView)
-                    return res;
-                res = res.$parent;
-            }
-            return null;
-        }
+        get treeView() { return UIHelper_1.default.findParent(this, TreeView); }
         get children() { return this.$children; }
         get parent() { return this.$parent; }
         dblclick() {
@@ -122,11 +119,15 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                 }
             }
             else {
-                this.treeView.$emit("openfile", this.model);
+                this.treeView.$emit("item-dblclick", this.model);
             }
         }
         click() {
             this.treeView.setSelected(this);
+        }
+        contextmenu(event) {
+            this.click();
+            this.treeView.$emit("item-contextmenu", event, this.model);
         }
     };
     TreeViewItem = __decorate([
