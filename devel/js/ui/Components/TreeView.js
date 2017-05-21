@@ -33,7 +33,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
         }
         selectNode(node, dir) {
             if (dir === "next") {
-                if (node.children && node.children.length > 0)
+                if (node.open && node.children && node.children.length > 0)
                     this.setSelected(node.children[0]);
                 else {
                     while (node.parent) {
@@ -54,7 +54,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                     var thisIdx = children.indexOf(node);
                     if (thisIdx - 1 >= 0) {
                         var selChildren = children[thisIdx - 1];
-                        while (selChildren.children && selChildren.children.length > 0)
+                        while (selChildren.open && selChildren.children && selChildren.children.length > 0)
                             selChildren = selChildren.children.last();
                         this.setSelected(selChildren);
                     }

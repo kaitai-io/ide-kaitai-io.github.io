@@ -80,19 +80,21 @@ define(["require", "exports", "./FileSystem/GithubClient", "./FileSystem/GithubF
         console.log(fsData.children);
         window["app"] = app;
         var treeView = app.$refs["treeView"];
-        require(["jquery.mCustomScrollbar"], function (mcs) {
-            console.log('mcs', mcs);
-            $("#treeView").mCustomScrollbar({
-                theme: "minimal",
-                autoDraggerLength: false,
-                scrollInertia: 100,
-                mouseWheel: { enable: true, scrollAmount: 25 },
-                keyboard: { enable: false }
-            });
-        });
+        //require(["jquery.mCustomScrollbar"],
+        //    function (mcs) {
+        //        console.log('mcs', mcs);
+        //        $("#treeView").mCustomScrollbar({
+        //            theme: "minimal",
+        //            autoDraggerLength: false,
+        //            scrollInertia: 100,
+        //            mouseWheel: { enable: true/*, scrollAmount: 110*/ },
+        //            keyboard: { enable: false }
+        //        });
+        //    });
         setTimeout(() => {
             treeView.children[0].dblclick();
-            $("#treeView").mCustomScrollbar("update");
+            Scrollbar.init(document.getElementById('treeView'));
+            //$("#treeView").mCustomScrollbar("update");
             //treeView.children[0].children[3].dblclick();
             //treeView.children[6].dblclick();
         }, 500);
