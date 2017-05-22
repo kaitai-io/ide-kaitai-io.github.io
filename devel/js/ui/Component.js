@@ -66,7 +66,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
             const keys = Object.getOwnPropertyNames(vm);
             // 2.2.0 compat (props are no longer exposed as self properties)
             if (vm.$options.props) {
-                for (const key in vm.$options.props) {
+                for (var key in vm.$options.props) {
                     if (!vm.hasOwnProperty(key)) {
                         keys.push(key);
                     }

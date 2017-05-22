@@ -3,10 +3,12 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     class FsSelector {
         constructor() {
+            this.scheme = [];
             this.filesystems = {};
         }
         addFs(fs) {
-            this.filesystems[fs.scheme] = fs;
+            for (var scheme of fs.scheme)
+                this.filesystems[scheme] = fs;
         }
         getFs(uri) {
             var scheme = uri.split("://")[0];
@@ -14,6 +16,13 @@ define(["require", "exports"], function (require, exports) {
             if (!fs)
                 throw `FileSystem not found for uri: ${uri}`;
             return fs;
+        }
+        capabilities(uri) {
+            return this.getFs(uri).capabilities(uri);
+        }
+        ;
+        createFolder(uri) {
+            return this.getFs(uri).createFolder(uri);
         }
         read(uri) {
             return this.getFs(uri).read(uri);

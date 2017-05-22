@@ -8,6 +8,9 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
             this.uri = new FsUri_1.FsUri(uri, 2);
             this.repo = this.fs.client.getRepo(this.uri.fsData[1], this.uri.fsData[0]);
         }
+        createFolder() {
+            throw new Error("Not implemented");
+        }
         read() {
             return this.repo.downloadFile(this.uri.path);
         }
@@ -28,10 +31,17 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     class GithubFileSystem {
         constructor(client) {
             this.client = client;
-            this.scheme = "github";
+            this.scheme = ["github"];
         }
         getFsItem(uri) {
             return new GithubFsItem(this, uri);
+        }
+        capabilities(uri) {
+            return { write: true, delete: true };
+        }
+        ;
+        createFolder(uri) {
+            return this.getFsItem(uri).createFolder();
         }
         read(uri) {
             return this.getFsItem(uri).read();

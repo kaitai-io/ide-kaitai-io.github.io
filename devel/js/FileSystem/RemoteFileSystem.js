@@ -1,36 +1,14 @@
-define(["require", "exports", "./FsUri", "./Common"], function (require, exports, FsUri_1, Common_1) {
+define(["require", "exports", "./FsUri", "./Common", "../utils/WebHelper"], function (require, exports, FsUri_1, Common_1, WebHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RemoteFileSystem {
         constructor() {
-            this.scheme = "remote";
+            this.scheme = ["remote"];
             this.mappings = {};
         }
         getFsUri(uri) { return new FsUri_1.FsUri(uri, 2); }
         request(method, url, headers, responseType, requestData) {
-            return new Promise((resolve, reject) => {
-                var xhr = new XMLHttpRequest();
-                xhr.open(method, url, true);
-                if (responseType)
-                    xhr.responseType = responseType;
-                if (headers)
-                    for (var hdrName in headers)
-                        if (headers.hasOwnProperty(hdrName))
-                            xhr.setRequestHeader(hdrName, headers[hdrName]);
-                xhr.onload = e => {
-                    if (200 <= xhr.status && xhr.status <= 299) {
-                        var contentType = xhr.getResponseHeader("content-type");
-                        if (contentType === "application/json" && !responseType)
-                            resolve(JSON.parse(xhr.response));
-                        else
-                            resolve(xhr.response);
-                    }
-                    else
-                        reject(xhr.response);
-                };
-                xhr.onerror = e => reject(e);
-                xhr.send(requestData);
-            });
+            return WebHelper_1.WebHelper.request(method, url, headers, responseType, requestData);
         }
         execute(method, uri, binaryResponse = false, postData = null) {
             var fsUri = this.getFsUri(uri);
@@ -41,6 +19,13 @@ define(["require", "exports", "./FsUri", "./Common"], function (require, exports
             var mappingConfig = this.mappings[`${host}/${mapping}`];
             var url = `http://${host}/files/${mapping}${fsUri.path}`;
             return this.request(method, url, { "Authorization": "MappingSecret " + mappingConfig.secret }, binaryResponse ? "arraybuffer" : null, postData);
+        }
+        capabilities(uri) {
+            return { write: true, delete: true };
+        }
+        ;
+        createFolder(uri) {
+            return this.execute("PUT", uri).then(x => null);
         }
         read(uri) {
             return this.execute("GET", uri, true);

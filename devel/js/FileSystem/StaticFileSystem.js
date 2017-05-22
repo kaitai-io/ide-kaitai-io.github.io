@@ -4,9 +4,17 @@ define(["require", "exports", "./Common", "./FsUri"], function (require, exports
     class StaticFileSystem {
         constructor(files = {}) {
             this.files = files;
-            this.scheme = "static";
+            this.scheme = ["static"];
         }
-        getUri(uri) { return new FsUri_1.FsUri(uri, 0, this.scheme); }
+        getUri(uri) { return new FsUri_1.FsUri(uri, 0, this.scheme[0]); }
+        capabilities(uri) {
+            return { write: true, delete: true };
+        }
+        ;
+        createFolder(uri) {
+            this.files[this.getUri(uri).path] = null;
+            return Promise.resolve();
+        }
         read(uri) { return Promise.resolve(this.files[this.getUri(uri).path]); }
         write(uri, data) {
             this.files[this.getUri(uri).path] = data;

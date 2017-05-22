@@ -20,8 +20,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.top = event.pageY + "px";
             this.left = event.pageX + "px";
             this.visible = true;
-            window.addEventListener('click', this.clickHandler, true);
-            window.addEventListener('keyup', this.escapeHandler, true);
+            window.addEventListener("click", this.clickHandler, true);
+            window.addEventListener("keyup", this.escapeHandler, true);
         }
         escapeHandler(e) {
             if (e.keyCode === 27)
@@ -32,8 +32,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.hide();
         }
         hide() {
-            window.removeEventListener('click', this.clickHandler, true);
-            window.removeEventListener('keyup', this.escapeHandler, true);
+            window.removeEventListener("click", this.clickHandler, true);
+            window.removeEventListener("keyup", this.escapeHandler, true);
             this.visible = false;
         }
     };
@@ -44,10 +44,10 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
     let MenuItem = class MenuItem extends Vue {
         get ctxMenu() { return UIHelper_1.default.findParent(this, ContextMenu); }
         click(event) {
-            if (!this.enabled || !('click' in this["_events"]))
+            if (!this.enabled || !("click" in this["_events"]))
                 return;
             this.ctxMenu.visible = false;
-            this.$emit('click');
+            this.$emit("click");
             event.preventDefault();
         }
     };

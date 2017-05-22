@@ -68,7 +68,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             }
         }
         selectNode(dir, pageJump = false) {
-            console.log('selectNode', dir, pageJump);
+            console.log("selectNode", dir, pageJump);
             for (var i = 0; i < (pageJump ? 25 : 1); i++)
                 this.selectRelativeNode(this.selectedItem, dir);
         }
@@ -102,6 +102,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.open = false;
             this.selected = false;
             this.childrenLoading = false;
+            this.loadingFailed = false;
         }
         get icon() {
             return this.model["icon"] ? this.model["icon"] :
@@ -116,7 +117,10 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.open = !this.open;
                 if (this.open && !this.model.children) {
                     this.childrenLoading = true;
-                    setTimeout(() => this.model.loadChildren().then(() => this.childrenLoading = false), 0);
+                    this.loadingFailed = false;
+                    setTimeout(() => this.model.loadChildren().catch(x => {
+                        this.loadingFailed = true;
+                    }).then(() => this.childrenLoading = false), 0);
                 }
             }
             else {
