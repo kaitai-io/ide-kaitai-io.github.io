@@ -2,6 +2,12 @@
 if (!Array.prototype.last) {
     Array.prototype.last = function () { return this[this.length - 1]; };
 }
+Array.prototype.toDict = function (keySelector, valueSelector) {
+    var result = {};
+    for (var item of this)
+        result[keySelector(item)] = valueSelector ? valueSelector(item) : item;
+    return result;
+};
 String.prototype.ucFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };

@@ -41,7 +41,7 @@ define(["require", "exports"], function (require, exports) {
     exports.Delayed = Delayed;
     class Convert {
         static utf8StrToBytes(str) {
-            return new TextEncoder('utf-8').encode(str);
+            return new TextEncoder("utf-8").encode(str);
         }
     }
     exports.Convert = Convert;

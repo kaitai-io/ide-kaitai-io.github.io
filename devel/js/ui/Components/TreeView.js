@@ -103,6 +103,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.selected = false;
             this.childrenLoading = false;
             this.loadingFailed = false;
+            this.loadingErrorText = "";
         }
         get icon() {
             return this.model["icon"] ? this.model["icon"] :
@@ -120,6 +121,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                     this.loadingFailed = false;
                     setTimeout(() => this.model.loadChildren().catch(x => {
                         this.loadingFailed = true;
+                        this.loadingErrorText = `${x}`;
                     }).then(() => this.childrenLoading = false), 0);
                 }
             }

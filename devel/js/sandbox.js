@@ -28,6 +28,7 @@ define(["require", "exports", "vue", "./ui/ComponentLoader", "./ui/Component"], 
         var app = new App({ el: "#app" });
         app.fileTree.init();
         window["app"] = app;
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]', container: 'body', trigger: "click hover" });
     });
 });
 //# sourceMappingURL=sandbox.js.map

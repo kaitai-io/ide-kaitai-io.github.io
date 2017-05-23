@@ -48,8 +48,16 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         get canDelete() { return this.uri.path !== "/" && this.capabilities.delete; }
         loadChildren() {
             return this.fs.list(this.uri.uri).then(children => {
-                this.children = children.filter(x => x.uri.uri !== this.uri.uri).map(fsItem => new FsTreeNode(this, fsItem.uri))
+                var childCache = (this.children || []).toDict(x => x.uri.name);
+                this.children = children
+                    .filter(x => x.uri.uri !== this.uri.uri)
+                    .map(fsItem => new FsTreeNode(this, fsItem.uri))
                     .sortBy(x => x.isFolder ? 0 : 1).thenBy(x => x.uri.path).sort();
+                for (var item of this.children) {
+                    var old = childCache[item.uri.name];
+                    if (old)
+                        item.children = item.children || old.children;
+                }
             });
         }
     }
@@ -124,7 +132,12 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.contextMenuNode.fs.write(newUri, utils_1.Convert.utf8StrToBytes(content).buffer)
                 .then(() => this.contextMenuNode.loadChildren());
         }
-        cloneKsyFile() {
+        cloneFile() {
+            var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("Ymd_His")}.$1`);
+            console.log('cloneKsyFile', newUri);
+            this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri)
+                .then(content => this.contextMenuNode.fs.write(newUri, content))
+                .then(() => this.contextMenuNode.parent.loadChildren());
         }
         downloadFile() {
             this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri)
