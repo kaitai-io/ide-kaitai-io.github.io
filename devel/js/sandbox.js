@@ -24,7 +24,7 @@ define(["require", "exports", "vue", "./ui/ComponentLoader", "./ui/Component"], 
     App = __decorate([
         Component_1.default
     ], App);
-    ComponentLoader_1.componentLoader.load(["Components/TreeView", "Components/ContextMenu", "Parts/FileTree"]).then(() => {
+    ComponentLoader_1.componentLoader.load(["Components/TreeView", "Components/ContextMenu", "Components/InputModal", "Parts/FileTree"]).then(() => {
         var app = new App({ el: "#app" });
         app.fileTree.init();
         window["app"] = app;

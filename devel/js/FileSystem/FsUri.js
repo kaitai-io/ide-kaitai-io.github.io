@@ -32,6 +32,11 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
             this.name = this.path.substring(split + 1, usableLen + 1);
             this.parentPath = this.path.substr(0, split + 1);
         }
+        addPath(childPath) {
+            if (this.type === "file")
+                throw new Error("You cannot add a child path to a file uri.");
+            return new FsUri(this.uri + childPath);
+        }
         changePath(newPath) {
             return new FsUri((this.fsScheme ? `${this.fsScheme}://` : "") +
                 `${this.fsData.join("/")}${newPath}`, this.fsData.length);
