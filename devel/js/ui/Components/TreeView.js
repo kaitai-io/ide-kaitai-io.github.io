@@ -20,6 +20,10 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 if (this.model)
                     this.model.loadChildren();
             });
+            if (Scrollbar) {
+                var scrollbar = Scrollbar.init(this.$el);
+                this.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop });
+            }
         }
         openSelected() {
             if (!this.selectedItem.open)

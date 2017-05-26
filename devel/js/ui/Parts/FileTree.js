@@ -84,7 +84,9 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         addRootNode("browser", "glyphicon-cloud", "browser:///"),
         addRootNode("browser (legacy)", "glyphicon-cloud", "browser_legacy:///"),
     ]);
+    //setTimeout(() => fsData.children.push(addRootNode("browser", "glyphicon-cloud", "browser:///")), 5000);
     let FileTree = class FileTree extends Vue {
+        //setTimeout(() => fsData.children.push(addRootNode("browser", "glyphicon-cloud", "browser:///")), 5000);
         constructor() {
             super(...arguments);
             this.fsTree = null;
