@@ -8,6 +8,13 @@ Array.prototype.toDict = function (keySelector, valueSelector) {
         result[keySelector(item)] = valueSelector ? valueSelector(item) : item;
     return result;
 };
+Array.prototype.remove = function (item) {
+    for (var i = this.length; i--;) {
+        if (this[i] === item) {
+            this.splice(i, 1);
+        }
+    }
+};
 String.prototype.ucFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
