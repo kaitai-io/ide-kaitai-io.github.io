@@ -642,6 +642,14 @@ KaitaiUnexpectedDataError = function(expected, actual) {
 KaitaiUnexpectedDataError.prototype = Object.create(Error.prototype);
 KaitaiUnexpectedDataError.prototype.constructor = KaitaiUnexpectedDataError;
 
+KaitaiUndecidedEndiannessError = function() {
+  this.name = "KaitaiUndecidedEndiannessError";
+  this.stack = (new Error()).stack;
+}
+
+KaitaiUndecidedEndiannessError.prototype = Object.create(Error.prototype);
+KaitaiUndecidedEndiannessError.prototype.constructor = KaitaiUndecidedEndiannessError;
+
 /**
   Maps a Uint8Array into the KaitaiStream buffer.
 
