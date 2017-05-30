@@ -22,11 +22,12 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
     }
     exports.Component = Component;
     class ClosableComponent {
-        constructor(parent, generator) {
+        constructor(parent, generator, show) {
             this.parent = parent;
             this.generator = generator;
             this.component = null;
-            this.show();
+            if (show)
+                this.show();
         }
         get visible() { return this.component !== null; }
         set visible(show) {
@@ -86,8 +87,8 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
             cb = cb || (typeof cbOrProps === "function" ? cbOrProps : undefined);
             return this.addChild(Component, Object.assign({ type: "component", componentName: fakeComponentName, title: title }, props), cb);
         }
-        addClosableComponent(generator, cb) {
-            cb(new ClosableComponent(this, generator));
+        addClosableComponent(generator, show, cb) {
+            cb(new ClosableComponent(this, generator, show));
             return this;
         }
         init() {
