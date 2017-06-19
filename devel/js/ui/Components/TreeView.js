@@ -20,10 +20,12 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 if (this.model)
                     this.model.loadChildren();
             });
-            if (Scrollbar) {
-                var scrollbar = Scrollbar.init(this.$el);
-                this.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop });
-            }
+        }
+        mounted() {
+            //if (Scrollbar) {
+            //    var scrollbar = Scrollbar.init(this.$el);
+            //    this.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop });
+            //}
         }
         openSelected() {
             if (!this.selectedItem.open)
@@ -106,8 +108,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.open = false;
             this.selected = false;
             this.childrenLoading = false;
-            this.loadingFailed = false;
-            this.loadingErrorText = "";
+            this.loadingError = null;
         }
         get icon() {
             return this.model["icon"] ? this.model["icon"] :
@@ -122,10 +123,10 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.open = !this.open;
                 if (this.open && !this.model.children) {
                     this.childrenLoading = true;
-                    this.loadingFailed = false;
+                    this.loadingError = null;
                     setTimeout(() => this.model.loadChildren().catch(x => {
-                        this.loadingFailed = true;
-                        this.loadingErrorText = `${x}`;
+                        console.error(x);
+                        this.loadingError = `${x}`;
                     }).then(() => this.childrenLoading = false), 0);
                 }
             }

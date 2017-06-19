@@ -12,6 +12,7 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
     class Component extends LayoutItem {
         get component() { return this.contentItem.contentItems[0]; }
         get container() { return this.component.container; }
+        get element() { return this.container.getElement().get(0); }
         get title() { return this.component.config.title; }
         set title(newTitle) { this.component.setTitle(newTitle); }
         init() {
