@@ -1,20 +1,6 @@
-define(["require", "exports", "vue", "./ComponentLoader"], function (require, exports, Vue, ComponentLoader_1) {
+System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.$internalHooks = [
-        "data",
-        "beforeCreate",
-        "created",
-        "beforeMount",
-        "mounted",
-        "beforeDestroy",
-        "destroyed",
-        "beforeUpdate",
-        "updated",
-        "activated",
-        "deactivated",
-        "render"
-    ];
+    var __moduleName = context_1 && context_1.id;
     function componentFactory(Component, options = {}) {
         options.name = options.name || Component._componentTag || Component.name;
         // prototype props.
@@ -24,7 +10,7 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
                 return;
             }
             // hooks
-            if (exports.$internalHooks.indexOf(key) > -1) {
+            if ($internalHooks.indexOf(key) > -1) {
                 options[key] = proto[key];
                 return;
             }
@@ -52,6 +38,8 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
         if (!options.props["model"])
             options.props["model"] = Object;
         console.log('component factory', options.name, options.template);
+        console.log('currentScript', document.currentScript);
+        debugger;
         // find super
         const superProto = Object.getPrototypeOf(Component.prototype);
         const Super = superProto instanceof Vue ? superProto.constructor : Vue;
@@ -70,7 +58,7 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
         Vue.component(options.name, result);
         return result;
     }
-    exports.componentFactory = componentFactory;
+    exports_1("componentFactory", componentFactory);
     function collectDataFromConstructor(vm, Component) {
         // override _init to prevent to init as Vue instance
         Component.prototype._init = function () {
@@ -104,7 +92,7 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
         });
         return plainData;
     }
-    exports.collectDataFromConstructor = collectDataFromConstructor;
+    exports_1("collectDataFromConstructor", collectDataFromConstructor);
     function Component(options) {
         if (typeof options === "function") {
             return componentFactory(options);
@@ -113,12 +101,39 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
             return componentFactory(Component, options);
         };
     }
-    (function (Component) {
-        function registerHooks(keys) {
-            exports.$internalHooks.push(...keys);
+    var Vue, ComponentLoader_1, $internalHooks;
+    return {
+        setters: [
+            function (Vue_1) {
+                Vue = Vue_1;
+            },
+            function (ComponentLoader_1_1) {
+                ComponentLoader_1 = ComponentLoader_1_1;
+            }
+        ],
+        execute: function () {
+            exports_1("$internalHooks", $internalHooks = [
+                "data",
+                "beforeCreate",
+                "created",
+                "beforeMount",
+                "mounted",
+                "beforeDestroy",
+                "destroyed",
+                "beforeUpdate",
+                "updated",
+                "activated",
+                "deactivated",
+                "render"
+            ]);
+            (function (Component) {
+                function registerHooks(keys) {
+                    $internalHooks.push(...keys);
+                }
+                Component.registerHooks = registerHooks;
+            })(Component || (Component = {}));
+            exports_1("default", Component);
         }
-        Component.registerHooks = registerHooks;
-    })(Component || (Component = {}));
-    exports.default = Component;
+    };
 });
 //# sourceMappingURL=Component.js.map

@@ -1,6 +1,6 @@
-define(["require", "exports", "./utils"], function (require, exports, utils_1) {
+System.register(["./utils"], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    var __moduleName = context_1 && context_1.id;
     function initFileDrop(containerId, callback) {
         var dragLeaveClear;
         var body = $("body");
@@ -30,6 +30,16 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
             callback(resFiles);
         });
     }
-    exports.initFileDrop = initFileDrop;
+    exports_1("initFileDrop", initFileDrop);
+    var utils_1;
+    return {
+        setters: [
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
+            }
+        ],
+        execute: function () {
+        }
+    };
 });
 //# sourceMappingURL=FileDrop.js.map

@@ -1,6 +1,6 @@
-define(["require", "exports"], function (require, exports) {
+System.register([], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    var __moduleName = context_1 && context_1.id;
     function downloadFile(url) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -11,7 +11,7 @@ define(["require", "exports"], function (require, exports) {
             xhr.send();
         });
     }
-    exports.downloadFile = downloadFile;
+    exports_1("downloadFile", downloadFile);
     function saveFile(data, filename) {
         var a = document.createElement("a");
         document.body.appendChild(a);
@@ -24,27 +24,7 @@ define(["require", "exports"], function (require, exports) {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
     }
-    exports.saveFile = saveFile;
-    class Delayed {
-        constructor(delay) {
-            this.delay = delay;
-        }
-        do(func) {
-            if (this.timeout)
-                clearTimeout(this.timeout);
-            this.timeout = setTimeout(function () {
-                this.timeout = null;
-                func();
-            }, this.delay);
-        }
-    }
-    exports.Delayed = Delayed;
-    class Convert {
-        static utf8StrToBytes(str) {
-            return new TextEncoder("utf-8").encode(str);
-        }
-    }
-    exports.Convert = Convert;
+    exports_1("saveFile", saveFile);
     function asciiEncode(bytes) {
         var len = bytes.byteLength;
         var binary = "";
@@ -52,7 +32,7 @@ define(["require", "exports"], function (require, exports) {
             binary += String.fromCharCode(bytes[i]);
         return binary;
     }
-    exports.asciiEncode = asciiEncode;
+    exports_1("asciiEncode", asciiEncode);
     function hexEncode(bytes) {
         var len = bytes.byteLength;
         var binary = "0x";
@@ -60,13 +40,13 @@ define(["require", "exports"], function (require, exports) {
             binary += bytes[i].toString(16);
         return binary;
     }
-    exports.hexEncode = hexEncode;
+    exports_1("hexEncode", hexEncode);
     function arrayBufferToBase64(buffer) {
         var bytes = new Uint8Array(buffer);
         var binary = asciiEncode(bytes);
         return window.btoa(binary);
     }
-    exports.arrayBufferToBase64 = arrayBufferToBase64;
+    exports_1("arrayBufferToBase64", arrayBufferToBase64);
     function readBlob(blob, mode, ...args) {
         return new Promise(function (resolve, reject) {
             var reader = new FileReader();
@@ -75,13 +55,11 @@ define(["require", "exports"], function (require, exports) {
             reader["readAs" + mode[0].toUpperCase() + mode.substr(1)](blob, ...args);
         });
     }
-    exports.readBlob = readBlob;
+    exports_1("readBlob", readBlob);
     function htmlescape(s) {
         return $("<div/>").text(s).html();
     }
-    exports.htmlescape = htmlescape;
-    ;
-    ;
+    exports_1("htmlescape", htmlescape);
     function processFiles(files) {
         var resFiles = [];
         for (var i = 0; i < files.length; i++) {
@@ -90,21 +68,21 @@ define(["require", "exports"], function (require, exports) {
         }
         return resFiles;
     }
-    exports.processFiles = processFiles;
+    exports_1("processFiles", processFiles);
     function openFilesWithDialog(callback) {
         $(`<input type="file" multiple />`).on("change", e => {
             var files = processFiles(e.target.files);
             callback(files);
         }).click();
     }
-    exports.openFilesWithDialog = openFilesWithDialog;
+    exports_1("openFilesWithDialog", openFilesWithDialog);
     function s(strings, ...values) {
         var result = strings[0];
         for (var i = 1; i < strings.length; i++)
             result += htmlescape(values[i - 1]) + strings[i];
         return result;
     }
-    exports.s = s;
+    exports_1("s", s);
     function collectAllObjects(root) {
         var objects = [];
         function process(value) {
@@ -117,7 +95,7 @@ define(["require", "exports"], function (require, exports) {
         process(root);
         return objects;
     }
-    exports.collectAllObjects = collectAllObjects;
+    exports_1("collectAllObjects", collectAllObjects);
     function precallHook(parent, name, callback) {
         var original = parent[name];
         parent[name] = function () {
@@ -126,6 +104,34 @@ define(["require", "exports"], function (require, exports) {
         };
         parent[name].prototype = original.prototype;
     }
-    exports.precallHook = precallHook;
+    exports_1("precallHook", precallHook);
+    var Delayed, Convert;
+    return {
+        setters: [],
+        execute: function () {
+            Delayed = class Delayed {
+                constructor(delay) {
+                    this.delay = delay;
+                }
+                do(func) {
+                    if (this.timeout)
+                        clearTimeout(this.timeout);
+                    this.timeout = setTimeout(function () {
+                        this.timeout = null;
+                        func();
+                    }, this.delay);
+                }
+            };
+            exports_1("Delayed", Delayed);
+            Convert = class Convert {
+                static utf8StrToBytes(str) {
+                    return new TextEncoder("utf-8").encode(str);
+                }
+            };
+            exports_1("Convert", Convert);
+            ;
+            ;
+        }
+    };
 });
 //# sourceMappingURL=utils.js.map

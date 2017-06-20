@@ -1,51 +1,57 @@
-define(["require", "exports"], function (require, exports) {
+System.register([], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class PerformanceHelper {
-        constructor() {
-            this.logPerformance = true;
-        }
-        measureAction(actionName, donePromiseOrAction) {
-            var actionMeasurement = new PerformanceHelper.ActionMeasurement(this, actionName, performance.now());
-            if (typeof donePromiseOrAction === "function") {
-                try {
-                    var result = donePromiseOrAction();
-                    this.actionDone(actionMeasurement, false);
-                    return result;
+    var __moduleName = context_1 && context_1.id;
+    var PerformanceHelper, performanceHelper;
+    return {
+        setters: [],
+        execute: function () {
+            PerformanceHelper = class PerformanceHelper {
+                constructor() {
+                    this.logPerformance = true;
                 }
-                catch (e) {
-                    this.actionDone(actionMeasurement, true);
-                    throw e;
+                measureAction(actionName, donePromiseOrAction) {
+                    var actionMeasurement = new PerformanceHelper.ActionMeasurement(this, actionName, performance.now());
+                    if (typeof donePromiseOrAction === "function") {
+                        try {
+                            var result = donePromiseOrAction();
+                            this.actionDone(actionMeasurement, false);
+                            return result;
+                        }
+                        catch (e) {
+                            this.actionDone(actionMeasurement, true);
+                            throw e;
+                        }
+                    }
+                    else if (donePromiseOrAction)
+                        return actionMeasurement.done(donePromiseOrAction);
+                    else
+                        return actionMeasurement;
                 }
-            }
-            else if (donePromiseOrAction)
-                return actionMeasurement.done(donePromiseOrAction);
-            else
-                return actionMeasurement;
+                actionDone(action, failed) {
+                    if (!this.logPerformance)
+                        return;
+                    console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took `
+                        + `${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
+                }
+            };
+            (function (PerformanceHelper) {
+                class ActionMeasurement {
+                    constructor(ph, name, startTime) {
+                        this.ph = ph;
+                        this.name = name;
+                        this.startTime = startTime;
+                    }
+                    done(promise, failed) {
+                        if (!promise)
+                            this.ph.actionDone(this);
+                        else
+                            return promise.then(x => { this.ph.actionDone(this, false); return x; }, x => { this.ph.actionDone(this, true); return Promise.reject(x); });
+                    }
+                }
+                PerformanceHelper.ActionMeasurement = ActionMeasurement;
+            })(PerformanceHelper || (PerformanceHelper = {}));
+            exports_1("performanceHelper", performanceHelper = new PerformanceHelper());
         }
-        actionDone(action, failed) {
-            if (!this.logPerformance)
-                return;
-            console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took `
-                + `${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
-        }
-    }
-    (function (PerformanceHelper) {
-        class ActionMeasurement {
-            constructor(ph, name, startTime) {
-                this.ph = ph;
-                this.name = name;
-                this.startTime = startTime;
-            }
-            done(promise, failed) {
-                if (!promise)
-                    this.ph.actionDone(this);
-                else
-                    return promise.then(x => { this.ph.actionDone(this, false); return x; }, x => { this.ph.actionDone(this, true); return Promise.reject(x); });
-            }
-        }
-        PerformanceHelper.ActionMeasurement = ActionMeasurement;
-    })(PerformanceHelper || (PerformanceHelper = {}));
-    exports.performanceHelper = new PerformanceHelper();
+    };
 });
 //# sourceMappingURL=PerformanceHelper.js.map

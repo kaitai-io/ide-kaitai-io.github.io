@@ -1,78 +1,6 @@
-define(["require", "exports", "localforage", "./app", "./utils"], function (require, exports, localforage, app_1, utils_1) {
+System.register(["localforage", "./app", "./utils"], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    /* tslint:enable */
-    var fsHelper = {
-        selectNode(root, fn) {
-            var currNode = root;
-            var fnParts = fn.split("/");
-            var currPath = "";
-            for (var i = 0; i < fnParts.length; i++) {
-                var fnPart = fnParts[i];
-                currPath += (currPath ? "/" : "") + fnPart;
-                if (!("children" in currNode)) {
-                    currNode.children = {};
-                    currNode.type = "folder";
-                }
-                if (!(fnPart in currNode.children))
-                    currNode.children[fnPart] = { fsType: root.fsType, type: "file", fn: currPath };
-                currNode = currNode.children[fnPart];
-            }
-            return currNode;
-        }
-    };
-    class LocalStorageFs {
-        constructor(prefix) {
-            this.prefix = prefix;
-        }
-        filesKey() { return `${this.prefix}_files`; }
-        fileKey(fn) { return `${this.prefix}_file[${fn}]`; }
-        save() { return localforage.setItem(this.filesKey(), this.root); }
-        getRootNode() {
-            if (this.root)
-                return Promise.resolve(this.root);
-            this.rootPromise = localforage.getItem(this.filesKey())
-                .then(x => x || { fsType: "local", type: "folder", children: {} }).then(r => this.root = r);
-            return this.rootPromise;
-        }
-        setRootNode(newRoot) {
-            this.root = newRoot;
-            return this.save();
-        }
-        get(fn) { return localforage.getItem(this.fileKey(fn)); }
-        put(fn, data) {
-            return this.getRootNode().then(root => {
-                var node = fsHelper.selectNode(root, fn);
-                return Promise.all([localforage.setItem(this.fileKey(fn), data), this.save()]).then(x => node);
-            });
-        }
-    }
-    class KaitaiFs {
-        constructor(files) {
-            this.files = files;
-        }
-        getRootNode() { return Promise.resolve(this.files); }
-        get(fn) {
-            if (fn.toLowerCase().endsWith(".ksy"))
-                return Promise.resolve($.ajax({ url: fn }));
-            else
-                return utils_1.downloadFile(fn);
-        }
-        put(fn, data) { return Promise.reject("KaitaiFs.put is not implemented!"); }
-    }
-    class StaticFs {
-        constructor() { this.files = {}; }
-        getRootNode() { return Promise.resolve(Object.keys(this.files).map(fn => ({ fsType: "static", type: "file", fn }))); }
-        get(fn) { return Promise.resolve(this.files[fn]); }
-        put(fn, data) { this.files[fn] = data; return Promise.resolve(null); }
-    }
-    var kaitaiRoot = { fsType: "kaitai" };
-    kaitaiFsFiles.forEach(fn => fsHelper.selectNode(kaitaiRoot, fn));
-    var kaitaiFs = new KaitaiFs(kaitaiRoot);
-    var staticFs = new StaticFs();
-    var localFs = new LocalStorageFs("fs");
-    /* tslint:disable */
-    exports.fss = { local: localFs, kaitai: kaitaiFs, static: staticFs };
+    var __moduleName = context_1 && context_1.id;
     /* tslint:enable */
     function genChildNode(obj, fn) {
         var isFolder = obj.type === "folder";
@@ -94,16 +22,15 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
                 genChildNodes(root).forEach((node) => app_1.app.ui.fileTree.create_node(localStorageNode, node));
         });
     }
-    exports.refreshFsNodes = refreshFsNodes;
+    exports_1("refreshFsNodes", refreshFsNodes);
     function addKsyFile(parent, ksyFn, content) {
         var name = ksyFn.split("/").last();
-        return exports.fss.local.put(name, content).then((fsItem) => {
+        return fss.local.put(name, content).then((fsItem) => {
             app_1.app.ui.fileTree.create_node(app_1.app.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: "glyphicon glyphicon-list-alt" }, "last", (node) => app_1.app.ui.fileTree.activate_node(node, null));
             return app_1.app.loadFsItem(fsItem, true);
         });
     }
-    exports.addKsyFile = addKsyFile;
-    var fileTreeCont;
+    exports_1("addKsyFile", addKsyFile);
     function initFileTree() {
         fileTreeCont = app_1.app.ui.fileTreeCont.find(".fileTree");
         app_1.app.ui.fileTree = fileTreeCont.jstree({
@@ -218,7 +145,7 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
             var fsItem = getSelectedData();
             var linkData = $(e.target).data();
             //console.log(fsItem, linkData);
-            exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
+            fss[fsItem.fsType].get(fsItem.fn).then((content) => {
                 return this.compile(content, linkData.kslang, !!linkData.ksdebug).then((compiled) => {
                     Object.keys(compiled).forEach(fileName => {
                         //var title = fsItem.fn.split("/").last() + " [" + $(e.target).text() + "]" + (compiled.length == 1 ? "" : ` ${i + 1}/${compiled.length}`);
@@ -253,7 +180,7 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
         function downloadFiles() {
             app_1.app.ui.fileTree.get_selected().forEach(nodeId => {
                 var fsItem = app_1.app.ui.fileTree.get_node(nodeId).data;
-                exports.fss[fsItem.fsType].get(fsItem.fn).then(content => utils_1.saveFile(content, fsItem.fn.split("/").last()));
+                fss[fsItem.fsType].get(fsItem.fn).then(content => utils_1.saveFile(content, fsItem.fn.split("/").last()));
             });
         }
         ctxAction(uiFiles.downloadItem, () => downloadFiles());
@@ -274,9 +201,97 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
             var fsItem = getSelectedData();
             var newFn = fsItem.fn.replace(".ksy", "_" + new Date().format("Ymd_His") + ".ksy");
             console.log("newFn", newFn);
-            exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => addKsyFile("localStorage", newFn, content));
+            fss[fsItem.fsType].get(fsItem.fn).then((content) => addKsyFile("localStorage", newFn, content));
         });
     }
-    exports.initFileTree = initFileTree;
+    exports_1("initFileTree", initFileTree);
+    var localforage, app_1, utils_1, fsHelper, LocalStorageFs, KaitaiFs, StaticFs, kaitaiRoot, kaitaiFs, staticFs, localFs, fss, fileTreeCont;
+    return {
+        setters: [
+            function (localforage_1) {
+                localforage = localforage_1;
+            },
+            function (app_1_1) {
+                app_1 = app_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
+            }
+        ],
+        execute: function () {
+            /* tslint:enable */
+            fsHelper = {
+                selectNode(root, fn) {
+                    var currNode = root;
+                    var fnParts = fn.split("/");
+                    var currPath = "";
+                    for (var i = 0; i < fnParts.length; i++) {
+                        var fnPart = fnParts[i];
+                        currPath += (currPath ? "/" : "") + fnPart;
+                        if (!("children" in currNode)) {
+                            currNode.children = {};
+                            currNode.type = "folder";
+                        }
+                        if (!(fnPart in currNode.children))
+                            currNode.children[fnPart] = { fsType: root.fsType, type: "file", fn: currPath };
+                        currNode = currNode.children[fnPart];
+                    }
+                    return currNode;
+                }
+            };
+            LocalStorageFs = class LocalStorageFs {
+                constructor(prefix) {
+                    this.prefix = prefix;
+                }
+                filesKey() { return `${this.prefix}_files`; }
+                fileKey(fn) { return `${this.prefix}_file[${fn}]`; }
+                save() { return localforage.setItem(this.filesKey(), this.root); }
+                getRootNode() {
+                    if (this.root)
+                        return Promise.resolve(this.root);
+                    this.rootPromise = localforage.getItem(this.filesKey())
+                        .then(x => x || { fsType: "local", type: "folder", children: {} }).then(r => this.root = r);
+                    return this.rootPromise;
+                }
+                setRootNode(newRoot) {
+                    this.root = newRoot;
+                    return this.save();
+                }
+                get(fn) { return localforage.getItem(this.fileKey(fn)); }
+                put(fn, data) {
+                    return this.getRootNode().then(root => {
+                        var node = fsHelper.selectNode(root, fn);
+                        return Promise.all([localforage.setItem(this.fileKey(fn), data), this.save()]).then(x => node);
+                    });
+                }
+            };
+            KaitaiFs = class KaitaiFs {
+                constructor(files) {
+                    this.files = files;
+                }
+                getRootNode() { return Promise.resolve(this.files); }
+                get(fn) {
+                    if (fn.toLowerCase().endsWith(".ksy"))
+                        return Promise.resolve($.ajax({ url: fn }));
+                    else
+                        return utils_1.downloadFile(fn);
+                }
+                put(fn, data) { return Promise.reject("KaitaiFs.put is not implemented!"); }
+            };
+            StaticFs = class StaticFs {
+                constructor() { this.files = {}; }
+                getRootNode() { return Promise.resolve(Object.keys(this.files).map(fn => ({ fsType: "static", type: "file", fn }))); }
+                get(fn) { return Promise.resolve(this.files[fn]); }
+                put(fn, data) { this.files[fn] = data; return Promise.resolve(null); }
+            };
+            kaitaiRoot = { fsType: "kaitai" };
+            kaitaiFsFiles.forEach(fn => fsHelper.selectNode(kaitaiRoot, fn));
+            kaitaiFs = new KaitaiFs(kaitaiRoot);
+            staticFs = new StaticFs();
+            localFs = new LocalStorageFs("fs");
+            /* tslint:disable */
+            exports_1("fss", fss = { local: localFs, kaitai: kaitaiFs, static: staticFs });
+        }
+    };
 });
 //# sourceMappingURL=app.files.js.map

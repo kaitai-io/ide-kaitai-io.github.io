@@ -13,7 +13,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-Array.prototype.sortBy = (function() {
+module.exports = (function() {
+
     function identity(v){return v;}
 
     function ignoreCase(v){return typeof(v)==="string" ? v.toLowerCase() : v;}
@@ -35,24 +36,18 @@ Array.prototype.sortBy = (function() {
         return f;
     }
 
-    return function(callbacks){
-        var array = this;
-
-        /* adds a secondary compare function to the target function (`this` context)
-           which is applied in case the first one returns 0 (equal)
-           returns a new compare function, which has a `thenBy` method as well */
-        function tb(func, opt) {
-            var x = typeof(this) == "function" ? this : false;
-            var y = makeCompareFunction(func, opt);
-            var f = x ? function(a, b) {
-                            return x(a,b) || y(a,b);
-                        }
-                      : y;
-            f.thenBy = tb;
-            f.sort = () => array.sort(f);
-            return f;
-        }
-        
-        return tb(callbacks);
-    };
+    /* adds a secondary compare function to the target function (`this` context)
+       which is applied in case the first one returns 0 (equal)
+       returns a new compare function, which has a `thenBy` method as well */
+    function tb(func, opt) {
+        var x = typeof(this) == "function" ? this : false;
+        var y = makeCompareFunction(func, opt);
+        var f = x ? function(a, b) {
+                        return x(a,b) || y(a,b);
+                    }
+                  : y;
+        f.thenBy = tb;
+        return f;
+    }
+    return tb;
 })();
