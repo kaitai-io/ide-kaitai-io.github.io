@@ -1,6 +1,20 @@
-System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
+define(["require", "exports", "vue", "./ComponentLoader"], function (require, exports, Vue, ComponentLoader_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.$internalHooks = [
+        "data",
+        "beforeCreate",
+        "created",
+        "beforeMount",
+        "mounted",
+        "beforeDestroy",
+        "destroyed",
+        "beforeUpdate",
+        "updated",
+        "activated",
+        "deactivated",
+        "render"
+    ];
     function componentFactory(Component, options = {}) {
         options.name = options.name || Component._componentTag || Component.name;
         // prototype props.
@@ -10,7 +24,7 @@ System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
                 return;
             }
             // hooks
-            if ($internalHooks.indexOf(key) > -1) {
+            if (exports.$internalHooks.indexOf(key) > -1) {
                 options[key] = proto[key];
                 return;
             }
@@ -37,28 +51,30 @@ System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
             options.props = {};
         if (!options.props["model"])
             options.props["model"] = Object;
-        console.log('component factory', options.name, options.template);
-        console.log('currentScript', document.currentScript);
-        debugger;
+        //console.log('component factory', options.name, options.template);
+        //console.log('currentScript', document.currentScript);
+        //debugger;
+        if (ComponentLoader_1.componentLoader.templates[options.name])
+            options.template = ComponentLoader_1.componentLoader.templates[options.name];
+        else
+            console.error(`Missing template for component: ${options.name}`);
         // find super
         const superProto = Object.getPrototypeOf(Component.prototype);
         const Super = superProto instanceof Vue ? superProto.constructor : Vue;
         const result = Super.extend(options);
-        if (ComponentLoader_1.componentLoader.templates[options.name])
-            options.template = ComponentLoader_1.componentLoader.templates[options.name];
-        else if (requirejs) {
-            var modulePaths = Array.from(document.head.getElementsByTagName("script")).map(x => x.src);
-            var candidates = modulePaths.filter(x => x.endsWith(`/${options.name}.js`));
-            // if (candidates.length !== 1) console.error(`Could not found component's source path: ${options.name}!`, candidates, modulePaths);
-            ComponentLoader_1.componentLoader.onLoad(candidates[0]).then(() => {
-                options.template = ComponentLoader_1.componentLoader.templates[options.name];
-            });
-        }
+        // else if (requirejs) {
+        //     var modulePaths = Array.from(document.head.getElementsByTagName("script")).map(x => x.src);
+        //     var candidates = modulePaths.filter(x => x.endsWith(`/${options.name}.js`));
+        //     // if (candidates.length !== 1) console.error(`Could not found component's source path: ${options.name}!`, candidates, modulePaths);
+        //     componentLoader.onLoad(candidates[0]).then(() => {
+        //         options.template = componentLoader.templates[options.name];
+        //     });
+        // }
         //componentLoader.loadTemplate(options.name, this);
         Vue.component(options.name, result);
         return result;
     }
-    exports_1("componentFactory", componentFactory);
+    exports.componentFactory = componentFactory;
     function collectDataFromConstructor(vm, Component) {
         // override _init to prevent to init as Vue instance
         Component.prototype._init = function () {
@@ -92,7 +108,7 @@ System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
         });
         return plainData;
     }
-    exports_1("collectDataFromConstructor", collectDataFromConstructor);
+    exports.collectDataFromConstructor = collectDataFromConstructor;
     function Component(options) {
         if (typeof options === "function") {
             return componentFactory(options);
@@ -101,39 +117,12 @@ System.register(["vue", "./ComponentLoader"], function (exports_1, context_1) {
             return componentFactory(Component, options);
         };
     }
-    var Vue, ComponentLoader_1, $internalHooks;
-    return {
-        setters: [
-            function (Vue_1) {
-                Vue = Vue_1;
-            },
-            function (ComponentLoader_1_1) {
-                ComponentLoader_1 = ComponentLoader_1_1;
-            }
-        ],
-        execute: function () {
-            exports_1("$internalHooks", $internalHooks = [
-                "data",
-                "beforeCreate",
-                "created",
-                "beforeMount",
-                "mounted",
-                "beforeDestroy",
-                "destroyed",
-                "beforeUpdate",
-                "updated",
-                "activated",
-                "deactivated",
-                "render"
-            ]);
-            (function (Component) {
-                function registerHooks(keys) {
-                    $internalHooks.push(...keys);
-                }
-                Component.registerHooks = registerHooks;
-            })(Component || (Component = {}));
-            exports_1("default", Component);
+    (function (Component) {
+        function registerHooks(keys) {
+            exports.$internalHooks.push(...keys);
         }
-    };
+        Component.registerHooks = registerHooks;
+    })(Component || (Component = {}));
+    exports.default = Component;
 });
 //# sourceMappingURL=Component.js.map

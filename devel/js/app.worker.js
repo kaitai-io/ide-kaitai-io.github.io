@@ -1,6 +1,15 @@
-System.register([], function (exports_1, context_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var worker = new Worker("js/kaitaiWorker.js");
+    var msgHandlers = {};
+    worker.onmessage = (ev) => {
+        var msg = ev.data;
+        if (msgHandlers[msg.msgId])
+            msgHandlers[msg.msgId](msg);
+        delete msgHandlers[msg.msgId];
+    };
+    var lastMsgId = 0;
     function workerCall(request) {
         return new Promise((resolve, reject) => {
             request.msgId = ++lastMsgId;
@@ -16,33 +25,18 @@ System.register([], function (exports_1, context_1) {
             worker.postMessage(request);
         });
     }
-    var worker, msgHandlers, lastMsgId, workerMethods;
-    return {
-        setters: [],
-        execute: function () {
-            worker = new Worker("js/kaitaiWorker.js");
-            msgHandlers = {};
-            worker.onmessage = (ev) => {
-                var msg = ev.data;
-                if (msgHandlers[msg.msgId])
-                    msgHandlers[msg.msgId](msg);
-                delete msgHandlers[msg.msgId];
-            };
-            lastMsgId = 0;
-            exports_1("workerMethods", workerMethods = {
-                initCode: (sourceCode, mainClassName, ksyTypes) => {
-                    return workerCall({ type: "initCode", args: [sourceCode, mainClassName, ksyTypes] });
-                },
-                setInput: (inputBuffer) => {
-                    return workerCall({ type: "setInput", args: [inputBuffer] });
-                },
-                reparse: (eagerMode) => {
-                    return workerCall({ type: "reparse", args: [eagerMode] });
-                },
-                get: (path) => {
-                    return workerCall({ type: "get", args: [path] });
-                }
-            });
+    exports.workerMethods = {
+        initCode: (sourceCode, mainClassName, ksyTypes) => {
+            return workerCall({ type: "initCode", args: [sourceCode, mainClassName, ksyTypes] });
+        },
+        setInput: (inputBuffer) => {
+            return workerCall({ type: "setInput", args: [inputBuffer] });
+        },
+        reparse: (eagerMode) => {
+            return workerCall({ type: "reparse", args: [eagerMode] });
+        },
+        get: (path) => {
+            return workerCall({ type: "get", args: [path] });
         }
     };
 });

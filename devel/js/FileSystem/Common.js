@@ -1,17 +1,11 @@
-System.register([], function (exports_1, context_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
-    var FsItem;
-    return {
-        setters: [],
-        execute: function () {
-            FsItem = class FsItem {
-                constructor(uri) {
-                    this.uri = uri;
-                }
-            };
-            exports_1("FsItem", FsItem);
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FsItem {
+        constructor(uri) {
+            this.uri = uri;
         }
-    };
+    }
+    exports.FsItem = FsItem;
 });
 //# sourceMappingURL=Common.js.map

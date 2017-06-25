@@ -1,6 +1,6 @@
-System.register([], function (exports_1, context_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
+    Object.defineProperty(exports, "__esModule", { value: true });
     function downloadFile(url) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -11,7 +11,7 @@ System.register([], function (exports_1, context_1) {
             xhr.send();
         });
     }
-    exports_1("downloadFile", downloadFile);
+    exports.downloadFile = downloadFile;
     function saveFile(data, filename) {
         var a = document.createElement("a");
         document.body.appendChild(a);
@@ -24,7 +24,27 @@ System.register([], function (exports_1, context_1) {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
     }
-    exports_1("saveFile", saveFile);
+    exports.saveFile = saveFile;
+    class Delayed {
+        constructor(delay) {
+            this.delay = delay;
+        }
+        do(func) {
+            if (this.timeout)
+                clearTimeout(this.timeout);
+            this.timeout = setTimeout(function () {
+                this.timeout = null;
+                func();
+            }, this.delay);
+        }
+    }
+    exports.Delayed = Delayed;
+    class Convert {
+        static utf8StrToBytes(str) {
+            return new TextEncoder("utf-8").encode(str);
+        }
+    }
+    exports.Convert = Convert;
     function asciiEncode(bytes) {
         var len = bytes.byteLength;
         var binary = "";
@@ -32,7 +52,7 @@ System.register([], function (exports_1, context_1) {
             binary += String.fromCharCode(bytes[i]);
         return binary;
     }
-    exports_1("asciiEncode", asciiEncode);
+    exports.asciiEncode = asciiEncode;
     function hexEncode(bytes) {
         var len = bytes.byteLength;
         var binary = "0x";
@@ -40,13 +60,13 @@ System.register([], function (exports_1, context_1) {
             binary += bytes[i].toString(16);
         return binary;
     }
-    exports_1("hexEncode", hexEncode);
+    exports.hexEncode = hexEncode;
     function arrayBufferToBase64(buffer) {
         var bytes = new Uint8Array(buffer);
         var binary = asciiEncode(bytes);
         return window.btoa(binary);
     }
-    exports_1("arrayBufferToBase64", arrayBufferToBase64);
+    exports.arrayBufferToBase64 = arrayBufferToBase64;
     function readBlob(blob, mode, ...args) {
         return new Promise(function (resolve, reject) {
             var reader = new FileReader();
@@ -55,11 +75,13 @@ System.register([], function (exports_1, context_1) {
             reader["readAs" + mode[0].toUpperCase() + mode.substr(1)](blob, ...args);
         });
     }
-    exports_1("readBlob", readBlob);
+    exports.readBlob = readBlob;
     function htmlescape(s) {
         return $("<div/>").text(s).html();
     }
-    exports_1("htmlescape", htmlescape);
+    exports.htmlescape = htmlescape;
+    ;
+    ;
     function processFiles(files) {
         var resFiles = [];
         for (var i = 0; i < files.length; i++) {
@@ -68,21 +90,21 @@ System.register([], function (exports_1, context_1) {
         }
         return resFiles;
     }
-    exports_1("processFiles", processFiles);
+    exports.processFiles = processFiles;
     function openFilesWithDialog(callback) {
         $(`<input type="file" multiple />`).on("change", e => {
             var files = processFiles(e.target.files);
             callback(files);
         }).click();
     }
-    exports_1("openFilesWithDialog", openFilesWithDialog);
+    exports.openFilesWithDialog = openFilesWithDialog;
     function s(strings, ...values) {
         var result = strings[0];
         for (var i = 1; i < strings.length; i++)
             result += htmlescape(values[i - 1]) + strings[i];
         return result;
     }
-    exports_1("s", s);
+    exports.s = s;
     function collectAllObjects(root) {
         var objects = [];
         function process(value) {
@@ -95,7 +117,7 @@ System.register([], function (exports_1, context_1) {
         process(root);
         return objects;
     }
-    exports_1("collectAllObjects", collectAllObjects);
+    exports.collectAllObjects = collectAllObjects;
     function precallHook(parent, name, callback) {
         var original = parent[name];
         parent[name] = function () {
@@ -104,34 +126,6 @@ System.register([], function (exports_1, context_1) {
         };
         parent[name].prototype = original.prototype;
     }
-    exports_1("precallHook", precallHook);
-    var Delayed, Convert;
-    return {
-        setters: [],
-        execute: function () {
-            Delayed = class Delayed {
-                constructor(delay) {
-                    this.delay = delay;
-                }
-                do(func) {
-                    if (this.timeout)
-                        clearTimeout(this.timeout);
-                    this.timeout = setTimeout(function () {
-                        this.timeout = null;
-                        func();
-                    }, this.delay);
-                }
-            };
-            exports_1("Delayed", Delayed);
-            Convert = class Convert {
-                static utf8StrToBytes(str) {
-                    return new TextEncoder("utf-8").encode(str);
-                }
-            };
-            exports_1("Convert", Convert);
-            ;
-            ;
-        }
-    };
+    exports.precallHook = precallHook;
 });
 //# sourceMappingURL=utils.js.map

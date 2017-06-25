@@ -1,6 +1,6 @@
-System.register(["./app.worker"], function (exports_1, context_1) {
+define(["require", "exports", "./app.worker"], function (require, exports, app_worker_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
+    Object.defineProperty(exports, "__esModule", { value: true });
     function exportToJson(useHex = false) {
         var indentLen = 2;
         var result = "";
@@ -45,17 +45,7 @@ System.register(["./app.worker"], function (exports_1, context_1) {
             return result;
         });
     }
-    exports_1("exportToJson", exportToJson);
-    var app_worker_1;
-    return {
-        setters: [
-            function (app_worker_1_1) {
-                app_worker_1 = app_worker_1_1;
-            }
-        ],
-        execute: function () {
-            ;
-        }
-    };
+    exports.exportToJson = exportToJson;
+    ;
 });
 //# sourceMappingURL=ExportToJson.js.map
