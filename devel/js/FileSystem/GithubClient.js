@@ -1,4 +1,4 @@
-define(["require", "exports", "../utils"], function (require, exports, utils_1) {
+define(["require", "exports", "jquery", "../utils"], function (require, exports, $, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Repository {

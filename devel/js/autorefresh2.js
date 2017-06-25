@@ -1,11 +1,7 @@
-define(["require", "exports", "jquery"], function (require, exports, $) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    function checkModifications() {
-        $.getJSON("/onchange", () => location.reload(true))
-            .fail(() => setTimeout(checkModifications, 750));
-    }
-    if (location.hostname === "127.0.0.1")
-        checkModifications();
-});
+"use strict";
+function checkModifications2() {
+    fetch("/onchange").then(_ => location.reload(true), _ => setTimeout(checkModifications, 750));
+}
+if (location.hostname === "127.0.0.1")
+    checkModifications2();
 //# sourceMappingURL=autorefresh2.js.map
