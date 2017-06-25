@@ -21,12 +21,6 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                     this.model.loadChildren();
             });
         }
-        mounted() {
-            //if (Scrollbar) {
-            //    var scrollbar = Scrollbar.init(this.$el);
-            //    this.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop });
-            //}
-        }
         openSelected() {
             if (!this.selectedItem.open)
                 this.selectedItem.dblclick();
@@ -81,10 +75,13 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
         scrollIntoView(target, alignToTop) {
             target.scrollIntoView(false);
         }
+        getParentBoundingRect() {
+            return this.$el.getBoundingClientRect();
+        }
         scrollSelectedIntoView() {
             var target = this.selectedItem.$el.children[0];
             var rect = target.getBoundingClientRect();
-            var parentRect = this.$el.getBoundingClientRect();
+            var parentRect = this.getParentBoundingRect();
             if (rect.bottom > parentRect.bottom)
                 this.scrollIntoView(target, false);
             else if (rect.top < parentRect.top)
