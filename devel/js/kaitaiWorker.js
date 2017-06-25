@@ -77,11 +77,8 @@ function exportValue(obj, debug, path, noLazy) {
 }
 importScripts("entities.js");
 importScripts("../lib/kaitai_js_runtime/KaitaiStream.js");
-if (typeof define === "undefined") {
-    function define(name, deps, getter) { myself[name] = getter(); }
-    ;
-    define.amd = true;
-}
+this["define"] = function (name, deps, getter) { myself[name] = getter(); };
+define.amd = true;
 var apiMethods = {
     initCode: (sourceCode, mainClassName, ksyTypes) => {
         wi.ksyTypes = ksyTypes;

@@ -56,8 +56,8 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
         //debugger;
         if (ComponentLoader_1.componentLoader.templates[options.name])
             options.template = ComponentLoader_1.componentLoader.templates[options.name];
-        else
-            console.error(`Missing template for component: ${options.name}`);
+        //else
+        //    console.error(`Missing template for component: ${options.name}`);
         // find super
         const superProto = Object.getPrototypeOf(Component.prototype);
         const Super = superProto instanceof Vue ? superProto.constructor : Vue;

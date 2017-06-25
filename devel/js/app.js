@@ -182,7 +182,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         if (localStorage.getItem("doNotShowWelcome") !== "true")
             $("#welcomeModal").modal();
         exports.app.init();
-        ComponentLoader_1.componentLoader.load(["ConverterPanel", "Stepper", "SelectionInput"]).then(() => {
+        ComponentLoader_1.componentLoader.load(["Components/ConverterPanel", "Components/Stepper", "Components/SelectionInput"]).then(() => {
             new Vue({ data: { model: exports.app.vm.converterPanelModel } }).$mount("#converterPanel");
             exports.app.vm.$mount("#infoPanel");
             exports.app.vm.$watch("disableLazyParsing", () => exports.app.reparse());
