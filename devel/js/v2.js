@@ -1,18 +1,23 @@
-define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/ComponentLoader"], function (require, exports, AppLayout_1, FileTree_1, ComponentLoader_1) {
+define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace"], function (require, exports, AppLayout_1, FileTree_1, ace) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     window["layout"] = AppLayout_1.Layout;
-    // <file-tree ref="fileTree" @open-file="openFile" @generate-parser="generateParser"></file-tree>
-    // "Components/TreeView", "Components/ContextMenu", "Components/InputModal", "Parts/FileTree"
-    console.log('load done?', Object.keys(ComponentLoader_1.componentLoader.templatePromises));
     var filetree = new FileTree_1.FileTree();
     filetree.init();
     filetree.$mount(AppLayout_1.Layout.fileTree.element);
-    //componentLoader.load([]).then(() => {
-    //    var filetree = new FileTree();
-    //    filetree.init();
-    //    filetree.$mount(Layout.fileTree.element);
-    //});
-    console.log('fileTree container', AppLayout_1.Layout.fileTree.element);
+    function setupEditor(parent, lang) {
+        var editor = ace.edit(parent.element);
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode(`ace/mode/${lang}`);
+        if (lang === "yaml")
+            editor.setOption("tabSize", 2);
+        parent.container.on("resize", () => editor.resize());
+        return editor;
+    }
+    var ksyEditor = setupEditor(AppLayout_1.Layout.ksyEditor, 'yaml');
+    filetree.$on("open-file", (treeNode, data) => {
+        var str = new TextDecoder().decode(new Uint8Array(data));
+        ksyEditor.setValue(str);
+    });
 });
 //# sourceMappingURL=v2.js.map
