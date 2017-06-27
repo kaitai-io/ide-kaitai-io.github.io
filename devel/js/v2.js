@@ -24,14 +24,31 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
         return editor;
     }
     var ksyEditor = setupEditor(AppLayout_1.Layout.ksyEditor, 'yaml');
-    filetree.$on("open-file", (treeNode, data) => {
-        var str = new TextDecoder().decode(new Uint8Array(data));
-        ksyEditor.setValue(str);
+    var jsCode = setupEditor(AppLayout_1.Layout.jsCode, 'javascript');
+    var jsCodeDebug = setupEditor(AppLayout_1.Layout.jsCodeDebug, 'javascript');
+    filetree.$on("open-file", (treeNode) => {
+        console.log(treeNode);
+        openFile(treeNode.uri.uri);
     });
+    var ksyContent;
+    function openFile(uri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let content = yield FileTree_1.fss.read(uri);
+            if (uri.endsWith(".ksy")) {
+                ksyContent = new TextDecoder().decode(new Uint8Array(content));
+                ksyEditor.setValue(ksyContent, -1);
+            }
+        });
+    }
     (function () {
         return __awaiter(this, void 0, void 0, function* () {
             var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
-            yield sandbox.eval("console.log('hello from sandbox', location)");
+            yield sandbox.loadScript(new URL('js/KaitaiWorkerV2.js', location.href).href);
+            yield openFile("https:///formats/archive/zip.ksy");
+            var compilationResult = yield sandbox.compile(ksyContent);
+            console.log('compilationResult', compilationResult);
+            jsCode.setValue(Object.values(compilationResult.releaseCode)[0], -1);
+            jsCodeDebug.setValue(Object.values(compilationResult.debugCode)[0], -1);
         });
     })();
 });

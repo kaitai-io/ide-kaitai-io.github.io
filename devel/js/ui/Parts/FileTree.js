@@ -19,18 +19,18 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         kaitaiFsFiles.push(`formats/archive/test_${i}.ksy`);
     var queryParams = {};
     location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => queryParams[x[0]] = x[1]);
-    var fss = new FsSelector_1.FsSelector();
-    fss.addFs(new BrowserFileSystem_1.BrowserFileSystem());
-    fss.addFs(new BrowserFileSystem_1.BrowserLegacyFileSystem());
+    exports.fss = new FsSelector_1.FsSelector();
+    exports.fss.addFs(new BrowserFileSystem_1.BrowserFileSystem());
+    exports.fss.addFs(new BrowserFileSystem_1.BrowserLegacyFileSystem());
     var remoteFs = new RemoteFileSystem_1.RemoteFileSystem();
     remoteFs.mappings["127.0.0.1:8001/default"] = { secret: queryParams.secret };
-    fss.addFs(remoteFs);
+    exports.fss.addFs(remoteFs);
     var githubClient = new GithubClient_1.GithubClient(queryParams.access_token);
     var githubFs = new GithubFileSystem_1.GithubFileSystem(githubClient);
-    fss.addFs(githubFs);
+    exports.fss.addFs(githubFs);
     var staticFs = new StaticFileSystem_1.StaticFileSystem();
     kaitaiFsFiles.forEach(fn => staticFs.write("static://" + fn, new ArrayBuffer(0)));
-    fss.addFs(staticFs);
+    exports.fss.addFs(staticFs);
     function getRelativeUrl(url) {
         var a = document.createElement("a");
         a.href = url;
@@ -38,7 +38,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
     }
     var httpFs = new HttpFileSystem_1.HttpFileSystem(kaitaiFsFiles.reduce((obj, fn) => { obj[`/${fn}`] = getRelativeUrl(fn); return obj; }, {}));
     console.log(httpFs.fileUrls);
-    fss.addFs(httpFs);
+    exports.fss.addFs(httpFs);
     class FsTreeNode {
         constructor(parent, uri, fs = null) {
             this.parent = parent;
@@ -82,7 +82,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         loadChildren() { return Promise.resolve(); }
     }
     function addRootNode(text, icon, uri) {
-        var node = new FsTreeNode(null, new FsUri_1.FsUri(uri), fss);
+        var node = new FsTreeNode(null, new FsUri_1.FsUri(uri), exports.fss);
         node.text = text;
         node.icon = icon;
         return node;
@@ -118,15 +118,14 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         openFile() {
             return __awaiter(this, void 0, void 0, function* () {
-                let data = yield fss.read(this.selectedUri);
-                this.$emit("open-file", this.selectedFsItem, data);
+                this.$emit("open-file", this.selectedFsItem);
             });
         }
         generateParser(lang, aceLangOrDebug) {
             return __awaiter(this, void 0, void 0, function* () {
                 var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
                 var debug = typeof aceLangOrDebug === "boolean" ? aceLangOrDebug : false;
-                let data = yield fss.read(this.selectedUri);
+                let data = yield exports.fss.read(this.selectedUri);
                 this.$emit("generate-parser", lang, aceLang, debug, data);
             });
         }

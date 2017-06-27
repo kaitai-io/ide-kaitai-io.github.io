@@ -10,7 +10,7 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
     }
     exports.LayoutItem = LayoutItem;
     class Component extends LayoutItem {
-        get component() { return this.contentItem.contentItems[0]; }
+        get component() { return (this.contentItem.isComponent ? this.contentItem : this.contentItem.contentItems[0]); }
         get container() { return this.component.container; }
         get element() { return this.container.getElement().get(0); }
         get title() { return this.component.config.title; }
