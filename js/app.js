@@ -34,7 +34,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         importYaml(name, mode) {
             return new Promise((resolve, reject) => {
                 var loadFn;
-                if (name.startsWith('/'))
+                if (mode === "abs")
                     loadFn = name;
                 else {
                     var fnParts = this.rootFsItem.fn.split('/');
@@ -44,6 +44,8 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
                 if (loadFn.startsWith("/"))
                     loadFn = loadFn.substr(1);
                 console.log(`import yaml: ${name}, mode: ${mode}, loadFn: ${loadFn}, root:`, this.rootFsItem);
+                if (this.rootFsItem.fsType === "kaitai" && mode === "abs")
+                    loadFn = "/formats/" + loadFn;
                 return app_files_1.fss[this.rootFsItem.fsType].get(`${loadFn}.ksy`).then(ksyContent => {
                     var ksyModel = YAML.parse(ksyContent);
                     return resolve(ksyModel);
