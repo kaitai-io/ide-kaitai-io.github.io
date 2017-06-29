@@ -32,9 +32,18 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
     ;
     class JsImporter {
         importYaml(name, mode) {
-            return new Promise(function (resolve, reject) {
-                console.log(`import yaml: ${name}, mode: ${mode}`);
-                return app_files_1.fss.kaitai.get(`formats/${name}.ksy`).then(ksyContent => {
+            return new Promise((resolve, reject) => {
+                var loadFn;
+                if (name.startsWith('/'))
+                    loadFn = name;
+                else {
+                    var fnParts = this.rootFsItem.fn.split('/');
+                    fnParts.pop();
+                    loadFn = fnParts.join('/') + '/' + name;
+                }
+                loadFn = loadFn.substr(1);
+                console.log(`import yaml: ${name}, mode: ${mode}, loadFn: ${loadFn}, root:`, this.rootFsItem);
+                return app_files_1.fss[this.rootFsItem.fsType].get(`${loadFn}.ksy`).then(ksyContent => {
                     var ksyModel = YAML.parse(ksyContent);
                     return resolve(ksyModel);
                 });
@@ -42,8 +51,9 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
         }
     }
     var jsImporter = new JsImporter();
-    function compile(srcYaml, kslang, debug) {
+    function compile(srcYamlFsItem, srcYaml, kslang, debug) {
         var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
+        jsImporter.rootFsItem = srcYamlFsItem;
         var compilerSchema;
         try {
             kaitaiIde.ksySchema = ksySchema = YAML.parse(srcYaml);
@@ -124,7 +134,7 @@ define(["require", "exports", "./app.layout", "./app.errors", "./app.files", "./
             if (changed && (ksyFsItem.fsType === 'kaitai' || ksyFsItem.fsType === 'static'))
                 copyPromise = app_files_1.addKsyFile('localStorage', ksyFsItem.fn.replace('.ksy', '_modified.ksy'), srcYaml).then(fsItem => localforage.setItem(ksyFsItemName, fsItem));
             return copyPromise.then(() => changed ? app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml) : Promise.resolve()).then(() => {
-                return compile(srcYaml, 'javascript', 'both').then(compiled => {
+                return compile(ksyFsItem, srcYaml, 'javascript', 'both').then(compiled => {
                     if (!compiled)
                         return;
                     var fileNames = Object.keys(compiled.release);
