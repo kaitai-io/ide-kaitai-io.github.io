@@ -4,9 +4,18 @@
 # https://github.com/python/cpython/blob/2.7/Lib/dis.py
 # https://github.com/python/cpython/blob/2.7/Lib/opcode.py
 meta:
-  id: pyc
+  id: python_pyc_27
+  application: Python
   file-extension: pyc
   endian: le
+doc: |
+  Python interpreter runs .py files in 2 step process: first, it
+  produces bytecode, which it then executes. Translation of .py source
+  into bytecode is time-consuming, so Python dumps compiled bytecode
+  into .pyc files, to be reused from cache at later time if possible.
+
+  .pyc file is essentially a raw dump of `py_object` (see `body`) with
+  a simple header prepended.
 seq:
   - id: version_magic
     type: u2
@@ -116,8 +125,8 @@ types:
         90 : store_name           # Index in name list
         91 : delete_name          # ""
         92 : unpack_sequence      # Number of tuple items
-        93 : for_iter             
-        94 : list_append          
+        93 : for_iter
+        94 : list_append
         95 : store_attr           # Index in name list
         96 : delete_attr          # ""
         97 : store_global         # ""
