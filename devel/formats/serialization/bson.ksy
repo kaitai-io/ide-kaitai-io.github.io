@@ -2,7 +2,7 @@ meta:
   id: bson
   file-extension: bson
   endian: le
-  license: CC0
+  license: CC0-1.0
 doc: >
   BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like documents. Like JSON, BSON supports the embedding of documents and arrays within other documents and arrays. BSON also contains extensions that allow representation of data types that are not part of the JSON spec. For example, BSON has a Date type and a BinData type.
   BSON can be compared to binary interchange formats, like Protocol Buffers. BSON is more "schemaless" than Protocol Buffers, which can give it an advantage in flexibility but also a slight disadvantage in space efficiency (BSON has overhead for field names within the serialized data).
@@ -21,7 +21,6 @@ seq:
     contents: [0]
 types:
   code_with_scope:
-    doc: ""
     seq:
       - id: id
         type: s4
@@ -178,3 +177,16 @@ types:
         0x13: number_decimal
         0x7f: max_key #Special type which compares higher than all other possible BSON element values.
         -1: min_key #Special type which compares lower than all other possible BSON element values.
+  u3:
+    doc: |
+      Implements unsigned 24-bit (3 byte) integer.
+    seq:
+      - id: b1
+        type: u1
+      - id: b2
+        type: u1
+      - id: b3
+        type: u1
+    instances:
+      value:
+        value: 'b1 | (b2 << 8) | (b3 << 16)'

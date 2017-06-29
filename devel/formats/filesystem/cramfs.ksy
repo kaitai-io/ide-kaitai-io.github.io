@@ -1,6 +1,7 @@
 meta:
   id: cramfs
   endian: le
+  license: MIT
 
 seq:
   - id: super_block
@@ -14,7 +15,6 @@ types:
   super_block_struct:
     seq:
       - id: magic
-        type: u4
         contents: [0x45, 0x3D, 0xCD, 0x28]
       - id: size
         type: u4
@@ -23,9 +23,6 @@ types:
       - id: future
         type: u4
       - id: signature
-        type: str
-        size: 16
-        encoding: ASCII
         contents: 'Compressed ROMFS'
       - id: fsid
         type: info

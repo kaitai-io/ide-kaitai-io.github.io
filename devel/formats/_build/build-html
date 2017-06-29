@@ -9,6 +9,9 @@ require 'yaml'
 require 'fileutils'
 require 'erb'
 require 'cgi'
+require 'set'
+
+require 'commonmarker'
 
 class FormatPagesGenerator
   LANGS = {
@@ -26,16 +29,32 @@ class FormatPagesGenerator
   }
 
   CATS = {
-    'archive' => {title: 'Archive files', icon: 'archive'},
-    'executable' => {title: 'Executables and byte-code', icon: 'gears'},
+    'archive' => {title: 'Archive Files', icon: 'archive'},
+    'common' => {title: 'Commonly Used Data Types', icon: 'arrows'},
+    'database' => {title: 'Databases', icon: 'database'},
+    'executable' => {title: 'Executables and Byte-code', icon: 'gears'},
     'filesystem' => {title: 'Filesystems', icon: 'hdd-o'},
-    'game' => {title: 'Game data files', icon: 'gamepad'},
-    'hardware' => {title: 'Hardware protocols', icon: 'microchip'},
-    'image' => {title: 'Image files', icon: 'file-image-o'},
-    'media' => {title: 'Multimedia files', icon: 'video-camera'},
-    'network' => {title: 'Networking protocols', icon: 'sitemap'},
-    'serialization' => {title: 'Serialization protocols'},
+    'firmware' => {title: 'Firmware', icon: 'microchip'},
+    'font' => {title: 'Fonts', icon: 'font'},
+    'game' => {title: 'Game Data Files', icon: 'gamepad'},
+    'geospatial' => {title: 'Geospatial (Maps)', icon: 'map'},
+    'hardware' => {title: 'Hardware Protocols', icon: 'microchip'},
+    'image' => {title: 'Image Files', icon: 'file-image-o'},
+    'log' => {title: 'Logs', icon: 'database'},
+    'machine_code' => {title: 'CPU / Machine Code Disassembly', icon: 'industry'},
+    'media' => {title: 'Multimedia Files', icon: 'video-camera'},
+    'network' => {title: 'Networking Protocols', icon: 'sitemap'},
+    'scientific' => {title: 'Scientific Applications', icon: 'flask'},
+    'serialization' => {title: 'Serialization Protocols'},
+    'windows' => {title: 'Windows-specific', icon: 'windows'},
   }
+
+  VALID_LICENSES = Set.new([
+    'CC0-1.0',
+    'MIT',
+    'Unlicense',
+    'WTFPL',
+  ])
 
   def initialize(ksy_dir, target_dir, html_dir)
     @ksy_dir = File.realpath(ksy_dir)
@@ -76,13 +95,18 @@ class FormatPagesGenerator
         puts
 
         FileUtils::mkdir_p(file_dir)
-        generate_base_page(file_id, file_dir, yaml, yaml_str, cat_id)
 
+        good_langs = ['index']
         LANGS.each_key { |lang|
           next if lang == 'index'
-          copy_target_to_html(file_id, "#{file_dir}/src", lang)
-          generate_lang_page(lang, file_id, file_dir, yaml, yaml_str, cat_id)
+          good_langs << lang if copy_target_to_html(file_id, "#{file_dir}/src", lang)
         }
+
+        good_langs.each { |lang|
+          generate_lang_page(lang, file_id, file_dir, yaml, yaml_str, cat_id, good_langs)
+        }
+
+        generate_base_page(file_id, file_dir, yaml, yaml_str, cat_id, good_langs)
 
         @by_cat[cat_id] ||= []
         @by_cat[cat_id] << {
@@ -98,11 +122,20 @@ class FormatPagesGenerator
     generate_index
   end
 
-  def generate_base_page(file_id, out_dir, yaml, yaml_str, cat_id)
+  def generate_base_page(file_id, out_dir, yaml, yaml_str, cat_id, good_langs)
     File.open("#{out_dir}/index.html", 'w') { |out|
       meta = yaml['meta']
+
+      license = meta['license']
+      if license
+        warn "#{file_id}: license #{license.inspect} does not look valid" unless VALID_LICENSES.include?(license)
+      else
+        warn "#{file_id}: no license"
+      end
+
       format_name = get_format_name(meta)
       cur_lang = 'index'
+      page_title = format_name + " format spec for Kaitai Struct"
       out.write @erb_header.result(binding)
       out.write @erb_fheader.result(binding)
       out.write @erb_base.result(binding)
@@ -110,11 +143,17 @@ class FormatPagesGenerator
     }
   end
 
-  def generate_lang_page(cur_lang, file_id, out_dir, yaml, yaml_str, cat_id)
+  def generate_lang_page(cur_lang, file_id, out_dir, yaml, yaml_str, cat_id, good_langs)
     puts "  * generating #{cur_lang} page for #{file_id}"
     File.open("#{out_dir}/#{cur_lang}.html", 'w') { |out|
       meta = yaml['meta']
       format_name = get_format_name(meta)
+      page_title = "#{format_name}: " + (if cur_lang == 'graphviz'
+        "GraphViz block diagram (.dot) source: Kaitai Struct"
+      else
+        "#{LANGS[cur_lang][:name]} parsing library"
+      end)
+
       src_files = source_file_names(file_id, cur_lang).map { |fn|
         path = "src/#{cur_lang}/#{fn}"
         begin
@@ -143,6 +182,7 @@ class FormatPagesGenerator
 
   def generate_index
     File.open("#{@html_dir}/index.html", 'w') { |out|
+      page_title = "File Format Gallery for Kaitai Struct"
       out.write @erb_header.result(binding)
       out.write @erb_index.result(binding)
       out.write @erb_footer.result(binding)
@@ -207,9 +247,11 @@ class FormatPagesGenerator
       begin
         FileUtils::cp("#{@target_dir}/#{lang}/#{tgt_file}", "#{tgt_dir}/#{File.basename(tgt_file)}")
       rescue Errno::ENOENT
-        puts "... file not found"
+        $stderr.puts "#{@target_dir}/#{lang}/#{tgt_file}: file not found"
+        return false
       end
     }
+    return true
   end
 
   def source_file_gen_names(file_id, lang)
