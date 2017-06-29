@@ -290,13 +290,6 @@ declare namespace GoldenLayout {
         popout?: string;
     }
 
-    export interface Component extends ContentItem {
-        componentName: string;
-        config: ComponentConfig;
-        container: Container;
-        type: "component";
-    }
-
     export interface ItemConfig {
         /**
             * The type of the item. Possible values are 'row', 'column', 'stack', 'component' and 'react-component'.

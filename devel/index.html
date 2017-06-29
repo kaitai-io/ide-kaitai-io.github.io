@@ -13,50 +13,56 @@
         _ga('create', 'UA-76299550-3', 'auto');
         _ga('send', 'pageview');
     </script>
-    <!-- End Google Analytics -->    
+    <!-- End Google Analytics -->
     <script>
         // HTTPS redirect
         var loc = location.toString();
         if (loc.indexOf("http://ide.kaitai.io/") === 0)
             location = "https" + loc.substring(4);
+        
+        function ga(category, action, label, value) {
+            console.log(`[GA Event] cat:${category} act:${action} lab:${label || ''}`);
+            typeof _ga !== "undefined" && _ga('send', 'event', category, action, label, value);
+        }            
     </script>
-
-    <link rel="stylesheet" type="text/css" href="lib/_npm/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/contextmenu.css" />
-    <link rel="stylesheet" type="text/css" href="lib/_npm/goldenlayout/goldenlayout-base.css" />
-    <link rel="stylesheet" type="text/css" href="lib/_npm/goldenlayout/goldenlayout-dark-theme.css" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/contextmenu.css" />
+    <link rel="stylesheet" type="text/css" href="lib/goldenlayout/goldenlayout-base.css" />
+    <link rel="stylesheet" type="text/css" href="lib/goldenlayout/goldenlayout-dark-theme.css" />
     <link rel="stylesheet" type="text/css" href="css/HexViewer.css" />
     <link rel="stylesheet" type="text/css" href="css/app.css" />
-    <link rel="stylesheet" type="text/css" href="lib/_npm/jstree/themes/default/style.min.css" />
-    <link rel="stylesheet" type="text/css" href="lib/_npm/jstree/themes/default-dark/style.min.css" />
-    <link rel="stylesheet" type="text/css" href="lib/_npm/font-awesome/css/font-awesome.min.css" />
-
-    <script src="lib/_npm/requirejs/require.js"></script>
-    <script src="lib/_npm/jquery/jquery.min.js"></script>
-    <script src="lib/_npm/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/jstree/themes/default/style.min.css" />
+    <link rel="stylesheet" type="text/css" href="lib/jstree/themes/default-dark/style.min.css" />
+    <link rel="stylesheet" type="text/css" href="lib/font-awesome/font-awesome.min.css" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.js"></script>
+    <script src="lib/jquery/jquery-3.1.1.min.js"></script>
+    <script src="lib/bootstrap/bootstrap.min.js"></script>
     <script src="lib/kaitai/yaml.js"></script>
     <script src="lib/kaitai/kaitai-struct-compiler-fastopt.js"></script>
-    <script src="lib/_npm/ace/ace.js"></script>
+    <script src="lib/ace/ace.js"></script>
+    <script src="lib/BigInteger/BigInteger.js"></script>
     <script src="lib/date.format/date.format.js"></script>
 
     <script src="js/autorefresh.js"></script>
     <script src="js/config.js"></script>
     
-    <script src="js/extensions.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/entities.js"></script>
     <script src="js/kaitaiFsFiles.js"></script>
     <script>
         var paths = {};
-        ["bowser", "jstree", "localforage", "goldenlayout", "vue"].forEach(
-            name => paths[name] = `../lib/_npm/${name}/${name}`);
-        paths["bigInt"] = "../lib/_npm/BigInteger/BigInteger";
+        ["bowser", "jstree", "localforage", "goldenlayout"].forEach(
+            name => paths[name] = `/lib/${name}/${name}`);
 
-        requirejs.config({ baseUrl: "js/", paths: paths });
-        require(["app.unsupportedBrowser"]);
-        require(["jstree", "app"]);
+        requirejs.config({ baseUrl: 'js/', paths: paths });
+        require(['jstree', 'app.unsupportedBrowser', 'app'], function () { });
+
+        // index changed
     </script>
 </head>
 <body>
+
 <div id="unsupportedBrowser">
     Your browser is not supported. Features may or may not working. <a href="http://outdatedbrowser.com/" target="_blank">Please use the latest Chrome or Firefox.</a>
     <i class="closeBtn glyphicon glyphicon-remove"></i>
@@ -71,31 +77,58 @@
         Drag &amp; drop a file here<br />to upload
     </div>
 </div>
-    
+
 <div id="infoPanel">
-    <selection-input :start="selectionStart" :end="selectionEnd" @selectionChanged="selectionChanged"></selection-input>
+    <div>
+        <span class="selectionText">selection</span>
+        <span class="selGroup input-group">
+            <input type="text" class="selStart form-control"><span class="input-group-addon">-</span><input type="text" class="selEnd form-control">
+        </span>
+    </div>
     <div id="disableLazyParsingDiv">
-        <input type="checkbox" id="disableLazyParsing" v-model="disableLazyParsing" />
+        <input type="checkbox" id="disableLazyParsing" />
         <label for="disableLazyParsing">disable lazy parsing</label>
     </div>
     <div id="unparsedDiv">
         Unparsed parts:
-        <stepper :items="unparsed" @changed="selectInterval"></stepper>
+        <a id="unparsedPrev" href="#">&lt;&lt;</a>
+        <span id="unparsedCurr">1</span> / <span id="unparsedTotal">1</span>
+        <a id="unparsedNext" href="#">&gt;&gt;</a>
     </div>
     <div id="bytesDiv">
         Byte arrays:
-        <stepper :items="byteArrays" @changed="selectInterval"></stepper>
+        <a id="bytesPrev" href="#">&lt;&lt;</a>
+        <span id="bytesCurr">1</span> / <span id="bytesTotal">1</span>
+        <a id="bytesNext" href="#">&gt;&gt;</a>
     </div>
     <div id="parsedPathDiv">Selected: <span id="parsedPath"></span></div>
     <div id="exportToJsonDiv">
-        <a @click="exportToJson(false)" href="#">export to JSON</a> (<a @click="exportToJson(true)" href="#">hex</a>)
+        <a id="exportToJson" href="#">export to JSON</a> (<a id="exportToJsonHex" href="#">hex</a>)
     </div>
     <div>
-        <a id="aboutWebIde" @click="about" href="#">about webide</a>
+        <a id="aboutWebIde" href="#">about webide</a>
     </div>
 </div>
-    
-<converter-panel id="converterPanel" :model="model"></converter-panel>    
+
+<div id="converterPanel">
+    <table>
+        <thead><tr><th class="typeCol">Type</th><th class="typeValue">Value (unsigned)</th><th>(signed)</th></tr></thead>
+        <tr class="i8      int"> <td>i8</td>      <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i16le   int"> <td>i16le</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i32le   int"> <td>i32le</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i64le   int"> <td>i64le</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i16be   int"> <td>i16be</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i32be   int"> <td>i32be</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="i64be   int"> <td>i64be</td>   <td class="val unsigned"></td><td class="val signed"></td></tr>
+        <tr class="float">       <td>float</td>   <td class="val" colspan="2"></td></tr>
+        <tr class="double">      <td>double</td>  <td class="val" colspan="2"></td></tr>
+        <tr class="unixts">      <td>unixts</td>  <td class="val" colspan="2"></td></tr>
+        <tr class="ascii   str"> <td>ascii</td>   <td colspan="2"><div class="val"></div></td></tr>
+        <tr class="utf8    str"> <td>utf8</td>    <td colspan="2"><div class="val"></div></td></tr>
+        <tr class="utf16le str"> <td>utf16le</td> <td colspan="2"><div class="val"></div></td></tr>
+        <tr class="utf16be str"> <td>utf16be</td> <td colspan="2"><div class="val"></div></td></tr>
+    </table>
+</div>
 
 <div id="fileTreeCont">
     <div id="fileTree" class="fileTree">
@@ -215,6 +248,17 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+<div id="practicePanel">
+    <div class="description">challenge description</div>
+    <div id="practiceDiff"></div>
+    <div id="practiceStatus">
+        <span class="label label-warning inProgress">In progress</span>
+        <span class="label label-success inactive success">Success!</span>
+        <span class="label label-success acceptedByServer">Accepted by server! :)</span>
+        <span class="label label-danger declinedByServer">Declined by server :(</span>
+    </div>
+</div>
 </body>
 </html>
