@@ -258,7 +258,7 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
         }
         ctxAction(uiFiles.downloadItem, () => downloadFiles());
         uiFiles.downloadFile.on("click", () => downloadFiles());
-        uiFiles.uploadFile.on("click", () => utils_1.openFilesWithDialog(app_1.app.addNewFiles));
+        uiFiles.uploadFile.on("click", () => utils_1.openFilesWithDialog(files => app_1.app.addNewFiles(files)));
         $("#newKsyModal").on("shown.bs.modal", () => { $("#newKsyModal input").focus(); });
         $("#newKsyModal form").submit(function (event) {
             event.preventDefault();

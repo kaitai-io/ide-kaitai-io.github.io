@@ -194,7 +194,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
             exec: function (editor) { exports.app.reparse(); }
         });
-        FileDrop_1.initFileDrop("fileDrop", exports.app.addNewFiles);
+        FileDrop_1.initFileDrop("fileDrop", files => exports.app.addNewFiles(files));
         function loadCachedFsItem(cacheKey, defFsType, defSample) {
             return localforage.getItem(cacheKey).then((fsItem) => exports.app.loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: "file" }, false));
         }
