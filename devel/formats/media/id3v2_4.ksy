@@ -72,7 +72,7 @@ types:
     types:
       flags_ex:
         seq:
-          - id: reserved1
+          - id: reserved
             type: b1
           - id: flag_update
             type: b1
@@ -80,7 +80,7 @@ types:
             type: b1
           - id: flag_restrictions
             type: b1
-          - id: reserved2
+          - id: reserved
             type: b4
 
   # Section 3.3. Padding
@@ -134,7 +134,7 @@ types:
     types:
       flags_status:
         seq:
-          - id: reserved1
+          - id: reserved
             type: b1
           - id: flag_discard_alter_tag
             type: b1
@@ -142,15 +142,15 @@ types:
             type: b1
           - id: flag_read_only
             type: b1
-          - id: reserved2
+          - id: reserved
             type: b4
       flags_format:
         seq:
-          - id: reserved1
+          - id: reserved
             type: b1
           - id: flag_grouping
             type: b1
-          - id: reserved2
+          - id: reserved
             type: b2
           - id: flag_compressed
             type: b1

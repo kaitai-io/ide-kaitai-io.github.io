@@ -1,5 +1,5 @@
 meta:
-  id: avantes_roh60
+  id: roh
   file-extension: roh
   license: CC0-1.0
   endian: le

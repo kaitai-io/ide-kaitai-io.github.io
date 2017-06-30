@@ -1,9 +1,7 @@
 meta:
   id: doom_wad
-  application: id Tech 1
-  file-extension: wad
-  license: CC0-1.0
   endian: le
+  application: id Tech 1
 seq:
   - id: magic
     type: str
@@ -26,7 +24,6 @@ types:
         type: str
         size: 8
         encoding: ASCII
-        pad-right: 0
     instances:
       contents:
         io: _root._io
@@ -35,15 +32,12 @@ types:
         type:
           switch-on: name
           cases:
-            '"THINGS"': things
+            '"THINGS\0\0"': things
             '"LINEDEFS"': linedefs
             '"SIDEDEFS"': sidedefs
             '"VERTEXES"': vertexes
             '"BLOCKMAP"': blockmap
-            '"SECTORS"': sectors
-            '"TEXTURE1"': texture12
-            '"TEXTURE2"': texture12
-            '"PNAMES"': pnames
+            '"SECTORS\0"': sectors
   things:
     seq:
       - id: entries
@@ -171,7 +165,7 @@ types:
         encoding: ASCII
       - id: light
         type: s2
-        doc: |
+        doc: >
           Light level of the sector [0..255]. Original engine uses
           COLORMAP to render lighting, so only 32 actual levels are
           available (i.e. 0..7, 8..15, etc).
@@ -180,7 +174,7 @@ types:
         enum: special_sector
       - id: tag
         type: u2
-        doc: |
+        doc: >
           Tag number. When the linedef with the same tag number is
           activated, some effect will be triggered in this sector.
     enums:
@@ -209,85 +203,6 @@ types:
         22: light_sequence_start
         23: light_sequence_special1
         24: light_sequence_special2
-  texture12:
-    doc: |
-      Used for TEXTURE1 and TEXTURE2 lumps, which designate how to
-      combine wall patches to make wall textures. This essentially
-      provides a very simple form of image compression, allowing
-      certain elements ("patches") to be reused / recombined on
-      different textures for more variety in the game.
-    doc-ref: http://doom.wikia.com/wiki/TEXTURE1
-    seq:
-      - id: num_textures
-        type: s4
-        doc: Number of wall textures
-      - id: textures
-        type: texture_index
-        repeat: expr
-        repeat-expr: num_textures
-    types:
-      texture_index:
-        seq:
-          - id: offset
-            type: s4
-        instances:
-          body:
-            pos: offset
-            type: texture_body
-      texture_body:
-        -orig-id: maptexture_t
-        seq:
-          - id: name
-            type: str
-            size: 8
-            pad-right: 0
-            encoding: ASCII
-            doc: Name of a texture, only `A-Z`, `0-9`, `[]_-` are valid
-          - id: masked
-            type: u4
-          - id: width
-            type: u2
-          - id: height
-            type: u2
-          - id: column_directory
-            type: u4
-            doc: Obsolete, ignored by all DOOM versions
-          - id: num_patches
-            type: u2
-            doc: Number of patches that are used in a texture
-          - id: patches
-            type: patch
-            repeat: expr
-            repeat-expr: num_patches
-      patch:
-        -orig-id: mappatch_t
-        seq:
-          - id: origin_x
-            type: s2
-            doc: X offset to draw a patch at (pixels from left boundary of a texture)
-          - id: origin_y
-            type: s2
-            doc: Y offset to draw a patch at (pixels from upper boundary of a texture)
-          - id: patch_id
-            type: u2
-            doc: Identifier of a patch (as listed in PNAMES lump) to draw
-          - id: step_dir
-            type: u2
-          - id: colormap
-            type: u2
-  pnames:
-    doc-ref: http://doom.wikia.com/wiki/PNAMES
-    seq:
-      - id: num_patches
-        type: u4
-        doc: Number of patches registered in this global game directory
-      - id: names
-        type: str
-        size: 8
-        encoding: ASCII
-        pad-right: 0
-        repeat: expr
-        repeat-expr: num_patches
 instances:
   index:
     pos: index_offset

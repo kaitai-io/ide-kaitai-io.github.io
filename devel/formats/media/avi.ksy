@@ -3,7 +3,6 @@ meta:
   endian: le
   title: Microsoft AVI file format
   ks-version: 0.7
-  license: CC0-1.0
 doc-ref: https://msdn.microsoft.com/en-us/library/ms779636.aspx
 seq:
   - id: magic1
