@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./ui/ComponentLoader", "./ui/Components/ConverterPanel", "./ExportToJson", "./ui/Component", "./KaitaiServices", "./app.errors"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1) {
+define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./ui/ComponentLoader", "./ui/Components/ConverterPanel", "./ExportToJson", "./ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
@@ -177,7 +177,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     localStorage.setItem("lastVersion", kaitaiIde.version);
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
-        $("#compilerVersion").text(new io.kaitai.struct.MainJs().version + " (" + new io.kaitai.struct.MainJs().buildDate + ")");
+        $("#compilerVersion").text(new KaitaiStructCompiler().version + " (" + new KaitaiStructCompiler().buildDate + ")");
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
         if (localStorage.getItem("doNotShowWelcome") !== "true")
             $("#welcomeModal").modal();

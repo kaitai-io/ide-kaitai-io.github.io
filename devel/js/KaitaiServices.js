@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.files", "./utils/PerformanceHelper"], function (require, exports, app_files_1, PerformanceHelper_1) {
+define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaitai-struct-compiler"], function (require, exports, app_files_1, PerformanceHelper_1, KaitaiStructCompiler) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SchemaUtils {
@@ -70,7 +70,7 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper"], funct
                 return Promise.resolve();
             else {
                 var perfCompile = PerformanceHelper_1.performanceHelper.measureAction("Compilation");
-                var ks = new io.kaitai.struct.MainJs();
+                var ks = new KaitaiStructCompiler();
                 var rReleasePromise = (debug === false || debug === "both") ? ks.compile(kslang, compilerSchema, this.jsImporter, false) : Promise.resolve(null);
                 var rDebugPromise = (debug === true || debug === "both") ? ks.compile(kslang, compilerSchema, this.jsImporter, true) : Promise.resolve(null);
                 //console.log("rReleasePromise", rReleasePromise, "rDebugPromise", rDebugPromise);
