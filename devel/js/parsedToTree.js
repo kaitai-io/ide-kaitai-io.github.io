@@ -212,8 +212,8 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                 if (isRoot || isInstance) {
                     this.fillKsyTypes(exp);
                     var intervals = [];
-                    var fillIntervals = (exp) => {
-                        var objects = utils_1.collectAllObjects(exp);
+                    var fillIntervals = (rootExp) => {
+                        var objects = utils_1.collectAllObjects(rootExp);
                         var lastEnd = -1;
                         for (let exp of objects) {
                             if (!(exp.type === ObjectType.Primitive || exp.type === ObjectType.TypedArray))
