@@ -1,8 +1,6 @@
 define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker", "./app"], function (require, exports, IntervalHelper_1, utils_1, app_worker_1, app_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    ;
-    ;
     class ParsedTreeHandler {
         constructor(jsTreeElement, exportedRoot, ksyTypes) {
             this.jsTreeElement = jsTreeElement;
@@ -32,7 +30,7 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
             if (parsedTreeOpenedNodesStr)
                 parsedTreeOpenedNodesStr.split(",").forEach(x => this.parsedTreeOpenedNodes[x] = true);
             return new Promise((resolve, reject) => {
-                this.jstree.on("ready.jstree", e => {
+                this.jstree.on("ready.jstree", _ => {
                     this.openNodes(Object.keys(this.parsedTreeOpenedNodes)).then(() => {
                         this.jstree.on("open_node.jstree", (e, te) => {
                             var node = te.node;
@@ -44,7 +42,7 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                             this.saveOpenedNodes();
                         });
                         resolve();
-                    }, e => reject(e));
+                    }, err => reject(err));
                 });
             });
         }
@@ -208,9 +206,9 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
             var expNode = isRoot ? this.exportedRoot : nodeData.exported;
             var isInstance = !expNode;
             var valuePromise = isInstance ? this.getProp(nodeData.instance.path).then(exp => nodeData.exported = exp) : Promise.resolve(expNode);
-            return valuePromise.then(exp => {
+            return valuePromise.then(valueExp => {
                 if (isRoot || isInstance) {
-                    this.fillKsyTypes(exp);
+                    this.fillKsyTypes(valueExp);
                     var intervals = [];
                     var fillIntervals = (rootExp) => {
                         var objects = utils_1.collectAllObjects(rootExp);
@@ -227,12 +225,12 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                         }
                         if (!isInstance) {
                             var nonParsed = [];
-                            var lastEnd = -1;
-                            intervals.forEach(i => {
+                            lastEnd = -1;
+                            for (var i of intervals) {
                                 if (i.start !== lastEnd + 1)
                                     nonParsed.push({ start: lastEnd + 1, end: i.start - 1 });
                                 lastEnd = i.end;
-                            });
+                            }
                             app_1.app.vm.unparsed = nonParsed;
                             app_1.app.vm.byteArrays = objects.filter(exp => exp.type === ObjectType.TypedArray && exp.bytes.length > 64).
                                 map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 }));
@@ -242,7 +240,7 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                         else
                             this.intervalHandler.addSorted(intervals);
                     };
-                    fillIntervals(exp);
+                    fillIntervals(valueExp);
                     app_1.app.ui.hexViewer.setIntervals(this.intervalHandler);
                 }
                 function fillParents(value, parent) {
@@ -254,11 +252,11 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                     else if (value.type === ObjectType.Array)
                         value.arrayItems.forEach(item => fillParents(item, parent));
                 }
-                if (!exp.parent)
-                    fillParents(exp, nodeData && nodeData.parent);
-                this.jstree.set_text(node, this.childItemToNode(exp, true).text);
-                var nodes = this.exportedToNodes(exp, nodeData, true);
-                nodes.forEach(node => node.id = node.id || this.getNodeId(node));
+                if (!valueExp.parent)
+                    fillParents(valueExp, nodeData && nodeData.parent);
+                this.jstree.set_text(node, this.childItemToNode(valueExp, true).text);
+                var nodes = this.exportedToNodes(valueExp, nodeData, true);
+                nodes.forEach(x => x.id = x.id || this.getNodeId(x));
                 return nodes;
             });
         }
@@ -335,7 +333,6 @@ define(["require", "exports", "./utils/IntervalHelper", "./utils", "./app.worker
                 return foundAll;
             });
         }
-        ;
     }
     exports.ParsedTreeHandler = ParsedTreeHandler;
 });

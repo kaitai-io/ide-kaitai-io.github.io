@@ -218,7 +218,7 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
             var linkData = $(e.target).data();
             //console.log(fsItem, linkData);
             exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
-                return this.compile(content, linkData.kslang, !!linkData.ksdebug).then((compiled) => {
+                return app_1.app.compilerService.compile(content, linkData.kslang, !!linkData.ksdebug).then((compiled) => {
                     Object.keys(compiled).forEach(fileName => {
                         //var title = fsItem.fn.split("/").last() + " [" + $(e.target).text() + "]" + (compiled.length == 1 ? "" : ` ${i + 1}/${compiled.length}`);
                         //addEditorTab(title, compItem, linkData.acelang);

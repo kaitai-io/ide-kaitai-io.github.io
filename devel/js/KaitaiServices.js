@@ -5,7 +5,6 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         static ksyNameToJsName(ksyName, isProp) {
             return ksyName.split("_").map((x, i) => i === 0 && isProp ? x : x.ucFirst()).join("");
         }
-        ;
         static collectTypes(types, parent) {
             if (parent.types) {
                 parent.typesByJsName = {};
