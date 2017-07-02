@@ -1,12 +1,19 @@
 meta:
   id: jpeg
   endian: be
+  imports:
+    - exif
+  file-extension:
+    - jpg
+    - jpeg
+    - jpe
+    - jif
+    - jfif
+    - jfi
 seq:
   - id: segments
     type: segment
     repeat: eos
--includes:
- - exif.ksy
 types:
   segment:
     seq:

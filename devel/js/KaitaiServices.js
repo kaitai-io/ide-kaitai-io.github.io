@@ -31,14 +31,23 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         }
     }
     class JsImporter {
-        importYaml(name, mode) {
-            return new Promise(function (resolve, reject) {
-                console.log(`import yaml: ${name}, mode: ${mode}`);
-                return app_files_1.fss.kaitai.get(`formats/${name}.ksy`).then(ksyContent => {
-                    var ksyModel = YAML.parse(ksyContent);
-                    return resolve(ksyModel);
-                });
-            });
+        async importYaml(name, mode) {
+            var loadFn;
+            if (mode === "abs")
+                loadFn = name;
+            else {
+                var fnParts = this.rootFsItem.fn.split('/');
+                fnParts.pop();
+                loadFn = fnParts.join('/') + '/' + name;
+            }
+            if (loadFn.startsWith("/"))
+                loadFn = loadFn.substr(1);
+            if (this.rootFsItem.fsType === "kaitai" && mode === "abs")
+                loadFn = "/formats/" + loadFn;
+            console.log(`import yaml: ${name}, mode: ${mode}, loadFn: ${loadFn}, root:`, this.rootFsItem);
+            let ksyContent = await app_files_1.fss[this.rootFsItem.fsType].get(`${loadFn}.ksy`);
+            var ksyModel = YAML.parse(ksyContent);
+            return ksyModel;
         }
     }
     class CompilationError {
@@ -52,8 +61,9 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         constructor() {
             this.jsImporter = new JsImporter();
         }
-        compile(srcYaml, kslang, debug) {
+        compile(srcYamlFsItem, srcYaml, kslang, debug) {
             var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
+            this.jsImporter.rootFsItem = srcYamlFsItem;
             try {
                 this.ksySchema = YAML.parse(srcYaml);
                 this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);

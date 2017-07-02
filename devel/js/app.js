@@ -52,8 +52,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             app_files_1.initFileTree();
         }
         isKsyFile(fn) { return fn.toLowerCase().endsWith(".ksy"); }
-        compile(srcYaml, kslang, debug) {
-            return this.compilerService.compile(srcYaml, kslang, debug).then(result => {
+        compile(srcYamlFsItem, srcYaml, kslang, debug) {
+            return this.compilerService.compile(srcYamlFsItem, srcYaml, kslang, debug).then(result => {
                 ga("compile", "success");
                 return result;
             }, (error) => {
@@ -72,7 +72,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             }
             if (changed)
                 await app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml);
-            let compiled = await this.compile(srcYaml, "javascript", "both");
+            let compiled = await this.compile(ksyFsItem, srcYaml, "javascript", "both");
             if (!compiled)
                 return;
             var fileNames = Object.keys(compiled.release);
