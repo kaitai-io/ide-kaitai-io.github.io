@@ -224,7 +224,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 }
             });
         }
-        $(document).on("mouseup", e => {
+        $(document).on("mousedown", e => {
             if ($(e.target).parents(".dropdown-menu").length === 0)
                 $(".dropdown").hide();
         });
