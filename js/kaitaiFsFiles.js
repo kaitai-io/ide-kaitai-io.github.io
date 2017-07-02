@@ -71,6 +71,7 @@ var kaitaiFsFiles = [
     'formats/network/ipv4_packet.ksy',
     'formats/network/ipv6_packet.ksy',
     'formats/network/microsoft_network_monitor_v2.ksy',
+    'formats/network/packet_ppi.ksy',
     'formats/network/pcap.ksy',
     'formats/network/tcp_segment.ksy',
     'formats/network/tls_client_hello.ksy',

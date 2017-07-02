@@ -1,10 +1,13 @@
 meta:
   id: pcap
   file-extension: pcapdump
-  endian: le
+  license: CC0-1.0
   ks-version: 0.7
+  endian: le
   imports:
     - /network/ethernet_frame
+    - /network/packet_ppi
+doc-ref: http://wiki.wireshark.org/Development/LibpcapFileFormat
 seq:
   - id: hdr
     type: header
@@ -15,8 +18,8 @@ seq:
   - ethernet_frame.ksy
 types:
   header:
+    doc-ref: 'https://wiki.wireshark.org/Development/LibpcapFileFormat#Global_Header'
     seq:
-      # https://wiki.wireshark.org/Development/LibpcapFileFormat#Global_Header
       - id: magic_number
         contents: [0xd4, 0xc3, 0xb2, 0xa1]
       - id: version_major
@@ -46,8 +49,8 @@ types:
           Link-layer header type, specifying the type of headers at
           the beginning of the packet.
   packet:
+    doc-ref: 'https://wiki.wireshark.org/Development/LibpcapFileFormat#Record_.28Packet.29_Header'
     seq:
-      # https://wiki.wireshark.org/Development/LibpcapFileFormat#Record_.28Packet.29_Header
       - id: ts_sec
         type: u4
       - id: ts_usec
@@ -58,7 +61,6 @@ types:
       - id: orig_len
         type: u4
         doc: Length of the packet as it appeared on the network when it was captured.
-      # https://wiki.wireshark.org/Development/LibpcapFileFormat#Packet_Data
       - id: body
         size: incl_len
         type:
@@ -66,61 +68,7 @@ types:
           cases:
             'linktype::ppi': packet_ppi
             'linktype::ethernet': ethernet_frame
-  packet_ppi:
-    seq:
-      # https://www.cacetech.com/documents/PPI_Header_format_1.0.1.pdf - section 3
-      - id: header
-        type: packet_ppi_header
-      - id: fields
-        type: packet_ppi_field
-        repeat: eos
-  packet_ppi_header:
-    seq:
-      # https://www.cacetech.com/documents/PPI_Header_format_1.0.1.pdf - section 3.1
-      - id: pph_version
-        type: u1
-      - id: pph_flags
-        type: u1
-      - id: pph_len
-        type: u2
-      - id: pph_dlt
-        type: u4
-  packet_ppi_field:
-    seq:
-      # https://www.cacetech.com/documents/PPI_Header_format_1.0.1.pdf - section 3.1
-      - id: pfh_type
-        type: u2
-#        enum: pfh_type
-      - id: pfh_datalen
-        type: u2
-#      - id: radio_802_11_common_body
-#        #size: pfh_datalen
-#        type: radio_802_11_common_body
-#        if: pfh_type == pfh_type::radio_802_11_common
-      - id: body
-        size: pfh_datalen
-#        if: pfh_type != pfh_type::radio_802_11_common
-  radio_802_11_common_body:
-    seq:
-      # https://www.cacetech.com/documents/PPI_Header_format_1.0.1.pdf - section 4.1.2
-      - id: tsf_timer
-        type: u8
-      - id: flags
-        type: u2
-      - id: rate
-        type: u2
-      - id: channel_freq
-        type: u2
-      - id: channel_flags
-        type: u2
-      - id: fhss_hopset
-        type: u1
-      - id: fhss_pattern
-        type: u1
-      - id: dbm_antsignal
-        type: s1
-      - id: dbm_antnoise
-        type: s1
+        doc-ref: 'https://wiki.wireshark.org/Development/LibpcapFileFormat#Packet_Data'
 enums:
   linktype:
     # http://www.tcpdump.org/linktypes.html
@@ -228,11 +176,3 @@ enums:
     262: zwave_r3
     263: wattstopper_dlm
     264: iso_14443
-  pfh_type:
-    # https://www.cacetech.com/documents/PPI_Header_format_1.0.1.pdf - section 4
-    2: radio_802_11_common
-    3: radio_802_11n_mac_ext
-    4: radio_802_11n_mac_phy_ext
-    5: spectrum_map
-    6: process_info
-    7: capture_info

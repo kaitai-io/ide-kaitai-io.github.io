@@ -4,7 +4,7 @@ define(["require", "exports"], function (require, exports) {
     class HexViewUtils {
         static zeroFill(str, padLen) {
             while (str.length < padLen)
-                str = '0' + str;
+                str = "0" + str;
             return str;
         }
         static addrHex(address) {
@@ -13,8 +13,8 @@ define(["require", "exports"], function (require, exports) {
             return this.zeroFill(address.toString(16), addrHexLen);
         }
         static byteAscii(bt) {
-            return bt === 32 ? '\u00a0' :
-                bt < 32 || (0x7f <= bt && bt <= 0xa0) || bt === 0xad ? '.' :
+            return bt === 32 ? "\u00a0" :
+                bt < 32 || (0x7f <= bt && bt <= 0xa0) || bt === 0xad ? "." :
                     String.fromCharCode(bt);
         }
         static byteHex(bt) {
@@ -27,20 +27,20 @@ define(["require", "exports"], function (require, exports) {
                 elem.className = className;
                 return elem;
             }
-            var hexRow = cr('div', 'hexRow');
-            hexRow.addrPart = cr('span', 'addrPart');
-            hexRow.hexPart = cr('span', 'hexPart');
-            hexRow.asciiPart = cr('span', 'asciiPart');
+            var hexRow = cr("div", "hexRow");
+            hexRow.addrPart = cr("span", "addrPart");
+            hexRow.hexPart = cr("span", "hexPart");
+            hexRow.asciiPart = cr("span", "asciiPart");
             hexRow.appendChild(hexRow.addrPart);
             hexRow.appendChild(hexRow.hexPart);
             hexRow.appendChild(hexRow.asciiPart);
             for (var iChar = 0; iChar < bytesPerLine; iChar++) {
-                hexRow.asciiPart.appendChild(cr('span', `asciicell cell${iChar}`));
-                var cell = cr('span', `hexcell cell${iChar}`);
+                hexRow.asciiPart.appendChild(cr("span", `asciicell cell${iChar}`));
+                var cell = cr("span", `hexcell cell${iChar}`);
                 var levels = [];
                 var prevLevel = cell;
                 for (var i = 0; i < level; i++) {
-                    var levelSpan = cr('span', `l${i}`);
+                    var levelSpan = cr("span", `l${i}`);
                     levelSpan.appendChild(prevLevel);
                     levels[level - 1 - i] = prevLevel = levelSpan;
                 }
@@ -62,17 +62,17 @@ define(["require", "exports"], function (require, exports) {
             this.selectionStart = -1;
             this.selectionEnd = -1;
             this.dataProvider = dataProvider;
-            this.scrollbox = $('#' + containerId).addClass('hexViewer');
-            this.heightbox = $('<div class="heightbox"></div>').appendTo(this.scrollbox);
-            this.contentOuter = $('<div class="contentOuter" tabindex="1"></div>').appendTo(this.scrollbox);
-            var charSpans = "0123456789ABCDEF".split('').map((x, i) => `<span class="c${i}">${x}</span>`).join('');
+            this.scrollbox = $(`#${containerId}`).addClass("hexViewer");
+            this.heightbox = $(`<div class="heightbox"></div>`).appendTo(this.scrollbox);
+            this.contentOuter = $(`<div class="contentOuter" tabindex="1"></div>`).appendTo(this.scrollbox);
+            var charSpans = "0123456789ABCDEF".split("").map((x, i) => `<span class="c${i}">${x}</span>`).join("");
             this.contentOuter.append($(`<div class="header"><span class="hex">${charSpans}</span><span class="ascii">${charSpans}</span></div>`));
-            this.content = $('<div class="content"></div>').appendTo(this.contentOuter).on('mousedown', e => this.cellMouseAction(e));
+            this.content = $(`<div class="content"></div>`).appendTo(this.contentOuter).on("mousedown", e => this.cellMouseAction(e));
             $(document).mouseup(e => this.cellMouseAction(e));
             this.intervals = null;
-            this.scrollbox.on('scroll', e => {
+            this.scrollbox.on("scroll", e => {
                 var scrollTop = this.scrollbox.scrollTop();
-                this.contentOuter.css('top', scrollTop + 'px');
+                this.contentOuter.css("top", scrollTop + "px");
                 var percent = scrollTop / this.maxScrollHeight;
                 var newTopRow = Math.round(this.maxRow * percent);
                 if (this.topRow !== newTopRow) {
@@ -80,9 +80,9 @@ define(["require", "exports"], function (require, exports) {
                     this.refresh();
                 }
             });
-            $(window).on('resize', () => this.resize());
+            $(window).on("resize", () => this.resize());
             this.resize();
-            this.contentOuter.on('keydown', e => {
+            this.contentOuter.on("keydown", e => {
                 var bytesPerPage = this.bytesPerLine * (this.rowCount - 2);
                 var selDiff = e.key === "ArrowDown" ? this.bytesPerLine : e.key === "ArrowUp" ? -this.bytesPerLine :
                     e.key === "PageDown" ? bytesPerPage : e.key === "PageUp" ? -bytesPerPage :
@@ -102,18 +102,18 @@ define(["require", "exports"], function (require, exports) {
             if (e.which !== 1)
                 return; // only handle left mouse button actions
             if (e.type === "mouseup")
-                this.content.unbind('mousemove');
+                this.content.unbind("mousemove");
             var cell = e.target;
-            if (!('dataOffset' in cell)) {
-                var cells = $(cell).find('.hexcell, .asciicell');
+            if (!("dataOffset" in cell)) {
+                var cells = $(cell).find(".hexcell, .asciicell");
                 if (cells.length === 1)
                     cell = cells.get(0);
             }
-            if ('dataOffset' in cell) {
+            if ("dataOffset" in cell) {
                 if (e.type === "mousedown") {
                     this.canDeselect = this.selectionStart === cell.dataOffset && this.selectionEnd === cell.dataOffset;
                     this.mouseDownOffset = cell.dataOffset;
-                    this.content.on('mousemove', e => this.cellMouseAction(e));
+                    this.content.on("mousemove", e => this.cellMouseAction(e));
                     this.setSelection(cell.dataOffset, cell.dataOffset);
                 }
                 else if (e.type === "mousemove") {
@@ -134,12 +134,12 @@ define(["require", "exports"], function (require, exports) {
             if (totalRowCount > 1 * 1024 * 1024)
                 this.totalHeight = totalRowCount;
             this.heightbox.height(this.totalHeight + 16);
-            //console.log('totalRowCount', totalRowCount, 'heightbox.height', this.heightbox.height(), 'totalHeight', this.totalHeight);
+            //console.log("totalRowCount", totalRowCount, "heightbox.height", this.heightbox.height(), "totalHeight", this.totalHeight);
             var boxHeight = this.contentOuter.innerHeight() - 16;
-            this.content.html('');
+            this.content.html("");
             this.maxScrollHeight = this.totalHeight - boxHeight;
             this.rowCount = Math.ceil(boxHeight / this.rowHeight);
-            //console.log('boxHeight', boxHeight, 'rowCount', this.rowCount);
+            //console.log("boxHeight", boxHeight, "rowCount", this.rowCount);
             this.maxRow = Math.ceil(this.dataProvider.length / this.bytesPerLine - this.rowCount + 1);
             this.rows = [];
             for (var i = 0; i < this.rowCount; i++) {
@@ -158,12 +158,12 @@ define(["require", "exports"], function (require, exports) {
             var intervals = searchResult ? searchResult.items : [];
             var intBaseIdx = searchResult ? searchResult.idx : 0;
             var intIdx = 0;
-            //console.log('intervals', intervals);
+            //console.log("intervals", intervals);
             var viewData = this.dataProvider.get(this.visibleOffsetStart, Math.min(this.rowCount * this.bytesPerLine, this.dataProvider.length - this.visibleOffsetStart));
             for (var iRow = 0; iRow < this.rowCount; iRow++) {
                 var rowOffset = iRow * this.bytesPerLine;
                 var row = this.rows[iRow];
-                row.addrPart.innerText = rowOffset < viewData.length ? HexViewUtils.addrHex(this.visibleOffsetStart + rowOffset) : '';
+                row.addrPart.innerText = rowOffset < viewData.length ? HexViewUtils.addrHex(this.visibleOffsetStart + rowOffset) : "";
                 for (var iCell = 0; iCell < this.bytesPerLine; iCell++) {
                     var viewDataOffset = rowOffset + iCell;
                     var dataOffset = this.visibleOffsetStart + viewDataOffset;
@@ -174,8 +174,8 @@ define(["require", "exports"], function (require, exports) {
                         ch = HexViewUtils.byteAscii(b);
                     }
                     else {
-                        hexCh = '\u00a0\u00a0';
-                        ch = '\u00a0';
+                        hexCh = "\u00a0\u00a0";
+                        ch = "\u00a0";
                     }
                     var hexCell = row.hexPart.childNodes[iCell];
                     var asciiCell = row.asciiPart.childNodes[iCell];
@@ -183,8 +183,8 @@ define(["require", "exports"], function (require, exports) {
                     asciiCell.innerText = ch;
                     hexCell.cell.dataOffset = asciiCell.dataOffset = dataOffset;
                     var isSelected = this.selectionStart <= dataOffset && dataOffset <= this.selectionEnd;
-                    $(hexCell.cell).toggleClass('selected', isSelected);
-                    $(asciiCell).toggleClass('selected', isSelected);
+                    $(hexCell.cell).toggleClass("selected", isSelected);
+                    $(asciiCell).toggleClass("selected", isSelected);
                     var skipInt = 0;
                     for (var level = 0; level < this.maxLevel; level++) {
                         var int = intervals[intIdx + level];

@@ -1,30 +1,26 @@
-define(["require", "exports", "vue"], function (require, exports, Vue) {
+define(["require", "exports", "vue", "./ComponentLoader"], function (require, exports, Vue, ComponentLoader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$internalHooks = [
-        'data',
-        'beforeCreate',
-        'created',
-        'beforeMount',
-        'mounted',
-        'beforeDestroy',
-        'destroyed',
-        'beforeUpdate',
-        'updated',
-        'activated',
-        'deactivated',
-        'render'
+        "data",
+        "beforeCreate",
+        "created",
+        "beforeMount",
+        "mounted",
+        "beforeDestroy",
+        "destroyed",
+        "beforeUpdate",
+        "updated",
+        "activated",
+        "deactivated",
+        "render"
     ];
-    // Property, method and parameter decorators created by `createDecorator` helper
-    // will enqueue functions that update component options for lazy processing.
-    // They will be executed just before creating component constructor.
-    exports.$decoratorQueue = [];
     function componentFactory(Component, options = {}) {
         options.name = options.name || Component._componentTag || Component.name;
         // prototype props.
         const proto = Component.prototype;
         Object.getOwnPropertyNames(proto).forEach(function (key) {
-            if (key === 'constructor') {
+            if (key === "constructor") {
                 return;
             }
             // hooks
@@ -33,7 +29,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 return;
             }
             const descriptor = Object.getOwnPropertyDescriptor(proto, key);
-            if (typeof descriptor.value === 'function') {
+            if (typeof descriptor.value === "function") {
                 // methods
                 (options.methods || (options.methods = {}))[key] = descriptor.value;
             }
@@ -51,16 +47,14 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
                 return collectDataFromConstructor(this, Component);
             }
         });
-        if (!options.template)
-            options.template = `#${options.name}-template`;
         if (!options.props)
             options.props = {};
         if (!options.props["model"])
             options.props["model"] = Object;
-        // decorate options
-        exports.$decoratorQueue.forEach(fn => fn(options));
-        // reset for other component decoration
-        exports.$decoratorQueue = [];
+        if (ComponentLoader_1.componentLoader.templates[options.name])
+            options.template = ComponentLoader_1.componentLoader.templates[options.name];
+        //else
+        //    console.error(`Missing template for component: ${options.name}`);
         // find super
         const superProto = Object.getPrototypeOf(Component.prototype);
         const Super = superProto instanceof Vue ? superProto.constructor : Vue;
@@ -76,14 +70,14 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
             const keys = Object.getOwnPropertyNames(vm);
             // 2.2.0 compat (props are no longer exposed as self properties)
             if (vm.$options.props) {
-                for (const key in vm.$options.props) {
+                for (var key in vm.$options.props) {
                     if (!vm.hasOwnProperty(key)) {
                         keys.push(key);
                     }
                 }
             }
             keys.forEach(key => {
-                if (key.charAt(0) !== '_') {
+                if (key.charAt(0) !== "_") {
                     Object.defineProperty(this, key, {
                         get: () => vm[key],
                         set: value => vm[key] = value
@@ -104,7 +98,7 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
     }
     exports.collectDataFromConstructor = collectDataFromConstructor;
     function Component(options) {
-        if (typeof options === 'function') {
+        if (typeof options === "function") {
             return componentFactory(options);
         }
         return function (Component) {
@@ -118,21 +112,5 @@ define(["require", "exports", "vue"], function (require, exports, Vue) {
         Component.registerHooks = registerHooks;
     })(Component || (Component = {}));
     exports.default = Component;
-    exports.noop = () => { };
-    function createDecorator(factory) {
-        return (_, key, index) => {
-            if (typeof index !== 'number') {
-                index = undefined;
-            }
-            exports.$decoratorQueue.push(options => factory(options, key, index));
-        };
-    }
-    exports.createDecorator = createDecorator;
-    function warn(message) {
-        if (typeof console !== 'undefined') {
-            console.warn('[vue-class-component] ' + message);
-        }
-    }
-    exports.warn = warn;
 });
 //# sourceMappingURL=Component.js.map

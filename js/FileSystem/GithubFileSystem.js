@@ -8,6 +8,9 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
             this.uri = new FsUri_1.FsUri(uri, 2);
             this.repo = this.fs.client.getRepo(this.uri.fsData[1], this.uri.fsData[0]);
         }
+        createFolder() {
+            throw new Error("Not implemented");
+        }
         read() {
             return this.repo.downloadFile(this.uri.path);
         }
@@ -17,21 +20,27 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         delete() {
             throw new Error("Not implemented");
         }
-        list() {
-            return this.repo.getContents(this.uri.path).then(items => {
-                return items.filter(item => item.type === 'file' || item.type === 'dir')
-                    .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === 'dir' ? '/' : ''), item));
-            });
+        async list() {
+            let items = await this.repo.getContents(this.uri.path);
+            return items.filter(item => item.type === "file" || item.type === "dir")
+                .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === "dir" ? "/" : ""), item));
         }
     }
     exports.GithubFsItem = GithubFsItem;
     class GithubFileSystem {
         constructor(client) {
             this.client = client;
-            this.scheme = 'github';
+            this.scheme = ["github"];
         }
         getFsItem(uri) {
             return new GithubFsItem(this, uri);
+        }
+        capabilities(uri) {
+            return { write: true, delete: true };
+        }
+        ;
+        createFolder(uri) {
+            return this.getFsItem(uri).createFolder();
         }
         read(uri) {
             return this.getFsItem(uri).read();
