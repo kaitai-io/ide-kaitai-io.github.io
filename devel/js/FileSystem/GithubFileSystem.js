@@ -1,11 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -28,12 +20,10 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
         delete() {
             throw new Error("Not implemented");
         }
-        list() {
-            return __awaiter(this, void 0, void 0, function* () {
-                let items = yield this.repo.getContents(this.uri.path);
-                return items.filter(item => item.type === "file" || item.type === "dir")
-                    .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === "dir" ? "/" : ""), item));
-            });
+        async list() {
+            let items = await this.repo.getContents(this.uri.path);
+            return items.filter(item => item.type === "file" || item.type === "dir")
+                .map(item => new GithubFsItem(this.fs, this.uri.uri + item.name + (item.type === "dir" ? "/" : ""), item));
         }
     }
     exports.GithubFsItem = GithubFsItem;

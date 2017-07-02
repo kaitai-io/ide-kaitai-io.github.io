@@ -1,11 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 define(["require", "exports", "jquery", "../utils"], function (require, exports, $, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -46,11 +38,9 @@ define(["require", "exports", "jquery", "../utils"], function (require, exports,
                 reject(errorMessage || xhr.statusText);
             }));
         }
-        listRepos() {
-            return __awaiter(this, void 0, void 0, function* () {
-                let repos = yield this.req("/user/repos");
-                return repos.map(entity => Repository.fromEntity(this, entity));
-            });
+        async listRepos() {
+            let repos = await this.req("/user/repos");
+            return repos.map(entity => Repository.fromEntity(this, entity));
         }
         getRepo(name, owner) {
             return new Repository(this, name, owner || this.owner);

@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "./utils/PerformanceHelper", "./utils", "./utils", "./ui/ComponentLoader", "./ui/Components/ConverterPanel", "./ExportToJson", "./ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, PerformanceHelper_1, utils_1, utils_2, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
+define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "./utils", "./utils", "./ui/ComponentLoader", "./ui/Components/ConverterPanel", "./ExportToJson", "./ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, utils_1, utils_2, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
@@ -62,87 +62,88 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 return Promise.reject(error);
             });
         }
-        recompile() {
-            return localforage.getItem(this.ksyFsItemName).then(ksyFsItem => {
-                var srcYaml = this.ui.ksyEditor.getValue();
-                var changed = this.lastKsyContent !== srcYaml;
-                var copyPromise = Promise.resolve();
-                if (changed && (ksyFsItem.fsType === "kaitai" || ksyFsItem.fsType === "static"))
-                    copyPromise = app_files_1.addKsyFile("localStorage", ksyFsItem.fn.replace(".ksy", "_modified.ksy"), srcYaml)
-                        .then(fsItem => localforage.setItem(this.ksyFsItemName, fsItem));
-                return copyPromise.then(() => changed ? app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml) : Promise.resolve()).then(() => {
-                    return this.compile(srcYaml, "javascript", "both").then(compiled => {
-                        if (!compiled)
-                            return;
-                        var fileNames = Object.keys(compiled.release);
-                        console.log("ksyFsItem", ksyFsItem);
-                        this.ui.genCodeViewer.setValue(fileNames.map(x => compiled.release[x]).join(""), -1);
-                        this.ui.genCodeDebugViewer.setValue(fileNames.map(x => compiled.debug[x]).join(""), -1);
-                        return this.reparse();
-                    });
+        async recompile() {
+            let ksyFsItem = await localforage.getItem(this.ksyFsItemName);
+            var srcYaml = this.ui.ksyEditor.getValue();
+            var changed = this.lastKsyContent !== srcYaml;
+            if (changed && (ksyFsItem.fsType === "kaitai" || ksyFsItem.fsType === "static")) {
+                let fsItem = await app_files_1.addKsyFile("localStorage", ksyFsItem.fn.replace(".ksy", "_modified.ksy"), srcYaml);
+                localforage.setItem(this.ksyFsItemName, fsItem);
+            }
+            if (changed)
+                await app_files_1.fss[ksyFsItem.fsType].put(ksyFsItem.fn, srcYaml);
+            let compiled = await this.compile(srcYaml, "javascript", "both");
+            if (!compiled)
+                return;
+            var fileNames = Object.keys(compiled.release);
+            this.ui.genCodeViewer.setValue(fileNames.map(x => compiled.release[x]).join(""), -1);
+            this.ui.genCodeDebugViewer.setValue(fileNames.map(x => compiled.debug[x]).join(""), -1);
+            await this.reparse();
+        }
+        async reparse() {
+            try {
+                await Promise.all([this.inputReady, this.formatReady]);
+                let debugCode = this.ui.genCodeDebugViewer.getValue();
+                let jsClassName = this.compilerService.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
+                await app_worker_1.workerMethods.initCode(debugCode, jsClassName, this.compilerService.ksyTypes);
+                let exportedRoot = await app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing);
+                kaitaiIde.root = exportedRoot;
+                //console.log("reparse exportedRoot", exportedRoot);
+                this.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(this.ui.parsedDataTreeCont.getElement(), exportedRoot, this.compilerService.ksyTypes);
+                await this.ui.parsedDataTreeHandler.initNodeReopenHandling();
+                this.ui.hexViewer.onSelectionChanged();
+                this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
+                    var node = selectNodeArgs.node;
+                    //console.log("node", node);
+                    var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
+                    if (exp && exp.path)
+                        $("#parsedPath").text(exp.path.join("/"));
+                    if (!this.blockRecursive && exp && exp.start < exp.end) {
+                        this.selectedInTree = true;
+                        //console.log("setSelection", exp.ioOffset, exp.start);
+                        this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
+                        this.selectedInTree = false;
+                    }
                 });
-            });
+                this.errors.handle(null);
+            }
+            catch (error) {
+                this.errors.handle(error);
+            }
         }
-        reparse() {
-            return PerformanceHelper_1.performanceHelper.measureAction("Parse initialization", Promise.all([this.inputReady, this.formatReady]).then(() => {
-                var debugCode = this.ui.genCodeDebugViewer.getValue();
-                var jsClassName = this.compilerService.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
-                return app_worker_1.workerMethods.initCode(debugCode, jsClassName, this.compilerService.ksyTypes);
-            })).then(() => {
-                //console.log("recompiled");
-                PerformanceHelper_1.performanceHelper.measureAction("Parsing", app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing).then(exportedRoot => {
-                    //console.log("reparse exportedRoot", exportedRoot);
-                    kaitaiIde.root = exportedRoot;
-                    this.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(this.ui.parsedDataTreeCont.getElement(), exportedRoot, this.compilerService.ksyTypes);
-                    PerformanceHelper_1.performanceHelper.measureAction("Tree / interval handling", this.ui.parsedDataTreeHandler.initNodeReopenHandling())
-                        .then(() => this.ui.hexViewer.onSelectionChanged(), e => this.errors.handle(e));
-                    this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
-                        var node = selectNodeArgs.node;
-                        //console.log("node", node);
-                        var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
-                        if (exp && exp.path)
-                            $("#parsedPath").text(exp.path.join("/"));
-                        if (!this.blockRecursive && exp && exp.start < exp.end) {
-                            this.selectedInTree = true;
-                            //console.log("setSelection", exp.ioOffset, exp.start);
-                            this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
-                            this.selectedInTree = false;
-                        }
-                    });
-                    this.errors.handle(null);
-                }, error => this.errors.handle(error)));
-            });
-        }
-        loadFsItem(fsItem, refreshGui = true) {
+        async loadFsItem(fsItem, refreshGui = true) {
             if (!fsItem || fsItem.type !== "file")
-                return Promise.resolve();
-            return app_files_1.fss[fsItem.fsType].get(fsItem.fn).then((content) => {
-                if (this.isKsyFile(fsItem.fn)) {
-                    localforage.setItem(this.ksyFsItemName, fsItem);
-                    this.lastKsyFsItem = fsItem;
-                    this.lastKsyContent = content;
-                    if (this.ui.ksyEditor.getValue() !== content)
-                        this.ui.ksyEditor.setValue(content, -1);
-                    var ksyEditor = this.ui.layout.getLayoutNodeById("ksyEditor");
-                    ksyEditor.container.setTitle(fsItem.fn);
-                    return Promise.resolve();
+                return;
+            var contentRaw = await app_files_1.fss[fsItem.fsType].get(fsItem.fn);
+            if (this.isKsyFile(fsItem.fn)) {
+                let content = contentRaw;
+                localforage.setItem(this.ksyFsItemName, fsItem);
+                this.lastKsyFsItem = fsItem;
+                this.lastKsyContent = content;
+                if (this.ui.ksyEditor.getValue() !== content)
+                    this.ui.ksyEditor.setValue(content, -1);
+                var ksyEditor = this.ui.layout.getLayoutNodeById("ksyEditor");
+                ksyEditor.container.setTitle(fsItem.fn);
+            }
+            else {
+                let content = contentRaw;
+                this.inputFsItem = fsItem;
+                this.inputContent = content;
+                localforage.setItem("inputFsItem", fsItem);
+                this.dataProvider = {
+                    length: content.byteLength,
+                    get(offset, length) {
+                        return new Uint8Array(content, offset, length);
+                    }
+                };
+                this.ui.hexViewer.setDataProvider(this.dataProvider);
+                this.ui.layout.getLayoutNodeById("inputBinaryTab").setTitle(fsItem.fn);
+                await app_worker_1.workerMethods.setInput(content);
+                if (refreshGui) {
+                    await this.reparse();
+                    this.ui.hexViewer.resize();
                 }
-                else {
-                    this.inputFsItem = fsItem;
-                    this.inputContent = content;
-                    localforage.setItem("inputFsItem", fsItem);
-                    this.dataProvider = {
-                        length: content.byteLength,
-                        get(offset, length) {
-                            return new Uint8Array(content, offset, length);
-                        }
-                    };
-                    this.ui.hexViewer.setDataProvider(this.dataProvider);
-                    this.ui.layout.getLayoutNodeById("inputBinaryTab").setTitle(fsItem.fn);
-                    return app_worker_1.workerMethods.setInput(content).then(() => (refreshGui ?
-                        this.reparse().then(() => this.ui.hexViewer.resize()) : Promise.resolve()));
-                }
-            });
+            }
         }
         addNewFiles(files) {
             return Promise.all(files.map(file => (this.isKsyFile(file.file.name) ? file.read("text") : file.read("arrayBuffer"))
@@ -195,8 +196,9 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             exec: function (editor) { exports.app.reparse(); }
         });
         FileDrop_1.initFileDrop("fileDrop", files => exports.app.addNewFiles(files));
-        function loadCachedFsItem(cacheKey, defFsType, defSample) {
-            return localforage.getItem(cacheKey).then((fsItem) => exports.app.loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: "file" }, false));
+        async function loadCachedFsItem(cacheKey, defFsType, defSample) {
+            let fsItem = await localforage.getItem(cacheKey);
+            await exports.app.loadFsItem(fsItem || { fsType: defFsType, fn: defSample, type: "file" }, false);
         }
         exports.app.inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
         exports.app.formatReady = loadCachedFsItem(exports.app.ksyFsItemName, "kaitai", "formats/archive/zip.ksy");

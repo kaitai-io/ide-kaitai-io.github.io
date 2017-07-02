@@ -4,14 +4,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -54,20 +46,18 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         get capabilities() { return this.fs.capabilities(this.uri.uri); }
         get canWrite() { return this.capabilities.write; }
         get canDelete() { return this.uri.path !== "/" && this.capabilities.delete; }
-        loadChildren() {
-            return __awaiter(this, void 0, void 0, function* () {
-                let children = yield this.fs.list(this.uri.uri);
-                var childCache = (this.children || []).toDict(x => x.uri.name);
-                this.children = children
-                    .filter(x => x.uri.uri !== this.uri.uri)
-                    .map(fsItem => new FsTreeNode(this, fsItem.uri))
-                    .sortBy(x => x.isFolder ? 0 : 1).thenBy(x => x.uri.path).sort();
-                for (var item of this.children) {
-                    var old = childCache[item.uri.name];
-                    if (old)
-                        item.children = item.children || old.children;
-                }
-            });
+        async loadChildren() {
+            let children = await this.fs.list(this.uri.uri);
+            var childCache = (this.children || []).toDict(x => x.uri.name);
+            this.children = children
+                .filter(x => x.uri.uri !== this.uri.uri)
+                .map(fsItem => new FsTreeNode(this, fsItem.uri))
+                .sortBy(x => x.isFolder ? 0 : 1).thenBy(x => x.uri.path).sort();
+            for (var item of this.children) {
+                var old = childCache[item.uri.name];
+                if (old)
+                    item.children = item.children || old.children;
+            }
         }
     }
     exports.FsTreeNode = FsTreeNode;
@@ -116,58 +106,44 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         openNode() {
             this.fsTreeView.selectedItem.dblclick();
         }
-        openFile() {
-            return __awaiter(this, void 0, void 0, function* () {
-                this.$emit("open-file", this.selectedFsItem);
-            });
+        async openFile() {
+            this.$emit("open-file", this.selectedFsItem);
         }
-        generateParser(lang, aceLangOrDebug) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
-                var debug = typeof aceLangOrDebug === "boolean" ? aceLangOrDebug : false;
-                let data = yield exports.fss.read(this.selectedUri);
-                this.$emit("generate-parser", lang, aceLang, debug, data);
-            });
+        async generateParser(lang, aceLangOrDebug) {
+            var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
+            var debug = typeof aceLangOrDebug === "boolean" ? aceLangOrDebug : false;
+            let data = await exports.fss.read(this.selectedUri);
+            this.$emit("generate-parser", lang, aceLang, debug, data);
         }
         showContextMenu(event) {
             this.contextMenuNode = this.selectedFsItem;
             this.ctxMenu.open(event, this.contextMenuNode);
         }
-        createFolder(name) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var newUri = this.contextMenuNode.uri.addPath(`${name}/`).uri;
-                yield this.contextMenuNode.fs.createFolder(newUri);
-                yield this.contextMenuNode.loadChildren();
-            });
+        async createFolder(name) {
+            var newUri = this.contextMenuNode.uri.addPath(`${name}/`).uri;
+            await this.contextMenuNode.fs.createFolder(newUri);
+            await this.contextMenuNode.loadChildren();
         }
-        createKsyFile(name) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var newUri = this.contextMenuNode.uri.addPath(`${name}.ksy`).uri;
-                var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
-                yield this.contextMenuNode.fs.write(newUri, utils_1.Convert.utf8StrToBytes(content).buffer);
-                yield this.contextMenuNode.loadChildren();
-            });
+        async createKsyFile(name) {
+            var newUri = this.contextMenuNode.uri.addPath(`${name}.ksy`).uri;
+            var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
+            await this.contextMenuNode.fs.write(newUri, utils_1.Convert.utf8StrToBytes(content).buffer);
+            await this.contextMenuNode.loadChildren();
         }
-        cloneFile() {
-            return __awaiter(this, void 0, void 0, function* () {
-                var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("Ymd_His")}.$1`);
-                console.log('cloneKsyFile', newUri);
-                let content = yield this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
-                yield this.contextMenuNode.fs.write(newUri, content);
-                yield this.contextMenuNode.parent.loadChildren();
-            });
+        async cloneFile() {
+            var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("Ymd_His")}.$1`);
+            console.log('cloneKsyFile', newUri);
+            let content = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
+            await this.contextMenuNode.fs.write(newUri, content);
+            await this.contextMenuNode.parent.loadChildren();
         }
-        downloadFile() {
-            return __awaiter(this, void 0, void 0, function* () {
-                let data = yield this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
-                yield utils_1.saveFile(data, this.contextMenuNode.uri.name);
-            });
+        async downloadFile() {
+            let data = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
+            await utils_1.saveFile(data, this.contextMenuNode.uri.name);
         }
-        deleteFile() {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.contextMenuNode.fs.delete(this.contextMenuNode.uri.uri);
-                yield this.contextMenuNode.parent.loadChildren();
-            });
+        async deleteFile() {
+            await this.contextMenuNode.fs.delete(this.contextMenuNode.uri.uri);
+            await this.contextMenuNode.parent.loadChildren();
         }
         mounted() {
             var scrollbar = Scrollbar.init(this.$el);

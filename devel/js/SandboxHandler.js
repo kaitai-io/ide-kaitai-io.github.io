@@ -1,11 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -32,22 +24,20 @@ define(["require", "exports"], function (require, exports) {
                 document.body.appendChild(this.iframe);
             });
         }
-        workerCall(method, args, useWorker = true) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.loadedPromise;
-                return new Promise((resolve, reject) => {
-                    let request = { method: method, arguments: args, messageId: `${++this.lastMsgId}`, useWorker: useWorker };
-                    this.msgHandlers[request.messageId] = response => {
-                        if (response.success)
-                            resolve(response.result);
-                        else {
-                            console.log("error", response.error);
-                            reject(response.error);
-                        }
-                        //console.info(`[performance] [${(new Date()).format("H:i:s.u")}] Got worker response: ${Date.now()}.`);
-                    };
-                    this.iframe.contentWindow.postMessage(request, this.iframeOrigin);
-                });
+        async workerCall(method, args, useWorker = true) {
+            await this.loadedPromise;
+            return new Promise((resolve, reject) => {
+                let request = { method: method, arguments: args, messageId: `${++this.lastMsgId}`, useWorker: useWorker };
+                this.msgHandlers[request.messageId] = response => {
+                    if (response.success)
+                        resolve(response.result);
+                    else {
+                        console.log("error", response.error);
+                        reject(response.error);
+                    }
+                    //console.info(`[performance] [${(new Date()).format("H:i:s.u")}] Got worker response: ${Date.now()}.`);
+                };
+                this.iframe.contentWindow.postMessage(request, this.iframeOrigin);
             });
         }
         createProxy(useWorker = true) {

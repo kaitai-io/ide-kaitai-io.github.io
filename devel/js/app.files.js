@@ -28,12 +28,11 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
         filesKey() { return `${this.prefix}_files`; }
         fileKey(fn) { return `${this.prefix}_file[${fn}]`; }
         save() { return localforage.setItem(this.filesKey(), this.root); }
-        getRootNode() {
-            if (this.root)
-                return Promise.resolve(this.root);
-            this.rootPromise = localforage.getItem(this.filesKey())
-                .then(x => x || { fsType: "local", type: "folder", children: {} }).then(r => this.root = r);
-            return this.rootPromise;
+        async getRootNode() {
+            if (!this.root)
+                this.root = await localforage.getItem(this.filesKey()) ||
+                    { fsType: "local", type: "folder", children: {} };
+            return this.root;
         }
         setRootNode(newRoot) {
             this.root = newRoot;
@@ -86,21 +85,20 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
     function genChildNodes(obj) {
         return Object.keys(obj.children || []).map(k => genChildNode(obj.children[k], k));
     }
-    function refreshFsNodes() {
+    async function refreshFsNodes() {
         var localStorageNode = app_1.app.ui.fileTree.get_node("localStorage");
-        return localFs.getRootNode().then(root => {
-            app_1.app.ui.fileTree.delete_node(localStorageNode.children);
-            if (root)
-                genChildNodes(root).forEach((node) => app_1.app.ui.fileTree.create_node(localStorageNode, node));
-        });
+        var root = await localFs.getRootNode();
+        app_1.app.ui.fileTree.delete_node(localStorageNode.children);
+        if (root)
+            genChildNodes(root).forEach((node) => app_1.app.ui.fileTree.create_node(localStorageNode, node));
     }
     exports.refreshFsNodes = refreshFsNodes;
-    function addKsyFile(parent, ksyFn, content) {
-        var name = ksyFn.split("/").last();
-        return exports.fss.local.put(name, content).then((fsItem) => {
-            app_1.app.ui.fileTree.create_node(app_1.app.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: "glyphicon glyphicon-list-alt" }, "last", (node) => app_1.app.ui.fileTree.activate_node(node, null));
-            return app_1.app.loadFsItem(fsItem, true);
-        });
+    async function addKsyFile(parent, ksyFn, content) {
+        let name = ksyFn.split("/").last();
+        let fsItem = await exports.fss.local.put(name, content);
+        app_1.app.ui.fileTree.create_node(app_1.app.ui.fileTree.get_node(parent), { text: name, data: fsItem, icon: "glyphicon glyphicon-list-alt" }, "last", (node) => app_1.app.ui.fileTree.activate_node(node, null));
+        await app_1.app.loadFsItem(fsItem, true);
+        return fsItem;
     }
     exports.addKsyFile = addKsyFile;
     var fileTreeCont;
@@ -147,7 +145,8 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
                 ],
             },
             plugins: ["wholerow", "dnd"]
-        }).bind("loaded.jstree", refreshFsNodes).jstree(true);
+        }).jstree(true);
+        refreshFsNodes();
         var uiFiles = {
             fileTreeContextMenu: $("#fileTreeContextMenu"),
             openItem: $("#fileTreeContextMenu .openItem"),
@@ -273,7 +272,6 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
         ctxAction(uiFiles.cloneKsyFile, e => {
             var fsItem = getSelectedData();
             var newFn = fsItem.fn.replace(".ksy", "_" + new Date().format("Ymd_His") + ".ksy");
-            console.log("newFn", newFn);
             exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => addKsyFile("localStorage", newFn, content));
         });
     }

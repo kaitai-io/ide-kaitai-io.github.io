@@ -1,11 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 define(["require", "exports", "./FsUri", "./Common", "localforage"], function (require, exports, FsUri_1, Common_1, localforage) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -23,29 +15,23 @@ define(["require", "exports", "./FsUri", "./Common", "localforage"], function (r
                 this.lfCache[name] = localforage.createInstance({ name: name });
             return action(this.lfCache[name], fsUri);
         }
-        createFolder(uri) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.execute(uri, (lf, fsUri) => lf.setItem(fsUri.path, null));
-            });
+        async createFolder(uri) {
+            await this.execute(uri, (lf, fsUri) => lf.setItem(fsUri.path, null));
         }
         read(uri) {
             return this.execute(uri, (lf, fsUri) => lf.getItem(fsUri.path));
         }
-        write(uri, data) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.execute(uri, (lf, fsUri) => lf.setItem(fsUri.path, data));
-            });
+        async write(uri, data) {
+            await this.execute(uri, (lf, fsUri) => lf.setItem(fsUri.path, data));
         }
-        delete(uri) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.execute(uri, (lf, fsUri) => lf.removeItem(fsUri.path));
-            });
+        async delete(uri) {
+            await this.execute(uri, (lf, fsUri) => lf.removeItem(fsUri.path));
         }
         list(uri) {
-            return this.execute(uri, (lf, fsUri) => __awaiter(this, void 0, void 0, function* () {
-                let keys = yield lf.keys();
+            return this.execute(uri, async (lf, fsUri) => {
+                let keys = await lf.keys();
                 return FsUri_1.FsUri.getChildUris(keys, fsUri).map(uri => new Common_1.FsItem(uri));
-            }));
+            });
         }
     }
     exports.BrowserFileSystem = BrowserFileSystem;
@@ -64,12 +50,10 @@ define(["require", "exports", "./FsUri", "./Common", "localforage"], function (r
         delete(uri) {
             return localforage.removeItem(this.uriKey(uri));
         }
-        list(uri) {
-            return __awaiter(this, void 0, void 0, function* () {
-                let keys = yield localforage.keys();
-                var fsKeys = keys.filter(x => x.startsWith("fs_file[")).map(x => "/" + x.substr(8, x.length - 9));
-                return FsUri_1.FsUri.getChildUris(fsKeys, new FsUri_1.FsUri(uri)).map(uri => new Common_1.FsItem(uri));
-            });
+        async list(uri) {
+            let keys = await localforage.keys();
+            var fsKeys = keys.filter(x => x.startsWith("fs_file[")).map(x => "/" + x.substr(8, x.length - 9));
+            return FsUri_1.FsUri.getChildUris(fsKeys, new FsUri_1.FsUri(uri)).map(uri => new Common_1.FsItem(uri));
         }
     }
     exports.BrowserLegacyFileSystem = BrowserLegacyFileSystem;
