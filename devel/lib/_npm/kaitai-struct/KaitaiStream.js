@@ -461,12 +461,12 @@ KaitaiStream.prototype.readBytesTerm = function(terminator, include, consume, eo
 KaitaiStream.prototype.ensureFixedContents = function(expected) {
   var actual = this.readBytes(expected.length);
   if (actual.length !== expected.length) {
-    throw new KaitaiUnexpectedDataError(expected, actual);
+    throw new UnexpectedDataError(expected, actual);
   }
   var actLen = actual.length;
   for (var i = 0; i < actLen; i++) {
     if (actual[i] != expected[i]) {
-      throw new KaitaiUnexpectedDataError(expected, actual);
+      throw new UnexpectedDataError(expected, actual);
     }
   }
   return actual;
@@ -630,35 +630,35 @@ KaitaiStream.byteArrayCompare = function(a, b) {
 // Internal implementation details
 // ========================================================================
 
-var KaitaiEOFError = KaitaiStream.KaitaiEOFError = function(bytesReq, bytesAvail) {
-  this.name = "KaitaiEOFError";
+var EOFError = KaitaiStream.EOFError = function(bytesReq, bytesAvail) {
+  this.name = "EOFError";
   this.message = "requested " + bytesReq + " bytes, but only " + bytesAvail + " bytes available";
   this.bytesReq = bytesReq;
   this.bytesAvail = bytesAvail;
   this.stack = (new Error()).stack;
 }
 
-KaitaiEOFError.prototype = Object.create(Error.prototype);
-KaitaiEOFError.prototype.constructor = KaitaiEOFError;
+EOFError.prototype = Object.create(Error.prototype);
+EOFError.prototype.constructor = EOFError;
 
-var KaitaiUnexpectedDataError = KaitaiStream.KaitaiUnexpectedDataError = function(expected, actual) {
-  this.name = "KaitaiUnexpectedDataError";
+var UnexpectedDataError = KaitaiStream.UnexpectedDataError = function(expected, actual) {
+  this.name = "UnexpectedDataError";
   this.message = "expected [" + expected + "], but got [" + actual + "]";
   this.expected = expected;
   this.actual = actual;
   this.stack = (new Error()).stack;
 }
 
-KaitaiUnexpectedDataError.prototype = Object.create(Error.prototype);
-KaitaiUnexpectedDataError.prototype.constructor = KaitaiUnexpectedDataError;
+UnexpectedDataError.prototype = Object.create(Error.prototype);
+UnexpectedDataError.prototype.constructor = UnexpectedDataError;
 
-var KaitaiUndecidedEndiannessError = KaitaiStream.KaitaiUndecidedEndiannessError = function() {
-  this.name = "KaitaiUndecidedEndiannessError";
+var UndecidedEndiannessError = KaitaiStream.UndecidedEndiannessError = function() {
+  this.name = "UndecidedEndiannessError";
   this.stack = (new Error()).stack;
 }
 
-KaitaiUndecidedEndiannessError.prototype = Object.create(Error.prototype);
-KaitaiUndecidedEndiannessError.prototype.constructor = KaitaiUndecidedEndiannessError;
+UndecidedEndiannessError.prototype = Object.create(Error.prototype);
+UndecidedEndiannessError.prototype.constructor = UndecidedEndiannessError;
 
 /**
   Maps a Uint8Array into the KaitaiStream buffer.
@@ -670,7 +670,7 @@ KaitaiUndecidedEndiannessError.prototype.constructor = KaitaiUndecidedEndianness
   */
 KaitaiStream.prototype.mapUint8Array = function(length) {
   if (this.pos + length > this.size) {
-    throw new KaitaiEOFError(length, this.size - this.pos);
+    throw new EOFError(length, this.size - this.pos);
   }
 
   var arr = new Uint8Array(this._buffer, this.byteOffset + this.pos, length);

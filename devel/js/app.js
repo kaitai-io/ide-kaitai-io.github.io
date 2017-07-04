@@ -175,9 +175,14 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         }
     }
     exports.app = new AppController();
-    localStorage.setItem("lastVersion", kaitaiIde.version);
+    var kaitaiIde = window["kaitaiIde"] = {};
+    kaitaiIde.version = "0.1";
+    kaitaiIde.commitId = "5c7eb402e2ba1929d732b0a0e5b76e44f03d6baa";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
+        $("#webideCommit")
+            .attr("href", `https://github.com/kaitai-io/kaitai_struct_webide/commit/${kaitaiIde.commitId}`)
+            .text(kaitaiIde.commitId.substr(0, 7));
         $("#compilerVersion").text(new KaitaiStructCompiler().version + " (" + new KaitaiStructCompiler().buildDate + ")");
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
         if (localStorage.getItem("doNotShowWelcome") !== "true")
