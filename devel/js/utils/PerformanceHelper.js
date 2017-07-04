@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "dateformat"], function (require, exports, dateFormat) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PerformanceHelper {
@@ -26,7 +26,7 @@ define(["require", "exports"], function (require, exports) {
         actionDone(action, failed) {
             if (!this.logPerformance)
                 return;
-            console.info(`[performance/${(new Date()).format("s.u")}] ${action.name} took `
+            console.info(`[performance/${dateFormat(new Date(), "ss.l")}] ${action.name} took `
                 + `${Math.round(performance.now() - action.startTime)} milliseconds${failed ? " before it failed" : ""}.`);
         }
     }

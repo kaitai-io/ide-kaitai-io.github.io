@@ -1,4 +1,4 @@
-define(["require", "exports", "localforage", "./app", "./utils"], function (require, exports, localforage, app_1, utils_1) {
+define(["require", "exports", "localforage", "dateformat", "./app", "./utils"], function (require, exports, localforage, dateFormat, app_1, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /* tslint:enable */
@@ -271,7 +271,7 @@ define(["require", "exports", "localforage", "./app", "./utils"], function (requ
         });
         ctxAction(uiFiles.cloneKsyFile, e => {
             var fsItem = getSelectedData();
-            var newFn = fsItem.fn.replace(".ksy", "_" + new Date().format("Ymd_His") + ".ksy");
+            var newFn = fsItem.fn.replace(".ksy", "_" + dateFormat(new Date(), "yyyymmdd_HHMMss") + ".ksy");
             exports.fss[fsItem.fsType].get(fsItem.fn).then((content) => addKsyFile("localStorage", newFn, content));
         });
     }

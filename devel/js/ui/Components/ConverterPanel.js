@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "vue", "big-integer", "../Component"], function (require, exports, Vue, bigInt, Component_1) {
+define(["require", "exports", "vue", "big-integer", "../Component", "dateformat"], function (require, exports, Vue, bigInt, Component_1, dateFormat) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Converter {
@@ -68,7 +68,7 @@ define(["require", "exports", "vue", "big-integer", "../Component"], function (r
             var unixtsDate = new Date(parseInt(u32le) * 1000);
             this.float = data.length >= 4 ? "" + new Float32Array(data.buffer.slice(0, 4))[0] : "";
             this.double = data.length >= 8 ? "" + new Float64Array(data.buffer.slice(0, 8))[0] : "";
-            this.unixts = unixtsDate.format("Y-m-d H:i:s");
+            this.unixts = dateFormat(unixtsDate, "yyyy-mm-dd HH:MM:ss");
             try {
                 this.ascii = Converter.strDecode(data, "ascii");
                 this.utf8 = Converter.strDecode(data, "utf-8");

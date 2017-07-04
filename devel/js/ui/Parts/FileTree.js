@@ -131,7 +131,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             await this.contextMenuNode.loadChildren();
         }
         async cloneFile() {
-            var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("Ymd_His")}.$1`);
+            var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);
             console.log('cloneKsyFile', newUri);
             let content = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
             await this.contextMenuNode.fs.write(newUri, content);
