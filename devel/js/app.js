@@ -177,12 +177,14 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "5c7eb402e2ba1929d732b0a0e5b76e44f03d6baa";
+    kaitaiIde.commitId = "3b4a8a47d9244b9e22599e621984f6064bdb14d8";
+    kaitaiIde.commitDate = "2017-07-04 23:02:16";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
-        $("#webideCommit")
+        $("#webideCommitId")
             .attr("href", `https://github.com/kaitai-io/kaitai_struct_webide/commit/${kaitaiIde.commitId}`)
             .text(kaitaiIde.commitId.substr(0, 7));
+        $("#webideCommitDate").text(kaitaiIde.commitDate);
         $("#compilerVersion").text(new KaitaiStructCompiler().version + " (" + new KaitaiStructCompiler().buildDate + ")");
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
         if (localStorage.getItem("doNotShowWelcome") !== "true")
