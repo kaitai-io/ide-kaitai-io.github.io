@@ -1,6 +1,7 @@
 define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "./SandboxHandler"], function (require, exports, AppLayout_1, FileTree_1, ace, SandboxHandler_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    //import { IKsyTypes, ObjectType, IExportedValue, IInstance } from "../worker/WorkerShared";
     window["layout"] = AppLayout_1.Layout;
     var filetree = new FileTree_1.FileTree();
     filetree.init();
@@ -42,6 +43,8 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
         let input = await FileTree_1.fss.read("https:///samples/sample1.zip");
         await sandbox.setInput(input);
         await sandbox.parse();
+        let exported = await sandbox.export();
+        console.log("exported", exported);
     })();
 });
 //# sourceMappingURL=v2.js.map
