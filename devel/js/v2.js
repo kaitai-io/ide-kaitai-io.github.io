@@ -36,8 +36,11 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
         await openFile("https:///formats/archive/zip.ksy");
         var compilationResult = await sandbox.compile(ksyContent);
         console.log('compilationResult', compilationResult);
-        jsCode.setValue(Object.values(compilationResult.releaseCode)[0], -1);
-        jsCodeDebug.setValue(Object.values(compilationResult.debugCode)[0], -1);
+        jsCode.setValue(Object.values(compilationResult.releaseCode).join('\n'), -1);
+        jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);
+        let input = await FileTree_1.fss.read("https:///samples/sample1.zip");
+        await sandbox.setInput(input);
+        await sandbox.parse();
     })();
 });
 //# sourceMappingURL=v2.js.map
