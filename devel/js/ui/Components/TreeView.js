@@ -41,8 +41,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                     this.setSelected(node.children[0]);
                 else {
                     while (node.parent) {
-                        var children = node.parent.children;
-                        var thisIdx = children.indexOf(node);
+                        let children = node.parent.children;
+                        let thisIdx = children.indexOf(node);
                         if (thisIdx + 1 < children.length) {
                             this.setSelected(children[thisIdx + 1]);
                             break;
@@ -54,8 +54,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             }
             else if (dir === "prev") {
                 if (node.parent) {
-                    var children = node.parent.children;
-                    var thisIdx = children.indexOf(node);
+                    let children = node.parent.children;
+                    let thisIdx = children.indexOf(node);
                     if (thisIdx - 1 >= 0) {
                         var selChildren = children[thisIdx - 1];
                         while (selChildren.open && selChildren.children && selChildren.children.length > 0)
@@ -111,7 +111,6 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             return this.model["icon"] ? this.model["icon"] :
                 this.model.isFolder ? (this.open ? "glyphicon-folder-open" : "glyphicon-folder-close") : "glyphicon-list-alt";
         }
-        ;
         get treeView() { return UIHelper_1.default.findParent(this, TreeView); }
         get children() { return this.$children; }
         get parent() { return this.$parent; }

@@ -132,7 +132,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         async cloneFile() {
             var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);
-            console.log('cloneKsyFile', newUri);
+            console.log("cloneKsyFile", newUri);
             let content = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
             await this.contextMenuNode.fs.write(newUri, content);
             await this.contextMenuNode.parent.loadChildren();
@@ -150,7 +150,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.fsTreeView.getParentBoundingRect = () => scrollbar.bounding;
             this.fsTreeView.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop, onlyScrollIfNeeded: true });
             document.body.appendChild(this.ctxMenu.$el);
-            console.log('FileTree mounted', this.fsTreeView);
+            console.log("FileTree mounted", this.fsTreeView);
             //this.createFolderModal.show();
         }
     };

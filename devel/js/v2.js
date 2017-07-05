@@ -15,9 +15,9 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
         parent.container.on("resize", () => editor.resize());
         return editor;
     }
-    var ksyEditor = setupEditor(AppLayout_1.Layout.ksyEditor, 'yaml');
-    var jsCode = setupEditor(AppLayout_1.Layout.jsCode, 'javascript');
-    var jsCodeDebug = setupEditor(AppLayout_1.Layout.jsCodeDebug, 'javascript');
+    var ksyEditor = setupEditor(AppLayout_1.Layout.ksyEditor, "yaml");
+    var jsCode = setupEditor(AppLayout_1.Layout.jsCode, "javascript");
+    var jsCodeDebug = setupEditor(AppLayout_1.Layout.jsCodeDebug, "javascript");
     filetree.$on("open-file", (treeNode) => {
         console.log(treeNode);
         openFile(treeNode.uri.uri);
@@ -32,11 +32,12 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
     }
     (async function () {
         var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
-        await sandbox.loadScript(new URL('js/KaitaiWorkerV2.js', location.href).href);
+        await sandbox.loadScript(new URL("js/worker/ImportLoader.js", location.href).href);
+        await sandbox.loadScript(new URL("js/worker/KaitaiWorkerV2.js", location.href).href);
         await openFile("https:///formats/archive/zip.ksy");
         var compilationResult = await sandbox.compile(ksyContent);
-        console.log('compilationResult', compilationResult);
-        jsCode.setValue(Object.values(compilationResult.releaseCode).join('\n'), -1);
+        console.log("compilationResult", compilationResult);
+        jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"), -1);
         jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);
         let input = await FileTree_1.fss.read("https:///samples/sample1.zip");
         await sandbox.setInput(input);

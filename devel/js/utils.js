@@ -76,12 +76,10 @@ define(["require", "exports"], function (require, exports) {
         });
     }
     exports.readBlob = readBlob;
-    function htmlescape(s) {
-        return $("<div/>").text(s).html();
+    function htmlescape(str) {
+        return $("<div/>").text(str).html();
     }
     exports.htmlescape = htmlescape;
-    ;
-    ;
     function processFiles(files) {
         var resFiles = [];
         for (var i = 0; i < files.length; i++) {
