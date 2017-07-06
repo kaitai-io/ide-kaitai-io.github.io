@@ -1,6 +1,26 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    class ApiProxyPath {
+        constructor(sandbox, useWorker, path) {
+            this.sandbox = sandbox;
+            this.useWorker = useWorker;
+            this.path = path;
+        }
+        createProxy() {
+            return new Proxy(ApiProxyPath.fakeBaseObj, {
+                get: (target, propName) => {
+                    var path = Array.from(this.path);
+                    path.push(propName);
+                    return new ApiProxyPath(this.sandbox, this.useWorker, path).createProxy();
+                },
+                apply: (target, _this, args) => {
+                    return this.sandbox.workerCall(this.path.join("."), args, this.useWorker);
+                }
+            });
+        }
+    }
+    ApiProxyPath.fakeBaseObj = function () { };
     class SandboxHandler {
         constructor(iframeSrc) {
             this.iframeSrc = iframeSrc;
@@ -9,7 +29,7 @@ define(["require", "exports"], function (require, exports) {
             this.iframeOrigin = new URL(iframeSrc).origin;
             this.loadedPromise = new Promise((resolve, reject) => {
                 this.iframe = document.createElement("iframe");
-                this.iframe.style.display = 'none';
+                this.iframe.style.display = "none";
                 this.iframe.onload = () => resolve();
                 this.iframe.onerror = () => reject();
                 this.iframe.src = iframeSrc;
@@ -41,9 +61,7 @@ define(["require", "exports"], function (require, exports) {
             });
         }
         createProxy(useWorker = true) {
-            return new Proxy(this, {
-                get: (target, methodName) => (...args) => this.workerCall(methodName, args, useWorker)
-            });
+            return new ApiProxyPath(this, useWorker, []).createProxy();
         }
         static create(src, useWorker = true) {
             var handler = new SandboxHandler(src);

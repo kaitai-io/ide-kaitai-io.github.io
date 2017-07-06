@@ -32,18 +32,19 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "ace/ace", "
         }
     }
     (async function () {
-        var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
+        //var sandbox = SandboxHandler.create<ISandboxMethods>("https://webide-usercontent.kaitai.io");
+        var sandbox = SandboxHandler_1.SandboxHandler.create("http://127.0.0.1:8001/");
         await sandbox.loadScript(new URL("js/worker/ImportLoader.js", location.href).href);
         await sandbox.loadScript(new URL("js/worker/KaitaiWorkerV2.js", location.href).href);
         await openFile("https:///formats/archive/zip.ksy");
-        var compilationResult = await sandbox.compile(ksyContent);
+        var compilationResult = await sandbox.kaitaiServices.compile(ksyContent);
         console.log("compilationResult", compilationResult);
         jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"), -1);
         jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);
         let input = await FileTree_1.fss.read("https:///samples/sample1.zip");
-        await sandbox.setInput(input);
-        await sandbox.parse();
-        let exported = await sandbox.export();
+        await sandbox.kaitaiServices.setInput(input);
+        await sandbox.kaitaiServices.parse();
+        let exported = await sandbox.kaitaiServices.export();
         console.log("exported", exported);
     })();
 });
