@@ -26,13 +26,13 @@ define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require
         .addVertical(middleCol => middleCol
         .addComponent(".ksy editor", c => Layout.ksyEditor = c)
         .addComponent("object tree", c => Layout.objectTree = c))
-        .addVertical(rightCol => rightCol.setConfig({ width: 38 })
+        .addVertical(rightCol => rightCol.setConfig({ width: 48 })
         .addTabs(files => Layout.files = files
         .addComponent("JS code", c => Layout.jsCode = c)
         .addComponent("JS code (debug)", c => Layout.jsCodeDebug = c)
         .addComponent("input binary", c => Layout.inputBinary = c))
-        .addHorizontal(rightPanel => rightPanel.setConfig({ height: 20 })
-        .addComponent("info panel", { width: 260 }, c => Layout.infoPanel = c)
+        .addHorizontal(rightPanel => rightPanel.setConfig({ height: 25 })
+        .addComponent("info panel", { width: 220 }, c => Layout.infoPanel = c)
         .addComponent("converter", c => Layout.converterPanel = c))))
         .addClosableComponent(c => c.addComponent("errors", { height: 100, isClosable: true }), false, c => Layout.errors = c)));
     Layout.manager.root.init();

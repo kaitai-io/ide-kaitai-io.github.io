@@ -28,17 +28,14 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/
         }
     }
     var parsedTree = new ParsedTree_1.ParsedTree();
-    parsedTree.rootNode = new ParsedTree_1.ParsedTreeNode(null, [
-        new ParsedTree_1.ParsedTreeNode("hello", [
-            new ParsedTree_1.ParsedTreeNode("bello1", []),
-            new ParsedTree_1.ParsedTreeNode("bello2", []),
-        ]),
-    ]);
     parsedTree.$mount(AppLayout_1.Layout.objectTree.element);
     (async function () {
         var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
         await sandbox.loadScript(new URL("js/worker/worker/ImportLoader.js", location.href).href);
         await sandbox.loadScript(new URL("js/worker/worker/KaitaiWorkerV2.js", location.href).href);
+        var compilerInfo = await sandbox.kaitaiServices.getCompilerInfo();
+        aboutModal.compilerVersion = compilerInfo.version;
+        aboutModal.compilerBuildDate = compilerInfo.buildDate;
         await openFile("https:///formats/archive/zip.ksy");
         var compilationResult = await sandbox.kaitaiServices.compile(ksyContent);
         console.log("compilationResult", compilationResult);
@@ -61,9 +58,7 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/
         await sandbox.kaitaiServices.parse();
         let exported = await sandbox.kaitaiServices.export();
         console.log("exported", exported);
-        var compilerInfo = await sandbox.kaitaiServices.getCompilerInfo();
-        aboutModal.compilerVersion = compilerInfo.version;
-        aboutModal.compilerBuildDate = compilerInfo.buildDate;
+        parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", exported));
     })();
 });
 //# sourceMappingURL=v2.js.map
