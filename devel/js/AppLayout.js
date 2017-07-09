@@ -1,9 +1,22 @@
-define(["require", "exports", "./LayoutManagerV2"], function (require, exports, LayoutManagerV2_1) {
+define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require, exports, LayoutManagerV2_1, ace) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Layout {
     }
     exports.Layout = Layout;
+    class LayoutHelper {
+        static setupEditor(parent, lang) {
+            var editor = ace.edit(parent.element);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode(`ace/mode/${lang}`);
+            if (lang === "yaml")
+                editor.setOption("tabSize", 2);
+            editor.$blockScrolling = Infinity; // TODO: remove this line after they fix ACE not to throw warning to the console
+            parent.container.on("resize", () => editor.resize());
+            return editor;
+        }
+    }
+    exports.LayoutHelper = LayoutHelper;
     Layout.manager = new LayoutManagerV2_1.LayoutManager();
     Layout.manager.root
         .addHorizontal(mainCols => mainCols

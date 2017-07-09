@@ -1,24 +1,13 @@
-define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/InfoPanel", "ace/ace", "./SandboxHandler", "./HexViewer", "./ui/Components/ConverterPanel", "./ui/Parts/AboutModal"], function (require, exports, AppLayout_1, FileTree_1, InfoPanel_1, ace, SandboxHandler_1, HexViewer_1, ConverterPanel_1, AboutModal_1) {
+define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/InfoPanel", "./SandboxHandler", "./HexViewer", "./ui/Components/ConverterPanel", "./ui/Parts/AboutModal"], function (require, exports, AppLayout_1, FileTree_1, InfoPanel_1, SandboxHandler_1, HexViewer_1, ConverterPanel_1, AboutModal_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    //import { IKsyTypes, ObjectType, IExportedValue, IInstance } from "../worker/WorkerShared";
     window["layout"] = AppLayout_1.Layout;
     var filetree = new FileTree_1.FileTree();
     filetree.init();
     filetree.$mount(AppLayout_1.Layout.fileTree.element);
-    function setupEditor(parent, lang) {
-        var editor = ace.edit(parent.element);
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode(`ace/mode/${lang}`);
-        if (lang === "yaml")
-            editor.setOption("tabSize", 2);
-        editor.$blockScrolling = Infinity; // TODO: remove this line after they fix ACE not to throw warning to the console
-        parent.container.on("resize", () => editor.resize());
-        return editor;
-    }
-    var ksyEditor = setupEditor(AppLayout_1.Layout.ksyEditor, "yaml");
-    var jsCode = setupEditor(AppLayout_1.Layout.jsCode, "javascript");
-    var jsCodeDebug = setupEditor(AppLayout_1.Layout.jsCodeDebug, "javascript");
+    var ksyEditor = AppLayout_1.LayoutHelper.setupEditor(AppLayout_1.Layout.ksyEditor, "yaml");
+    var jsCode = AppLayout_1.LayoutHelper.setupEditor(AppLayout_1.Layout.jsCode, "javascript");
+    var jsCodeDebug = AppLayout_1.LayoutHelper.setupEditor(AppLayout_1.Layout.jsCodeDebug, "javascript");
     var hexViewer = new HexViewer_1.HexViewer(AppLayout_1.Layout.inputBinary.element);
     var aboutModal = new AboutModal_1.AboutModal();
     var infoPanel = new InfoPanel_1.InfoPanel();
@@ -40,8 +29,8 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/
     }
     (async function () {
         var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
-        await sandbox.loadScript(new URL("js/worker/ImportLoader.js", location.href).href);
-        await sandbox.loadScript(new URL("js/worker/KaitaiWorkerV2.js", location.href).href);
+        await sandbox.loadScript(new URL("js/worker/worker/ImportLoader.js", location.href).href);
+        await sandbox.loadScript(new URL("js/worker/worker/KaitaiWorkerV2.js", location.href).href);
         await openFile("https:///formats/archive/zip.ksy");
         var compilationResult = await sandbox.kaitaiServices.compile(ksyContent);
         console.log("compilationResult", compilationResult);
