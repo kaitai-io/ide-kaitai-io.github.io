@@ -12,21 +12,14 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
             this.name = name;
             this.value = value;
         }
-        get bytesPreview() {
-            if (!(this.value.bytes instanceof Uint8Array))
-                return "";
-            var text = "[";
-            for (var i = 0; i < this.value.bytes.byteLength; i++) {
-                if (i === 8) {
-                    text += ", ...";
-                    break;
-                }
-                text += (i === 0 ? "" : ", ") + this.value.bytes[i];
-            }
-            text += "]";
-            return text;
-        }
         get hasChildren() { return this.value.type === WorkerShared_1.ObjectType.Object || this.value.type === WorkerShared_1.ObjectType.Array; }
+        get bytesPreview() {
+            return `[${this.value.bytes.slice(0, 8).join(', ')}${(this.value.bytes.length > 8 ? ", ..." : "")}]`;
+        }
+        get hexStrValue() {
+            return (this.value.primitiveValue < 0 ? "-" : "") + "0x" +
+                this.value.primitiveValue.toString(16);
+        }
         loadChildren() {
             if (this.value.type === WorkerShared_1.ObjectType.Object)
                 this.children = Object.keys(this.value.object.fields).map(x => new ParsedTreeNode(x, this.value.object.fields[x]));
