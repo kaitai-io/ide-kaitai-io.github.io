@@ -12,13 +12,11 @@ define(["require", "exports", "vue", "big-integer", "../Component", "dateformat"
             if (len > data.length)
                 return "";
             var arr = data.subarray(0, len);
+            if (!bigEndian)
+                arr = arr.reverse();
             var num = bigInt(0);
-            if (bigEndian)
-                for (var i = 0; i < arr.length; i++)
-                    num = num.multiply(256).add(arr[i]);
-            else
-                for (var i = arr.length - 1; i >= 0; i--)
-                    num = num.multiply(256).add(arr[i]);
+            for (var i = 0; i < arr.length; i++)
+                num = num.multiply(256).add(arr[i]);
             if (signed) {
                 var maxVal = bigInt(256).pow(len);
                 if (num.greaterOrEquals(maxVal.divide(2)))
@@ -64,11 +62,10 @@ define(["require", "exports", "vue", "big-integer", "../Component", "dateformat"
                 var propName = `${signed ? "s" : "u"}${len * 8}${len === 1 ? "" : bigEndian ? "be" : "le"}`;
                 this[propName] = convRes;
             })));
-            var u32le = Converter.numConv(data, 4, false, false);
-            var unixtsDate = new Date(parseInt(u32le) * 1000);
             this.float = data.length >= 4 ? "" + new Float32Array(data.buffer.slice(0, 4))[0] : "";
             this.double = data.length >= 8 ? "" + new Float64Array(data.buffer.slice(0, 8))[0] : "";
-            this.unixts = dateFormat(unixtsDate, "yyyy-mm-dd HH:MM:ss");
+            var u32le = Converter.numConv(data, 4, false, false);
+            this.unixts = u32le ? dateFormat(new Date(parseInt(u32le) * 1000), "yyyy-mm-dd HH:MM:ss") : "";
             try {
                 this.ascii = Converter.strDecode(data, "ascii");
                 this.utf8 = Converter.strDecode(data, "utf-8");
@@ -82,6 +79,10 @@ define(["require", "exports", "vue", "big-integer", "../Component", "dateformat"
     }
     exports.ConverterPanelModel = ConverterPanelModel;
     let ConverterPanel = class ConverterPanel extends Vue {
+        constructor() {
+            super();
+            this.model = this.model || new ConverterPanelModel();
+        }
     };
     ConverterPanel = __decorate([
         Component_1.default

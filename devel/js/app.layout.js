@@ -100,7 +100,7 @@ define(["require", "exports", "goldenlayout", "./HexViewer"], function (require,
             this.layout.addEditor("ksyEditor", "yaml");
             this.layout.addEditor("genCodeViewer", "javascript", true);
             this.layout.addEditor("genCodeDebugViewer", "javascript", false);
-            this.layout.addComponent("hexViewer", () => new HexViewer_1.HexViewer("hexViewer"));
+            this.layout.addComponent("hexViewer", () => new HexViewer_1.HexViewer("#hexViewer"));
             this.layout.addComponent("errorWindow", cont => { cont.getElement().append($("<div />")); });
             this.layout.addComponent("parsedDataTree");
             this.layout.addComponent("fileTreeCont", cont => cont.getElement().append($("#fileTreeCont").children()));

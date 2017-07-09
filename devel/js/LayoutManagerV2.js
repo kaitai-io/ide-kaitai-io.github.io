@@ -51,7 +51,7 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
             for (var event of ["destroy", "close"])
                 this.component.container.on(event, () => {
                     this.component = null;
-                    console.log('set');
+                    console.log("set");
                 });
         }
         hide() {
@@ -70,7 +70,8 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
             var newItem = new creator(this, this.contentItem.contentItems.last());
             newItem.init();
             this.children.push(newItem);
-            cb && cb(newItem);
+            if (cb)
+                cb(newItem);
             return typeof (cb) === "undefined" ? newItem : this;
         }
         addContainer(type, cb) {
@@ -95,6 +96,10 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
         init() {
             for (var child of this.children)
                 child.init();
+        }
+        setConfig(config) {
+            Object.assign(this.contentItem.config, config);
+            return this;
         }
     }
     exports.Container = Container;

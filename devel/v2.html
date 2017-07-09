@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="lib/_npm/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/_npm/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/contextmenu.css" />
+    <link rel="stylesheet" type="text/css" href="css/hexViewer.css" />
     <link rel="stylesheet" type="text/css" href="css/v2.css" />
     
     <script src="lib/_npm/smooth-scrollbar/smooth-scrollbar.js"></script>
@@ -19,22 +20,24 @@
     <script src="lib/thenBy.js"></script>
     <script>
         async function init(){
-            var paths = {};
-            ["bowser", "jstree", "localforage", "goldenlayout", "vue"].forEach(
+            loader.paths = {
+                "big-integer": "lib/_npm/BigInteger/BigInteger",
+                jquery: "lib/_npm/jquery/jquery.min",
+                ace: "lib/_npm/ace",
+                bootstrap: "lib/_npm/bootstrap/js/bootstrap.min",
+            };
+            ["bowser", "jstree", "localforage", "goldenlayout", "vue", "dateformat"].forEach(
                 name => loader.paths[name] = `lib/_npm/${name}/${name}`);
-            loader.paths["bigInt"] = "lib/_npm/BigInteger/BigInteger";
-            loader.paths["jquery"] = "lib/_npm/jquery/jquery.min";
-            loader.paths["ace"] = "lib/_npm/ace";
 
             let componentLoader = (await loader.getLoadedModule('ui/ComponentLoader')).exports.componentLoader;
             //console.log('componentLoader', componentLoader);
             loader.beforeLoadHook = async module => {
-                //console.log('module loading: ', module.url);
+                // console.log('module loading: ', module.url);
                 if(/ui.(Parts|Components)/.exec(module.url)){
                     //console.log('load template for', module.url);
                     await componentLoader.loadTemplate(module.url.replace(/\.js$/, ".html").replace(/js\/ui/, "src/ui"));
-                    //componentLoader.
-                }
+                } else if (module.url.indexOf("bootstrap") !== -1)
+                    window["jQuery"] = (await loader.getLoadedModule('jquery')).exports;
             };
 
             require(["autorefresh2"]);

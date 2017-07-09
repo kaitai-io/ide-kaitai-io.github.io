@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "jquery"], function (require, exports, $) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HexViewUtils {
@@ -52,7 +52,7 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     class HexViewer {
-        constructor(containerId, dataProvider) {
+        constructor(container, dataProvider) {
             this.dataProvider = dataProvider;
             this.rowHeight = 21;
             this.bytesPerLine = 16;
@@ -62,7 +62,7 @@ define(["require", "exports"], function (require, exports) {
             this.selectionStart = -1;
             this.selectionEnd = -1;
             this.dataProvider = dataProvider;
-            this.scrollbox = $(`#${containerId}`).addClass("hexViewer");
+            this.scrollbox = $(container).addClass("hexViewer");
             this.heightbox = $(`<div class="heightbox"></div>`).appendTo(this.scrollbox);
             this.contentOuter = $(`<div class="contentOuter" tabindex="1"></div>`).appendTo(this.scrollbox);
             var charSpans = "0123456789ABCDEF".split("").map((x, i) => `<span class="c${i}">${x}</span>`).join("");
@@ -113,7 +113,7 @@ define(["require", "exports"], function (require, exports) {
                 if (e.type === "mousedown") {
                     this.canDeselect = this.selectionStart === cell.dataOffset && this.selectionEnd === cell.dataOffset;
                     this.mouseDownOffset = cell.dataOffset;
-                    this.content.on("mousemove", e => this.cellMouseAction(e));
+                    this.content.on("mousemove", evt => this.cellMouseAction(evt));
                     this.setSelection(cell.dataOffset, cell.dataOffset);
                 }
                 else if (e.type === "mousemove") {

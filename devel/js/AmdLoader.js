@@ -128,12 +128,13 @@ class AmdLoader {
         else
             promise();
     }
+    get notLoaded() { return Object.values(this.modules).filter(x => !x.loaded); }
 }
 let loader = new AmdLoader;
-function require() {
-    if (arguments.length === 1 && typeof arguments[0] === "string")
-        return loader.requireLoaded(arguments[0]);
-    return loader.require.apply(loader, loader.parseArgs(arguments, false));
+function require(...args) {
+    if (args.length === 1 && typeof args[0] === "string")
+        return loader.requireLoaded(args[0]);
+    return loader.require.apply(loader, loader.parseArgs(args, false));
 }
 function define() {
     return loader.define.apply(loader, loader.parseArgs(arguments, true));
