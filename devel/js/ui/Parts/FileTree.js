@@ -46,6 +46,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         get capabilities() { return this.fs.capabilities(this.uri.uri); }
         get canWrite() { return this.capabilities.write; }
         get canDelete() { return this.uri.path !== "/" && this.capabilities.delete; }
+        get hasChildren() { return this.isFolder; }
         async loadChildren() {
             let children = await this.fs.list(this.uri.uri);
             var childCache = (this.children || []).toDict(x => x.uri.name);
@@ -70,6 +71,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.isFolder = true;
         }
         loadChildren() { return Promise.resolve(); }
+        get hasChildren() { return true; }
     }
     function addRootNode(text, icon, uri) {
         var node = new FsTreeNode(null, new FsUri_1.FsUri(uri), exports.fss);

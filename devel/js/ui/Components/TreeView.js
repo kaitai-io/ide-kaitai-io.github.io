@@ -107,15 +107,11 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.childrenLoading = false;
             this.loadingError = null;
         }
-        get icon() {
-            return this.model["icon"] ? this.model["icon"] :
-                this.model.isFolder ? (this.open ? "glyphicon-folder-open" : "glyphicon-folder-close") : "glyphicon-list-alt";
-        }
         get treeView() { return UIHelper_1.default.findParent(this, TreeView); }
         get children() { return this.$children; }
         get parent() { return this.$parent; }
         dblclick() {
-            if (this.model.isFolder) {
+            if (this.model.hasChildren) {
                 this.open = !this.open;
                 if (this.open && !this.model.children) {
                     this.childrenLoading = true;
