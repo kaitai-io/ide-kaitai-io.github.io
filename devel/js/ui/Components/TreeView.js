@@ -96,7 +96,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
         }
     };
     TreeView = __decorate([
-        Component_1.default
+        Component_1.default({ props: { "wholeRow": { default: false } } })
     ], TreeView);
     exports.TreeView = TreeView;
     let TreeViewItem = class TreeViewItem extends Vue {

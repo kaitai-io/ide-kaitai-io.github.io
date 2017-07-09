@@ -1,4 +1,4 @@
-define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/InfoPanel", "./SandboxHandler", "./HexViewer", "./ui/Components/ConverterPanel", "./ui/Parts/AboutModal"], function (require, exports, AppLayout_1, FileTree_1, InfoPanel_1, SandboxHandler_1, HexViewer_1, ConverterPanel_1, AboutModal_1) {
+define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/InfoPanel", "./SandboxHandler", "./HexViewer", "./ui/Components/ConverterPanel", "./ui/Parts/AboutModal", "./ui/Parts/ParsedTree"], function (require, exports, AppLayout_1, FileTree_1, InfoPanel_1, SandboxHandler_1, HexViewer_1, ConverterPanel_1, AboutModal_1, ParsedTree_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     window["layout"] = AppLayout_1.Layout;
@@ -27,6 +27,14 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/FileTree", "./ui/Parts/
             ksyEditor.setValue(ksyContent, -1);
         }
     }
+    var parsedTree = new ParsedTree_1.ParsedTree();
+    parsedTree.rootNode = new ParsedTree_1.ParsedTreeNode(null, [
+        new ParsedTree_1.ParsedTreeNode("hello", [
+            new ParsedTree_1.ParsedTreeNode("bello1", []),
+            new ParsedTree_1.ParsedTreeNode("bello2", []),
+        ]),
+    ]);
+    parsedTree.$mount(AppLayout_1.Layout.objectTree.element);
     (async function () {
         var sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
         await sandbox.loadScript(new URL("js/worker/worker/ImportLoader.js", location.href).href);
