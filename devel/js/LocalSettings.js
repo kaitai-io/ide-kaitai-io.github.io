@@ -14,7 +14,9 @@ define(["require", "exports"], function (require, exports) {
         });
     }
     exports.localSettings = CreateScopedLocalStorage("settings", {
-        showAboutOnStart: true
+        showAboutOnStart: true,
+        latestKsyUri: "https:///formats/archive/zip.ksy",
+        latestInputUri: "https:///samples/sample1.zip"
     });
 });
 //# sourceMappingURL=LocalSettings.js.map
