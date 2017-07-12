@@ -1,4 +1,4 @@
-define(["require", "exports", "vue", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./HexViewer", "./ui/Parts/FileTree"], function (require, exports, Vue, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, HexViewer_1, FileTree_1) {
+define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./HexViewer", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, HexViewer_1, FileTree_1, ErrorWindow_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppView {
@@ -33,6 +33,15 @@ define(["require", "exports", "vue", "./AppLayout", "./ui/Parts/ParsedTree", "./
                     }
                 });
             });
+        }
+        showError(errorMsg) {
+            this.layout.errors.show();
+            var errorWnd = new ErrorWindow_1.ErrorWindow();
+            errorWnd.errorMsg = errorMsg;
+            errorWnd.$mount($("<div>").appendTo(this.layout.errors.component.element).get(0));
+        }
+        hideErrors() {
+            this.layout.errors.hide();
         }
     }
     exports.AppView = AppView;

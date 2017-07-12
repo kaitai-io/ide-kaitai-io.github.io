@@ -1,6 +1,14 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    class GenericSandboxError extends Error {
+        constructor(text, errorClass, value) {
+            super(`${errorClass}: ${text}`);
+            this.text = text;
+            this.errorClass = errorClass;
+            this.value = value;
+        }
+    }
     class ApiProxyPath {
         constructor(sandbox, useWorker, path) {
             this.sandbox = sandbox;
@@ -10,6 +18,8 @@ define(["require", "exports"], function (require, exports) {
         createProxy() {
             return new Proxy(ApiProxyPath.fakeBaseObj, {
                 get: (target, propName) => {
+                    if (propName === "then")
+                        return null;
                     var path = Array.from(this.path);
                     path.push(propName);
                     return new ApiProxyPath(this.sandbox, this.useWorker, path).createProxy();
@@ -52,8 +62,13 @@ define(["require", "exports"], function (require, exports) {
                     if (response.success)
                         resolve(response.result);
                     else {
-                        console.log("error", response.error);
-                        reject(response.error);
+                        let error = response.error;
+                        console.log("error", error);
+                        let errorObj = JSON.parse(error.asJson);
+                        if (error.class in this.errorHandlers)
+                            reject(new this.errorHandlers[error.class](error.asText, errorObj));
+                        else
+                            reject(new GenericSandboxError(error.asText, error.class, errorObj));
                     }
                     //console.info(`[performance] [${(new Date()).format("H:i:s.u")}] Got worker response: ${Date.now()}.`);
                 };
