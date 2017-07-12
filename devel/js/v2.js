@@ -36,14 +36,16 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.view.converterPanel.model.update(this.dataProvider, start);
                 this.view.infoPanel.selectionStart = start;
                 this.view.infoPanel.selectionEnd = end;
-                let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end);
-                let itemToSelect = itemMatches.items[0].exp;
-                let itemPathToSelect = itemToSelect.path.join('/');
-                this.view.infoPanel.parsedPath = itemPathToSelect;
-                if (origin !== "ParsedTree") {
-                    let node = await this.openNode(itemPathToSelect);
-                    this.view.parsedTree.treeView.setSelected(node);
+                let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end).items;
+                if (itemMatches.length > 0) {
+                    let itemPathToSelect = itemMatches[0].exp.path.join('/');
+                    this.view.infoPanel.parsedPath = itemPathToSelect;
+                    if (origin !== "ParsedTree") {
+                        let node = await this.openNode(itemPathToSelect);
+                        this.view.parsedTree.treeView.setSelected(node);
+                    }
                 }
+                LocalSettings_1.localSettings.latestSelection = { start, end };
             }
             finally {
                 this.blockSelection = false;
@@ -95,8 +97,10 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.parsedMap = new ParsedMap_1.ParsedMap(this.exported);
             this.view.infoPanel.unparsed = this.parsedMap.unparsed;
             this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
-            this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported));
             this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
+            this.view.parsedTree.rootNode = null;
+            await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
+            this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end);
         }
         async openNode(path) {
             let pathParts = path.split("/");

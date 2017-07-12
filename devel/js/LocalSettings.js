@@ -16,7 +16,8 @@ define(["require", "exports"], function (require, exports) {
     exports.localSettings = CreateScopedLocalStorage("settings", {
         showAboutOnStart: true,
         latestKsyUri: "https:///formats/archive/zip.ksy",
-        latestInputUri: "https:///samples/sample1.zip"
+        latestInputUri: "https:///samples/sample1.zip",
+        latestSelection: { start: -1, end: -1 }
     });
 });
 //# sourceMappingURL=LocalSettings.js.map
