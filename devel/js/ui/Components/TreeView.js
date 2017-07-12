@@ -93,6 +93,7 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.selectedItem = newSelected;
             this.selectedItem.selected = true;
             this.scrollSelectedIntoView();
+            this.$emit("selected", this.selectedItem.model);
         }
     };
     TreeView = __decorate([

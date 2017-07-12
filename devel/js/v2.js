@@ -1,4 +1,4 @@
-define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./utils", "./SandboxHandler", "./ui/Parts/ParsedTree"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, utils_1, SandboxHandler_1, ParsedTree_1) {
+define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./utils", "./SandboxHandler", "./ui/Parts/ParsedTree", "./ParsedMap"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, utils_1, SandboxHandler_1, ParsedTree_1, ParsedMap_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
@@ -18,10 +18,24 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.view.ksyEditor.on("change", () => editDelay.do(() => this.setKsyContent(this.view.ksyEditor.getValue())));
             this.view.hexViewer.onSelectionChanged = () => {
                 console.log("selectionChanged");
-                this.view.converterPanel.model.update(this.dataProvider, this.view.hexViewer.selectionStart);
-                this.view.infoPanel.selectionStart = this.view.hexViewer.selectionStart;
-                this.view.infoPanel.selectionEnd = this.view.hexViewer.selectionEnd;
+                this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd);
             };
+            this.view.parsedTree.treeView.$on("selected", (node) => {
+                console.log("selectedItem", node);
+                this.setSelection(node.value.start, node.value.end - 1);
+                this.view.infoPanel.parsedPath = node.value.path.join("/");
+            });
+        }
+        setSelection(start, end) {
+            this.view.hexViewer.setSelection(start, end);
+            this.view.converterPanel.model.update(this.dataProvider, start);
+            this.view.infoPanel.selectionStart = start;
+            this.view.infoPanel.selectionEnd = end;
+            let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end);
+            let itemToSelect = itemMatches.items[0].exp;
+            let itemPathToSelect = itemToSelect.path.join('/');
+            this.view.infoPanel.parsedPath = itemPathToSelect;
+            console.log("itemPathToSelect", itemPathToSelect);
         }
         async initWorker() {
             this.sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
@@ -64,9 +78,12 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
         }
         async reparse() {
             await this.sandbox.kaitaiServices.parse();
-            let exported = await this.sandbox.kaitaiServices.export();
-            console.log("exported", exported);
-            this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", exported));
+            this.exported = await this.sandbox.kaitaiServices.export();
+            console.log("exported", this.exported);
+            this.parsedMap = new ParsedMap_1.ParsedMap(this.exported);
+            this.view.infoPanel.unparsed = this.parsedMap.unparsed;
+            this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
+            this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported));
         }
     }
     var app = window["ide"] = new AppController();

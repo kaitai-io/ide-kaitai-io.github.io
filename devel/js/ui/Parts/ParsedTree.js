@@ -44,6 +44,7 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
             super(...arguments);
             this.rootNode = null;
         }
+        get treeView() { return this.$refs["treeView"]; }
     };
     ParsedTree = __decorate([
         Component_1.default

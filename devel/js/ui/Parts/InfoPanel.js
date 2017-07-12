@@ -15,6 +15,7 @@ define(["require", "exports", "vue", "../Component", "../Components/Stepper", ".
             this.unparsed = [];
             this.byteArrays = [];
             this.disableLazyParsing = false;
+            this.parsedPath = "";
         }
         selectInterval(interval) { this.selectionChanged(interval.start, interval.end); }
         selectionChanged(start, end) { }
