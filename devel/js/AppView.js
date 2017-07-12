@@ -10,8 +10,9 @@ define(["require", "exports", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Comp
             this.ksyEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.ksyEditor, "yaml");
             this.jsCode = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCode, "javascript");
             this.jsCodeDebug = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCodeDebug, "javascript");
-            this.hexViewer = new HexViewer_1.HexViewer(this.layout.inputBinary.element);
             this.aboutModal = new AboutModal_1.AboutModal();
+            this.hexViewer = new HexViewer_1.HexViewer(this.layout.inputBinary.element);
+            this.layout.inputBinary.container.on("resize", () => this.hexViewer.resize());
             this.infoPanel = new InfoPanel_1.InfoPanel();
             this.infoPanel.$mount(this.layout.infoPanel.element);
             this.infoPanel.aboutModal = this.aboutModal;

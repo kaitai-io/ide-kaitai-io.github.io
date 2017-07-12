@@ -111,17 +111,34 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
         get treeView() { return UIHelper_1.default.findParent(this, TreeView); }
         get children() { return this.$children; }
         get parent() { return this.$parent; }
-        dblclick() {
+        created() {
+            this.model.$vm = this;
+            //console.log('model', this.model);
+        }
+        async openNode() {
+            if (this.open || !this.model.hasChildren)
+                return;
+            this.childrenLoading = true;
+            this.loadingError = null;
+            try {
+                await this.model.loadChildren();
+                this.open = true;
+            }
+            catch (e) {
+                console.error(e);
+                this.loadingError = `${e}`;
+            }
+            this.childrenLoading = false;
+        }
+        closeNode() {
+            this.open = false;
+        }
+        async dblclick() {
             if (this.model.hasChildren) {
-                this.open = !this.open;
-                if (this.open && !this.model.children) {
-                    this.childrenLoading = true;
-                    this.loadingError = null;
-                    setTimeout(() => this.model.loadChildren().catch(x => {
-                        console.error(x);
-                        this.loadingError = `${x}`;
-                    }).then(() => this.childrenLoading = false), 0);
-                }
+                if (this.open)
+                    this.closeNode();
+                else
+                    await this.openNode();
             }
             else {
                 this.treeView.$emit("item-dblclick", this.model);

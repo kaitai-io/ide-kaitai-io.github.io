@@ -2,6 +2,9 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
+        constructor() {
+            this.blockSelection = false;
+        }
         async start() {
             this.initView();
             await this.initWorker();
@@ -17,25 +20,34 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             var editDelay = new utils_1.Delayed(500);
             this.view.ksyEditor.on("change", () => editDelay.do(() => this.setKsyContent(this.view.ksyEditor.getValue())));
             this.view.hexViewer.onSelectionChanged = () => {
-                console.log("selectionChanged");
                 this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd);
             };
             this.view.parsedTree.treeView.$on("selected", (node) => {
-                console.log("selectedItem", node);
-                this.setSelection(node.value.start, node.value.end - 1);
+                this.setSelection(node.value.start, node.value.end - 1, "ParsedTree");
                 this.view.infoPanel.parsedPath = node.value.path.join("/");
             });
         }
-        setSelection(start, end) {
-            this.view.hexViewer.setSelection(start, end);
-            this.view.converterPanel.model.update(this.dataProvider, start);
-            this.view.infoPanel.selectionStart = start;
-            this.view.infoPanel.selectionEnd = end;
-            let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end);
-            let itemToSelect = itemMatches.items[0].exp;
-            let itemPathToSelect = itemToSelect.path.join('/');
-            this.view.infoPanel.parsedPath = itemPathToSelect;
-            console.log("itemPathToSelect", itemPathToSelect);
+        async setSelection(start, end, origin) {
+            if (this.blockSelection)
+                return;
+            this.blockSelection = true;
+            try {
+                this.view.hexViewer.setSelection(start, end);
+                this.view.converterPanel.model.update(this.dataProvider, start);
+                this.view.infoPanel.selectionStart = start;
+                this.view.infoPanel.selectionEnd = end;
+                let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end);
+                let itemToSelect = itemMatches.items[0].exp;
+                let itemPathToSelect = itemToSelect.path.join('/');
+                this.view.infoPanel.parsedPath = itemPathToSelect;
+                if (origin !== "ParsedTree") {
+                    let node = await this.openNode(itemPathToSelect);
+                    this.view.parsedTree.treeView.setSelected(node);
+                }
+            }
+            finally {
+                this.blockSelection = false;
+            }
         }
         async initWorker() {
             this.sandbox = SandboxHandler_1.SandboxHandler.create("https://webide-usercontent.kaitai.io");
@@ -84,6 +96,21 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.view.infoPanel.unparsed = this.parsedMap.unparsed;
             this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
             this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported));
+            this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
+        }
+        async openNode(path) {
+            let pathParts = path.split("/");
+            var currNode = this.view.parsedTree.treeView.children[0];
+            for (let pathPart of pathParts) {
+                await currNode.openNode();
+                currNode = currNode.children.find(x => x.model.value.path.last() === pathPart);
+                if (!currNode) {
+                    console.error(`openNode: next node not found: ${pathPart} (${path})`);
+                    return;
+                }
+            }
+            await currNode.openNode();
+            return currNode;
         }
     }
     var app = window["ide"] = new AppController();
