@@ -9,7 +9,7 @@ define(["require", "exports", "./SandboxHandler"], function (require, exports, S
     }
     exports.ParseError = ParseError;
     async function InitKaitaiSandbox() {
-        var handler = new SandboxHandler_1.SandboxHandler("http://webide-usercontent.kaitai.io");
+        var handler = new SandboxHandler_1.SandboxHandler("https://webide-usercontent.kaitai.io");
         handler.errorHandlers = { "ParseException": ParseError };
         var sandbox = handler.createProxy();
         await sandbox.loadScript(new URL("js/worker/worker/ImportLoader.js", location.href).href);
