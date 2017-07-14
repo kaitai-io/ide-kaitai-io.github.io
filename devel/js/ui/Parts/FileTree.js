@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, utils_1) {
+define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils", "../../utils/FileUtils", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, utils_1, FileUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     for (var i = 0; i < 200; i++)
@@ -91,13 +91,15 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         constructor() {
             super(...arguments);
             this.fsTree = null;
+            this.selectedFsItem = null;
         }
         get ctxMenu() { return this.$refs["ctxMenu"]; }
         get fsTreeView() { return this.$refs["fsTree"]; }
         get createKsyModal() { return this.$refs["createKsyModal"]; }
         get createFolderModal() { return this.$refs["createFolderModal"]; }
-        get selectedFsItem() { return this.fsTreeView.selectedItem.model; }
         get selectedUri() { return this.selectedFsItem.uri.uri; }
+        get canCreateFile() { return this.selectedFsItem && this.selectedFsItem.canWrite && this.selectedFsItem.isFolder; }
+        get canDownloadFile() { return this.selectedFsItem && !this.selectedFsItem.isFolder; }
         init() {
             this.fsTree = fsData;
             console.log(fsData.children);
@@ -111,6 +113,10 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         async openFile() {
             this.$emit("open-file", this.selectedFsItem);
         }
+        fsItemSelected(item) {
+            this.selectedFsItem = item;
+            console.log("fsItemSelected", arguments);
+        }
         async generateParser(lang, aceLangOrDebug) {
             var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
             var debug = typeof aceLangOrDebug === "boolean" ? aceLangOrDebug : false;
@@ -118,37 +124,45 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.$emit("generate-parser", lang, aceLang, debug, data);
         }
         showContextMenu(event) {
-            this.contextMenuNode = this.selectedFsItem;
-            this.ctxMenu.open(event, this.contextMenuNode);
+            this.ctxMenu.open(event, this.selectedFsItem);
         }
         async createFolder(name) {
-            var newUri = this.contextMenuNode.uri.addPath(`${name}/`).uri;
-            await this.contextMenuNode.fs.createFolder(newUri);
-            await this.contextMenuNode.loadChildren();
+            var newUri = this.selectedFsItem.uri.addPath(`${name}/`).uri;
+            await this.selectedFsItem.fs.createFolder(newUri);
+            await this.selectedFsItem.loadChildren();
+        }
+        async uploadFiles(files) {
+            for (let fileName in files) {
+                var newUri = this.selectedFsItem.uri.addPath(fileName).uri;
+                await this.selectedFsItem.fs.write(newUri, files[fileName]);
+            }
+            await this.selectedFsItem.loadChildren();
         }
         async createKsyFile(name) {
-            var newUri = this.contextMenuNode.uri.addPath(`${name}.ksy`).uri;
             var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
-            await this.contextMenuNode.fs.write(newUri, utils_1.Convert.utf8StrToBytes(content).buffer);
-            await this.contextMenuNode.loadChildren();
+            await this.uploadFiles({ [`${name}.ksy`]: utils_1.Convert.utf8StrToBytes(content).buffer });
         }
         async cloneFile() {
-            var newUri = this.contextMenuNode.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);
+            var newUri = this.selectedFsItem.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);
             console.log("cloneKsyFile", newUri);
-            let content = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
-            await this.contextMenuNode.fs.write(newUri, content);
-            await this.contextMenuNode.parent.loadChildren();
+            let content = await this.selectedFsItem.fs.read(this.selectedFsItem.uri.uri);
+            await this.selectedFsItem.fs.write(newUri, content);
+            await this.selectedFsItem.parent.loadChildren();
         }
         async downloadFile() {
-            let data = await this.contextMenuNode.fs.read(this.contextMenuNode.uri.uri);
-            await utils_1.saveFile(data, this.contextMenuNode.uri.name);
+            let data = await this.selectedFsItem.fs.read(this.selectedFsItem.uri.uri);
+            await FileUtils_1.FileUtils.saveFile(this.selectedFsItem.uri.name, data);
+        }
+        async uploadFile() {
+            const files = await FileUtils_1.FileUtils.openFilesWithDialog();
+            this.uploadFiles(files);
         }
         async deleteFile() {
-            await this.contextMenuNode.fs.delete(this.contextMenuNode.uri.uri);
-            await this.contextMenuNode.parent.loadChildren();
+            await this.selectedFsItem.fs.delete(this.selectedFsItem.uri.uri);
+            await this.selectedFsItem.parent.loadChildren();
         }
         mounted() {
-            var scrollbar = Scrollbar.init(this.$el);
+            var scrollbar = Scrollbar.init(this.fsTreeView.$el);
             this.fsTreeView.getParentBoundingRect = () => scrollbar.bounding;
             this.fsTreeView.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop, onlyScrollIfNeeded: true });
             document.body.appendChild(this.ctxMenu.$el);

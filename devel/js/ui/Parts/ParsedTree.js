@@ -21,6 +21,8 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
                 this.value.primitiveValue.toString(16);
         }
         loadChildren() {
+            if (this.children)
+                return;
             if (this.value.type === WorkerShared_1.ObjectType.Object)
                 this.children = Object.keys(this.value.object.fields).map(x => new ParsedTreeNode(x, this.value.object.fields[x]));
             else if (this.value.type === WorkerShared_1.ObjectType.Array)
