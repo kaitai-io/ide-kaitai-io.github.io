@@ -28,21 +28,26 @@ class KaitaiServices {
         this.objectExporter = new ObjectExporter_1.ObjectExporter(this.ksy.types, this.classes);
         return { releaseCode, debugCode, debugCodeAll };
     }
-    setInput(input) {
+    async setInput(input) {
         this.input = input;
         console.log("setInput", this.input);
     }
-    parse() {
+    async parse() {
         var mainClass = this.classes[this.mainClassName];
         this.parsed = new mainClass(new KaitaiStream(this.input, 0));
         this.parsed._read();
         console.log("parsed", this.parsed);
     }
-    export() {
+    async export() {
         return this.objectExporter.exportValue(this.parsed, null, []);
     }
-    getCompilerInfo() {
+    async getCompilerInfo() {
         return { version: this.compiler.version, buildDate: this.compiler.buildDate };
+    }
+    async generateParser(ksyContent, lang, debug) {
+        const ksy = yamljs_1.YAML.parse(ksyContent);
+        const compiledCode = await this.compiler.compile(lang, ksy, null, debug);
+        return compiledCode;
     }
 }
 try {

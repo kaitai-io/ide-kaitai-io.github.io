@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils", "../../utils/FileUtils", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, utils_1, FileUtils_1) {
+define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils/FileUtils", "../../utils/Conversion", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, FileUtils_1, Conversion_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     for (var i = 0; i < 200; i++)
@@ -120,8 +120,8 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         async generateParser(lang, aceLangOrDebug) {
             var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
             var debug = typeof aceLangOrDebug === "boolean" ? aceLangOrDebug : false;
-            let data = await exports.fss.read(this.selectedUri);
-            this.$emit("generate-parser", lang, aceLang, debug, data);
+            let ksyContent = Conversion_1.Conversion.utf8BytesToStr(await exports.fss.read(this.selectedUri));
+            this.$emit("generate-parser", lang, aceLang, debug, ksyContent);
         }
         showContextMenu(event) {
             this.ctxMenu.open(event, this.selectedFsItem);
@@ -140,7 +140,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         async createKsyFile(name) {
             var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
-            await this.uploadFiles({ [`${name}.ksy`]: utils_1.Convert.utf8StrToBytes(content).buffer });
+            await this.uploadFiles({ [`${name}.ksy`]: Conversion_1.Conversion.strToUtf8Bytes(content) });
         }
         async cloneFile() {
             var newUri = this.selectedFsItem.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);

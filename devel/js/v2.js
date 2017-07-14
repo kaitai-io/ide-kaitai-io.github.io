@@ -1,4 +1,4 @@
-define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./utils", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, utils_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1) {
+define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./utils", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox", "./utils/Conversion"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, utils_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1, Conversion_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
@@ -25,6 +25,11 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.view.parsedTree.treeView.$on("selected", (node) => {
                 this.setSelection(node.value.start, node.value.end - 1, "ParsedTree");
                 this.view.infoPanel.parsedPath = node.value.path.join("/");
+            });
+            this.view.fileTree.$on("generate-parser", async (lang, aceLang, debug, ksyContent) => {
+                const generatedFiles = await this.sandbox.kaitaiServices.generateParser(ksyContent, lang, debug);
+                for (let fileName in generatedFiles)
+                    this.view.addFileView(fileName, generatedFiles[fileName], aceLang);
             });
         }
         async setSelection(start, end, origin) {
@@ -61,7 +66,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             let content = await FileTree_1.fss.read(uri);
             if (uri.endsWith(".ksy")) {
                 LocalSettings_1.localSettings.latestKsyUri = uri;
-                let ksyContent = new TextDecoder().decode(new Uint8Array(content));
+                const ksyContent = Conversion_1.Conversion.utf8BytesToStr(content);
                 this.compile(ksyContent);
             }
             else {
