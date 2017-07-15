@@ -32,8 +32,9 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                     this.view.addFileView(fileName, generatedFiles[fileName], aceLang);
             });
             this.view.dragAndDrop.$on("files-uploaded", async (files) => {
-                console.log("files-uploaded", files);
-                this.view.fileTree.uploadFiles(files);
+                const newFileUris = await this.view.fileTree.uploadFiles(files);
+                if (newFileUris.length === 1)
+                    this.openFile(newFileUris[0]);
             });
         }
         async setSelection(start, end, origin) {

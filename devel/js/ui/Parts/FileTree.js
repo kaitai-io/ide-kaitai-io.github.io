@@ -136,11 +136,14 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         async uploadFiles(files) {
             const dest = this.selectedFsItem || this.defaultStorage;
+            const resultUris = [];
             for (const fileName of Object.keys(files)) {
                 var newUri = dest.uri.addPath(fileName).uri;
                 await dest.fs.write(newUri, files[fileName]);
+                resultUris.push(newUri);
             }
             await dest.loadChildren();
+            return resultUris;
         }
         async createKsyFile(name) {
             var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
