@@ -79,10 +79,11 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         node.icon = icon;
         return node;
     }
+    var browserStorage = addRootNode("browser", "glyphicon-cloud", "browser:///");
     var fsData = new FsRootNode([
         addRootNode("kaitai.io", "glyphicon-cloud", "https:///formats/"),
         addRootNode("kaitai-io/formats", "fa fa-github", "github://kaitai-io/kaitai_struct_formats/"),
-        addRootNode("browser", "glyphicon-cloud", "browser:///"),
+        browserStorage,
         addRootNode("browser (legacy)", "glyphicon-cloud", "browser_legacy:///"),
     ]);
     //setTimeout(() => fsData.children.push(addRootNode("browser", "glyphicon-cloud", "browser:///")), 5000);
@@ -92,6 +93,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             super(...arguments);
             this.fsTree = null;
             this.selectedFsItem = null;
+            this.defaultStorage = null;
         }
         get ctxMenu() { return this.$refs["ctxMenu"]; }
         get fsTreeView() { return this.$refs["fsTree"]; }
@@ -102,6 +104,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         get canDownloadFile() { return this.selectedFsItem && !this.selectedFsItem.isFolder; }
         init() {
             this.fsTree = fsData;
+            this.defaultStorage = browserStorage;
             console.log(fsData.children);
             setTimeout(() => {
                 this.fsTreeView.children[0].dblclick();
@@ -132,11 +135,12 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             await this.selectedFsItem.loadChildren();
         }
         async uploadFiles(files) {
-            for (let fileName in files) {
-                var newUri = this.selectedFsItem.uri.addPath(fileName).uri;
-                await this.selectedFsItem.fs.write(newUri, files[fileName]);
+            const dest = this.selectedFsItem || this.defaultStorage;
+            for (const fileName of Object.keys(files)) {
+                var newUri = dest.uri.addPath(fileName).uri;
+                await dest.fs.write(newUri, files[fileName]);
             }
-            await this.selectedFsItem.loadChildren();
+            await dest.loadChildren();
         }
         async createKsyFile(name) {
             var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;

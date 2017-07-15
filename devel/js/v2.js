@@ -14,7 +14,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
         initView() {
             this.view = new AppView_1.AppView();
             this.view.fileTree.$on("open-file", (treeNode) => {
-                console.log('treeView openFile', treeNode);
+                console.log("treeView openFile", treeNode);
                 this.openFile(treeNode.uri.uri);
             });
             var editDelay = new utils_1.Delayed(500);
@@ -31,6 +31,10 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 for (let fileName in generatedFiles)
                     this.view.addFileView(fileName, generatedFiles[fileName], aceLang);
             });
+            this.view.dragAndDrop.$on("files-uploaded", async (files) => {
+                console.log("files-uploaded", files);
+                this.view.fileTree.uploadFiles(files);
+            });
         }
         async setSelection(start, end, origin) {
             if (this.blockSelection)
@@ -43,7 +47,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.view.infoPanel.selectionEnd = end;
                 let itemMatches = this.parsedMap.intervalHandler.searchRange(start, end).items;
                 if (itemMatches.length > 0) {
-                    let itemPathToSelect = itemMatches[0].exp.path.join('/');
+                    let itemPathToSelect = itemMatches[0].exp.path.join("/");
                     this.view.infoPanel.parsedPath = itemPathToSelect;
                     if (origin !== "ParsedTree") {
                         let node = await this.openNode(itemPathToSelect);

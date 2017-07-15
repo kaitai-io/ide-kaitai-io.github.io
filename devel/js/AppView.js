@@ -1,4 +1,4 @@
-define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./HexViewer", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, HexViewer_1, FileTree_1, ErrorWindow_1) {
+define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./HexViewer", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow", "./ui/Components/DragAndDrop"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, HexViewer_1, FileTree_1, ErrorWindow_1, DragAndDrop_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppView {
@@ -20,6 +20,8 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
             this.converterPanel.$mount(this.layout.converterPanel.element);
             this.parsedTree = new ParsedTree_1.ParsedTree();
             this.parsedTree.$mount(this.layout.objectTree.element);
+            this.dragAndDrop = new DragAndDrop_1.DragAndDrop();
+            this.dragAndDrop.$mount($("<div>").appendTo(document.body).get(0));
         }
         nextTick(action) {
             return new Promise((resolve, reject) => {

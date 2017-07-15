@@ -10,14 +10,17 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
                 reader.readAsArrayBuffer(blob);
             });
         }
+        static async processFileList(fileList) {
+            const result = {};
+            for (let file of Array.from(fileList))
+                result[file.name] = await FileUtils.readBlob(file);
+            return result;
+        }
         static openFilesWithDialog() {
             return new Promise((resolve, reject) => {
                 const input = $(`<input type="file" multiple />`);
                 input.on("change", async (e) => {
-                    const fileList = e.target.files;
-                    const result = {};
-                    for (let file of Array.from(fileList))
-                        result[file.name] = await FileUtils.readBlob(file);
+                    const result = FileUtils.processFileList(e.target.files);
                     input.remove();
                     resolve(result);
                 }).click();
