@@ -41,6 +41,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 const json = await this.sandbox.kaitaiServices.exportToJson(hex);
                 this.view.addFileView("json export", json, "json");
             };
+            this.view.infoPanel.selectionChanged = (start, end) => this.setSelection(start, end);
         }
         async setSelection(start, end, origin) {
             if (this.blockSelection)

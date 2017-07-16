@@ -62,7 +62,7 @@ define(["require", "exports", "vue", "jquery", "../Component"], function (requir
                 this.useHexAddr = ctrl.text.startsWith("0x");
             var start = this.startPart.value;
             var end = this.endPart.value;
-            this.$emit("selectionchanged", start !== null ? start : -1, end === null || end < start ? start : end);
+            this.$emit("selection-changed", start !== null ? start : -1, end === null || end < start ? start : end);
         }
     };
     SelectionInput = __decorate([
