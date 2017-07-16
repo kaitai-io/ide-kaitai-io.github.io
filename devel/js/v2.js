@@ -119,16 +119,20 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             await this.reparse();
         }
         async reparse() {
-            await this.sandbox.kaitaiServices.parse();
-            this.exported = await this.sandbox.kaitaiServices.export();
-            console.log("exported", this.exported);
-            this.parsedMap = new ParsedMap_1.ParsedMap(this.exported);
-            this.view.infoPanel.unparsed = this.parsedMap.unparsed;
-            this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
-            this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
-            this.view.parsedTree.rootNode = null;
-            await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
-            this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end);
+            try {
+                await this.sandbox.kaitaiServices.parse();
+            }
+            finally {
+                this.exported = await this.sandbox.kaitaiServices.export();
+                console.log("exported", this.exported);
+                this.parsedMap = new ParsedMap_1.ParsedMap(this.exported);
+                this.view.infoPanel.unparsed = this.parsedMap.unparsed;
+                this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
+                this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
+                this.view.parsedTree.rootNode = null;
+                await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
+                this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end);
+            }
         }
     }
     var app = window["ide"] = new AppController();

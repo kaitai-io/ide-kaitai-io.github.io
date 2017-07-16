@@ -1,6 +1,6 @@
 /// <reference path="../../lib/ts-types/kaitai.d.ts" />
 /// <reference path="../KsySchema.ts" />
-define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs", "./ObjectExporter", "./JsonExporter"], function (require, exports, KaitaiStructCompiler, KaitaiStream, yamljs_1, ObjectExporter_1, JsonExporter_1) {
+define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs", "./ObjectExporter", "./JsonExporter", "./SchemaUtils"], function (require, exports, KaitaiStructCompiler, KaitaiStream, yamljs_1, ObjectExporter_1, JsonExporter_1, SchemaUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class KaitaiServices {
@@ -22,7 +22,8 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             define["amd"] = true;
             eval(debugCodeAll);
             console.log("compileKsy", this.mainClassName, this.classes);
-            this.objectExporter = new ObjectExporter_1.ObjectExporter(this.ksy.types, this.classes);
+            const ksyTypes = SchemaUtils_1.SchemaUtils.collectKsyTypes(this.ksy);
+            this.objectExporter = new ObjectExporter_1.ObjectExporter(ksyTypes, this.classes);
             return { releaseCode, debugCode, debugCodeAll };
         }
         async setInput(input) {
