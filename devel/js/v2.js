@@ -3,6 +3,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
         constructor() {
+            this.ksyEditorSilentChange = new utils_1.EventSilencer();
             this.blockSelection = false;
         }
         async start() {
@@ -18,7 +19,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.openFile(treeNode.uri.uri);
             });
             var editDelay = new utils_1.Delayed(500);
-            this.view.ksyEditor.on("change", () => editDelay.do(() => this.compile(this.view.ksyEditor.getValue())));
+            this.view.ksyEditor.on("change", () => this.ksyEditorSilentChange.do(() => editDelay.do(() => this.onKsyChanged(this.view.ksyEditor.getValue()))));
             this.view.hexViewer.onSelectionChanged = () => {
                 this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd);
             };
@@ -36,6 +37,10 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 if (newFileUris.length === 1)
                     this.openFile(newFileUris[0]);
             });
+            this.view.infoPanel.exportToJson = async (hex) => {
+                const json = await this.sandbox.kaitaiServices.exportToJson(hex);
+                this.view.addFileView("json export", json, "json");
+            };
         }
         async setSelection(start, end, origin) {
             if (this.blockSelection)
@@ -51,7 +56,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                     let itemPathToSelect = itemMatches[0].exp.path.join("/");
                     this.view.infoPanel.parsedPath = itemPathToSelect;
                     if (origin !== "ParsedTree") {
-                        let node = await this.openNode(itemPathToSelect);
+                        let node = await this.view.parsedTree.open(itemPathToSelect);
                         this.view.parsedTree.treeView.setSelected(node);
                     }
                 }
@@ -79,9 +84,13 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.setInput(content);
             }
         }
+        async onKsyChanged(ksyContent) {
+            LocalSettings_1.localSettings.latestKsyUri = await this.view.fileTree.writeFile(LocalSettings_1.localSettings.latestKsyUri, Conversion_1.Conversion.strToUtf8Bytes(ksyContent), false);
+            return await this.compile(ksyContent);
+        }
         async compile(ksyContent) {
             if (this.view.ksyEditor.getValue() !== ksyContent)
-                this.view.ksyEditor.setValue(ksyContent, -1);
+                this.ksyEditorSilentChange.silenceThis(() => this.view.ksyEditor.setValue(ksyContent, -1));
             try {
                 this.view.hideErrors();
                 var compilationResult = await this.sandbox.kaitaiServices.compile(ksyContent);
@@ -120,20 +129,6 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.view.parsedTree.rootNode = null;
             await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
             this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end);
-        }
-        async openNode(path) {
-            let pathParts = path.split("/");
-            var currNode = this.view.parsedTree.treeView.children[0];
-            for (let pathPart of pathParts) {
-                await currNode.openNode();
-                currNode = currNode.children.find(x => x.model.value.path.last() === pathPart);
-                if (!currNode) {
-                    console.error(`openNode: next node not found: ${pathPart} (${path})`);
-                    return;
-                }
-            }
-            await currNode.openNode();
-            return currNode;
         }
     }
     var app = window["ide"] = new AppController();

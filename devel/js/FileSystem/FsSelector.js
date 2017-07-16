@@ -20,21 +20,20 @@ define(["require", "exports"], function (require, exports) {
         capabilities(uri) {
             return this.getFs(uri).capabilities(uri);
         }
-        ;
-        createFolder(uri) {
-            return this.getFs(uri).createFolder(uri);
+        async createFolder(uri) {
+            await this.getFs(uri).createFolder(uri);
         }
-        read(uri) {
-            return this.getFs(uri).read(uri);
+        async read(uri) {
+            return await this.getFs(uri).read(uri);
         }
-        write(uri, data) {
-            return this.getFs(uri).write(uri, data);
+        async write(uri, data) {
+            await this.getFs(uri).write(uri, data);
         }
-        delete(uri) {
-            return this.getFs(uri).delete(uri);
+        async delete(uri) {
+            await this.getFs(uri).delete(uri);
         }
-        list(uri) {
-            return this.getFs(uri).list(uri);
+        async list(uri) {
+            return await this.getFs(uri).list(uri);
         }
     }
     exports.FsSelector = FsSelector;

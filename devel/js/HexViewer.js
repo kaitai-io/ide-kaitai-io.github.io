@@ -206,6 +206,7 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
         }
         setDataProvider(dataProvider) {
             this.dataProvider = dataProvider;
+            this.intervals = null;
             this.topRow = 0;
             this.deselect();
             this.resize();

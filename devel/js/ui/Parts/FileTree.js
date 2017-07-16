@@ -41,6 +41,8 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.fs = this.fs || parent.fs;
             this.text = uri.name;
             this.isFolder = uri.type === "directory";
+            if (this.isKsy)
+                this.icon = "glyphicon-list-alt";
         }
         get isKsy() { return this.uri.path.endsWith(".ksy"); }
         get capabilities() { return this.fs.capabilities(this.uri.uri); }
@@ -80,12 +82,18 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         return node;
     }
     var browserStorage = addRootNode("browser", "glyphicon-cloud", "browser:///");
+    var nodeKaitaiIo = addRootNode("kaitai.io", "glyphicon-cloud", "https:///");
     var fsData = new FsRootNode([
-        addRootNode("kaitai.io", "glyphicon-cloud", "https:///formats/"),
+        nodeKaitaiIo,
         addRootNode("kaitai-io/formats", "fa fa-github", "github://kaitai-io/kaitai_struct_formats/"),
         browserStorage,
         addRootNode("browser (legacy)", "glyphicon-cloud", "browser_legacy:///"),
     ]);
+    nodeKaitaiIo.loadChildren().then(() => {
+        nodeKaitaiIo.children[0].icon = "glyphicon-book";
+        nodeKaitaiIo.children[1].icon = "glyphicon-cd";
+        //console.log('set icons!', nodeKaitaiIo, nodeKaitaiIo.children[0].icon);
+    });
     //setTimeout(() => fsData.children.push(addRootNode("browser", "glyphicon-cloud", "browser:///")), 5000);
     let FileTree = class FileTree extends Vue {
         //setTimeout(() => fsData.children.push(addRootNode("browser", "glyphicon-cloud", "browser:///")), 5000);
@@ -118,7 +126,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         fsItemSelected(item) {
             this.selectedFsItem = item;
-            console.log("fsItemSelected", arguments);
+            //console.log("fsItemSelected", arguments);
         }
         async generateParser(lang, aceLangOrDebug) {
             var aceLang = typeof aceLangOrDebug === "string" ? aceLangOrDebug : lang;
@@ -135,15 +143,47 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             await this.selectedFsItem.loadChildren();
         }
         async uploadFiles(files) {
-            const dest = this.selectedFsItem || this.defaultStorage;
+            let dest = this.selectedFsItem || this.defaultStorage;
+            if (!dest.isFolder)
+                dest = dest.parent;
             const resultUris = [];
             for (const fileName of Object.keys(files)) {
-                var newUri = dest.uri.addPath(fileName).uri;
-                await dest.fs.write(newUri, files[fileName]);
-                resultUris.push(newUri);
+                const newProposedUri = dest.uri.addPath(fileName).uri;
+                const newFinalUri = await this.writeFile(newProposedUri, files[fileName]);
+                resultUris.push(newFinalUri);
             }
             await dest.loadChildren();
             return resultUris;
+        }
+        async findNextAvailableName(uri) {
+            const uriObj = new FsUri_1.FsUri(uri);
+            const parentNames = (await exports.fss.list(uriObj.parentUri.uri)).map(x => x.uri.name);
+            for (var iTry = 1; iTry < 50; iTry++) {
+                const newName = iTry === 1 ? uriObj.name : `${uriObj.nameWoExtension} (${iTry}).${uriObj.extension}`;
+                if (!parentNames.some(x => x === newName))
+                    return uriObj.parentUri.addPath(newName).uri;
+            }
+            throw new Error(`Something went wrong. Could not find any available filename for uri "${uri}"!`);
+        }
+        async writeFile(uri, content, renameOnConflict = true) {
+            const isReadOnly = !exports.fss.capabilities(uri).write;
+            if (isReadOnly)
+                uri = this.defaultStorage.uri.changePath(new FsUri_1.FsUri(uri).path).uri;
+            if (renameOnConflict)
+                uri = await this.findNextAvailableName(uri);
+            await exports.fss.write(uri, content);
+            await this.selectItem(uri);
+            return uri;
+        }
+        async getNodeForUri(uri, loadChildrenIfNeeded = true) {
+            return await this.fsTreeView.searchNode(item => {
+                return uri === item.uri.uri ? "match" :
+                    uri.startsWith(item.uri.uri) ? "children" : "nomatch";
+            });
+        }
+        async selectItem(uri) {
+            const itemNode = await this.getNodeForUri(uri);
+            this.fsTreeView.setSelected(itemNode);
         }
         async createKsyFile(name) {
             var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
@@ -162,7 +202,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         }
         async uploadFile() {
             const files = await FileUtils_1.FileUtils.openFilesWithDialog();
-            this.uploadFiles(files);
+            await this.uploadFiles(files);
         }
         async deleteFile() {
             await this.selectedFsItem.fs.delete(this.selectedFsItem.uri.uri);
@@ -171,7 +211,10 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         mounted() {
             var scrollbar = Scrollbar.init(this.fsTreeView.$el);
             this.fsTreeView.getParentBoundingRect = () => scrollbar.bounding;
-            this.fsTreeView.scrollIntoView = (el, alignToTop) => scrollbar.scrollIntoView(el, { alignToTop: alignToTop, onlyScrollIfNeeded: true });
+            this.fsTreeView.scrollIntoView = (el, alignToTop) => {
+                scrollbar.update();
+                scrollbar.scrollIntoView(el, { alignToTop: alignToTop, onlyScrollIfNeeded: true });
+            };
             document.body.appendChild(this.ctxMenu.$el);
             console.log("FileTree mounted", this.fsTreeView);
             //this.createFolderModal.show();

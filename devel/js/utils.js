@@ -39,6 +39,21 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.Delayed = Delayed;
+    class EventSilencer {
+        constructor() {
+            this.silence = false;
+        }
+        silenceThis(callback) {
+            this.silence = true;
+            callback();
+            this.silence = false;
+        }
+        do(callback) {
+            if (!this.silence)
+                callback();
+        }
+    }
+    exports.EventSilencer = EventSilencer;
     class Convert {
         static utf8StrToBytes(str) {
             return new TextEncoder("utf-8").encode(str);

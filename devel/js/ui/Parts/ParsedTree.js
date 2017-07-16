@@ -14,7 +14,7 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
         }
         get hasChildren() { return this.value.type === WorkerShared_1.ObjectType.Object || this.value.type === WorkerShared_1.ObjectType.Array; }
         get bytesPreview() {
-            return `[${this.value.bytes.slice(0, 8).join(', ')}${(this.value.bytes.length > 8 ? ", ..." : "")}]`;
+            return `[${this.value.bytes.slice(0, 8).join(", ")}${(this.value.bytes.length > 8 ? ", ..." : "")}]`;
         }
         get hexStrValue() {
             return (this.value.primitiveValue < 0 ? "-" : "") + "0x" +
@@ -47,6 +47,12 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
             this.rootNode = null;
         }
         get treeView() { return this.$refs["treeView"]; }
+        async open(path) {
+            return this.treeView.searchNode((item) => {
+                const itemPath = item.value.path.join("/");
+                return itemPath === path ? "match" : path.startsWith(itemPath) ? "children" : "nomatch";
+            });
+        }
     };
     ParsedTree = __decorate([
         Component_1.default

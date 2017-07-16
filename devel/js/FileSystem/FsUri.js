@@ -3,7 +3,8 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
     Object.defineProperty(exports, "__esModule", { value: true });
     /**
      * Rules:
-     *  - path format example: <fsScheme>://<fsData>/<folder>/<subfolder>/<file>
+     *  - uri format example: <fsScheme>://<fsData>/<folder>/<subfolder>/<file>
+     *  - path = /<folder>/<subfolder>/<file>
      *  - if type == "directory" then path.endswith($`/{name}/`) === true
      *     - except for root where path === "/"
      *  - if type == "file" then path.endswith($`/{name}`) === true
@@ -31,7 +32,17 @@ define(["require", "exports", "../utils/TestHelper"], function (require, exports
             var split = this.path.lastIndexOf("/", usableLen);
             this.name = this.path.substring(split + 1, usableLen + 1);
             this.parentPath = this.path.substr(0, split + 1);
+            var extIdx = this.name.lastIndexOf(".");
+            if (extIdx === -1) {
+                this.nameWoExtension = this.name;
+                this.extension = null;
+            }
+            else {
+                this.nameWoExtension = this.name.substring(0, extIdx);
+                this.extension = this.name.substring(extIdx + 1);
+            }
         }
+        get parentUri() { return this.changePath(this.parentPath); }
         addPath(childPath) {
             if (this.type === "file")
                 throw new Error("You cannot add a child path to a file uri.");

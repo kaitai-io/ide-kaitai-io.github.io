@@ -26,14 +26,12 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.selectedItem.dblclick();
             else
                 this.selectNode("next");
-            this.scrollSelectedIntoView();
         }
         closeSelected() {
             if (this.selectedItem.open)
                 this.selectedItem.dblclick();
             else if (this.selectedItem.parent.parent)
                 this.setSelected(this.selectedItem.parent);
-            this.scrollSelectedIntoView();
         }
         selectRelativeNode(node, dir) {
             if (dir === "next") {
@@ -95,6 +93,33 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.scrollSelectedIntoView();
             this.$emit("selected", this.selectedItem.model);
         }
+        async searchNode(searchCallback, loadChildrenIfNeeded = true) {
+            let currNode = this;
+            let canForceLoadChildren = false;
+            while (true) {
+                if (loadChildrenIfNeeded && (!currNode.children || currNode.children.length === 0 || canForceLoadChildren)) {
+                    await currNode.model.loadChildren();
+                    currNode.open = true;
+                }
+                let nextNode = null;
+                for (const child of currNode.children) {
+                    const matchResult = searchCallback(child.model);
+                    if (matchResult === "match")
+                        return child;
+                    else if (matchResult === "children") {
+                        nextNode = child;
+                        canForceLoadChildren = false;
+                        break;
+                    }
+                }
+                if (nextNode !== null)
+                    currNode = nextNode;
+                else if (!canForceLoadChildren)
+                    canForceLoadChildren = true;
+                else
+                    return null;
+            }
+        }
     };
     TreeView = __decorate([
         Component_1.default({ props: { "wholeRow": { default: false } } })
@@ -121,7 +146,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.childrenLoading = true;
             this.loadingError = null;
             try {
-                await this.model.loadChildren();
+                if (!this.model.children)
+                    await this.model.loadChildren();
                 this.open = true;
             }
             catch (e) {
