@@ -50,7 +50,7 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
         async open(path) {
             return this.treeView.searchNode((item) => {
                 const itemPath = item.value.path.join("/");
-                return itemPath === path ? "match" : path.startsWith(itemPath) ? "children" : "nomatch";
+                return itemPath === path ? "match" : itemPath === "" || path.startsWith(itemPath + "/") ? "children" : "nomatch";
             });
         }
     };

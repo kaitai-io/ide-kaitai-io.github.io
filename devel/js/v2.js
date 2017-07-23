@@ -82,7 +82,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             }
             else {
                 LocalSettings_1.localSettings.latestInputUri = uri;
-                this.setInput(content);
+                this.setInput(content, uri);
             }
         }
         async onKsyChanged(ksyContent) {
@@ -109,12 +109,12 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 console.log("compile error", typeof e, e);
             }
         }
-        async setInput(input) {
+        async setInput(input, uri = null) {
             this.dataProvider = {
                 length: input.byteLength,
                 get(offset, length) { return new Uint8Array(input, offset, length); }
             };
-            this.view.hexViewer.setDataProvider(this.dataProvider);
+            this.view.binaryPanel.setInput(this.dataProvider, uri);
             this.view.converterPanel.model.update(this.dataProvider, 0);
             await this.sandbox.kaitaiServices.setInput(input);
             await this.reparse();

@@ -1,4 +1,4 @@
-define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./HexViewer", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow", "./ui/Components/DragAndDrop"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, HexViewer_1, FileTree_1, ErrorWindow_1, DragAndDrop_1) {
+define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow", "./ui/Components/DragAndDrop", "./ui/Parts/BinaryPanel"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, FileTree_1, ErrorWindow_1, DragAndDrop_1, BinaryPanel_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppView {
@@ -11,7 +11,9 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
             this.jsCode = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCode, "javascript");
             this.jsCodeDebug = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCodeDebug, "javascript");
             this.aboutModal = new AboutModal_1.AboutModal();
-            this.hexViewer = new HexViewer_1.HexViewer(this.layout.inputBinary.element);
+            this.binaryPanel = new BinaryPanel_1.BinaryPanel();
+            this.binaryPanel.$mount(this.layout.inputBinary.element);
+            this.hexViewer = this.binaryPanel.hexViewer;
             this.layout.inputBinary.container.on("resize", () => this.hexViewer.resize());
             this.infoPanel = new InfoPanel_1.InfoPanel();
             this.infoPanel.$mount(this.layout.infoPanel.element);
