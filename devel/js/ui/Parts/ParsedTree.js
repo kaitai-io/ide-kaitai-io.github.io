@@ -8,11 +8,15 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParsedTreeNode {
-        constructor(name, value) {
+        constructor(root, name, value, instance) {
+            this.root = root;
             this.name = name;
             this.value = value;
+            this.instance = instance;
+            this.name = this.name || instance && instance.path.last();
         }
-        get hasChildren() { return this.value.type === WorkerShared_1.ObjectType.Object || this.value.type === WorkerShared_1.ObjectType.Array; }
+        get isUnloadedInstance() { return this.instance && !this.value; }
+        get hasChildren() { return this.isUnloadedInstance || this.value.type === WorkerShared_1.ObjectType.Object || this.value.type === WorkerShared_1.ObjectType.Array; }
         get bytesPreview() {
             return `[${this.value.bytes.slice(0, 8).join(", ")}${(this.value.bytes.length > 8 ? ", ..." : "")}]`;
         }
@@ -20,25 +24,35 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
             return (this.value.primitiveValue < 0 ? "-" : "") + "0x" +
                 this.value.primitiveValue.toString(16);
         }
-        loadChildren() {
+        async loadChildren() {
             if (this.children)
                 return;
-            if (this.value.type === WorkerShared_1.ObjectType.Object)
-                this.children = Object.keys(this.value.object.fields).map(x => new ParsedTreeNode(x, this.value.object.fields[x]));
-            else if (this.value.type === WorkerShared_1.ObjectType.Array)
-                this.children = this.value.arrayItems.map((x, i) => new ParsedTreeNode(`${i}`, x));
-            else
+            if (this.isUnloadedInstance) {
+                console.log("Load instance", this);
+                this.value = await this.root.loadInstance(this.instance.path);
+                await this.loadChildren();
+            }
+            else if (this.value.type === WorkerShared_1.ObjectType.Object) {
+                this.children = Object.keys(this.value.object.fields).map(x => new ParsedTreeNode(this.root, x, this.value.object.fields[x]))
+                    .concat(Object.keys(this.value.object.instances).map(x => new ParsedTreeNode(this.root, x, null, this.value.object.instances[x])));
+            }
+            else if (this.value.type === WorkerShared_1.ObjectType.Array) {
+                this.children = this.value.arrayItems.map((x, i) => new ParsedTreeNode(this.root, `${i}`, x));
+            }
+            else {
                 this.children = [];
-            return Promise.resolve();
+            }
         }
     }
     exports.ParsedTreeNode = ParsedTreeNode;
     class ParsedTreeRootNode {
         constructor(rootNode) {
             this.hasChildren = true;
+            rootNode.root = this;
             this.children = [rootNode];
         }
         async loadChildren() { }
+        async loadInstance(path) { return null; }
     }
     exports.ParsedTreeRootNode = ParsedTreeRootNode;
     let ParsedTree = class ParsedTree extends Vue {

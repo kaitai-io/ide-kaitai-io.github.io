@@ -24,6 +24,8 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd, "HexViewer");
             };
             this.view.parsedTree.treeView.$on("selected", (node) => {
+                if (!node.value)
+                    return; // instance-only
                 this.setSelection(node.value.start, node.value.end - 1, "ParsedTree");
                 this.view.infoPanel.parsedPath = node.value.path.join("/");
             });
@@ -42,6 +44,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.view.addFileView("json export", json, "json");
             };
             this.view.infoPanel.selectionChanged = (start, end) => this.setSelection(start, end, "InfoPanel");
+            this.view.infoPanel.$watch("disableLazyParsing", () => this.reparse());
         }
         async setSelection(start, end, origin) {
             if (this.blockSelection || end < start)
@@ -133,14 +136,20 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 await this.sandbox.kaitaiServices.parse();
             }
             finally {
-                this.exported = await this.sandbox.kaitaiServices.export();
+                this.exported = await this.sandbox.kaitaiServices.export(this.view.infoPanel.disableLazyParsing);
                 console.log("exported", this.exported);
+                if (!this.exported)
+                    return;
+                Object.freeze(this.exported); // prevent Vue from converting this object to an observable one
                 this.parsedMap = new ParsedMap_1.ParsedMap(this.exported);
                 this.view.infoPanel.unparsed = this.parsedMap.unparsed;
                 this.view.infoPanel.byteArrays = this.parsedMap.byteArrays;
                 this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
                 this.view.parsedTree.rootNode = null;
-                await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
+                await this.view.nextTick(() => {
+                    var rootNode = this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode(null, "", this.exported));
+                    rootNode.loadInstance = async (path) => this.sandbox.kaitaiServices.exportInstance(path);
+                });
                 this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end, "Reparse");
             }
         }

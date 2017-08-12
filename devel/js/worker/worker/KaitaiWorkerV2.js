@@ -8,7 +8,26 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             this.kaitaiCompiler = new KaitaiStructCompiler();
             this.templateCompiler = new TemplateCompiler_1.TemplateCompiler();
         }
+        initCode() {
+            if (!this.jsCode)
+                return false;
+            if (this.classes)
+                return true;
+            this.classes = {};
+            var self = this;
+            function define(name, deps, callback) {
+                self.classes[name] = callback();
+                self.mainClassName = name;
+            }
+            define["amd"] = true;
+            eval(this.jsCode);
+            console.log("compileKsy", this.mainClassName, this.classes);
+            const ksyTypes = SchemaUtils_1.SchemaUtils.collectKsyTypes(this.ksy);
+            this.objectExporter = new ObjectExporter_1.ObjectExporter(ksyTypes, this.classes);
+            return true;
+        }
         async compile(ksyCode, template) {
+            this.jsCode = this.classes = this.objectExporter = null;
             this.ksyCode = ksyCode;
             this.ksy = yamljs_1.YAML.parse(ksyCode);
             var releaseCode, debugCode;
@@ -21,36 +40,34 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
                 releaseCode = await this.kaitaiCompiler.compile("javascript", this.ksy, null, false);
                 debugCode = await this.kaitaiCompiler.compile("javascript", this.ksy, null, true);
             }
-            var debugCodeAll = this.jsCode = Object.values(debugCode).join("\n");
-            this.classes = {};
-            var self = this;
-            function define(name, deps, callback) {
-                self.classes[name] = callback();
-                self.mainClassName = name;
-            }
-            define["amd"] = true;
-            eval(debugCodeAll);
-            console.log("compileKsy", this.mainClassName, this.classes);
-            const ksyTypes = SchemaUtils_1.SchemaUtils.collectKsyTypes(this.ksy);
-            this.objectExporter = new ObjectExporter_1.ObjectExporter(ksyTypes, this.classes);
-            return { releaseCode, debugCode, debugCodeAll };
+            this.jsCode = Object.values(debugCode).join("\n");
+            return { releaseCode, debugCode, debugCodeAll: this.jsCode };
         }
         async setInput(input) {
             this.input = input;
             console.log("setInput", this.input);
         }
         async parse() {
-            if (!this.mainClassName)
+            if (!this.initCode())
                 return;
             var mainClass = this.classes[this.mainClassName];
             this.parsed = new mainClass(new KaitaiStream(this.input, 0));
             this.parsed._read();
             console.log("parsed", this.parsed);
         }
-        async export() {
-            if (!this.objectExporter)
+        async export(noLazy) {
+            if (!this.initCode())
                 return null;
-            return this.objectExporter.exportValue(this.parsed, null, []);
+            return this.objectExporter.exportValue(this.parsed, null, [], noLazy);
+        }
+        async exportInstance(path) {
+            let curr = this.parsed;
+            let parent = null;
+            for (const item of path) {
+                parent = curr;
+                curr = curr[item];
+            }
+            return this.objectExporter.exportValue(curr, parent._debug[path.last()], path);
         }
         async getCompilerInfo() {
             return { version: this.kaitaiCompiler.version, buildDate: this.kaitaiCompiler.buildDate };
@@ -61,7 +78,7 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             return compiledCode;
         }
         async exportToJson(useHex) {
-            if (!this.objectExporter)
+            if (!this.initCode())
                 return null;
             const exported = await this.objectExporter.exportValue(this.parsed, null, [], true);
             const json = new JsonExporter_1.JsonExporter(useHex).export(exported);
