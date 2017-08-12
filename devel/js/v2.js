@@ -46,8 +46,6 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
         async setSelection(start, end, origin) {
             if (this.blockSelection || end < start)
                 return;
-            if (LocalSettings_1.localSettings.latestSelection.start === start && LocalSettings_1.localSettings.latestSelection.end === end && origin !== "Reparse")
-                return;
             this.blockSelection = true;
             try {
                 this.view.hexViewer.setSelection(start, end);

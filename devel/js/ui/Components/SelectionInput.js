@@ -51,7 +51,7 @@ define(["require", "exports", "vue", "jquery", "../Component"], function (requir
             this.setAddrInput(this.endPart, this.hasSelection && this.start !== this.end ? this.end : null);
         }
         setAddrInput(ctrl, value) {
-            var newValue = value < 0 ? 0 : value >= this.maxLength ? this.maxLength - 1 : value;
+            const newValue = value < 0 ? 0 : value >= this.maxLength ? this.maxLength - 1 : value;
             ctrl.text = newValue === null ? "" : this.useHexAddr ? `0x${newValue.toString(16)}` : `${newValue}`;
         }
         move(ctrl, dir) {
@@ -62,7 +62,8 @@ define(["require", "exports", "vue", "jquery", "../Component"], function (requir
                 this.useHexAddr = ctrl.text.startsWith("0x");
             var start = this.startPart.value;
             var end = this.endPart.value;
-            this.$emit("selection-changed", start !== null ? start : -1, end === null || end < start ? start : end);
+            if (ctrl.focused)
+                this.$emit("selection-changed", start !== null ? start : -1, end === null || end < start ? start : end);
         }
     };
     SelectionInput = __decorate([
