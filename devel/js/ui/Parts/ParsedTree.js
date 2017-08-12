@@ -45,7 +45,10 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
             this.name = this.name || instance && instance.path.last();
         }
         get isUnloadedInstance() { return this.instance && !this.value; }
-        get exceptionText() { return typeof this.value.exception === "string" ? this.value.exception : JSON.stringify(this.value.exception); }
+        get exceptionText() {
+            return typeof this.value.exception === "string" ? this.value.exception :
+                this.value.exception.message ? this.value.exception.message : JSON.stringify(this.value.exception);
+        }
         get hasChildren() { return this.isUnloadedInstance || this.value.type === WorkerShared_1.ObjectType.Object || this.value.type === WorkerShared_1.ObjectType.Array; }
         get bytesPreview() {
             return `[${this.value.bytes.slice(0, 8).join(", ")}${(this.value.bytes.length > 8 ? ", ..." : "")}]`;
