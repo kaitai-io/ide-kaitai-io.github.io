@@ -55,19 +55,26 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             this.parsed._read();
             console.log("parsed", this.parsed);
         }
-        async export(noLazy) {
+        async export(options) {
             if (!this.initCode())
                 return null;
-            return this.objectExporter.exportValue(this.parsed, null, [], noLazy);
-        }
-        async exportInstance(path) {
-            let curr = this.parsed;
-            let parent = null;
-            for (const item of path) {
-                parent = curr;
-                curr = curr[item];
+            this.objectExporter.noLazy = options.noLazy;
+            this.objectExporter.arrayLenLimit = options.arrayLenLimit;
+            options = options || {};
+            if (options.path) {
+                let path = Array.from(options.path);
+                let propName = path.pop();
+                let parent = this.parsed;
+                for (const item of path)
+                    parent = parent[item];
+                const arrayRange = options.arrayRange;
+                if (arrayRange)
+                    return this.objectExporter.exportArray(parent, propName, options.path, arrayRange.from, arrayRange.to);
+                else
+                    return this.objectExporter.exportProperty(parent, propName, options.path);
             }
-            return this.objectExporter.exportValue(curr, parent._debug[path.last()], path);
+            else
+                return this.objectExporter.exportValue(this.parsed, null, []);
         }
         async getCompilerInfo() {
             return { version: this.kaitaiCompiler.version, buildDate: this.kaitaiCompiler.buildDate };
@@ -80,7 +87,9 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
         async exportToJson(useHex) {
             if (!this.initCode())
                 return null;
-            const exported = await this.objectExporter.exportValue(this.parsed, null, [], true);
+            this.objectExporter.noLazy = true;
+            this.objectExporter.arrayLenLimit = null;
+            const exported = await this.objectExporter.exportValue(this.parsed, null, []);
             const json = new JsonExporter_1.JsonExporter(useHex).export(exported);
             return json;
         }

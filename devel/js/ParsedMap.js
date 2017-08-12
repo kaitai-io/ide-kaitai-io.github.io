@@ -2,11 +2,10 @@ define(["require", "exports", "./utils/IntervalHelper", "worker/WorkerShared"], 
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParsedMap {
-        constructor(root) {
-            this.root = root;
+        constructor() {
             this.intervalHandler = new IntervalHelper_1.IntervalHandler();
-            this.intervals = [];
-            this.fillIntervals(root);
+            this.unparsed = [];
+            this.byteArrays = [];
         }
         static collectAllObjects(root) {
             var objects = [];
@@ -14,17 +13,28 @@ define(["require", "exports", "./utils/IntervalHelper", "worker/WorkerShared"], 
                 objects.push(value);
                 if (value.type === WorkerShared_1.ObjectType.Object)
                     Object.keys(value.object.fields).forEach(fieldName => process(value.object.fields[fieldName]));
-                else if (value.type === WorkerShared_1.ObjectType.Array)
+                else if (value.type === WorkerShared_1.ObjectType.Array && !value.isLazyArray)
                     value.arrayItems.forEach(arrItem => process(arrItem));
             }
             process(root);
             return objects;
         }
-        fillIntervals(value) {
-            var isInstance = false; // TODO
-            var objects = ParsedMap.collectAllObjects(value);
+        recalculateUnusedParts() {
+            // TODO: optimize this, not to recalculate all the parts
+            let lastEnd = -1;
+            const unparsed = [];
+            for (var i of this.intervalHandler.sortedItems) {
+                if (i.start !== lastEnd + 1)
+                    unparsed.push({ start: lastEnd + 1, end: i.start - 1 });
+                lastEnd = i.end;
+            }
+            this.unparsed = unparsed;
+        }
+        addObjects(objects) {
+            var allObjects = [].concat.apply([], objects.map(x => ParsedMap.collectAllObjects(x)));
+            const newIntervals = [];
             var lastEnd = -1;
-            for (let exp of objects) {
+            for (let exp of allObjects) {
                 if (!(exp.type === WorkerShared_1.ObjectType.Primitive || exp.type === WorkerShared_1.ObjectType.TypedArray))
                     continue;
                 var start = exp.ioOffset + exp.start;
@@ -32,24 +42,17 @@ define(["require", "exports", "./utils/IntervalHelper", "worker/WorkerShared"], 
                 if (start <= lastEnd || start > end)
                     continue;
                 lastEnd = end;
-                this.intervals.push({ start: start, end: end, exp: exp });
+                newIntervals.push({ start: start, end: end, exp: exp });
             }
-            if (!isInstance) {
-                var unparsed = [];
-                lastEnd = -1;
-                for (var i of this.intervals) {
-                    if (i.start !== lastEnd + 1)
-                        unparsed.push({ start: lastEnd + 1, end: i.start - 1 });
-                    lastEnd = i.end;
-                }
-                this.unparsed = unparsed;
-                this.byteArrays = objects.filter(exp => exp.type === WorkerShared_1.ObjectType.TypedArray && exp.bytes.length > 64).
-                    map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 }));
+            if (this.intervalHandler.sortedItems.length + newIntervals.length > 400000) {
+                console.warn("Too many items for interval tree: " + this.intervalHandler.sortedItems.length);
+                return;
             }
-            if (this.intervals.length > 400000)
-                console.warn("Too many items for interval tree: " + this.intervals.length);
             else
-                this.intervalHandler.addSorted(this.intervals);
+                this.intervalHandler.addSorted(newIntervals);
+            this.byteArrays.push(...allObjects.filter(exp => exp.type === WorkerShared_1.ObjectType.TypedArray && exp.bytes.length > 64).
+                map(exp => ({ start: exp.ioOffset + exp.start, end: exp.ioOffset + exp.end - 1 })));
+            this.recalculateUnusedParts();
         }
     }
     exports.ParsedMap = ParsedMap;

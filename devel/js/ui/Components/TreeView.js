@@ -94,15 +94,13 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.$emit("selected", this.selectedItem.model);
         }
         async searchNode(searchCallback, loadChildrenIfNeeded = true) {
-            let currNode = this;
+            let currNode = null;
             let canForceLoadChildren = false;
             while (true) {
-                if (loadChildrenIfNeeded && (!currNode.children || currNode.children.length === 0 || canForceLoadChildren)) {
-                    await currNode.model.loadChildren();
-                    currNode.open = true;
-                }
+                if (loadChildrenIfNeeded && currNode && (!currNode.children || currNode.children.length === 0 || canForceLoadChildren || !currNode.open))
+                    await currNode.openNode();
                 let nextNode = null;
-                for (const child of currNode.children) {
+                for (const child of (currNode || this).children) {
                     const matchResult = searchCallback(child.model);
                     if (matchResult === "match")
                         return child;

@@ -18,7 +18,8 @@ define(["require", "exports"], function (require, exports) {
         latestKsyUri: "https:///formats/archive/zip.ksy",
         latestKcyUri: null,
         latestInputUri: "https:///samples/sample1.zip",
-        latestSelection: { start: -1, end: -1 }
+        latestSelection: { start: -1, end: -1 },
+        latestPath: ""
     });
 });
 //# sourceMappingURL=LocalSettings.js.map

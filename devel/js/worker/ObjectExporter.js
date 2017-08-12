@@ -5,6 +5,8 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
         constructor(ksyTypes, classes) {
             this.ksyTypes = ksyTypes;
             this.classes = classes;
+            this.noLazy = false;
+            this.arrayLenLimit = 100;
         }
         static isUndef(obj) { return typeof obj === "undefined"; }
         static getObjectType(obj) {
@@ -17,7 +19,32 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
             else
                 return WorkerShared_1.ObjectType.Object;
         }
-        exportValue(obj, debug, path, noLazy) {
+        exportArray(parent, arrayPropName, arrayPath, from, to) {
+            const array = parent[arrayPropName];
+            const debug = parent._debug[arrayPropName];
+            let result = [];
+            for (let i = from; i <= to; i++)
+                result[i - from] = this.exportValue(array[i], debug && debug.arr[i], arrayPath.concat(i.toString()));
+            return result;
+        }
+        exportProperty(obj, propName, objPath) {
+            let propertyValue = undefined;
+            let propertyException = null;
+            try {
+                propertyValue = obj[propName];
+            }
+            catch (e) {
+                propertyException = e;
+                try {
+                    propertyValue = obj[propName];
+                }
+                catch (e2) { }
+            }
+            const exportedProperty = this.exportValue(propertyValue, obj._debug["_m_" + propName], objPath.concat(propName));
+            exportedProperty.exception = propertyException;
+            return exportedProperty;
+        }
+        exportValue(obj, debug, path) {
             var result = {
                 start: debug && debug.start,
                 end: debug && debug.end,
@@ -47,7 +74,11 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
                 }
             }
             else if (result.type === WorkerShared_1.ObjectType.Array) {
-                result.arrayItems = obj.map((item, i) => this.exportValue(item, debug && debug.arr[i], path.concat(i.toString()), noLazy));
+                const array = obj;
+                result.arrayLength = array.length;
+                result.isLazyArray = this.arrayLenLimit && array.length > this.arrayLenLimit;
+                if (!result.isLazyArray)
+                    result.arrayItems = array.map((item, i) => this.exportValue(item, debug && debug.arr[i], path.concat(i.toString())));
             }
             else if (result.type === WorkerShared_1.ObjectType.Object) {
                 var childIoOffset = obj._io._byteOffset;
@@ -59,12 +90,14 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
                 result.object = { class: obj.constructor.name, instances: {}, fields: {} };
                 var ksyType = this.ksyTypes[result.object.class];
                 for (var key of Object.keys(obj).filter(x => x[0] !== "_"))
-                    result.object.fields[key] = this.exportValue(obj[key], obj._debug[key], path.concat(key), noLazy);
+                    result.object.fields[key] = this.exportValue(obj[key], obj._debug[key], path.concat(key));
                 Object.getOwnPropertyNames(obj.constructor.prototype).filter(x => x[0] !== "_" && x !== "constructor").forEach(propName => {
                     var ksyInstanceData = ksyType && ksyType.instancesByJsName[propName];
                     var eagerLoad = ksyInstanceData && ksyInstanceData["-webide-parse-mode"] === "eager";
-                    if (eagerLoad || noLazy)
-                        result.object.fields[propName] = this.exportValue(obj[propName], obj._debug["_m_" + propName], path.concat(propName), noLazy);
+                    if (eagerLoad || this.noLazy) {
+                        const exportedProperty = this.exportProperty(obj, propName, path);
+                        result.object.fields[propName] = exportedProperty;
+                    }
                     else
                         result.object.instances[propName] = { path: path.concat(propName), offset: 0 };
                 });
