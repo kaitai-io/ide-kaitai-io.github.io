@@ -2,7 +2,7 @@ define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Layout {
-        constructor() {
+        constructor(enableTemplateEditor = false) {
             this.manager = new LayoutManagerV2_1.LayoutManager();
             this.manager.root
                 .addHorizontal(mainCols => mainCols
@@ -10,9 +10,11 @@ define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require
                 .addVertical(errorArea => errorArea
                 .addHorizontal(middleArea => middleArea
                 .addVertical(middleCol => middleCol
-                .addTabs(ksyTab => ksyTab
-                .addComponent(".ksy editor", c => this.ksyEditor = c)
-                .addComponent("template editor", c => this.templateEditor = c))
+                .addTabs(ksyTab => {
+                if (enableTemplateEditor)
+                    ksyTab = ksyTab.addComponent("template editor", c => this.templateEditor = c);
+                return ksyTab.addComponent(".ksy editor", c => this.ksyEditor = c);
+            })
                 .addComponent("object tree", c => this.objectTree = c))
                 .addVertical(rightCol => rightCol.setConfig({ width: 48 })
                 .addTabs(files => this.files = files

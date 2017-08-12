@@ -10,7 +10,7 @@ define(["require", "exports", "./ExpressionLanguage/Parser", "./ExpressionLangua
         repr() {
             let result = this.value ? this.value.repr() + "\n" : "";
             for (const item of this.children)
-                result += item.repr().split("\n").map((x, i) => (i == 0 ? '- ' : '  ') + x).join("\n") + "\n";
+                result += item.repr().split("\n").map((x, i) => (i === 0 ? "- " : "  ") + x).join("\n") + "\n";
             result = result.substring(0, result.length - 1);
             return result;
         }
@@ -65,7 +65,7 @@ define(["require", "exports", "./ExpressionLanguage/Parser", "./ExpressionLangua
             return root;
         }
         static compileTemplate(template) {
-            const parts = template.split(/\{\{(.*?)\}\}/).map((x, i) => new TemplatePart(x, i % 2 == 0));
+            const parts = template.split(/\{\{(.*?)\}\}/).map((x, i) => new TemplatePart(x, i % 2 === 0));
             const exprs = parts.map(x => x.for && x.for.array || x.if && x.if.condition || x.template && x.template.expr).filter(x => x);
             //console.log("exprs", exprs);
             //for (let part of parts)
@@ -100,7 +100,7 @@ define(["require", "exports", "./ExpressionLanguage/Parser", "./ExpressionLangua
             else if (ast.type === Parser_1.AstNodeType.OperatorList)
                 return ast.operands.reduce((prev, curr) => `${prev}${curr.operator ? curr.operator.text : ""}${this.astToJs(curr.operand)}`, "");
             else if (ast.type === Parser_1.AstNodeType.Function)
-                return `${this.astToJs(ast.function)}(${ast.arguments.map(arg => this.astToJs(arg)).join(', ')})`;
+                return `${this.astToJs(ast.function)}(${ast.arguments.map(arg => this.astToJs(arg)).join(", ")})`;
             else
                 throw new Error(`Unhandled AST type: ${ast.type}!`);
         }
@@ -124,7 +124,7 @@ define(["require", "exports", "./ExpressionLanguage/Parser", "./ExpressionLangua
                     throw new Error(`Unhandled template node type: ${node.value.type}!`);
             }
             if (node.children && node.children.length > 0)
-                result += ` {\n${node.children.map(x => padding + this.templateNodeToJs(x, padding + "  ")).join('')}${padding}}\n`;
+                result += ` {\n${node.children.map(x => padding + this.templateNodeToJs(x, padding + "  ")).join("")}${padding}}\n`;
             else
                 result += "\n";
             return result;

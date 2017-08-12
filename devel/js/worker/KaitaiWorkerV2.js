@@ -40,12 +40,16 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             console.log("setInput", this.input);
         }
         async parse() {
+            if (!this.mainClassName)
+                return;
             var mainClass = this.classes[this.mainClassName];
             this.parsed = new mainClass(new KaitaiStream(this.input, 0));
             this.parsed._read();
             console.log("parsed", this.parsed);
         }
         async export() {
+            if (!this.objectExporter)
+                return null;
             return this.objectExporter.exportValue(this.parsed, null, []);
         }
         async getCompilerInfo() {
@@ -57,6 +61,8 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             return compiledCode;
         }
         async exportToJson(useHex) {
+            if (!this.objectExporter)
+                return null;
             const exported = await this.objectExporter.exportValue(this.parsed, null, [], true);
             const json = new JsonExporter_1.JsonExporter(useHex).export(exported);
             return json;

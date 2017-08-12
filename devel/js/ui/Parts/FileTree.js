@@ -27,7 +27,7 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
         return a.href;
     }
     var httpFs = new HttpFileSystem_1.HttpFileSystem(kaitaiFsFiles.reduce((obj, fn) => { obj[`/${fn}`] = getRelativeUrl(fn); return obj; }, {}));
-    console.log(httpFs.fileUrls);
+    //console.log(httpFs.fileUrls);
     exports.fss.addFs(httpFs);
     class FsTreeNode {
         constructor(parent, uri, fs = null) {

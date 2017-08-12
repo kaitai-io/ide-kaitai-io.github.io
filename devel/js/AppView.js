@@ -8,7 +8,8 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
             this.fileTree.init();
             this.fileTree.$mount(this.layout.fileTree.element);
             this.ksyEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.ksyEditor, "yaml");
-            this.templateEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.templateEditor, "yaml");
+            if (this.layout.templateEditor)
+                this.templateEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.templateEditor, "yaml");
             this.jsCode = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCode, "javascript");
             this.jsCodeDebug = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCodeDebug, "javascript");
             this.aboutModal = new AboutModal_1.AboutModal();

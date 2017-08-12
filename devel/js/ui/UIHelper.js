@@ -18,9 +18,12 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             this.editor = editor;
             this.changeCallback = changeCallback;
             this.editDelay = new utils_1.Delayed(delay);
-            this.editor.on("change", () => this.editDelay.do(() => this.changeCallback(this.editor.getValue(), !this.internalChange)));
+            if (this.editor)
+                this.editor.on("change", () => this.editDelay.do(() => this.changeCallback(this.editor.getValue(), !this.internalChange)));
         }
         setContent(newContent) {
+            if (!this.editor)
+                return;
             if (this.editor.getValue() !== newContent) {
                 this.internalChange = true;
                 this.editor.setValue(newContent, -1);
@@ -28,7 +31,7 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             }
         }
         getContent() {
-            return this.editor.getValue();
+            return this.editor ? this.editor.getValue() : "";
         }
     }
     exports.EditorChangeHandler = EditorChangeHandler;

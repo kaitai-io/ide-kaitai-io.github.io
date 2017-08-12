@@ -21,7 +21,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             this.ksyChangeHandler = new UIHelper_1.EditorChangeHandler(this.view.ksyEditor, 500, (newContent, userChange) => this.inputFileChanged("Ksy", newContent, userChange));
             this.templateChangeHandler = new UIHelper_1.EditorChangeHandler(this.view.templateEditor, 500, (newContent, userChange) => this.inputFileChanged("Kcy", newContent, userChange));
             this.view.hexViewer.onSelectionChanged = () => {
-                this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd);
+                this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd, "HexViewer");
             };
             this.view.parsedTree.treeView.$on("selected", (node) => {
                 this.setSelection(node.value.start, node.value.end - 1, "ParsedTree");
@@ -41,10 +41,12 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 const json = await this.sandbox.kaitaiServices.exportToJson(hex);
                 this.view.addFileView("json export", json, "json");
             };
-            this.view.infoPanel.selectionChanged = (start, end) => this.setSelection(start, end);
+            this.view.infoPanel.selectionChanged = (start, end) => this.setSelection(start, end, "InfoPanel");
         }
         async setSelection(start, end, origin) {
-            if (this.blockSelection)
+            if (this.blockSelection || end < start)
+                return;
+            if (LocalSettings_1.localSettings.latestSelection.start === start && LocalSettings_1.localSettings.latestSelection.end === end && origin !== "Reparse")
                 return;
             this.blockSelection = true;
             try {
@@ -68,7 +70,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             }
         }
         async initWorker() {
-            this.sandbox = await KaitaiSandbox_1.InitKaitaiWithoutSandbox();
+            this.sandbox = await KaitaiSandbox_1.InitKaitaiSandbox();
             var compilerInfo = await this.sandbox.kaitaiServices.getCompilerInfo();
             this.view.aboutModal.compilerVersion = compilerInfo.version;
             this.view.aboutModal.compilerBuildDate = compilerInfo.buildDate;
@@ -141,7 +143,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 this.view.hexViewer.setIntervals(this.parsedMap.intervalHandler);
                 this.view.parsedTree.rootNode = null;
                 await this.view.nextTick(() => this.view.parsedTree.rootNode = new ParsedTree_1.ParsedTreeRootNode(new ParsedTree_1.ParsedTreeNode("", this.exported)));
-                this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end);
+                this.setSelection(LocalSettings_1.localSettings.latestSelection.start, LocalSettings_1.localSettings.latestSelection.end, "Reparse");
             }
         }
     }
