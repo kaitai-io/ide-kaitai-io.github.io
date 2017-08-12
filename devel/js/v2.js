@@ -1,15 +1,15 @@
-define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./utils", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox", "./utils/Conversion"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, utils_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1, Conversion_1) {
+define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox", "./utils/Conversion", "./ui/UIHelper"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1, Conversion_1, UIHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
         constructor() {
-            this.ksyEditorSilentChange = new utils_1.EventSilencer();
             this.blockSelection = false;
         }
         async start() {
             this.initView();
             await this.initWorker();
             await this.openFile(LocalSettings_1.localSettings.latestKsyUri);
+            await this.openFile(LocalSettings_1.localSettings.latestKcyUri);
             await this.openFile(LocalSettings_1.localSettings.latestInputUri);
         }
         initView() {
@@ -18,8 +18,8 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 console.log("treeView openFile", treeNode);
                 this.openFile(treeNode.uri.uri);
             });
-            var editDelay = new utils_1.Delayed(500);
-            this.view.ksyEditor.on("change", () => this.ksyEditorSilentChange.do(() => editDelay.do(() => this.onKsyChanged(this.view.ksyEditor.getValue()))));
+            this.ksyChangeHandler = new UIHelper_1.EditorChangeHandler(this.view.ksyEditor, 500, (newContent, userChange) => this.inputFileChanged("Ksy", newContent, userChange));
+            this.templateChangeHandler = new UIHelper_1.EditorChangeHandler(this.view.templateEditor, 500, (newContent, userChange) => this.inputFileChanged("Kcy", newContent, userChange));
             this.view.hexViewer.onSelectionChanged = () => {
                 this.setSelection(this.view.hexViewer.selectionStart, this.view.hexViewer.selectionEnd);
             };
@@ -68,33 +68,42 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             }
         }
         async initWorker() {
-            this.sandbox = await KaitaiSandbox_1.InitKaitaiSandbox();
+            this.sandbox = await KaitaiSandbox_1.InitKaitaiWithoutSandbox();
             var compilerInfo = await this.sandbox.kaitaiServices.getCompilerInfo();
             this.view.aboutModal.compilerVersion = compilerInfo.version;
             this.view.aboutModal.compilerBuildDate = compilerInfo.buildDate;
         }
         async openFile(uri) {
+            if (uri === null)
+                return;
             let content = await FileTree_1.fss.read(uri);
             if (uri.endsWith(".ksy")) {
                 LocalSettings_1.localSettings.latestKsyUri = uri;
                 const ksyContent = Conversion_1.Conversion.utf8BytesToStr(content);
-                this.compile(ksyContent);
+                this.ksyChangeHandler.setContent(ksyContent);
+            }
+            else if (uri.endsWith(".kcy")) {
+                LocalSettings_1.localSettings.latestKcyUri = uri;
+                const tplContent = Conversion_1.Conversion.utf8BytesToStr(content);
+                this.templateChangeHandler.setContent(tplContent);
             }
             else {
                 LocalSettings_1.localSettings.latestInputUri = uri;
                 this.setInput(content, uri);
             }
         }
-        async onKsyChanged(ksyContent) {
-            LocalSettings_1.localSettings.latestKsyUri = await this.view.fileTree.writeFile(LocalSettings_1.localSettings.latestKsyUri, Conversion_1.Conversion.strToUtf8Bytes(ksyContent), false);
-            return await this.compile(ksyContent);
+        async inputFileChanged(type, newContent, userChange) {
+            const settingKey = `latest${type}Uri`;
+            if (userChange)
+                LocalSettings_1.localSettings[settingKey] = await this.view.fileTree.writeFile(LocalSettings_1.localSettings[settingKey], Conversion_1.Conversion.strToUtf8Bytes(newContent), false);
+            await this.recompile();
         }
-        async compile(ksyContent) {
-            if (this.view.ksyEditor.getValue() !== ksyContent)
-                this.ksyEditorSilentChange.silenceThis(() => this.view.ksyEditor.setValue(ksyContent, -1));
+        async recompile() {
             try {
                 this.view.hideErrors();
-                var compilationResult = await this.sandbox.kaitaiServices.compile(ksyContent);
+                const ksyContent = this.ksyChangeHandler.getContent();
+                const template = this.templateChangeHandler.getContent();
+                var compilationResult = await this.sandbox.kaitaiServices.compile(ksyContent, template);
                 console.log("compilationResult", compilationResult);
                 this.view.jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"), -1);
                 this.view.jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);

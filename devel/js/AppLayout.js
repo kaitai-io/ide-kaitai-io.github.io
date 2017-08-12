@@ -10,7 +10,9 @@ define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require
                 .addVertical(errorArea => errorArea
                 .addHorizontal(middleArea => middleArea
                 .addVertical(middleCol => middleCol
+                .addTabs(ksyTab => ksyTab
                 .addComponent(".ksy editor", c => this.ksyEditor = c)
+                .addComponent("template editor", c => this.templateEditor = c))
                 .addComponent("object tree", c => this.objectTree = c))
                 .addVertical(rightCol => rightCol.setConfig({ width: 48 })
                 .addTabs(files => this.files = files

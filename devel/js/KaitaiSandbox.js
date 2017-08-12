@@ -25,5 +25,11 @@ define(["require", "exports", "./SandboxHandler"], function (require, exports, S
         return sandbox;
     }
     exports.InitKaitaiSandbox = InitKaitaiSandbox;
+    async function InitKaitaiWithoutSandbox() {
+        window["api"] = {};
+        await loader.require(["/worker/KaitaiWorkerV2"]);
+        return window["api"];
+    }
+    exports.InitKaitaiWithoutSandbox = InitKaitaiWithoutSandbox;
 });
 //# sourceMappingURL=KaitaiSandbox.js.map

@@ -9427,14 +9427,8 @@ $c_Lio_kaitai_struct_precompile_TypeValidator.prototype.validateArgsVsParams__sc
       var param = $as_Lio_kaitai_struct_format_ParamDefSpec($s_sc_LinearSeqOptimized$class__apply__sc_LinearSeqOptimized__I__O(params, v1));
       var tArg = this.detector$1.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(arg);
       var tParam = param.dataType$1;
-      try {
-        $m_Lio_kaitai_struct_translators_TypeDetector$().assertCompareTypes__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$cmpop__V(tArg, tParam, $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$())
-      } catch (e) {
-        if ($is_Lio_kaitai_struct_precompile_TypeMismatchError(e)) {
-          throw $m_Lio_kaitai_struct_format_YAMLParseException$().paramMismatch__I__Lio_kaitai_struct_datatype_DataType__T__Lio_kaitai_struct_datatype_DataType__sci_List__Lio_kaitai_struct_format_YAMLParseException(v1, tArg, param.id$1.humanReadable__T(), tParam, path)
-        } else {
-          throw e
-        }
+      if ((!$m_Lio_kaitai_struct_translators_TypeDetector$().canAssign__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_datatype_DataType__Z(tArg, tParam))) {
+        throw $m_Lio_kaitai_struct_format_YAMLParseException$().paramMismatch__I__Lio_kaitai_struct_datatype_DataType__T__Lio_kaitai_struct_datatype_DataType__sci_List__Lio_kaitai_struct_format_YAMLParseException(v1, tArg, param.id$1.humanReadable__T(), tParam, path)
       };
       if ((i === this$1.lastElement$4)) {
         break
@@ -10689,6 +10683,65 @@ $c_Lio_kaitai_struct_translators_TypeDetector$.prototype.combineTypesAndFail__Li
     } else {
       return x1
     }
+  }
+});
+$c_Lio_kaitai_struct_translators_TypeDetector$.prototype.canAssign__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_datatype_DataType__Z = (function(src, dst) {
+  if (((src === null) ? (dst === null) : src.equals__O__Z(dst))) {
+    return true
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_datatype_DataType$AnyType$();
+    if ((x$3 === dst)) {
+      return true
+    };
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(src)) {
+      if ($is_Lio_kaitai_struct_datatype_DataType$IntType(dst)) {
+        return true
+      }
+    };
+    if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(src)) {
+      if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(dst)) {
+        return true
+      }
+    };
+    if ($is_Lio_kaitai_struct_datatype_DataType$StrType(src)) {
+      if ($is_Lio_kaitai_struct_datatype_DataType$StrType(dst)) {
+        return true
+      }
+    };
+    if ($is_Lio_kaitai_struct_datatype_DataType$UserType(src)) {
+      var x$5 = $m_Lio_kaitai_struct_datatype_DataType$KaitaiStructType$();
+      if ((x$5 === dst)) {
+        return true
+      }
+    };
+    if ($is_Lio_kaitai_struct_datatype_DataType$UserType(src)) {
+      var x23 = $as_Lio_kaitai_struct_datatype_DataType$UserType(src);
+      if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dst)) {
+        var x24 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dst);
+        var _1 = x23.classSpec$1;
+        var _2 = x24.classSpec$1;
+        var x$7 = $m_s_None$();
+        if ((x$7 === _1)) {
+          var x$9 = $m_s_None$();
+          if ((x$9 === _2)) {
+            var x$11 = x23.name$1;
+            var x$12 = x24.name$1;
+            return ((x$11 === null) ? (x$12 === null) : x$11.equals__O__Z(x$12))
+          }
+        };
+        if ($is_s_Some(_1)) {
+          var x6 = $as_s_Some(_1);
+          var cs1 = $as_Lio_kaitai_struct_format_ClassSpec(x6.x$2);
+          if ($is_s_Some(_2)) {
+            var x7 = $as_s_Some(_2);
+            var cs2 = $as_Lio_kaitai_struct_format_ClassSpec(x7.x$2);
+            return ((cs1 === null) ? (cs2 === null) : cs1.equals__O__Z(cs2))
+          }
+        };
+        return false
+      }
+    };
+    return false
   }
 });
 $c_Lio_kaitai_struct_translators_TypeDetector$.prototype.combineTypes__sc_Iterable__Lio_kaitai_struct_datatype_DataType = (function(types) {
@@ -33576,8 +33629,8 @@ $c_Lio_kaitai_struct_BuildInfo$.prototype.init___ = (function() {
   this.version$1 = "0.8-SNAPSHOT";
   this.scalaVersion$1 = "2.11.11";
   this.sbtVersion$1 = "0.13.8";
-  this.builtAtString$1 = "2017-08-08 18:55:01.735";
-  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-1020051865), 349);
+  this.builtAtString$1 = "2017-08-10 11:38:35.762";
+  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-873437838), 349);
   var this$2 = new $c_sci_StringOps().init___T("name: %s, version: %s, scalaVersion: %s, sbtVersion: %s, builtAtString: %s, builtAtMillis: %s");
   var array = [this.name$1, this.version$1, this.scalaVersion$1, this.sbtVersion$1, this.builtAtString$1, this.builtAtMillis$1];
   var jsx$2 = $m_sjsr_RuntimeString$();

@@ -2,7 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Kaitai Web IDE</title>
+    <title>Kaitai Web IDE</title>    
+    <script>
+        // HTTPS redirect
+        var loc = location.toString();
+        if (loc.indexOf("http://ide.kaitai.io/") === 0)
+            location = "https" + loc.substring(4);
+    </script>
+
+    <!-- SCRIPT_INJECTION_POINT -->
+    <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
+    <script>
+        Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', { environment: "devel" }).install();
+    </script>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -13,13 +25,7 @@
         _ga('create', 'UA-76299550-3', 'auto');
         _ga('send', 'pageview');
     </script>
-    <!-- End Google Analytics -->    
-    <script>
-        // HTTPS redirect
-        var loc = location.toString();
-        if (loc.indexOf("http://ide.kaitai.io/") === 0)
-            location = "https" + loc.substring(4);
-    </script>
+    <!-- End Google Analytics -->
 
     <link rel="stylesheet" type="text/css" href="lib/_npm/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/contextmenu.css" />
@@ -44,10 +50,10 @@
     <script>
         var paths = {};
         ["bowser", "jstree", "localforage", "goldenlayout", "vue", "kaitai-struct-compiler", "dateformat"].forEach(
-            name => paths[name] = `../lib/_npm/${name}/${name}`);
-        paths["big-integer"] = "../lib/_npm/BigInteger/BigInteger";
+            name => paths[name] = `../../lib/_npm/${name}/${name}`);
+        paths["big-integer"] = "../../lib/_npm/BigInteger/BigInteger";
 
-        requirejs.config({ baseUrl: "js/", paths: paths });
+        requirejs.config({ baseUrl: "js/v1/", paths: paths });
         require(["app.unsupportedBrowser"]);
         require(["jstree", "app"]);
     </script>

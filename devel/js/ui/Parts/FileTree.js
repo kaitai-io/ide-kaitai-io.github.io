@@ -7,8 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSystem/GithubFileSystem", "./../../FileSystem/BrowserFileSystem", "./../../FileSystem/RemoteFileSystem", "./../../FileSystem/StaticFileSystem", "../../FileSystem/HttpFileSystem", "./../../FileSystem/FsUri", "./../../FileSystem/FsSelector", "vue", "./../Component", "../../utils/FileUtils", "../../utils/Conversion", "../Components/ContextMenu", "../Components/InputModal", "../Components/TreeView"], function (require, exports, GithubClient_1, GithubFileSystem_1, BrowserFileSystem_1, RemoteFileSystem_1, StaticFileSystem_1, HttpFileSystem_1, FsUri_1, FsSelector_1, Vue, Component_1, FileUtils_1, Conversion_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    for (var i = 0; i < 200; i++)
-        kaitaiFsFiles.push(`formats/archive/test_${i}.ksy`);
     var queryParams = {};
     location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => queryParams[x[0]] = x[1]);
     exports.fss = new FsSelector_1.FsSelector();
@@ -186,8 +184,13 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
             this.fsTreeView.setSelected(itemNode);
         }
         async createKsyFile(name) {
-            var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
-            await this.uploadFiles({ [`${name}.ksy`]: Conversion_1.Conversion.strToUtf8Bytes(content) });
+            if (name.endsWith(".kcy")) {
+                await this.uploadFiles({ [name]: Conversion_1.Conversion.strToUtf8Bytes("") });
+            }
+            else {
+                var content = `meta:\n  id: ${name}\n  file-extension: ${name}\n`;
+                await this.uploadFiles({ [`${name}.ksy`]: Conversion_1.Conversion.strToUtf8Bytes(content) });
+            }
         }
         async cloneFile() {
             var newUri = this.selectedFsItem.uri.uri.replace(/\.(\w+)$/, `_${new Date().format("yyyymmdd_HHMMss")}.$1`);
