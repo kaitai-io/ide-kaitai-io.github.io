@@ -13,7 +13,10 @@
     <!-- SCRIPT_INJECTION_POINT -->
     <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
     <script>
-        Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', { environment: "devel" }).install();
+        Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
+            environment: "devel",
+            release: "e3127a3b053bfc2c388340b70bedd53386445966",
+        }).install();
     </script>
     <!-- Google Analytics -->
     <script>
