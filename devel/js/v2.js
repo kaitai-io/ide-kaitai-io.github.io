@@ -1,4 +1,4 @@
-define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox", "./utils/Conversion", "./ui/UIHelper"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1, Conversion_1, UIHelper_1) {
+define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTree", "./ui/Parts/ParsedTree", "./ParsedMap", "./KaitaiSandbox", "./utils/Conversion", "./FileSystem/FsUri", "./ui/UIHelper"], function (require, exports, AppView_1, LocalSettings_1, FileTree_1, ParsedTree_1, ParsedMap_1, KaitaiSandbox_1, Conversion_1, FsUri_1, UIHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppController {
@@ -58,12 +58,12 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 const itemMatches = this.parsedMap.intervalHandler.searchRange(start, end).items;
                 const itemPathToSelect = itemMatches.length > 0 ? itemMatches[0].exp.path.join("/") : LocalSettings_1.localSettings.latestPath;
                 this.view.infoPanel.parsedPath = itemPathToSelect;
-                LocalSettings_1.localSettings.latestPath = itemPathToSelect;
                 if (origin !== "ParsedTree") {
                     const node = await this.view.parsedTree.open(itemPathToSelect);
                     this.view.parsedTree.treeView.setSelected(node);
                 }
                 LocalSettings_1.localSettings.latestSelection = { start, end };
+                LocalSettings_1.localSettings.latestPath = itemPathToSelect;
             }
             finally {
                 this.blockSelection = false;
@@ -82,6 +82,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             if (uri.endsWith(".ksy")) {
                 LocalSettings_1.localSettings.latestKsyUri = uri;
                 const ksyContent = Conversion_1.Conversion.utf8BytesToStr(content);
+                this.view.layout.ksyEditor.title = new FsUri_1.FsUri(uri).name;
                 this.ksyChangeHandler.setContent(ksyContent);
             }
             else if (uri.endsWith(".kcy")) {
@@ -91,6 +92,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
             }
             else {
                 LocalSettings_1.localSettings.latestInputUri = uri;
+                this.view.layout.inputBinary.title = new FsUri_1.FsUri(uri).name;
                 this.setInput(content, uri);
             }
         }
