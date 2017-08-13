@@ -2,11 +2,15 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ObjectExporter {
-        constructor(ksyTypes, classes) {
-            this.ksyTypes = ksyTypes;
+        constructor(classes) {
             this.classes = classes;
             this.noLazy = false;
             this.arrayLenLimit = 100;
+            this.ksyTypes = {};
+        }
+        addKsyTypes(ksyTypes) {
+            for (const typeName of Object.keys(ksyTypes))
+                this.ksyTypes[typeName] = ksyTypes[typeName];
         }
         static isUndef(obj) { return typeof obj === "undefined"; }
         static getObjectType(obj) {

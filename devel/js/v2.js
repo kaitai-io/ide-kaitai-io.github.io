@@ -35,9 +35,7 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                     this.view.addFileView(fileName, generatedFiles[fileName], aceLang);
             });
             this.view.dragAndDrop.$on("files-uploaded", async (files) => {
-                const newFileUris = await this.view.fileTree.uploadFiles(files);
-                if (newFileUris.length === 1)
-                    this.openFile(newFileUris[0]);
+                await this.view.fileTree.uploadFiles(files);
             });
             this.view.infoPanel.exportToJson = async (hex) => {
                 const json = await this.sandbox.kaitaiServices.exportToJson(hex);
@@ -102,12 +100,30 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 LocalSettings_1.localSettings[settingKey] = await this.view.fileTree.writeFile(LocalSettings_1.localSettings[settingKey], Conversion_1.Conversion.strToUtf8Bytes(newContent), false);
             await this.recompile();
         }
+        async setupImports(mainKsyUri, ksyContent) {
+            let currImports = { [mainKsyUri]: ksyContent };
+            while (true) {
+                const newImports = await this.sandbox.kaitaiServices.setKsys(currImports);
+                console.log("newImports", newImports);
+                if (newImports.length === 0)
+                    break;
+                currImports = {};
+                for (const importUri of newImports) {
+                    const importStr = Conversion_1.Conversion.utf8BytesToStr(await FileTree_1.fss.read(importUri));
+                    if (!importStr)
+                        throw new Error(`File not found: ${importUri}`);
+                    currImports[importUri] = importStr;
+                }
+            }
+        }
         async recompile() {
             try {
                 this.view.hideErrors();
                 const ksyContent = this.ksyChangeHandler.getContent();
                 const template = this.templateChangeHandler.getContent();
-                var compilationResult = await this.sandbox.kaitaiServices.compile(ksyContent, template);
+                const mainKsyUri = LocalSettings_1.localSettings.latestKsyUri;
+                await this.setupImports(mainKsyUri, ksyContent);
+                const compilationResult = await this.sandbox.kaitaiServices.compile(mainKsyUri, template);
                 console.log("compilationResult", compilationResult);
                 this.view.jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"), -1);
                 this.view.jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);

@@ -151,6 +151,10 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
                 resultUris.push(newFinalUri);
             }
             await dest.loadChildren();
+            if (resultUris.length === 1) {
+                await this.selectItem(resultUris[0]);
+                await this.openFile();
+            }
             return resultUris;
         }
         async findNextAvailableName(uri) {
