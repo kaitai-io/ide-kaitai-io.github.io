@@ -12,7 +12,7 @@ define(["require", "exports", "./SandboxHandler"], function (require, exports, S
         const handler = new SandboxHandler_1.SandboxHandler("https://webide-usercontent.kaitai.io");
         handler.errorHandlers = { "ParseException": ParseError };
         const sandbox = handler.createProxy();
-        const npmDir = "../../../lib/_npm";
+        const npmDir = "lib/_npm";
         await sandbox.loadScript(new URL("js/AmdLoader.js", location.href).href);
         await sandbox.eval(`
         loader.projectBase = "${window.location.href}";
