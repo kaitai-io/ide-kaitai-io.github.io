@@ -21918,8 +21918,7 @@ $c_Lio_kaitai_struct_GoClassCompiler.prototype.compileClass__Lio_kaitai_struct_f
     })
   })(this)));
   this.lang$1.classFooter__sci_List__V(curClass.name$1);
-  this.compileConstructor__Lio_kaitai_struct_format_ClassSpec__V(curClass);
-  this.compileEagerRead__sci_List__scm_ListBuffer__s_Option__V(curClass.seq$1, extraAttrs, curClass.meta$1.endian$1);
+  this.compileReadFunction__Lio_kaitai_struct_format_ClassSpec__scm_ListBuffer__V(curClass, extraAttrs);
   this.compileInstances__Lio_kaitai_struct_format_ClassSpec__scm_ListBuffer__V(curClass, extraAttrs);
   var jsx$2 = curClass.seq$1;
   var this$9 = $m_sci_List$();
@@ -21950,6 +21949,25 @@ $c_Lio_kaitai_struct_GoClassCompiler.prototype.compileInstance__sci_List__Lio_ka
   this.lang$1.instanceSetCalculated__Lio_kaitai_struct_format_InstanceIdentifier__V(instName);
   this.lang$1.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V(instName);
   this.lang$1.instanceFooter__V()
+});
+$c_Lio_kaitai_struct_GoClassCompiler.prototype.compileReadFunction__Lio_kaitai_struct_format_ClassSpec__scm_ListBuffer__V = (function(curClass, extraAttrs) {
+  this.lang$1.classConstructorHeader__sci_List__Lio_kaitai_struct_datatype_DataType__sci_List__Z__sci_List__V(curClass.name$1, curClass.parentType__Lio_kaitai_struct_datatype_DataType(), this.topClassName$1, curClass.meta$1.endian$1.contains__O__Z($m_Lio_kaitai_struct_datatype_InheritedEndian$()), curClass.params$1);
+  var x1 = curClass.meta$1.endian$1;
+  matchEnd5: {
+    var defEndian;
+    if ($is_s_Some(x1)) {
+      var x2 = $as_s_Some(x1);
+      var fe = $as_Lio_kaitai_struct_datatype_Endianness(x2.x$2);
+      if ($is_Lio_kaitai_struct_datatype_FixedEndian(fe)) {
+        var x3 = $as_Lio_kaitai_struct_datatype_FixedEndian(fe);
+        var defEndian = new $c_s_Some().init___O(x3);
+        break matchEnd5
+      }
+    };
+    var defEndian = $m_s_None$()
+  };
+  this.compileSeq__sci_List__scm_ListBuffer__s_Option__V(curClass.seq$1, extraAttrs, defEndian);
+  this.lang$1.classConstructorFooter__V()
 });
 $c_Lio_kaitai_struct_GoClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig = (function(topClass, config) {
   $c_Lio_kaitai_struct_ClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic.call(this, topClass, config, $m_Lio_kaitai_struct_languages_GoCompiler$());
@@ -28527,10 +28545,10 @@ $c_Lio_kaitai_struct_languages_GoCompiler$.prototype.kaitaiType2NativeType__Lio_
       }
     };
     if ($is_Lio_kaitai_struct_datatype_DataType$BitsType(x1)) {
-      return "long"
+      return "uint64"
     };
     if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(x1)) {
-      return "boolean"
+      return "bool"
     };
     var x$18 = $m_Lio_kaitai_struct_datatype_DataType$CalcIntType$();
     if ((x$18 === x1)) {
@@ -28544,11 +28562,11 @@ $c_Lio_kaitai_struct_languages_GoCompiler$.prototype.kaitaiType2NativeType__Lio_
       return "string"
     };
     if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(x1)) {
-      return "byte[]"
+      return "[]byte"
     };
     var x$22 = $m_Lio_kaitai_struct_datatype_DataType$AnyType$();
     if ((x$22 === x1)) {
-      return "Object"
+      return "interface{}"
     };
     var x$24 = $m_Lio_kaitai_struct_datatype_DataType$KaitaiStreamType$();
     if ((x$24 === x1)) {
@@ -33629,8 +33647,8 @@ $c_Lio_kaitai_struct_BuildInfo$.prototype.init___ = (function() {
   this.version$1 = "0.8-SNAPSHOT";
   this.scalaVersion$1 = "2.11.11";
   this.sbtVersion$1 = "0.13.8";
-  this.builtAtString$1 = "2017-08-10 11:38:35.762";
-  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-873437838), 349);
+  this.builtAtString$1 = "2017-08-13 14:20:58.579";
+  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-604495021), 349);
   var this$2 = new $c_sci_StringOps().init___T("name: %s, version: %s, scalaVersion: %s, sbtVersion: %s, builtAtString: %s, builtAtMillis: %s");
   var array = [this.name$1, this.version$1, this.scalaVersion$1, this.sbtVersion$1, this.builtAtString$1, this.builtAtMillis$1];
   var jsx$2 = $m_sjsr_RuntimeString$();
@@ -61786,7 +61804,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.attrParseHybrid__F0__F0__V =
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.instanceHeader__sci_List__Lio_kaitai_struct_format_InstanceIdentifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(className, instName, dataType, isNullable) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["func (this *", ") ", "() (v ", ", err error) {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_GoCompiler$().types2class__sci_List__T(className), this.publicMemberName__Lio_kaitai_struct_format_Identifier__T(instName), $m_Lio_kaitai_struct_languages_GoCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(dataType)])));
   this.out$2.inc__V();
-  this.translator$2.returnRes$2 = new $c_s_Some().init___O(($is_Lio_kaitai_struct_datatype_DataType$IntType(dataType) ? "0" : ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(dataType) ? "false" : ($is_Lio_kaitai_struct_datatype_DataType$StrType(dataType) ? "" : ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType) ? "nil" : "???")))))
+  this.translator$2.returnRes$2 = new $c_s_Some().init___O(($is_Lio_kaitai_struct_datatype_DataType$IntType(dataType) ? "0" : ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(dataType) ? "false" : ($is_Lio_kaitai_struct_datatype_DataType$StrType(dataType) ? "\"\"" : "nil"))))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.privateMemberName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
   return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
@@ -61795,8 +61813,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.condRepeatEosHeader__Lio_kai
   if (needRaw) {
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = new ArrayList<byte[]>();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id))])))
   };
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = new ", "();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), $m_Lio_kaitai_struct_languages_GoCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(new $c_Lio_kaitai_struct_datatype_DataType$ArrayType().init___Lio_kaitai_struct_datatype_DataType(dataType))])));
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["while (!", ".isEof()) {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["for !", ".EOF() {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])));
   this.out$2.inc__V()
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.seek__T__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(io, pos) {
@@ -61834,7 +61851,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.classDoc__sci_List__Lio_kait
   this.universalDoc__Lio_kaitai_struct_format_DocSpec__V(doc)
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.runRead__V = (function() {
-  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+  /*<skip>*/
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
@@ -61873,8 +61890,9 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.idToStr__Lio_kaitai_struct_f
   }
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.handleAssignmentRepeatExpr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_translators_TranslatorResult__V = (function(id, r) {
+  var name = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id);
   var expr = this.translator$2.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T(r);
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".add(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = append(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([name, name, expr])))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.alignToByte__T__V = (function(io) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".AlignToByte()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
@@ -61909,7 +61927,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.classHeader__sci_List__V = (
   this.out$2.inc__V()
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.readHeader__s_Option__Z__V = (function(endian, isEmpty) {
-  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+  /*<skip>*/
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.attrParse2__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V = (function(id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignType) {
   $s_Lio_kaitai_struct_languages_components_GoReads$class__attrParse2__Lio_kaitai_struct_languages_components_GoReads__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V(this, id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignType)
@@ -61973,7 +61991,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.switchStart__Lio_kaitai_stru
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["switch (", ") {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, on)])))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.readFooter__V = (function() {
-  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+  /*<skip>*/
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.attrParse2$default$8__s_Option = (function() {
   return $m_s_None$()
@@ -62149,8 +62167,9 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.calculatedFlagForName__Lio_k
   return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_f_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.handleAssignmentRepeatEos__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_translators_TranslatorResult__V = (function(id, r) {
+  var name = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id);
   var expr = this.translator$2.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T(r);
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".add(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = append(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([name, name, expr])))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.translator__Lio_kaitai_struct_translators_AbstractTranslator = (function() {
   return this.translator$2
@@ -62269,7 +62288,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.allocateIO__Lio_kaitai_struc
     };
     var args = javaName
   };
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " = new ", "(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai.Stream", ioName, "kaitai.Stream", args])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " := ", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ioName, "kaitai.Stream", args])));
   return ioName
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.fileHeader__T__V = (function(topClassName) {

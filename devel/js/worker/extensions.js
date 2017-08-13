@@ -1,4 +1,7 @@
 "use strict";
+class ArrayHelper {
+    static flatten(arr) { return [].concat.apply([], arr); }
+}
 if (!Array.prototype.last) {
     Array.prototype.last = function () { return this[this.length - 1]; };
 }

@@ -1,4 +1,4 @@
-define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow", "./ui/Components/DragAndDrop", "./ui/Parts/BinaryPanel"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, FileTree_1, ErrorWindow_1, DragAndDrop_1, BinaryPanel_1) {
+define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/ParsedTree", "./ui/Components/ConverterPanel", "./ui/Parts/InfoPanel", "./ui/Parts/AboutModal", "./ui/Parts/FileTree", "./ui/Parts/ErrorWindow", "./ui/Components/DragAndDrop", "./ui/Parts/BinaryPanel", "./KsyAutoCompleter"], function (require, exports, Vue, $, AppLayout_1, ParsedTree_1, ConverterPanel_1, InfoPanel_1, AboutModal_1, FileTree_1, ErrorWindow_1, DragAndDrop_1, BinaryPanel_1, KsyAutoCompleter_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AppView {
@@ -8,6 +8,7 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
             this.fileTree.init();
             this.fileTree.$mount(this.layout.fileTree.element);
             this.ksyEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.ksyEditor, "yaml");
+            KsyAutoCompleter_1.KsyAutoCompleter.setup(this.ksyEditor);
             if (this.layout.templateEditor)
                 this.templateEditor = AppLayout_1.LayoutHelper.setupEditor(this.layout.templateEditor, "yaml");
             this.jsCode = AppLayout_1.LayoutHelper.setupEditor(this.layout.jsCode, "javascript");
