@@ -33647,8 +33647,8 @@ $c_Lio_kaitai_struct_BuildInfo$.prototype.init___ = (function() {
   this.version$1 = "0.8-SNAPSHOT";
   this.scalaVersion$1 = "2.11.11";
   this.sbtVersion$1 = "0.13.8";
-  this.builtAtString$1 = "2017-08-13 14:20:58.579";
-  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-604495021), 349);
+  this.builtAtString$1 = "2017-08-13 21:39:51.821";
+  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-578161779), 349);
   var this$2 = new $c_sci_StringOps().init___T("name: %s, version: %s, scalaVersion: %s, sbtVersion: %s, builtAtString: %s, builtAtMillis: %s");
   var array = [this.name$1, this.version$1, this.scalaVersion$1, this.sbtVersion$1, this.builtAtString$1, this.builtAtMillis$1];
   var jsx$2 = $m_sjsr_RuntimeString$();
@@ -61892,7 +61892,7 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.idToStr__Lio_kaitai_struct_f
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.handleAssignmentRepeatExpr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_translators_TranslatorResult__V = (function(id, r) {
   var name = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id);
   var expr = this.translator$2.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T(r);
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = append(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([name, name, expr])))
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i] = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([name, expr])))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.alignToByte__T__V = (function(io) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".AlignToByte()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
