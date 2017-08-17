@@ -10698,6 +10698,11 @@ $c_Lio_kaitai_struct_translators_TypeDetector$.prototype.canAssign__Lio_kaitai_s
         return true
       }
     };
+    if ($is_Lio_kaitai_struct_datatype_DataType$FloatType(src)) {
+      if ($is_Lio_kaitai_struct_datatype_DataType$FloatType(dst)) {
+        return true
+      }
+    };
     if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(src)) {
       if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(dst)) {
         return true
@@ -10715,17 +10720,17 @@ $c_Lio_kaitai_struct_translators_TypeDetector$.prototype.canAssign__Lio_kaitai_s
       }
     };
     if ($is_Lio_kaitai_struct_datatype_DataType$UserType(src)) {
-      var x23 = $as_Lio_kaitai_struct_datatype_DataType$UserType(src);
+      var x27 = $as_Lio_kaitai_struct_datatype_DataType$UserType(src);
       if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dst)) {
-        var x24 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dst);
-        var _1 = x23.classSpec$1;
-        var _2 = x24.classSpec$1;
+        var x28 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dst);
+        var _1 = x27.classSpec$1;
+        var _2 = x28.classSpec$1;
         var x$7 = $m_s_None$();
         if ((x$7 === _1)) {
           var x$9 = $m_s_None$();
           if ((x$9 === _2)) {
-            var x$11 = x23.name$1;
-            var x$12 = x24.name$1;
+            var x$11 = x27.name$1;
+            var x$12 = x28.name$1;
             return ((x$11 === null) ? (x$12 === null) : x$11.equals__O__Z(x$12))
           }
         };
@@ -33647,8 +33652,8 @@ $c_Lio_kaitai_struct_BuildInfo$.prototype.init___ = (function() {
   this.version$1 = "0.8-SNAPSHOT";
   this.scalaVersion$1 = "2.11.11";
   this.sbtVersion$1 = "0.13.8";
-  this.builtAtString$1 = "2017-08-13 21:39:51.821";
-  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-578161779), 349);
+  this.builtAtString$1 = "2017-08-17 09:37:41.036";
+  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-275892564), 349);
   var this$2 = new $c_sci_StringOps().init___T("name: %s, version: %s, scalaVersion: %s, sbtVersion: %s, builtAtString: %s, builtAtMillis: %s");
   var array = [this.name$1, this.version$1, this.scalaVersion$1, this.sbtVersion$1, this.builtAtString$1, this.builtAtMillis$1];
   var jsx$2 = $m_sjsr_RuntimeString$();
