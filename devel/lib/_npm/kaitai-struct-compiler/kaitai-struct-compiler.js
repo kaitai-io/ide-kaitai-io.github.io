@@ -1812,7 +1812,7 @@ function $s_Lio_kaitai_struct_languages_components_SingleOutputFile$class__resul
   var this$4 = this$3.sb$2;
   var this$5 = this$4.underlying$5;
   var jsx$3 = this$5.content$1;
-  var jsx$2 = $$this.outImports__T();
+  var jsx$2 = $$this.outImports__Lio_kaitai_struct_format_ClassSpec__T(topClass);
   var this$6 = $$this.out__Lio_kaitai_struct_StringLanguageOutputWriter();
   var this$7 = this$6.sb$2;
   var this$8 = this$7.underlying$5;
@@ -1978,8 +1978,122 @@ function $s_Lio_kaitai_struct_translators_CommonLiterals$class__$$init$__Lio_kai
   };
   $$this.io$kaitai$struct$translators$CommonLiterals$$undsetter$und$asciiCharQuoteMap$und$eq__sci_Map__V($as_sci_Map(this$22.elems$1))
 }
+function $s_Lio_kaitai_struct_translators_CommonMethods$class__translateCall__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Call__O($$this, call) {
+  var func = call.func$1;
+  var args = call.args$1;
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(func)) {
+    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(func);
+    var obj = x2.value$1;
+    var methodName = x2.attr$1;
+    if ((obj !== null)) {
+      if ((methodName !== null)) {
+        var objType = $as_Lio_kaitai_struct_translators_TypeDetector($$this).detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(obj);
+        var _2 = methodName.name$1;
+        if ($is_Lio_kaitai_struct_datatype_DataType$StrType(objType)) {
+          if ((_2 === "substring")) {
+            return $$this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O(obj, $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)), $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(1)))
+          }
+        };
+        if ($is_Lio_kaitai_struct_datatype_DataType$StrType(objType)) {
+          if ((_2 === "to_i")) {
+            return $$this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O(obj, $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)))
+          }
+        };
+        if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(objType)) {
+          if ((_2 === "to_s")) {
+            return $$this.bytesToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O(obj, $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)))
+          }
+        };
+        throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["don't know how to call method '", "' of object type '", "'"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([methodName, objType])))
+      }
+    }
+  };
+  throw new $c_s_MatchError().init___O(func)
+}
+function $s_Lio_kaitai_struct_translators_CommonMethods$class__translateAttribute__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Attribute__O($$this, call) {
+  var attr = call.attr$1;
+  var value = call.value$1;
+  var valType = $as_Lio_kaitai_struct_translators_TypeDetector($$this).detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(value);
+  if ($is_Lio_kaitai_struct_datatype_DataType$UserType(valType)) {
+    var x3 = $as_Lio_kaitai_struct_datatype_DataType$UserType(valType);
+    return $$this.userTypeField__Lio_kaitai_struct_datatype_DataType$UserType__Lio_kaitai_struct_exprlang_Ast$expr__T__O(x3, value, attr.name$1)
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$StrType(valType)) {
+    var x1$2 = attr.name$1;
+    if ((x1$2 === "length")) {
+      return $$this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$2 === "reverse")) {
+      return $$this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$2 === "to_i")) {
+      var this$1 = $m_s_math_BigInt$();
+      return $$this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O(value, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$1.apply__I__s_math_BigInt(10)))
+    } else {
+      throw new $c_s_MatchError().init___O(x1$2)
+    }
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$IntType(valType)) {
+    var x1$3 = attr.name$1;
+    if ((x1$3 === "to_s")) {
+      var this$2 = $m_s_math_BigInt$();
+      return $$this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O(value, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$2.apply__I__s_math_BigInt(10)))
+    } else {
+      throw new $c_s_MatchError().init___O(x1$3)
+    }
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$FloatType(valType)) {
+    var x1$4 = attr.name$1;
+    if ((x1$4 === "to_i")) {
+      return $$this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else {
+      throw new $c_s_MatchError().init___O(x1$4)
+    }
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$ArrayType(valType)) {
+    var x1$5 = attr.name$1;
+    if ((x1$5 === "first")) {
+      return $$this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$5 === "last")) {
+      return $$this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$5 === "size")) {
+      return $$this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$5 === "min")) {
+      return $$this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else if ((x1$5 === "max")) {
+      return $$this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+    } else {
+      throw new $c_s_MatchError().init___O(x1$5)
+    }
+  } else {
+    var x = $m_Lio_kaitai_struct_datatype_DataType$KaitaiStreamType$();
+    if ((x === valType)) {
+      var x1$6 = attr.name$1;
+      if ((x1$6 === "size")) {
+        return $$this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+      } else if ((x1$6 === "eof")) {
+        return $$this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+      } else if ((x1$6 === "pos")) {
+        return $$this.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+      } else {
+        throw new $c_s_MatchError().init___O(x1$6)
+      }
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(valType)) {
+      var x8 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(valType);
+      var x1$7 = attr.name$1;
+      if ((x1$7 === "to_i")) {
+        return $$this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O(value, x8)
+      } else {
+        throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["called invalid attribute '", "' on expression of type ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([attr.name$1, valType])))
+      }
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(valType)) {
+      var x1$8 = attr.name$1;
+      if ((x1$8 === "to_i")) {
+        return $$this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O(value)
+      } else {
+        throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["called invalid attribute '", "' on expression of type ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([attr.name$1, valType])))
+      }
+    } else {
+      throw new $c_s_MatchError().init___O(valType)
+    }
+  }
+}
 function $s_Lio_kaitai_struct_translators_CommonOps$class__doNumericCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T($$this, left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T($$this, op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $$this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T($$this, op) {
   var x = $m_Lio_kaitai_struct_exprlang_Ast$unaryop$Invert$();
@@ -2026,10 +2140,10 @@ function $s_Lio_kaitai_struct_translators_CommonOps$class__doBooleanOp__Lio_kait
   return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([" (", ") "])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([valuesStr]))
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__doEnumCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T($$this, left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T($$this, op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $$this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__doStrCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T($$this, left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T($$this, op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $$this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$operator__T($$this, op) {
   var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Add$();
@@ -2085,7 +2199,7 @@ function $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_str
   }
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T($$this, left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ", " ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$operator__T($$this, op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ", " ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $$this.binOp__Lio_kaitai_struct_exprlang_Ast$operator__T(op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T($$this, op) {
   var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Lt$();
@@ -2121,7 +2235,19 @@ function $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_str
   }
 }
 function $s_Lio_kaitai_struct_translators_CommonOps$class__doBytesCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T($$this, left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T($$this, op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), $$this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), $$this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+}
+function $is_Lio_kaitai_struct_translators_TranslatorResult(obj) {
+  return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Lio_kaitai_struct_translators_TranslatorResult)))
+}
+function $as_Lio_kaitai_struct_translators_TranslatorResult(obj) {
+  return (($is_Lio_kaitai_struct_translators_TranslatorResult(obj) || (obj === null)) ? obj : $throwClassCastException(obj, "io.kaitai.struct.translators.TranslatorResult"))
+}
+function $isArrayOf_Lio_kaitai_struct_translators_TranslatorResult(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lio_kaitai_struct_translators_TranslatorResult)))
+}
+function $asArrayOf_Lio_kaitai_struct_translators_TranslatorResult(obj, depth) {
+  return (($isArrayOf_Lio_kaitai_struct_translators_TranslatorResult(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lio.kaitai.struct.translators.TranslatorResult;", depth))
 }
 function $is_Ljava_io_Closeable(obj) {
   return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Ljava_io_Closeable)))
@@ -3327,6 +3453,27 @@ function $s_sc_TraversableLike$class__filterImpl__p0__sc_TraversableLike__F1__Z_
       return (($uZ(p$1.apply__O__O(x$2)) !== isFlipped$1) ? b$1.$$plus$eq__O__scm_Builder(x$2) : (void 0))
     })
   })($$this, p, isFlipped, b)));
+  return b.result__O()
+}
+function $s_sc_TraversableLike$class__init__sc_TraversableLike__O($$this) {
+  if ($$this.isEmpty__Z()) {
+    throw new $c_jl_UnsupportedOperationException().init___T("empty.init")
+  };
+  var elem = $$this.head__O();
+  var lst = new $c_sr_ObjectRef().init___O(elem);
+  var follow = new $c_sr_BooleanRef().init___Z(false);
+  var b = $$this.newBuilder__scm_Builder();
+  $s_scm_Builder$class__sizeHint__scm_Builder__sc_TraversableLike__I__V(b, $$this, (-1));
+  $$this.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($$this$1, lst$1, follow$1, b$1) {
+    return (function(x$2) {
+      if (follow$1.elem$1) {
+        b$1.$$plus$eq__O__scm_Builder(lst$1.elem$1)
+      } else {
+        follow$1.elem$1 = true
+      };
+      lst$1.elem$1 = x$2
+    })
+  })($$this, lst, follow, b)));
   return b.result__O()
 }
 function $s_sc_TraversableLike$class__$$plus$plus__sc_TraversableLike__sc_GenTraversableOnce__scg_CanBuildFrom__O($$this, that, bf) {
@@ -5268,6 +5415,7 @@ function $c_Lio_kaitai_struct_Log$() {
   this.typeProcValue$1 = null;
   this.typeProcParent$1 = null;
   this.typeResolve$1 = null;
+  this.seqSizes$1 = null;
   this.importOps$1 = null
 }
 $c_Lio_kaitai_struct_Log$.prototype = new $h_O();
@@ -5279,11 +5427,12 @@ function $h_Lio_kaitai_struct_Log$() {
 $h_Lio_kaitai_struct_Log$.prototype = $c_Lio_kaitai_struct_Log$.prototype;
 $c_Lio_kaitai_struct_Log$.prototype.init___ = (function() {
   $n_Lio_kaitai_struct_Log$ = this;
-  this.VALID$undSUBSYS$1 = $as_sc_Seq($m_sc_Seq$().apply__sc_Seq__sc_GenTraversable(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["file", "value", "parent", "type_resolve", "import"])));
+  this.VALID$undSUBSYS$1 = $as_sc_Seq($m_sc_Seq$().apply__sc_Seq__sc_GenTraversable(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["file", "value", "parent", "type_resolve", "seq_sizes", "import"])));
   this.fileOps$1 = $m_Lio_kaitai_struct_NullLogger$();
   this.typeProcValue$1 = $m_Lio_kaitai_struct_NullLogger$();
   this.typeProcParent$1 = $m_Lio_kaitai_struct_NullLogger$();
   this.typeResolve$1 = $m_Lio_kaitai_struct_NullLogger$();
+  this.seqSizes$1 = $m_Lio_kaitai_struct_NullLogger$();
   this.importOps$1 = $m_Lio_kaitai_struct_NullLogger$();
   return this
 });
@@ -5321,21 +5470,6 @@ $c_Lio_kaitai_struct_Main$.prototype.importAndPrecompile__Lio_kaitai_struct_form
   var executor = $m_s_concurrent_ExecutionContext$Implicits$().global__s_concurrent_ExecutionContextExecutor();
   return $s_s_concurrent_Future$class__map__s_concurrent_Future__F1__s_concurrent_ExecutionContext__s_concurrent_Future(this$1, f, executor)
 });
-$c_Lio_kaitai_struct_Main$.prototype.compile__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_languages_components_LanguageCompilerStatic__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_CompileLog$SpecSuccess = (function(spec, lang, conf) {
-  var config = this.updateConfig__p1__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig(conf, spec);
-  var x = $m_Lio_kaitai_struct_GraphvizClassCompiler$();
-  if ((x === lang)) {
-    var cc = new $c_Lio_kaitai_struct_GraphvizClassCompiler().init___Lio_kaitai_struct_format_ClassSpec(spec)
-  } else {
-    var x$3 = $m_Lio_kaitai_struct_languages_GoCompiler$();
-    if ((x$3 === lang)) {
-      var cc = new $c_Lio_kaitai_struct_GoClassCompiler().init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig(spec, config)
-    } else {
-      var cc = new $c_Lio_kaitai_struct_ClassCompiler().init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic(spec, config, lang)
-    }
-  };
-  return cc.compile__Lio_kaitai_struct_CompileLog$SpecSuccess()
-});
 $c_Lio_kaitai_struct_Main$.prototype.updateConfig__p1__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig = (function(config, topClass) {
   if (topClass.meta$1.forceDebug$1) {
     var opaqueTypes = config.opaqueTypes$1;
@@ -5370,25 +5504,26 @@ $c_Lio_kaitai_struct_Main$.prototype.precompile__Lio_kaitai_struct_format_ClassS
   var this$1 = topClass.meta$1.opaqueTypes$1;
   var opaqueTypes = $uZ((this$1.isEmpty__Z() ? config.opaqueTypes$1 : this$1.get__O()));
   new $c_Lio_kaitai_struct_precompile_ResolveTypes().init___Lio_kaitai_struct_format_ClassSpecs__Z(classSpecs, opaqueTypes).run__V();
-  var iterTable$1 = classSpecs.table$5;
-  var idx$1 = $s_scm_HashTable$class__scala$collection$mutable$HashTable$$lastPopulatedIndex__scm_HashTable__I(classSpecs);
-  var es$1 = iterTable$1.get(idx$1);
-  while ((es$1 !== null)) {
-    var next$1 = $as_scm_HashEntry(es$1.next__O());
-    var arg1$1 = es$1;
-    var e$1 = $as_scm_DefaultEntry(arg1$1);
-    var _2$1 = e$1.value$1;
-    var curClass$1 = $as_Lio_kaitai_struct_format_ClassSpec(_2$1);
-    $m_Lio_kaitai_struct_precompile_ParentTypes$().markup__Lio_kaitai_struct_format_ClassSpec__V(curClass$1);
-    es$1 = next$1;
-    while (((es$1 === null) && (idx$1 > 0))) {
-      idx$1 = (((-1) + idx$1) | 0);
-      es$1 = iterTable$1.get(idx$1)
+  new $c_Lio_kaitai_struct_precompile_ParentTypes().init___Lio_kaitai_struct_format_ClassSpecs(classSpecs).run__V();
+  new $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive().init___Lio_kaitai_struct_format_ClassSpecs(classSpecs).run__V();
+  new $c_Lio_kaitai_struct_precompile_TypeValidator().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(classSpecs, topClass).run__V();
+  new $c_Lio_kaitai_struct_precompile_CalculateSeqSizes().init___Lio_kaitai_struct_format_ClassSpecs(classSpecs).run__V();
+  topClass.parentClass$1 = $m_Lio_kaitai_struct_format_GenericStructClassSpec$()
+});
+$c_Lio_kaitai_struct_Main$.prototype.compile__Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_languages_components_LanguageCompilerStatic__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_CompileLog$SpecSuccess = (function(specs, spec, lang, conf) {
+  var config = this.updateConfig__p1__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig(conf, spec);
+  var x = $m_Lio_kaitai_struct_GraphvizClassCompiler$();
+  if ((x === lang)) {
+    var cc = new $c_Lio_kaitai_struct_GraphvizClassCompiler().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(specs, spec)
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_languages_GoCompiler$();
+    if ((x$3 === lang)) {
+      var cc = new $c_Lio_kaitai_struct_GoClassCompiler().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig(specs, spec, config)
+    } else {
+      var cc = new $c_Lio_kaitai_struct_ClassCompiler().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic(specs, spec, config, lang)
     }
   };
-  new $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive().init___Lio_kaitai_struct_format_ClassSpecs(classSpecs).run__V();
-  new $c_Lio_kaitai_struct_precompile_TypeValidator().init___Lio_kaitai_struct_format_ClassSpec(topClass).run__V();
-  topClass.parentClass$1 = $m_Lio_kaitai_struct_format_GenericStructClassSpec$()
+  return cc.compile__Lio_kaitai_struct_CompileLog$SpecSuccess()
 });
 var $d_Lio_kaitai_struct_Main$ = new $TypeData().initClass({
   Lio_kaitai_struct_Main$: 0
@@ -8549,6 +8684,66 @@ function $m_Lio_kaitai_struct_format_ProcessExpr$() {
   return $n_Lio_kaitai_struct_format_ProcessExpr$
 }
 /** @constructor */
+function $c_Lio_kaitai_struct_languages_components_ExtraAttrs$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype = new $h_O();
+$c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype.constructor = $c_Lio_kaitai_struct_languages_components_ExtraAttrs$;
+/** @constructor */
+function $h_Lio_kaitai_struct_languages_components_ExtraAttrs$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype = $c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype;
+$c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype.forAttr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__sci_List = (function(id, dataType) {
+  if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(dataType)) {
+    var x2 = $as_Lio_kaitai_struct_datatype_DataType$BytesType(dataType);
+    var x1$2 = x2.process__s_Option();
+    var x = $m_s_None$();
+    if ((x === x1$2)) {
+      return $m_sci_Nil$()
+    } else if ($is_s_Some(x1$2)) {
+      var rawId = new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id);
+      $m_sci_List$();
+      var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array([new $c_Lio_kaitai_struct_format_AttrSpec().init___sci_List__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_ConditionalSpec__Lio_kaitai_struct_format_DocSpec($m_sci_Nil$(), rawId, x2, ($m_Lio_kaitai_struct_format_AttrSpec$(), new $c_Lio_kaitai_struct_format_ConditionalSpec().init___s_Option__Lio_kaitai_struct_format_RepeatSpec($m_s_None$(), $m_Lio_kaitai_struct_format_NoRepeat$())), ($m_Lio_kaitai_struct_format_AttrSpec$(), $m_Lio_kaitai_struct_format_DocSpec$().EMPTY$1))]);
+      var this$4 = $m_sci_List$();
+      var cbf = this$4.ReusableCBFInstance$2;
+      return $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf))
+    } else {
+      throw new $c_s_MatchError().init___O(x1$2)
+    }
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(dataType)) {
+    var x3 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(dataType);
+    var rawId$2 = new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id);
+    $m_sci_List$();
+    var xs$1 = new $c_sjs_js_WrappedArray().init___sjs_js_Array([new $c_Lio_kaitai_struct_format_AttrSpec().init___sci_List__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_ConditionalSpec__Lio_kaitai_struct_format_DocSpec($m_sci_Nil$(), rawId$2, x3.bytes$2, ($m_Lio_kaitai_struct_format_AttrSpec$(), new $c_Lio_kaitai_struct_format_ConditionalSpec().init___s_Option__Lio_kaitai_struct_format_RepeatSpec($m_s_None$(), $m_Lio_kaitai_struct_format_NoRepeat$())), ($m_Lio_kaitai_struct_format_AttrSpec$(), $m_Lio_kaitai_struct_format_DocSpec$().EMPTY$1))]);
+    var this$8 = $m_sci_List$();
+    var cbf$1 = this$8.ReusableCBFInstance$2;
+    var jsx$2 = $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs$1, cbf$1));
+    var jsx$1 = this.forAttr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__sci_List(rawId$2, x3.bytes$2);
+    var this$9 = $m_sci_List$();
+    return $as_sci_List(jsx$2.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$1, this$9.ReusableCBFInstance$2))
+  } else {
+    return $m_sci_Nil$()
+  }
+});
+var $d_Lio_kaitai_struct_languages_components_ExtraAttrs$ = new $TypeData().initClass({
+  Lio_kaitai_struct_languages_components_ExtraAttrs$: 0
+}, false, "io.kaitai.struct.languages.components.ExtraAttrs$", {
+  Lio_kaitai_struct_languages_components_ExtraAttrs$: 1,
+  O: 1
+});
+$c_Lio_kaitai_struct_languages_components_ExtraAttrs$.prototype.$classData = $d_Lio_kaitai_struct_languages_components_ExtraAttrs$;
+var $n_Lio_kaitai_struct_languages_components_ExtraAttrs$ = (void 0);
+function $m_Lio_kaitai_struct_languages_components_ExtraAttrs$() {
+  if ((!$n_Lio_kaitai_struct_languages_components_ExtraAttrs$)) {
+    $n_Lio_kaitai_struct_languages_components_ExtraAttrs$ = new $c_Lio_kaitai_struct_languages_components_ExtraAttrs$().init___()
+  };
+  return $n_Lio_kaitai_struct_languages_components_ExtraAttrs$
+}
+/** @constructor */
 function $c_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$() {
   $c_O.call(this);
   this.NAME$undTO$undCLASS$1 = null;
@@ -8564,43 +8759,45 @@ $h_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$.prototype = $c
 $c_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$.prototype.init___ = (function() {
   $n_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$ = this;
   var y = $m_Lio_kaitai_struct_languages_CppCompiler$();
-  var jsx$9 = new $c_T2().init___O__O("cpp_stl", y);
+  var jsx$10 = new $c_T2().init___O__O("cpp_stl", y);
   var y$1 = $m_Lio_kaitai_struct_languages_CSharpCompiler$();
-  var jsx$8 = new $c_T2().init___O__O("csharp", y$1);
+  var jsx$9 = new $c_T2().init___O__O("csharp", y$1);
   var y$2 = $m_Lio_kaitai_struct_GraphvizClassCompiler$();
-  var jsx$7 = new $c_T2().init___O__O("graphviz", y$2);
+  var jsx$8 = new $c_T2().init___O__O("graphviz", y$2);
   var y$3 = $m_Lio_kaitai_struct_languages_GoCompiler$();
-  var jsx$6 = new $c_T2().init___O__O("go", y$3);
+  var jsx$7 = new $c_T2().init___O__O("go", y$3);
   var y$4 = $m_Lio_kaitai_struct_languages_JavaCompiler$();
-  var jsx$5 = new $c_T2().init___O__O("java", y$4);
+  var jsx$6 = new $c_T2().init___O__O("java", y$4);
   var y$5 = $m_Lio_kaitai_struct_languages_JavaScriptCompiler$();
-  var jsx$4 = new $c_T2().init___O__O("javascript", y$5);
-  var y$6 = $m_Lio_kaitai_struct_languages_PerlCompiler$();
-  var jsx$3 = new $c_T2().init___O__O("perl", y$6);
-  var y$7 = $m_Lio_kaitai_struct_languages_PHPCompiler$();
-  var jsx$2 = new $c_T2().init___O__O("php", y$7);
-  var y$8 = $m_Lio_kaitai_struct_languages_PythonCompiler$();
-  var jsx$1 = new $c_T2().init___O__O("python", y$8);
-  var y$9 = $m_Lio_kaitai_struct_languages_RubyCompiler$();
-  var array = [jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O("ruby", y$9)];
-  var this$22 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var jsx$5 = new $c_T2().init___O__O("javascript", y$5);
+  var y$6 = $m_Lio_kaitai_struct_languages_LuaCompiler$();
+  var jsx$4 = new $c_T2().init___O__O("lua", y$6);
+  var y$7 = $m_Lio_kaitai_struct_languages_PerlCompiler$();
+  var jsx$3 = new $c_T2().init___O__O("perl", y$7);
+  var y$8 = $m_Lio_kaitai_struct_languages_PHPCompiler$();
+  var jsx$2 = new $c_T2().init___O__O("php", y$8);
+  var y$9 = $m_Lio_kaitai_struct_languages_PythonCompiler$();
+  var jsx$1 = new $c_T2().init___O__O("python", y$9);
+  var y$10 = $m_Lio_kaitai_struct_languages_RubyCompiler$();
+  var array = [jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O("ruby", y$10)];
+  var this$24 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
   var i = 0;
   var len = $uI(array.length);
   while ((i < len)) {
     var index = i;
     var arg1 = array[index];
-    this$22.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    this$24.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
     i = ((1 + i) | 0)
   };
-  this.NAME$undTO$undCLASS$1 = $as_sci_Map(this$22.elems$1);
-  var this$24 = this.NAME$undTO$undCLASS$1;
+  this.NAME$undTO$undCLASS$1 = $as_sci_Map(this$24.elems$1);
+  var this$26 = this.NAME$undTO$undCLASS$1;
   var f = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
     var x$1 = $as_T2(x$1$2);
     return x$1.swap__T2()
   }));
-  var this$23 = $m_sci_Map$();
-  var bf = new $c_scg_GenMapFactory$MapCanBuildFrom().init___scg_GenMapFactory(this$23);
-  this.CLASS$undTO$undNAME$1 = $as_sci_Map($s_sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$24, f, bf));
+  var this$25 = $m_sci_Map$();
+  var bf = new $c_scg_GenMapFactory$MapCanBuildFrom().init___scg_GenMapFactory(this$25);
+  this.CLASS$undTO$undNAME$1 = $as_sci_Map($s_sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$26, f, bf));
   return this
 });
 var $d_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$ = new $TypeData().initClass({
@@ -8616,6 +8813,281 @@ function $m_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$() {
     $n_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$ = new $c_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$().init___()
   };
   return $n_Lio_kaitai_struct_languages_components_LanguageCompilerStatic$
+}
+/** @constructor */
+function $c_Lio_kaitai_struct_precompile_CalculateSeqSizes() {
+  $c_O.call(this);
+  this.specs$1 = null
+}
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype = new $h_O();
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype.constructor = $c_Lio_kaitai_struct_precompile_CalculateSeqSizes;
+/** @constructor */
+function $h_Lio_kaitai_struct_precompile_CalculateSeqSizes() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype = $c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype;
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype.run__V = (function() {
+  var this$1 = this.specs$1;
+  var iterTable = this$1.table$5;
+  var idx = $s_scm_HashTable$class__scala$collection$mutable$HashTable$$lastPopulatedIndex__scm_HashTable__I(this$1);
+  var es = iterTable.get(idx);
+  while ((es !== null)) {
+    var next = $as_scm_HashEntry(es.next__O());
+    var arg1 = es;
+    var e = $as_scm_DefaultEntry(arg1);
+    var _2 = e.value$1;
+    var curClass = $as_Lio_kaitai_struct_format_ClassSpec(_2);
+    this.markup__Lio_kaitai_struct_format_ClassSpec__V(curClass);
+    es = next;
+    while (((es === null) && (idx > 0))) {
+      idx = (((-1) + idx) | 0);
+      es = iterTable.get(idx)
+    }
+  }
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype.init___Lio_kaitai_struct_format_ClassSpecs = (function(specs) {
+  this.specs$1 = specs;
+  return this
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype.markup__Lio_kaitai_struct_format_ClassSpec__V = (function(curClass) {
+  $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().getSeqSize__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_format_Sized(curClass);
+  curClass.types$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(x0$2$2) {
+      var x0$2 = $as_T2(x0$2$2);
+      if ((x0$2 !== null)) {
+        var subClass = $as_Lio_kaitai_struct_format_ClassSpec(x0$2.$$und2__O());
+        arg$outer.markup__Lio_kaitai_struct_format_ClassSpec__V(subClass)
+      } else {
+        throw new $c_s_MatchError().init___O(x0$2)
+      }
+    })
+  })(this)))
+});
+var $d_Lio_kaitai_struct_precompile_CalculateSeqSizes = new $TypeData().initClass({
+  Lio_kaitai_struct_precompile_CalculateSeqSizes: 0
+}, false, "io.kaitai.struct.precompile.CalculateSeqSizes", {
+  Lio_kaitai_struct_precompile_CalculateSeqSizes: 1,
+  O: 1
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes.prototype.$classData = $d_Lio_kaitai_struct_precompile_CalculateSeqSizes;
+/** @constructor */
+function $c_Lio_kaitai_struct_precompile_CalculateSeqSizes$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype = new $h_O();
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.constructor = $c_Lio_kaitai_struct_precompile_CalculateSeqSizes$;
+/** @constructor */
+function $h_Lio_kaitai_struct_precompile_CalculateSeqSizes$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype = $c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype;
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.getSeqSize__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_format_Sized = (function(curClass) {
+  var x1 = curClass.seqSize$1;
+  var x = $m_Lio_kaitai_struct_format_DynamicSized$();
+  if ((!((x === x1) || $is_Lio_kaitai_struct_format_FixedSized(x1)))) {
+    var x$3 = $m_Lio_kaitai_struct_format_StartedCalculationSized$();
+    if ((x$3 === x1)) {
+      curClass.seqSize$1 = $m_Lio_kaitai_struct_format_DynamicSized$()
+    } else {
+      var x$5 = $m_Lio_kaitai_struct_format_NotCalculatedSized$();
+      if ((x$5 === x1)) {
+        curClass.seqSize$1 = $m_Lio_kaitai_struct_format_StartedCalculationSized$();
+        var elem = new $c_s_Some().init___O(0);
+        var elem$1 = null;
+        elem$1 = elem;
+        var this$2 = curClass.seq$1;
+        var these = this$2;
+        while ((!these.isEmpty__Z())) {
+          var arg1 = these.head__O();
+          var attr = $as_Lio_kaitai_struct_format_AttrSpec(arg1);
+          var sizeElement = $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized(attr.dataType$1);
+          var sizeContainer = $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().sizeMultiply__Lio_kaitai_struct_format_Sized__Lio_kaitai_struct_format_RepeatSpec__Lio_kaitai_struct_format_Sized(sizeElement, attr.cond$1.repeat$1);
+          $as_s_Option(elem$1);
+          var _1 = $as_s_Option(elem$1);
+          matchEnd7: {
+            if ($is_s_Some(_1)) {
+              var x4 = $as_s_Some(_1);
+              var pos = $uI(x4.x$2);
+              if ($is_Lio_kaitai_struct_format_FixedSized(sizeContainer)) {
+                var x5 = $as_Lio_kaitai_struct_format_FixedSized(sizeContainer);
+                var siz = x5.n$1;
+                elem$1 = new $c_s_Some().init___O(((pos + siz) | 0));
+                break matchEnd7
+              }
+            };
+            elem$1 = $m_s_None$()
+          };
+          var this$3 = these;
+          these = this$3.tail__sci_List()
+        };
+        var seqSize = $as_s_Option(elem$1);
+        if ($is_s_Some(seqSize)) {
+          var x2 = $as_s_Some(seqSize);
+          var size = $uI(x2.x$2);
+          var jsx$1 = new $c_Lio_kaitai_struct_format_FixedSized().init___I(size)
+        } else {
+          var x$7 = $m_s_None$();
+          if ((!(x$7 === seqSize))) {
+            throw new $c_s_MatchError().init___O(seqSize)
+          };
+          var jsx$1 = $m_Lio_kaitai_struct_format_DynamicSized$()
+        };
+        curClass.seqSize$1 = jsx$1
+      } else {
+        throw new $c_s_MatchError().init___O(x1)
+      }
+    }
+  };
+  $m_Lio_kaitai_struct_Log$();
+  return curClass.seqSize$1
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.dataTypeByteSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized = (function(dataType) {
+  _dataTypeByteSize: while (true) {
+    var x1 = dataType;
+    if ($is_Lio_kaitai_struct_datatype_DataType$Int1Type(x1)) {
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(1)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$IntMultiType(x1)) {
+      var x2 = $as_Lio_kaitai_struct_datatype_DataType$IntMultiType(x1);
+      var width = x2.width$3;
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(width.width$1)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$FixedBytesType(x1)) {
+      var x5 = $as_Lio_kaitai_struct_datatype_DataType$FixedBytesType(x1);
+      var contents = x5.contents$2;
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(contents.u.length)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$FloatMultiType(x1)) {
+      var x7 = $as_Lio_kaitai_struct_datatype_DataType$FloatMultiType(x1);
+      var width$2 = x7.width$3;
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(width$2.width$1)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesEosType(x1)) {
+      return $m_Lio_kaitai_struct_format_DynamicSized$()
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesLimitType(x1)) {
+      var x13 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(x1);
+      var x1$2 = this.evaluateIntLiteral__Lio_kaitai_struct_exprlang_Ast$expr__s_Option(x13.size$2);
+      if ($is_s_Some(x1$2)) {
+        var x2$2 = $as_s_Some(x1$2);
+        var x$2 = $uI(x2$2.x$2);
+        return new $c_Lio_kaitai_struct_format_FixedSized().init___I(x$2)
+      } else {
+        var x$3 = $m_s_None$();
+        if ((x$3 === x1$2)) {
+          return $m_Lio_kaitai_struct_format_DynamicSized$()
+        } else {
+          throw new $c_s_MatchError().init___O(x1$2)
+        }
+      }
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesTerminatedType(x1)) {
+      return $m_Lio_kaitai_struct_format_DynamicSized$()
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(x1)) {
+      var x9 = $as_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(x1);
+      var basedOn = x9.bytes$2;
+      dataType = basedOn;
+      continue _dataTypeByteSize
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(x1)) {
+      var x15 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(x1);
+      dataType = x15.bytes$2;
+      continue _dataTypeByteSize
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$SwitchType(x1)) {
+      return $m_Lio_kaitai_struct_format_DynamicSized$()
+    } else {
+      throw new $c_s_MatchError().init___O(x1)
+    }
+  }
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.sizeMultiply__Lio_kaitai_struct_format_Sized__Lio_kaitai_struct_format_RepeatSpec__Lio_kaitai_struct_format_Sized = (function(sizeElement, repeat) {
+  if ($is_Lio_kaitai_struct_format_FixedSized(sizeElement)) {
+    var x2 = $as_Lio_kaitai_struct_format_FixedSized(sizeElement);
+    var elementSize = x2.n$1;
+    var x = $m_Lio_kaitai_struct_format_NoRepeat$();
+    if ((x === repeat)) {
+      return sizeElement
+    } else if ($is_Lio_kaitai_struct_format_RepeatExpr(repeat)) {
+      var x2$2 = $as_Lio_kaitai_struct_format_RepeatExpr(repeat);
+      var expr = x2$2.expr$1;
+      var x1$3 = this.evaluateIntLiteral__Lio_kaitai_struct_exprlang_Ast$expr__s_Option(expr);
+      if ($is_s_Some(x1$3)) {
+        var x2$3 = $as_s_Some(x1$3);
+        var count = $uI(x2$3.x$2);
+        return new $c_Lio_kaitai_struct_format_FixedSized().init___I($imul(elementSize, count))
+      } else {
+        var x$3 = $m_s_None$();
+        if ((x$3 === x1$3)) {
+          return $m_Lio_kaitai_struct_format_DynamicSized$()
+        } else {
+          throw new $c_s_MatchError().init___O(x1$3)
+        }
+      }
+    } else {
+      if ($is_Lio_kaitai_struct_format_RepeatUntil(repeat)) {
+        var jsx$1 = true
+      } else {
+        var x$5 = $m_Lio_kaitai_struct_format_RepeatEos$();
+        var jsx$1 = (x$5 === repeat)
+      };
+      if (jsx$1) {
+        return $m_Lio_kaitai_struct_format_DynamicSized$()
+      } else {
+        throw new $c_s_MatchError().init___O(repeat)
+      }
+    }
+  } else {
+    return sizeElement
+  }
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.evaluateIntLiteral__Lio_kaitai_struct_exprlang_Ast$expr__s_Option = (function(expr) {
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(expr)) {
+    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(expr);
+    var x = x2.n$1;
+    return new $c_s_Some().init___O(x.bigInteger$3.intValue__I())
+  } else {
+    return $m_s_None$()
+  }
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized = (function(dataType) {
+  _dataTypeBitsSize: while (true) {
+    var x1 = dataType;
+    var x$2 = $m_Lio_kaitai_struct_datatype_DataType$BitsType1$();
+    if ((x$2 === x1)) {
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(1)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BitsType(x1)) {
+      var x2 = $as_Lio_kaitai_struct_datatype_DataType$BitsType(x1);
+      var width = x2.width$3;
+      return new $c_Lio_kaitai_struct_format_FixedSized().init___I(width)
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(x1)) {
+      var x3 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(x1);
+      var basedOn = x3.basedOn$1;
+      dataType = basedOn;
+      continue _dataTypeBitsSize
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeInstream(x1)) {
+      var x6 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeInstream(x1);
+      return this.getSeqSize__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_format_Sized($as_Lio_kaitai_struct_format_ClassSpec(x6.classSpec$1.get__O()))
+    } else {
+      var x1$2 = this.dataTypeByteSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized(dataType);
+      if ($is_Lio_kaitai_struct_format_FixedSized(x1$2)) {
+        var x2$2 = $as_Lio_kaitai_struct_format_FixedSized(x1$2);
+        var x$4 = x2$2.n$1;
+        return new $c_Lio_kaitai_struct_format_FixedSized().init___I((x$4 << 3))
+      } else {
+        return x1$2
+      }
+    }
+  }
+});
+var $d_Lio_kaitai_struct_precompile_CalculateSeqSizes$ = new $TypeData().initClass({
+  Lio_kaitai_struct_precompile_CalculateSeqSizes$: 0
+}, false, "io.kaitai.struct.precompile.CalculateSeqSizes$", {
+  Lio_kaitai_struct_precompile_CalculateSeqSizes$: 1,
+  O: 1
+});
+$c_Lio_kaitai_struct_precompile_CalculateSeqSizes$.prototype.$classData = $d_Lio_kaitai_struct_precompile_CalculateSeqSizes$;
+var $n_Lio_kaitai_struct_precompile_CalculateSeqSizes$ = (void 0);
+function $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$() {
+  if ((!$n_Lio_kaitai_struct_precompile_CalculateSeqSizes$)) {
+    $n_Lio_kaitai_struct_precompile_CalculateSeqSizes$ = new $c_Lio_kaitai_struct_precompile_CalculateSeqSizes$().init___()
+  };
+  return $n_Lio_kaitai_struct_precompile_CalculateSeqSizes$
 }
 /** @constructor */
 function $c_Lio_kaitai_struct_precompile_LoadImports() {
@@ -8851,20 +9323,37 @@ function $m_Lio_kaitai_struct_precompile_MarkupClassNames$() {
   return $n_Lio_kaitai_struct_precompile_MarkupClassNames$
 }
 /** @constructor */
-function $c_Lio_kaitai_struct_precompile_ParentTypes$() {
-  $c_O.call(this)
+function $c_Lio_kaitai_struct_precompile_ParentTypes() {
+  $c_O.call(this);
+  this.classSpecs$1 = null
 }
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype = new $h_O();
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.constructor = $c_Lio_kaitai_struct_precompile_ParentTypes$;
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype = new $h_O();
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.constructor = $c_Lio_kaitai_struct_precompile_ParentTypes;
 /** @constructor */
-function $h_Lio_kaitai_struct_precompile_ParentTypes$() {
+function $h_Lio_kaitai_struct_precompile_ParentTypes() {
   /*<skip>*/
 }
-$h_Lio_kaitai_struct_precompile_ParentTypes$.prototype = $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype;
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.init___ = (function() {
-  return this
+$h_Lio_kaitai_struct_precompile_ParentTypes.prototype = $c_Lio_kaitai_struct_precompile_ParentTypes.prototype;
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.run__V = (function() {
+  var this$1 = this.classSpecs$1;
+  var iterTable = this$1.table$5;
+  var idx = $s_scm_HashTable$class__scala$collection$mutable$HashTable$$lastPopulatedIndex__scm_HashTable__I(this$1);
+  var es = iterTable.get(idx);
+  while ((es !== null)) {
+    var next = $as_scm_HashEntry(es.next__O());
+    var arg1 = es;
+    var e = $as_scm_DefaultEntry(arg1);
+    var _2 = e.value$1;
+    var curClass = $as_Lio_kaitai_struct_format_ClassSpec(_2);
+    this.markup__Lio_kaitai_struct_format_ClassSpec__V(curClass);
+    es = next;
+    while (((es === null) && (idx > 0))) {
+      idx = (((-1) + idx) | 0);
+      es = iterTable.get(idx)
+    }
+  }
 });
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V = (function(curClass, dt) {
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V = (function(curClass, dt) {
   _markupParentTypesAdd: while (true) {
     var x1 = dt;
     if ($is_Lio_kaitai_struct_datatype_DataType$UserType(x1)) {
@@ -8892,7 +9381,7 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.io$kaitai$struct$precompi
         };
         if (rc8) {
           var parent = $as_Lio_kaitai_struct_exprlang_Ast$expr(x2.x$2);
-          var provider = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpec(curClass);
+          var provider = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(this.classSpecs$1, curClass);
           var detector = new $c_Lio_kaitai_struct_translators_TypeDetector().init___Lio_kaitai_struct_translators_TypeProvider(provider);
           var parentType = detector.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(parent);
           $m_Lio_kaitai_struct_Log$();
@@ -8908,29 +9397,29 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.io$kaitai$struct$precompi
       if ((!this$1.isEmpty__Z())) {
         var arg1 = this$1.get__O();
         var parentClass = $as_Lio_kaitai_struct_format_ClassSpec(arg1);
-        $m_Lio_kaitai_struct_precompile_ParentTypes$().markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V(parentClass, x3)
+        this.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V(parentClass, x3)
       }
     } else if ($is_Lio_kaitai_struct_datatype_DataType$SwitchType(x1)) {
       var x4 = $as_Lio_kaitai_struct_datatype_DataType$SwitchType(x1);
-      x4.cases$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(curClass$2) {
-        return (function(x0$2$2) {
-          var x0$2 = $as_T2(x0$2$2);
+      x4.cases$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer, curClass$2) {
+        return (function(x0$3$2) {
+          var x0$3 = $as_T2(x0$3$2);
           matchEnd7: {
-            if ((x0$2 !== null)) {
-              var ut = $as_Lio_kaitai_struct_datatype_DataType(x0$2.$$und2__O());
+            if ((x0$3 !== null)) {
+              var ut = $as_Lio_kaitai_struct_datatype_DataType(x0$3.$$und2__O());
               if ($is_Lio_kaitai_struct_datatype_DataType$UserType(ut)) {
                 var x5 = $as_Lio_kaitai_struct_datatype_DataType$UserType(ut);
-                $m_Lio_kaitai_struct_precompile_ParentTypes$().markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V(curClass$2, x5);
+                arg$outer.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V(curClass$2, x5);
                 break matchEnd7
               }
             };
-            if ((x0$2 !== null)) {
+            if ((x0$3 !== null)) {
               break matchEnd7
             };
-            throw new $c_s_MatchError().init___O(x0$2)
+            throw new $c_s_MatchError().init___O(x0$3)
           }
         })
-      })(curClass)))
+      })(this, curClass)))
     } else if ($is_Lio_kaitai_struct_datatype_DataType$ArrayType(x1)) {
       var x2$3 = $as_Lio_kaitai_struct_datatype_DataType$ArrayType(x1);
       var innerType = x2$3.elType$1;
@@ -8940,7 +9429,11 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.io$kaitai$struct$precompi
     break
   }
 });
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V = (function(curClass, ut) {
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.init___Lio_kaitai_struct_format_ClassSpecs = (function(classSpecs) {
+  this.classSpecs$1 = classSpecs;
+  return this
+});
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType$UserType__V = (function(curClass, ut) {
   $m_Lio_kaitai_struct_Log$();
   var x1 = ut.classSpec$1;
   if ($is_s_Some(x1)) {
@@ -8962,7 +9455,7 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markupParentAs__Lio_kaita
     }
   }
 });
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markup__Lio_kaitai_struct_format_ClassSpec__V = (function(curClass) {
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.markup__Lio_kaitai_struct_format_ClassSpec__V = (function(curClass) {
   $m_Lio_kaitai_struct_Log$();
   var this$1 = curClass.seq$1;
   if ($s_sc_TraversableOnce$class__nonEmpty__sc_TraversableOnce__Z(this$1)) {
@@ -8973,7 +9466,7 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markup__Lio_kaitai_struct
   while ((!these.isEmpty__Z())) {
     var arg1 = these.head__O();
     var attr = $as_Lio_kaitai_struct_format_AttrSpec(arg1);
-    $m_Lio_kaitai_struct_precompile_ParentTypes$().io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V(curClass, attr.dataType$1);
+    this.io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V(curClass, attr.dataType$1);
     var this$3 = these;
     these = this$3.tail__sci_List()
   };
@@ -8981,24 +9474,24 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markup__Lio_kaitai_struct
   if ($s_sc_TraversableOnce$class__nonEmpty__sc_TraversableOnce__Z(this$4)) {
     $m_Lio_kaitai_struct_Log$()
   };
-  curClass.instances$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(curClass$1) {
-    return (function(x0$1$2) {
-      var x0$1 = $as_T2(x0$1$2);
-      if ((x0$1 !== null)) {
-        var instSpec = $as_Lio_kaitai_struct_format_InstanceSpec(x0$1.$$und2__O());
+  curClass.instances$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer, curClass$1) {
+    return (function(x0$2$2) {
+      var x0$2 = $as_T2(x0$2$2);
+      if ((x0$2 !== null)) {
+        var instSpec = $as_Lio_kaitai_struct_format_InstanceSpec(x0$2.$$und2__O());
         if ($is_Lio_kaitai_struct_format_ParseInstanceSpec(instSpec)) {
           var x2 = $as_Lio_kaitai_struct_format_ParseInstanceSpec(instSpec);
-          $m_Lio_kaitai_struct_precompile_ParentTypes$().io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V(curClass$1, $s_Lio_kaitai_struct_format_AttrLikeSpec$class__dataTypeComposite__Lio_kaitai_struct_format_AttrLikeSpec__Lio_kaitai_struct_datatype_DataType(x2))
+          arg$outer.io$kaitai$struct$precompile$ParentTypes$$markupParentTypesAdd__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_datatype_DataType__V(curClass$1, $s_Lio_kaitai_struct_format_AttrLikeSpec$class__dataTypeComposite__Lio_kaitai_struct_format_AttrLikeSpec__Lio_kaitai_struct_datatype_DataType(x2))
         } else if ((!$is_Lio_kaitai_struct_format_ValueInstanceSpec(instSpec))) {
           throw new $c_s_MatchError().init___O(instSpec)
         }
       } else {
-        throw new $c_s_MatchError().init___O(x0$1)
+        throw new $c_s_MatchError().init___O(x0$2)
       }
     })
-  })(curClass)))
+  })(this, curClass)))
 });
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_format_ClassSpec__V = (function(parent, child) {
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.markupParentAs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_format_ClassSpec__V = (function(parent, child) {
   var x1 = child.parentClass$1;
   var x = $m_Lio_kaitai_struct_format_UnknownClassSpec$();
   if ((x === x1)) {
@@ -9016,20 +9509,13 @@ $c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.markupParentAs__Lio_kaita
     }
   }
 });
-var $d_Lio_kaitai_struct_precompile_ParentTypes$ = new $TypeData().initClass({
-  Lio_kaitai_struct_precompile_ParentTypes$: 0
-}, false, "io.kaitai.struct.precompile.ParentTypes$", {
-  Lio_kaitai_struct_precompile_ParentTypes$: 1,
+var $d_Lio_kaitai_struct_precompile_ParentTypes = new $TypeData().initClass({
+  Lio_kaitai_struct_precompile_ParentTypes: 0
+}, false, "io.kaitai.struct.precompile.ParentTypes", {
+  Lio_kaitai_struct_precompile_ParentTypes: 1,
   O: 1
 });
-$c_Lio_kaitai_struct_precompile_ParentTypes$.prototype.$classData = $d_Lio_kaitai_struct_precompile_ParentTypes$;
-var $n_Lio_kaitai_struct_precompile_ParentTypes$ = (void 0);
-function $m_Lio_kaitai_struct_precompile_ParentTypes$() {
-  if ((!$n_Lio_kaitai_struct_precompile_ParentTypes$)) {
-    $n_Lio_kaitai_struct_precompile_ParentTypes$ = new $c_Lio_kaitai_struct_precompile_ParentTypes$().init___()
-  };
-  return $n_Lio_kaitai_struct_precompile_ParentTypes$
-}
+$c_Lio_kaitai_struct_precompile_ParentTypes.prototype.$classData = $d_Lio_kaitai_struct_precompile_ParentTypes;
 /** @constructor */
 function $c_Lio_kaitai_struct_precompile_ResolveTypes() {
   $c_O.call(this);
@@ -9260,7 +9746,7 @@ $c_Lio_kaitai_struct_precompile_ResolveTypes.prototype.$classData = $d_Lio_kaita
 /** @constructor */
 function $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive() {
   $c_O.call(this);
-  this.specs$1 = null
+  this.io$kaitai$struct$precompile$SpecsValueTypeDerive$$specs$f = null
 }
 $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype = new $h_O();
 $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype.constructor = $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive;
@@ -9277,7 +9763,7 @@ $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype.run__V = (functio
   do {
     elem$1$1 = false;
     $m_Lio_kaitai_struct_Log$();
-    var this$3 = this.specs$1;
+    var this$3 = this.io$kaitai$struct$precompile$SpecsValueTypeDerive$$specs$f;
     var iterTable = this$3.table$5;
     var idx = $s_scm_HashTable$class__scala$collection$mutable$HashTable$$lastPopulatedIndex__scm_HashTable__I(this$3);
     var es = iterTable.get(idx);
@@ -9290,7 +9776,7 @@ $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype.run__V = (functio
       $as_T(_1);
       var spec = $as_Lio_kaitai_struct_format_ClassSpec(_2);
       $m_Lio_kaitai_struct_Log$();
-      var thisChanged = new $c_Lio_kaitai_struct_precompile_ValueTypesDeriver().init___Lio_kaitai_struct_format_ClassSpec(spec).run__Z();
+      var thisChanged = new $c_Lio_kaitai_struct_precompile_ValueTypesDeriver().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(this.io$kaitai$struct$precompile$SpecsValueTypeDerive$$specs$f, spec).run__Z();
       $m_Lio_kaitai_struct_Log$();
       elem$1$1 = (!(!(elem$1$1 | thisChanged)));
       es = next;
@@ -9304,7 +9790,7 @@ $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype.run__V = (functio
   $m_Lio_kaitai_struct_Log$()
 });
 $c_Lio_kaitai_struct_precompile_SpecsValueTypeDerive.prototype.init___Lio_kaitai_struct_format_ClassSpecs = (function(specs) {
-  this.specs$1 = specs;
+  this.io$kaitai$struct$precompile$SpecsValueTypeDerive$$specs$f = specs;
   return this
 });
 var $d_Lio_kaitai_struct_precompile_SpecsValueTypeDerive = new $TypeData().initClass({
@@ -9407,12 +9893,6 @@ $c_Lio_kaitai_struct_precompile_TypeValidator.prototype.validateClass__Lio_kaita
       }
     })
   })(this)))
-});
-$c_Lio_kaitai_struct_precompile_TypeValidator.prototype.init___Lio_kaitai_struct_format_ClassSpec = (function(topClass) {
-  this.topClass$1 = topClass;
-  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpec(topClass);
-  this.detector$1 = new $c_Lio_kaitai_struct_translators_TypeDetector().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
-  return this
 });
 $c_Lio_kaitai_struct_precompile_TypeValidator.prototype.validateArgsVsParams__sc_Seq__sci_List__sci_List__V = (function(args, params, path) {
   if ((args.size__I() !== $s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(params))) {
@@ -9964,18 +10444,26 @@ $c_Lio_kaitai_struct_precompile_TypeValidator.prototype.validateAttr__Lio_kaitai
   };
   this.validateDataType__Lio_kaitai_struct_datatype_DataType__sci_List__V(attr.dataType__Lio_kaitai_struct_datatype_DataType(), path)
 });
+$c_Lio_kaitai_struct_precompile_TypeValidator.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec = (function(specs, topClass) {
+  this.topClass$1 = topClass;
+  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(specs, topClass);
+  this.detector$1 = new $c_Lio_kaitai_struct_translators_TypeDetector().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
+  return this
+});
 $c_Lio_kaitai_struct_precompile_TypeValidator.prototype.validateDataType__Lio_kaitai_struct_datatype_DataType__sci_List__V = (function(dataType, path) {
   if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType)) {
     var x2 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dataType);
-    var jsx$3 = x2.args$1;
-    var jsx$2 = $as_Lio_kaitai_struct_format_ClassSpec(x2.classSpec$1.get__O()).params$1;
-    $m_sci_List$();
-    var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array(["type"]);
-    var this$2 = $m_sci_List$();
-    var cbf = this$2.ReusableCBFInstance$2;
-    var jsx$1 = $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf));
-    var this$3 = $m_sci_List$();
-    this.validateArgsVsParams__sc_Seq__sci_List__sci_List__V(jsx$3, jsx$2, $as_sci_List(path.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$1, this$3.ReusableCBFInstance$2)))
+    if ((!x2.isOpaque__Z())) {
+      var jsx$3 = x2.args$1;
+      var jsx$2 = $as_Lio_kaitai_struct_format_ClassSpec(x2.classSpec$1.get__O()).params$1;
+      $m_sci_List$();
+      var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array(["type"]);
+      var this$2 = $m_sci_List$();
+      var cbf = this$2.ReusableCBFInstance$2;
+      var jsx$1 = $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf));
+      var this$3 = $m_sci_List$();
+      this.validateArgsVsParams__sc_Seq__sci_List__sci_List__V(jsx$3, jsx$2, $as_sci_List(path.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$1, this$3.ReusableCBFInstance$2)))
+    }
   };
   if ($is_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType)) {
     var x2$2 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType);
@@ -10178,12 +10666,6 @@ function $h_Lio_kaitai_struct_precompile_ValueTypesDeriver() {
   /*<skip>*/
 }
 $h_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype = $c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype;
-$c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype.init___Lio_kaitai_struct_format_ClassSpec = (function(topClass) {
-  this.topClass$1 = topClass;
-  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpec(topClass);
-  this.detector$1 = new $c_Lio_kaitai_struct_translators_TypeDetector().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
-  return this
-});
 $c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype.deriveValueType__Lio_kaitai_struct_format_ClassSpec__Z = (function(curClass) {
   $m_Lio_kaitai_struct_Log$();
   var hasChanged = new $c_sr_BooleanRef().init___Z(false);
@@ -10205,6 +10687,12 @@ $c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype.deriveValueType__Lio
 });
 $c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype.run__Z = (function() {
   return this.deriveValueType__Lio_kaitai_struct_format_ClassSpec__Z(this.topClass$1)
+});
+$c_Lio_kaitai_struct_precompile_ValueTypesDeriver.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec = (function(specs, topClass) {
+  this.topClass$1 = topClass;
+  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(specs, topClass);
+  this.detector$1 = new $c_Lio_kaitai_struct_translators_TypeDetector().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
+  return this
 });
 var $d_Lio_kaitai_struct_precompile_ValueTypesDeriver = new $TypeData().initClass({
   Lio_kaitai_struct_precompile_ValueTypesDeriver: 0
@@ -10644,6 +11132,18 @@ $c_Lio_kaitai_struct_translators_TypeDetector.prototype.detectTypeRaw__Lio_kaita
   };
   throw new $c_s_MatchError().init___O(v)
 });
+function $is_Lio_kaitai_struct_translators_TypeDetector(obj) {
+  return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Lio_kaitai_struct_translators_TypeDetector)))
+}
+function $as_Lio_kaitai_struct_translators_TypeDetector(obj) {
+  return (($is_Lio_kaitai_struct_translators_TypeDetector(obj) || (obj === null)) ? obj : $throwClassCastException(obj, "io.kaitai.struct.translators.TypeDetector"))
+}
+function $isArrayOf_Lio_kaitai_struct_translators_TypeDetector(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lio_kaitai_struct_translators_TypeDetector)))
+}
+function $asArrayOf_Lio_kaitai_struct_translators_TypeDetector(obj, depth) {
+  return (($isArrayOf_Lio_kaitai_struct_translators_TypeDetector(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lio.kaitai.struct.translators.TypeDetector;", depth))
+}
 var $d_Lio_kaitai_struct_translators_TypeDetector = new $TypeData().initClass({
   Lio_kaitai_struct_translators_TypeDetector: 0
 }, false, "io.kaitai.struct.translators.TypeDetector", {
@@ -17590,14 +18090,6 @@ $c_Lio_kaitai_struct_ClassCompiler.prototype.compileSubclasses__Lio_kaitai_struc
     })
   })(this)))
 });
-$c_Lio_kaitai_struct_ClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic = (function(topClass, config, langObj) {
-  this.topClass$1 = topClass;
-  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpec(topClass);
-  this.topClassName$1 = topClass.name$1;
-  this.lang$1 = langObj.getCompiler__Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompiler(this.provider$1, config);
-  this.IS$undLE$undID$1 = new $c_Lio_kaitai_struct_format_SpecialIdentifier().init___T("_is_le");
-  return this
-});
 $c_Lio_kaitai_struct_ClassCompiler.prototype.compileConstructor__Lio_kaitai_struct_format_ClassSpec__V = (function(curClass) {
   this.lang$1.classConstructorHeader__sci_List__Lio_kaitai_struct_datatype_DataType__sci_List__Z__sci_List__V(curClass.name$1, curClass.parentType__Lio_kaitai_struct_datatype_DataType(), this.topClassName$1, curClass.meta$1.endian$1.contains__O__Z($m_Lio_kaitai_struct_datatype_InheritedEndian$()), curClass.params$1);
   curClass.instances$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
@@ -17671,6 +18163,14 @@ $c_Lio_kaitai_struct_ClassCompiler.prototype.isUnalignedBits__Lio_kaitai_struct_
   } else {
     return false
   }
+});
+$c_Lio_kaitai_struct_ClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic = (function(classSpecs, topClass, config, langObj) {
+  this.topClass$1 = topClass;
+  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(classSpecs, topClass);
+  this.topClassName$1 = topClass.name$1;
+  this.lang$1 = langObj.getCompiler__Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompiler(this.provider$1, config);
+  this.IS$undLE$undID$1 = new $c_Lio_kaitai_struct_format_SpecialIdentifier().init___T("_is_le");
+  return this
 });
 $c_Lio_kaitai_struct_ClassCompiler.prototype.compileEnums__Lio_kaitai_struct_format_ClassSpec__V = (function(curClass) {
   curClass.enums$1.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer, curClass$1) {
@@ -17985,6 +18485,7 @@ $c_Lio_kaitai_struct_ClassCompiler.prototype.$classData = $d_Lio_kaitai_struct_C
 /** @constructor */
 function $c_Lio_kaitai_struct_ClassTypeProvider() {
   $c_O.call(this);
+  this.classSpecs$1 = null;
   this.topClass$1 = null;
   this.nowClass$1 = null;
   this.$$undcurrentIteratorType$1 = null;
@@ -18086,18 +18587,16 @@ $c_Lio_kaitai_struct_ClassTypeProvider.prototype.determineType__Lio_kaitai_struc
           if ($is_Lio_kaitai_struct_format_ValueInstanceSpec(i)) {
             var x4 = $as_Lio_kaitai_struct_format_ValueInstanceSpec(i);
             var x1$3 = x4.dataType$2;
-            if ($is_s_Some(x1$3)) {
-              var x2$2 = $as_s_Some(x1$3);
-              $as_Lio_kaitai_struct_datatype_DataType(x2$2.x$2)
-            } else {
+            if ((!$is_s_Some(x1$3))) {
               var x$3$1 = $m_s_None$();
               if ((x$3$1 === x1$3)) {
                 throw new $c_Lio_kaitai_struct_precompile_TypeUndecidedError().init___T(attrName)
-              } else {
-                throw new $c_s_MatchError().init___O(x1$3)
-              }
+              };
+              throw new $c_s_MatchError().init___O(x1$3)
             };
-            return $as_Lio_kaitai_struct_datatype_DataType(x4.dataType$2.get__O())
+            var x2$2 = $as_s_Some(x1$3);
+            var t = $as_Lio_kaitai_struct_datatype_DataType(x2$2.x$2);
+            return t
           }
         };
         if (rc8) {
@@ -18140,13 +18639,6 @@ $c_Lio_kaitai_struct_ClassTypeProvider.prototype.makeUserType__Lio_kaitai_struct
   } else {
     throw new $c_s_MatchError().init___O(csl)
   }
-});
-$c_Lio_kaitai_struct_ClassTypeProvider.prototype.init___Lio_kaitai_struct_format_ClassSpec = (function(topClass) {
-  this.topClass$1 = topClass;
-  this.nowClass$1 = topClass;
-  this.$$undcurrentIteratorType$1 = $m_s_None$();
-  this.$$undcurrentSwitchType$1 = $m_s_None$();
-  return this
 });
 $c_Lio_kaitai_struct_ClassTypeProvider.prototype.isLazy__Lio_kaitai_struct_format_ClassSpec__T__Z = (function(inClass, attrName) {
   var nonLocalReturnKey2 = new $c_O().init___();
@@ -18200,26 +18692,49 @@ $c_Lio_kaitai_struct_ClassTypeProvider.prototype.isLazy__Lio_kaitai_struct_forma
     }
   }
 });
+$c_Lio_kaitai_struct_ClassTypeProvider.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec = (function(classSpecs, topClass) {
+  this.classSpecs$1 = classSpecs;
+  this.topClass$1 = topClass;
+  this.nowClass$1 = topClass;
+  this.$$undcurrentIteratorType$1 = $m_s_None$();
+  this.$$undcurrentSwitchType$1 = $m_s_None$();
+  return this
+});
 $c_Lio_kaitai_struct_ClassTypeProvider.prototype.resolveType__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_datatype_DataType = (function(inClass, typeName) {
+  var this$1 = inClass.name$1;
+  var x = $s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(this$1);
+  if (((x === null) ? (typeName === null) : $objectEquals(x, typeName))) {
+    return this.makeUserType__Lio_kaitai_struct_format_ClassSpecLike__Lio_kaitai_struct_datatype_DataType(inClass)
+  };
   var x1 = inClass.types$1.get__O__s_Option(typeName);
   if ($is_s_Some(x1)) {
     var x2 = $as_s_Some(x1);
     var spec = $as_Lio_kaitai_struct_format_ClassSpec(x2.x$2);
-    var ut = new $c_Lio_kaitai_struct_datatype_DataType$UserTypeInstream().init___sci_List__s_Option__sc_Seq(spec.name$1, $m_s_None$(), $as_sc_Seq($m_sc_Seq$().apply__sc_Seq__sc_GenTraversable($m_sci_Nil$())));
-    ut.classSpec$1 = new $c_s_Some().init___O(spec);
-    return ut
+    return this.makeUserType__Lio_kaitai_struct_format_ClassSpecLike__Lio_kaitai_struct_datatype_DataType(spec)
   } else {
-    var x = $m_s_None$();
-    if ((x === x1)) {
+    var x$3 = $m_s_None$();
+    if ((x$3 === x1)) {
       var x1$2 = inClass.upClass$1;
       if ($is_s_Some(x1$2)) {
         var x2$2 = $as_s_Some(x1$2);
         var upClass = $as_Lio_kaitai_struct_format_ClassSpec(x2$2.x$2);
         return this.resolveType__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_datatype_DataType(upClass, typeName)
       } else {
-        var x$3 = $m_s_None$();
-        if ((x$3 === x1$2)) {
-          throw new $c_Lio_kaitai_struct_precompile_TypeNotFoundError().init___T__Lio_kaitai_struct_format_ClassSpec(typeName, this.nowClass$1)
+        var x$5 = $m_s_None$();
+        if ((x$5 === x1$2)) {
+          var x1$3 = this.classSpecs$1.get__O__s_Option(typeName);
+          if ($is_s_Some(x1$3)) {
+            var x2$3 = $as_s_Some(x1$3);
+            var spec$2 = $as_Lio_kaitai_struct_format_ClassSpec(x2$3.x$2);
+            return this.makeUserType__Lio_kaitai_struct_format_ClassSpecLike__Lio_kaitai_struct_datatype_DataType(spec$2)
+          } else {
+            var x$7 = $m_s_None$();
+            if ((x$7 === x1$3)) {
+              throw new $c_Lio_kaitai_struct_precompile_TypeNotFoundError().init___T__Lio_kaitai_struct_format_ClassSpec(typeName, this.nowClass$1)
+            } else {
+              throw new $c_s_MatchError().init___O(x1$3)
+            }
+          }
         } else {
           throw new $c_s_MatchError().init___O(x1$2)
         }
@@ -18272,41 +18787,44 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.compileSeq__sci_List__Lio_k
   var elem = new $c_s_Some().init___O(0);
   var elem$1 = null;
   elem$1 = elem;
-  var this$2 = curClass.seq$1;
-  var these = this$2;
+  var this$3 = curClass.seq$1;
+  var these = this$3;
   while ((!these.isEmpty__Z())) {
     var arg1 = these.head__O();
     var attr = $as_Lio_kaitai_struct_format_AttrSpec(arg1);
+    var sizeElement = $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized(attr.dataType$1);
+    var sizeContainer = $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().sizeMultiply__Lio_kaitai_struct_format_Sized__Lio_kaitai_struct_format_RepeatSpec__Lio_kaitai_struct_format_Sized(sizeElement, attr.cond$1.repeat$1);
+    var arg2 = $as_s_Option(elem$1);
     var x1 = attr.id$1;
     if ($is_Lio_kaitai_struct_format_NamedIdentifier(x1)) {
       var x2 = $as_Lio_kaitai_struct_format_NamedIdentifier(x1);
       var name = x2.name$2;
-      this.tableRow__sci_List__s_Option__Lio_kaitai_struct_format_AttrLikeSpec__T__V(className, this.seqPosToStr__s_Option__s_Option($as_s_Option(elem$1)), attr, name)
+      this.tableRow__sci_List__s_Option__Lio_kaitai_struct_format_AttrLikeSpec__T__V(className, this.seqPosToStr__s_Option__s_Option(arg2), attr, name)
     } else if ($is_Lio_kaitai_struct_format_NumberedIdentifier(x1)) {
       var x3 = $as_Lio_kaitai_struct_format_NumberedIdentifier(x1);
       var n = x3.idx$2;
-      this.tableRow__sci_List__s_Option__Lio_kaitai_struct_format_AttrLikeSpec__T__V(className, this.seqPosToStr__s_Option__s_Option($as_s_Option(elem$1)), attr, new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_format_NumberedIdentifier$().TEMPLATE$1, n])))
+      this.tableRow__sci_List__s_Option__Lio_kaitai_struct_format_AttrLikeSpec__T__V(className, this.seqPosToStr__s_Option__s_Option(arg2), attr, new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_format_NumberedIdentifier$().TEMPLATE$1, n])))
     } else {
       throw new $c_s_MatchError().init___O(x1)
     };
-    var size = $m_Lio_kaitai_struct_GraphvizClassCompiler$().dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__s_Option(attr.dataType$1);
     var _1 = $as_s_Option(elem$1);
     matchEnd7: {
       if ($is_s_Some(_1)) {
         var x4 = $as_s_Some(_1);
         var pos = $uI(x4.x$2);
-        if ($is_s_Some(size)) {
-          var x5 = $as_s_Some(size);
-          var siz = $uI(x5.x$2);
+        if ($is_Lio_kaitai_struct_format_FixedSized(sizeContainer)) {
+          var x5 = $as_Lio_kaitai_struct_format_FixedSized(sizeContainer);
+          var siz = x5.n$1;
           elem$1 = new $c_s_Some().init___O(((pos + siz) | 0));
           break matchEnd7
         }
       };
       elem$1 = $m_s_None$()
     };
-    var this$3 = these;
-    these = this$3.tail__sci_List()
+    var this$4 = these;
+    these = this$4.tail__sci_List()
   };
+  $as_s_Option(elem$1);
   this.tableEnd__V()
 });
 $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.tableEnd__V = (function() {
@@ -18314,55 +18832,46 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.tableEnd__V = (function() {
   this.out$1.puts__T__V("</TABLE>>];")
 });
 $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.dataTypeSizeAsString__Lio_kaitai_struct_datatype_DataType__T__T = (function(dataType, attrName) {
-  if ($is_Lio_kaitai_struct_datatype_DataType$Int1Type(dataType)) {
-    return "1"
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$IntMultiType(dataType)) {
-    var x2 = $as_Lio_kaitai_struct_datatype_DataType$IntMultiType(dataType);
-    var width = x2.width$3;
-    var this$1 = width.width$1;
-    return ("" + this$1)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$FloatMultiType(dataType)) {
-    var x5 = $as_Lio_kaitai_struct_datatype_DataType$FloatMultiType(dataType);
-    var width$2 = x5.width$3;
-    var this$3 = width$2.width$1;
-    return ("" + this$3)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$FixedBytesType(dataType)) {
-    var x7 = $as_Lio_kaitai_struct_datatype_DataType$FixedBytesType(dataType);
-    var contents = x7.contents$2;
-    var this$5 = contents.u.length;
-    return ("" + this$5)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesEosType(dataType)) {
+  if ($is_Lio_kaitai_struct_datatype_DataType$BytesEosType(dataType)) {
     return this.END$undOF$undSTREAM$1
   } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType)) {
-    var x16 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType);
-    return this.expressionSize__Lio_kaitai_struct_exprlang_Ast$expr__T__T(x16.size$2, attrName)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesTerminatedType(dataType)) {
-    return this.UNKNOWN$1
+    var x7 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType);
+    return this.expressionSize__Lio_kaitai_struct_exprlang_Ast$expr__T__T(x7.size$2, attrName)
   } else if ($is_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(dataType)) {
-    var x9 = $as_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(dataType);
-    var basedOn = x9.bytes$2;
+    var x2 = $as_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(dataType);
+    var basedOn = x2.bytes$2;
     return this.dataTypeSizeAsString__Lio_kaitai_struct_datatype_DataType__T__T(basedOn, attrName)
   } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(dataType)) {
-    var x18 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(dataType);
-    return this.dataTypeSizeAsString__Lio_kaitai_struct_datatype_DataType__T__T(x18.bytes$2, attrName)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeInstream(dataType)) {
-    return this.UNKNOWN$1
+    var x8 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(dataType);
+    return this.dataTypeSizeAsString__Lio_kaitai_struct_datatype_DataType__T__T(x8.bytes$2, attrName)
   } else if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(dataType)) {
-    var x11 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(dataType);
-    var basedOn$2 = x11.basedOn$1;
+    var x4 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(dataType);
+    var basedOn$2 = x4.basedOn$1;
     return this.dataTypeSizeAsString__Lio_kaitai_struct_datatype_DataType__T__T(basedOn$2, attrName)
-  } else if ($is_Lio_kaitai_struct_datatype_DataType$SwitchType(dataType)) {
-    return this.UNKNOWN$1
   } else {
-    var x = $m_Lio_kaitai_struct_datatype_DataType$BitsType1$();
-    if ((x === dataType)) {
-      return "1b"
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$BitsType(dataType)) {
-      var x13 = $as_Lio_kaitai_struct_datatype_DataType$BitsType(dataType);
-      var width$3 = x13.width$3;
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "b"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([width$3]))
+    var x1$2 = $m_Lio_kaitai_struct_precompile_CalculateSeqSizes$().dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_Sized(dataType);
+    if ($is_Lio_kaitai_struct_format_FixedSized(x1$2)) {
+      var x2$2 = $as_Lio_kaitai_struct_format_FixedSized(x1$2);
+      var n = x2$2.n$1;
+      return ((((n % 8) | 0) === 0) ? new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([((n / 8) | 0)])) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "b"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([n])))
     } else {
-      throw new $c_s_MatchError().init___O(dataType)
+      var x = $m_Lio_kaitai_struct_format_DynamicSized$();
+      if ((x === x1$2)) {
+        return this.UNKNOWN$1
+      } else {
+        var x$3 = $m_Lio_kaitai_struct_format_NotCalculatedSized$();
+        if ((x$3 === x1$2)) {
+          var jsx$1 = true
+        } else {
+          var x$5 = $m_Lio_kaitai_struct_format_StartedCalculationSized$();
+          var jsx$1 = (x$5 === x1$2)
+        };
+        if (jsx$1) {
+          throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("Should never happen: problems with CalculateSeqSizes"))
+        } else {
+          throw new $c_s_MatchError().init___O(x1$2)
+        }
+      }
     }
   }
 });
@@ -18738,28 +19247,6 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.tableRow__sci_List__s_Optio
     }
   }
 });
-$c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec = (function(topClass) {
-  this.topClass$1 = topClass;
-  this.out$1 = new $c_Lio_kaitai_struct_StringLanguageOutputWriter().init___T("\t");
-  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpec(topClass);
-  this.translator$1 = new $c_Lio_kaitai_struct_translators_RubyTranslator().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
-  this.links$1 = $as_scm_ListBuffer($m_scm_ListBuffer$().apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()));
-  this.extraClusterLines$1 = new $c_Lio_kaitai_struct_StringLanguageOutputWriter().init___T("\t");
-  this.currentTable$1 = "";
-  this.HEADER$undBGCOLOR$1 = "#E0FFE0";
-  this.SWITCH$undHEADER$undBGCOLOR$1 = "#F0F2E4";
-  this.TH$undSTART$1 = (("<TD BGCOLOR=\"" + this.HEADER$undBGCOLOR$1) + "\">");
-  this.SWITCH$undTH$undSTART$1 = (("<TD BGCOLOR=\"" + this.SWITCH$undHEADER$undBGCOLOR$1) + "\">");
-  this.STYLE$undEDGE$undTYPE$1 = "style=bold";
-  this.STYLE$undEDGE$undMISC$1 = "color=\"#404040\"";
-  this.STYLE$undEDGE$undPOS$1 = this.STYLE$undEDGE$undMISC$1;
-  this.STYLE$undEDGE$undSIZE$1 = this.STYLE$undEDGE$undMISC$1;
-  this.STYLE$undEDGE$undREPEAT$1 = this.STYLE$undEDGE$undMISC$1;
-  this.STYLE$undEDGE$undVALUE$1 = this.STYLE$undEDGE$undMISC$1;
-  this.END$undOF$undSTREAM$1 = "\u21f2";
-  this.UNKNOWN$1 = "...";
-  return this
-});
 $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.seqPosToStr__s_Option__s_Option = (function(seqPos) {
   if (seqPos.isEmpty__Z()) {
     return $m_s_None$()
@@ -18819,6 +19306,28 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.compileSwitch__T__Lio_kaita
   this.extraClusterLines$1.dec__V();
   this.extraClusterLines$1.puts__T__V("</TABLE>>];")
 });
+$c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec = (function(classSpecs, topClass) {
+  this.topClass$1 = topClass;
+  this.out$1 = new $c_Lio_kaitai_struct_StringLanguageOutputWriter().init___T("\t");
+  this.provider$1 = new $c_Lio_kaitai_struct_ClassTypeProvider().init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec(classSpecs, topClass);
+  this.translator$1 = new $c_Lio_kaitai_struct_translators_RubyTranslator().init___Lio_kaitai_struct_translators_TypeProvider(this.provider$1);
+  this.links$1 = $as_scm_ListBuffer($m_scm_ListBuffer$().apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()));
+  this.extraClusterLines$1 = new $c_Lio_kaitai_struct_StringLanguageOutputWriter().init___T("\t");
+  this.currentTable$1 = "";
+  this.HEADER$undBGCOLOR$1 = "#E0FFE0";
+  this.SWITCH$undHEADER$undBGCOLOR$1 = "#F0F2E4";
+  this.TH$undSTART$1 = (("<TD BGCOLOR=\"" + this.HEADER$undBGCOLOR$1) + "\">");
+  this.SWITCH$undTH$undSTART$1 = (("<TD BGCOLOR=\"" + this.SWITCH$undHEADER$undBGCOLOR$1) + "\">");
+  this.STYLE$undEDGE$undTYPE$1 = "style=bold";
+  this.STYLE$undEDGE$undMISC$1 = "color=\"#404040\"";
+  this.STYLE$undEDGE$undPOS$1 = this.STYLE$undEDGE$undMISC$1;
+  this.STYLE$undEDGE$undSIZE$1 = this.STYLE$undEDGE$undMISC$1;
+  this.STYLE$undEDGE$undREPEAT$1 = this.STYLE$undEDGE$undMISC$1;
+  this.STYLE$undEDGE$undVALUE$1 = this.STYLE$undEDGE$undMISC$1;
+  this.END$undOF$undSTREAM$1 = "\u21f2";
+  this.UNKNOWN$1 = "...";
+  return this
+});
 $c_Lio_kaitai_struct_GraphvizClassCompiler.prototype.expressionPos__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(ex, attrName) {
   return this.expression__Lio_kaitai_struct_exprlang_Ast$expr__T__T__T(ex, (("" + this.getGraphvizNode__sci_List__Lio_kaitai_struct_format_ClassSpec__T__T(this.nowClassName__sci_List(), this.provider$1.nowClass$1, attrName)) + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([":", "_pos"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([attrName]))), this.STYLE$undEDGE$undPOS$1)
 });
@@ -18870,9 +19379,9 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.dataTypeName__Lio_kaitai_s
     while ((i < len)) {
       var idx = i;
       var arg1 = contents.get(idx);
-      var x$1 = $uB(arg1);
+      var x$3 = $uB(arg1);
       var this$12 = new $c_sci_StringOps().init___T("%02X");
-      var args = new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$1]);
+      var args = new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$3]);
       var elem = $s_sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$12, args);
       var unboxedElem = ((elem === null) ? null : elem);
       elems$2.push(unboxedElem);
@@ -18953,48 +19462,6 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.dataTypeName__Lio_kaitai_s
 $c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.getCompiler__Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompiler = (function(tp, config) {
   $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
 });
-$c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.dataTypeByteSize__Lio_kaitai_struct_datatype_DataType__s_Option = (function(dataType) {
-  _dataTypeByteSize: while (true) {
-    var x1 = dataType;
-    if ($is_Lio_kaitai_struct_datatype_DataType$Int1Type(x1)) {
-      return new $c_s_Some().init___O(1)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$IntMultiType(x1)) {
-      var x2 = $as_Lio_kaitai_struct_datatype_DataType$IntMultiType(x1);
-      var width = x2.width$3;
-      return new $c_s_Some().init___O(width.width$1)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$FixedBytesType(x1)) {
-      var x5 = $as_Lio_kaitai_struct_datatype_DataType$FixedBytesType(x1);
-      var contents = x5.contents$2;
-      return new $c_s_Some().init___O(contents.u.length)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$FloatMultiType(x1)) {
-      var x7 = $as_Lio_kaitai_struct_datatype_DataType$FloatMultiType(x1);
-      var width$2 = x7.width$3;
-      return new $c_s_Some().init___O(width$2.width$1)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesEosType(x1)) {
-      return $m_s_None$()
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesLimitType(x1)) {
-      var x13 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(x1);
-      return this.evaluateIntLiteral__Lio_kaitai_struct_exprlang_Ast$expr__s_Option(x13.size$2)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesTerminatedType(x1)) {
-      return $m_s_None$()
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(x1)) {
-      var x9 = $as_Lio_kaitai_struct_datatype_DataType$StrFromBytesType(x1);
-      var basedOn = x9.bytes$2;
-      dataType = basedOn;
-      continue _dataTypeByteSize
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(x1)) {
-      var x15 = $as_Lio_kaitai_struct_datatype_DataType$UserTypeFromBytes(x1);
-      dataType = x15.bytes$2;
-      continue _dataTypeByteSize
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$UserTypeInstream(x1)) {
-      return $m_s_None$()
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$SwitchType(x1)) {
-      return $m_s_None$()
-    } else {
-      throw new $c_s_MatchError().init___O(x1)
-    }
-  }
-});
 $c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.type2display__sci_List__T = (function(name) {
   var f = (function(s$2) {
     var s = $as_T(s$2);
@@ -19032,42 +19499,6 @@ $c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.type2display__sci_List__T 
     var jsx$1 = b.result__O()
   };
   return $as_sc_TraversableOnce(jsx$1).mkString__T__T("::")
-});
-$c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.evaluateIntLiteral__Lio_kaitai_struct_exprlang_Ast$expr__s_Option = (function(expr) {
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(expr)) {
-    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(expr);
-    var x = x2.n$1;
-    return new $c_s_Some().init___O(x.bigInteger$3.intValue__I())
-  } else {
-    return $m_s_None$()
-  }
-});
-$c_Lio_kaitai_struct_GraphvizClassCompiler$.prototype.dataTypeBitsSize__Lio_kaitai_struct_datatype_DataType__s_Option = (function(dataType) {
-  _dataTypeBitsSize: while (true) {
-    var x1 = dataType;
-    var x$2 = $m_Lio_kaitai_struct_datatype_DataType$BitsType1$();
-    if ((x$2 === x1)) {
-      return new $c_s_Some().init___O(1)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$BitsType(x1)) {
-      var x2 = $as_Lio_kaitai_struct_datatype_DataType$BitsType(x1);
-      var width = x2.width$3;
-      return new $c_s_Some().init___O(width)
-    } else if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(x1)) {
-      var x3 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(x1);
-      var basedOn = x3.basedOn$1;
-      dataType = basedOn;
-      continue _dataTypeBitsSize
-    } else {
-      var this$1 = this.dataTypeByteSize__Lio_kaitai_struct_datatype_DataType__s_Option(dataType);
-      if (this$1.isEmpty__Z()) {
-        return $m_s_None$()
-      } else {
-        var arg1 = this$1.get__O();
-        var byteSize = $uI(arg1);
-        return new $c_s_Some().init___O((byteSize << 3))
-      }
-    }
-  }
 });
 var $d_Lio_kaitai_struct_GraphvizClassCompiler$ = new $TypeData().initClass({
   Lio_kaitai_struct_GraphvizClassCompiler$: 0
@@ -21903,6 +22334,7 @@ $c_Lio_kaitai_struct_GoClassCompiler.prototype.compileClass__Lio_kaitai_struct_f
   extraAttrs.$$plus$eq__O__scm_ListBuffer(new $c_Lio_kaitai_struct_format_AttrSpec().init___sci_List__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_ConditionalSpec__Lio_kaitai_struct_format_DocSpec($m_sci_Nil$(), $m_Lio_kaitai_struct_format_IoIdentifier$(), $m_Lio_kaitai_struct_datatype_DataType$KaitaiStreamType$(), ($m_Lio_kaitai_struct_format_AttrSpec$(), new $c_Lio_kaitai_struct_format_ConditionalSpec().init___s_Option__Lio_kaitai_struct_format_RepeatSpec($m_s_None$(), $m_Lio_kaitai_struct_format_NoRepeat$())), ($m_Lio_kaitai_struct_format_AttrSpec$(), $m_Lio_kaitai_struct_format_DocSpec$().EMPTY$1)));
   extraAttrs.$$plus$eq__O__scm_ListBuffer(new $c_Lio_kaitai_struct_format_AttrSpec().init___sci_List__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_ConditionalSpec__Lio_kaitai_struct_format_DocSpec($m_sci_Nil$(), $m_Lio_kaitai_struct_format_RootIdentifier$(), new $c_Lio_kaitai_struct_datatype_DataType$UserTypeInstream().init___sci_List__s_Option__sc_Seq(this.topClassName$1, $m_s_None$(), $as_sc_Seq($m_sc_Seq$().apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()))), ($m_Lio_kaitai_struct_format_AttrSpec$(), new $c_Lio_kaitai_struct_format_ConditionalSpec().init___s_Option__Lio_kaitai_struct_format_RepeatSpec($m_s_None$(), $m_Lio_kaitai_struct_format_NoRepeat$())), ($m_Lio_kaitai_struct_format_AttrSpec$(), $m_Lio_kaitai_struct_format_DocSpec$().EMPTY$1)));
   extraAttrs.$$plus$eq__O__scm_ListBuffer(new $c_Lio_kaitai_struct_format_AttrSpec().init___sci_List__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_format_ConditionalSpec__Lio_kaitai_struct_format_DocSpec($m_sci_Nil$(), $m_Lio_kaitai_struct_format_ParentIdentifier$(), curClass.parentType__Lio_kaitai_struct_datatype_DataType(), ($m_Lio_kaitai_struct_format_AttrSpec$(), new $c_Lio_kaitai_struct_format_ConditionalSpec().init___s_Option__Lio_kaitai_struct_format_RepeatSpec($m_s_None$(), $m_Lio_kaitai_struct_format_NoRepeat$())), ($m_Lio_kaitai_struct_format_AttrSpec$(), $m_Lio_kaitai_struct_format_DocSpec$().EMPTY$1)));
+  extraAttrs.$$plus$plus$eq__sc_TraversableOnce__scm_ListBuffer(this.getExtraAttrs__Lio_kaitai_struct_format_ClassSpec__sci_List(curClass));
   if ((!curClass.doc$1.isEmpty__Z())) {
     this.lang$1.classDoc__sci_List__Lio_kaitai_struct_format_DocSpec__V(curClass.name$1, curClass.doc$1)
   };
@@ -21974,12 +22406,30 @@ $c_Lio_kaitai_struct_GoClassCompiler.prototype.compileReadFunction__Lio_kaitai_s
   this.compileSeq__sci_List__scm_ListBuffer__s_Option__V(curClass.seq$1, extraAttrs, defEndian);
   this.lang$1.classConstructorFooter__V()
 });
-$c_Lio_kaitai_struct_GoClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig = (function(topClass, config) {
-  $c_Lio_kaitai_struct_ClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic.call(this, topClass, config, $m_Lio_kaitai_struct_languages_GoCompiler$());
-  return this
-});
 $c_Lio_kaitai_struct_GoClassCompiler.prototype.topClass__Lio_kaitai_struct_format_ClassSpec = (function() {
   return this.topClass$1
+});
+$c_Lio_kaitai_struct_GoClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig = (function(classSpecs, topClass, config) {
+  $c_Lio_kaitai_struct_ClassCompiler.prototype.init___Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic.call(this, classSpecs, topClass, config, $m_Lio_kaitai_struct_languages_GoCompiler$());
+  return this
+});
+$c_Lio_kaitai_struct_GoClassCompiler.prototype.getExtraAttrs__Lio_kaitai_struct_format_ClassSpec__sci_List = (function(curClass) {
+  var this$1 = curClass.seq$1;
+  var z = $m_sci_Nil$();
+  var acc = z;
+  var these = this$1;
+  while ((!these.isEmpty__Z())) {
+    var arg1 = acc;
+    var arg2 = these.head__O();
+    var attrs = $as_sci_List(arg1);
+    var attr = $as_Lio_kaitai_struct_format_AttrSpec(arg2);
+    var this$2 = $m_Lio_kaitai_struct_languages_components_ExtraAttrs$();
+    var jsx$1 = this$2.forAttr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__sci_List(attr.id$1, attr.dataType$1);
+    var this$3 = $m_sci_List$();
+    acc = $as_sci_List(attrs.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$1, this$3.ReusableCBFInstance$2));
+    these = $as_sc_LinearSeqOptimized(these.tail__O())
+  };
+  return $as_sci_List(acc)
 });
 var $d_Lio_kaitai_struct_GoClassCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_GoClassCompiler: 0
@@ -29095,6 +29545,78 @@ function $m_Lio_kaitai_struct_languages_JavaScriptCompiler$() {
   return $n_Lio_kaitai_struct_languages_JavaScriptCompiler$
 }
 /** @constructor */
+function $c_Lio_kaitai_struct_languages_LuaCompiler$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype = new $h_O();
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype.constructor = $c_Lio_kaitai_struct_languages_LuaCompiler$;
+/** @constructor */
+function $h_Lio_kaitai_struct_languages_LuaCompiler$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_languages_LuaCompiler$.prototype = $c_Lio_kaitai_struct_languages_LuaCompiler$.prototype;
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype.types2class__sci_List__T = (function(name) {
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(x)
+  });
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((name === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = name.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = name.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$3 = rest;
+        rest = this$3.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(name, bf);
+    var these = name;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$4 = these;
+      these = this$4.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return $as_sc_TraversableOnce(jsx$1).mkString__T__T(".")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype.getCompiler__Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompiler = (function(tp, config) {
+  return new $c_Lio_kaitai_struct_languages_LuaCompiler().init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig(tp, config)
+});
+var $d_Lio_kaitai_struct_languages_LuaCompiler$ = new $TypeData().initClass({
+  Lio_kaitai_struct_languages_LuaCompiler$: 0
+}, false, "io.kaitai.struct.languages.LuaCompiler$", {
+  Lio_kaitai_struct_languages_LuaCompiler$: 1,
+  O: 1,
+  Lio_kaitai_struct_languages_components_LanguageCompilerStatic: 1,
+  Lio_kaitai_struct_languages_components_UpperCamelCaseClasses: 1,
+  Lio_kaitai_struct_languages_components_StreamStructNames: 1
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler$.prototype.$classData = $d_Lio_kaitai_struct_languages_LuaCompiler$;
+var $n_Lio_kaitai_struct_languages_LuaCompiler$ = (void 0);
+function $m_Lio_kaitai_struct_languages_LuaCompiler$() {
+  if ((!$n_Lio_kaitai_struct_languages_LuaCompiler$)) {
+    $n_Lio_kaitai_struct_languages_LuaCompiler$ = new $c_Lio_kaitai_struct_languages_LuaCompiler$().init___()
+  };
+  return $n_Lio_kaitai_struct_languages_LuaCompiler$
+}
+/** @constructor */
 function $c_Lio_kaitai_struct_languages_PHPCompiler$() {
   $c_O.call(this)
 }
@@ -33652,8 +34174,8 @@ $c_Lio_kaitai_struct_BuildInfo$.prototype.init___ = (function() {
   this.version$1 = "0.8-SNAPSHOT";
   this.scalaVersion$1 = "2.11.11";
   this.sbtVersion$1 = "0.13.8";
-  this.builtAtString$1 = "2017-08-17 09:37:41.036";
-  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I((-275892564), 349);
+  this.builtAtString$1 = "2017-09-05 17:25:15.003";
+  this.builtAtMillis$1 = new $c_sjsr_RuntimeLong().init___I__I(1393761403, 350);
   var this$2 = new $c_sci_StringOps().init___T("name: %s, version: %s, scalaVersion: %s, sbtVersion: %s, builtAtString: %s, builtAtMillis: %s");
   var array = [this.name$1, this.version$1, this.scalaVersion$1, this.sbtVersion$1, this.builtAtString$1, this.builtAtMillis$1];
   var jsx$2 = $m_sjsr_RuntimeString$();
@@ -33781,7 +34303,7 @@ function $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1() {
   $c_sr_AbstractFunction1.call(this);
   this.config$1$f = null;
   this.lang$1$f = null;
-  this.specs$1$2 = null
+  this.specs$1$f = null
 }
 $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype = new $h_sr_AbstractFunction1();
 $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype.constructor = $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1;
@@ -33796,12 +34318,12 @@ $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype.apply__O__O = (function
 $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype.init___Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_languages_components_LanguageCompilerStatic__Lio_kaitai_struct_format_JavaScriptClassSpecs = (function(config$1, lang$1, specs$1) {
   this.config$1$f = config$1;
   this.lang$1$f = lang$1;
-  this.specs$1$2 = specs$1;
+  this.specs$1$f = specs$1;
   return this
 });
 $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype.apply__sr_BoxedUnit__sjs_js_Dictionary = (function(x$1) {
   var this$10 = $m_sjs_js_JSConverters$JSRichGenMap$();
-  var this$2 = this.specs$1$2;
+  var this$2 = this.specs$1$f;
   var this$1 = $m_scm_HashMap$();
   var bf = new $c_scg_GenMapFactory$MapCanBuildFrom().init___scg_GenMapFactory(this$1);
   var b = bf.$$outer$f.newBuilder__scm_Builder();
@@ -33814,7 +34336,7 @@ $c_Lio_kaitai_struct_MainJs$$anonfun$compile$1.prototype.apply__sr_BoxedUnit__sj
     var e = $as_scm_DefaultEntry(arg1);
     var _2 = e.value$1;
     var spec = $as_Lio_kaitai_struct_format_ClassSpec(_2);
-    var files = $m_Lio_kaitai_struct_Main$().compile__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_languages_components_LanguageCompilerStatic__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_CompileLog$SpecSuccess(spec, this.lang$1$f, this.config$1$f).files$1;
+    var files = $m_Lio_kaitai_struct_Main$().compile__Lio_kaitai_struct_format_ClassSpecs__Lio_kaitai_struct_format_ClassSpec__Lio_kaitai_struct_languages_components_LanguageCompilerStatic__Lio_kaitai_struct_RuntimeConfig__Lio_kaitai_struct_CompileLog$SpecSuccess(this.specs$1$f, spec, this.lang$1$f, this.config$1$f).files$1;
     var f = (function(x$2) {
       var x = $as_Lio_kaitai_struct_CompileLog$FileSuccess(x$2);
       var self = x.fileName$1;
@@ -36410,725 +36932,6 @@ var $d_Lio_kaitai_struct_precompile_ValueTypesDeriver$$anonfun$deriveValueType$2
   Ljava_io_Serializable: 1
 });
 $c_Lio_kaitai_struct_precompile_ValueTypesDeriver$$anonfun$deriveValueType$2.prototype.$classData = $d_Lio_kaitai_struct_precompile_ValueTypesDeriver$$anonfun$deriveValueType$2;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_BaseTranslator() {
-  $c_Lio_kaitai_struct_translators_TypeDetector.call(this);
-  this.provider$2 = null;
-  this.asciiCharQuoteMap$2 = null
-}
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype = new $h_Lio_kaitai_struct_translators_TypeDetector();
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_BaseTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_BaseTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_BaseTranslator.prototype = $c_Lio_kaitai_struct_translators_BaseTranslator.prototype;
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.io$kaitai$struct$translators$CommonLiterals$$undsetter$und$asciiCharQuoteMap$und$eq__sci_Map__V = (function(x$1) {
-  this.asciiCharQuoteMap$2 = x$1
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doIntLiteral__s_math_BigInt__T = (function(n) {
-  var this$1 = n.bigInteger$3;
-  return $m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return this.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "pos")
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
-  return ("" + n)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$2
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
-  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
-    return (function(v$2) {
-      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
-      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-    })
-  })(this));
-  var this$1 = $m_sc_Seq$();
-  return (("[" + $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + "]")
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  var this$1 = $m_s_math_BigInt$();
-  var jsx$1 = new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$1.apply__I__s_math_BigInt(1));
-  var this$2 = $m_s_math_BigInt$();
-  return this.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, jsx$1, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$2.apply__I__s_math_BigInt(0)))
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
-  this.provider$2 = provider;
-  $c_Lio_kaitai_struct_translators_TypeDetector.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  $s_Lio_kaitai_struct_translators_CommonLiterals$class__$$init$__Lio_kaitai_struct_translators_CommonLiterals__V(this);
-  return this
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T = (function(op) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T(this, op)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doLocalName__T__T = (function(s) {
-  return this.doName__T__T(s)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__booleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__T(this, op)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return this.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "size")
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return this.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "is_eof")
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__doStrCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__doBytesCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralGenericCC__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
-    var x$1 = $uB(x$1$2);
-    return (255 & x$1)
-  }));
-  var this$1 = $m_sc_Seq$();
-  return (("[" + $as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + "]")
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.translate__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v)) {
-    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v);
-    var n = x2.n$1;
-    return this.doIntLiteral__s_math_BigInt__T(n)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v)) {
-    var x3 = $as_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v);
-    var n$2 = x3.n$1;
-    return n$2.bigDecimal$3.toString__T()
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Str(v)) {
-    var x4 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(v);
-    var s = x4.s$1;
-    return this.doStringLiteral__T__T(s)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v)) {
-    var x5 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v);
-    var n$3 = x5.n$1;
-    return this.doBoolLiteral__Z__T(n$3)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$EnumById(v)) {
-    var x6 = $as_Lio_kaitai_struct_exprlang_Ast$expr$EnumById(v);
-    var enumType = x6.enumName$1;
-    var id = x6.id$1;
-    var this$1 = this.provider$2;
-    var enumName = enumType.name$1;
-    var enumSpec = this$1.resolveEnum__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_format_EnumSpec(this$1.nowClass$1, enumName);
-    return this.doEnumById__sci_List__T__T(enumSpec.name$1, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(id))
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$EnumByLabel(v)) {
-    var x7 = $as_Lio_kaitai_struct_exprlang_Ast$expr$EnumByLabel(v);
-    var enumType$2 = x7.enumName$1;
-    var label = x7.label$1;
-    var this$2 = this.provider$2;
-    var enumName$1 = enumType$2.name$1;
-    var enumSpec$2 = this$2.resolveEnum__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_format_EnumSpec(this$2.nowClass$1, enumName$1);
-    return this.doEnumByLabel__sci_List__T__T(enumSpec$2.name$1, label.name$1)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Name(v)) {
-    var x8 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Name(v);
-    var name = x8.id$1;
-    if ((name !== null)) {
-      return this.doLocalName__T__T(name.name$1)
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$UnaryOp(v)) {
-    var x9 = $as_Lio_kaitai_struct_exprlang_Ast$expr$UnaryOp(v);
-    var op = x9.op$1;
-    var inner = x9.operand$1;
-    if ((op !== null)) {
-      if ((inner !== null)) {
-        return (("" + this.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T(op)) + (($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(inner) || $is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(inner)) ? this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(inner) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(inner)]))))
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Compare(v)) {
-    var x10 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Compare(v);
-    var left = x10.left$1;
-    var op$2 = x10.ops$1;
-    var right = x10.right$1;
-    if ((left !== null)) {
-      if ((op$2 !== null)) {
-        if ((right !== null)) {
-          var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-          var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2)) {
-              return $s_Lio_kaitai_struct_translators_CommonOps$class__doNumericCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op$2, right)
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(_2)) {
-              var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-              if ((x === op$2)) {
-                var jsx$1 = true
-              } else {
-                var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-                var jsx$1 = (x$3 === op$2)
-              };
-              if (jsx$1) {
-                return $s_Lio_kaitai_struct_translators_CommonOps$class__doNumericCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op$2, right)
-              } else {
-                throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare booleans using ", " operator"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([op$2])))
-              }
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2)) {
-              return this.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(_2)) {
-              return this.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(_1)) {
-            var x12 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(_1);
-            var ltype = x12.name$1;
-            if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(_2)) {
-              var x14 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(_2);
-              var rtype = x14.name$1;
-              if ((!((ltype === null) ? (rtype === null) : ltype.equals__O__Z(rtype)))) {
-                throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare enums type ", " and ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ltype, rtype])))
-              } else {
-                return $s_Lio_kaitai_struct_translators_CommonOps$class__doEnumCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op$2, right)
-              }
-            }
-          };
-          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare ", " and ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1, _2])))
-        }
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v)) {
-    var x11 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v);
-    var left$2 = x11.left$1;
-    var op$3 = x11.op$1;
-    var right$2 = x11.right$1;
-    if ((left$2 !== null)) {
-      if ((op$3 !== null)) {
-        if ((right$2 !== null)) {
-          var _1$1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left$2);
-          var _2$1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right$2);
-          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1$1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2$1)) {
-              return this.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(left$2, op$3, right$2)
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1$1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2$1)) {
-              var x$7 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Add$();
-              if ((x$7 === op$3)) {
-                return this.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(left$2, right$2)
-              }
-            }
-          };
-          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't do ", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1$1, op$3, _2$1])))
-        }
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BoolOp(v)) {
-    var x12$2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BoolOp(v);
-    var op$4 = x12$2.op$1;
-    var values = x12$2.values$1;
-    if ((op$4 !== null)) {
-      if ((values !== null)) {
-        return $s_Lio_kaitai_struct_translators_CommonOps$class__doBooleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__sc_Seq__T(this, op$4, values)
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IfExp(v)) {
-    var x13 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IfExp(v);
-    var condition = x13.condition$1;
-    var ifTrue = x13.ifTrue$1;
-    var ifFalse = x13.ifFalse$1;
-    return this.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(condition, ifTrue, ifFalse)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Subscript(v)) {
-    var x14$2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Subscript(v);
-    var container = x14$2.value$1;
-    var idx = x14$2.idx$1;
-    if ((container !== null)) {
-      if ((idx !== null)) {
-        var x1$6 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(idx);
-        if ($is_Lio_kaitai_struct_datatype_DataType$IntType(x1$6)) {
-          return this.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(container, idx)
-        } else {
-          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't use ", " as array index (need int, got ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([idx, x1$6])))
-        }
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v)) {
-    var x15 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v);
-    var value = x15.value$1;
-    var attr = x15.attr$1;
-    if ((value !== null)) {
-      if ((attr !== null)) {
-        var valType = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(value);
-        if ($is_Lio_kaitai_struct_datatype_DataType$UserType(valType)) {
-          return this.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, attr.name$1)
-        } else if ($is_Lio_kaitai_struct_datatype_DataType$StrType(valType)) {
-          var x1$8 = attr.name$1;
-          if ((x1$8 === "length")) {
-            return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$8 === "reverse")) {
-            return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$8 === "to_i")) {
-            var this$3 = $m_s_math_BigInt$();
-            return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$3.apply__I__s_math_BigInt(10)))
-          } else {
-            throw new $c_s_MatchError().init___O(x1$8)
-          }
-        } else if ($is_Lio_kaitai_struct_datatype_DataType$IntType(valType)) {
-          var x1$9 = attr.name$1;
-          if ((x1$9 === "to_s")) {
-            var this$4 = $m_s_math_BigInt$();
-            return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$4.apply__I__s_math_BigInt(10)))
-          } else {
-            throw new $c_s_MatchError().init___O(x1$9)
-          }
-        } else if ($is_Lio_kaitai_struct_datatype_DataType$FloatType(valType)) {
-          var x1$10 = attr.name$1;
-          if ((x1$10 === "to_i")) {
-            return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else {
-            throw new $c_s_MatchError().init___O(x1$10)
-          }
-        } else if ($is_Lio_kaitai_struct_datatype_DataType$ArrayType(valType)) {
-          var x1$11 = attr.name$1;
-          if ((x1$11 === "first")) {
-            return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$11 === "last")) {
-            return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$11 === "size")) {
-            return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$11 === "min")) {
-            return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else if ((x1$11 === "max")) {
-            return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-          } else {
-            throw new $c_s_MatchError().init___O(x1$11)
-          }
-        } else {
-          var x$9 = $m_Lio_kaitai_struct_datatype_DataType$KaitaiStreamType$();
-          if ((x$9 === valType)) {
-            var x1$12 = attr.name$1;
-            if ((x1$12 === "size")) {
-              return this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-            } else if ((x1$12 === "eof")) {
-              return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-            } else if ((x1$12 === "pos")) {
-              return this.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-            } else {
-              throw new $c_s_MatchError().init___O(x1$12)
-            }
-          } else if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(valType)) {
-            var x8$2 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(valType);
-            var x1$13 = attr.name$1;
-            if ((x1$13 === "to_i")) {
-              return this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T(value, x8$2)
-            } else {
-              throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["called invalid attribute '", "' on expression of type ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([attr.name$1, valType])))
-            }
-          } else if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(valType)) {
-            var x1$14 = attr.name$1;
-            if ((x1$14 === "to_i")) {
-              return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
-            } else {
-              throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["called invalid attribute '", "' on expression of type ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([attr.name$1, valType])))
-            }
-          } else {
-            throw new $c_s_MatchError().init___O(valType)
-          }
-        }
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Call(v)) {
-    var x16 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Call(v);
-    var func = x16.func$1;
-    var args = x16.args$1;
-    if ((func !== null)) {
-      if ((args !== null)) {
-        if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(func)) {
-          var x2$2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(func);
-          var obj = x2$2.value$1;
-          var methodName = x2$2.attr$1;
-          if ((obj !== null)) {
-            if ((methodName !== null)) {
-              var objType = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(obj);
-              var _2$2 = methodName.name$1;
-              if ($is_Lio_kaitai_struct_datatype_DataType$StrType(objType)) {
-                if ((_2$2 === "substring")) {
-                  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(obj, $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)), $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(1)))
-                }
-              };
-              if ($is_Lio_kaitai_struct_datatype_DataType$StrType(objType)) {
-                if ((_2$2 === "to_i")) {
-                  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(obj, $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)))
-                }
-              };
-              if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(objType)) {
-                if ((_2$2 === "to_s")) {
-                  return this.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T(this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(obj), $as_Lio_kaitai_struct_exprlang_Ast$expr(args.apply__I__O(0)))
-                }
-              };
-              throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["don't know how to call method '", "' of object type '", "'"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([methodName, objType])))
-            }
-          }
-        };
-        throw new $c_s_MatchError().init___O(func)
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$List(v)) {
-    var x17 = $as_Lio_kaitai_struct_exprlang_Ast$expr$List(v);
-    var values$2 = x17.elts$1;
-    if ((values$2 !== null)) {
-      var t = this.detectArrayType__sc_Seq__Lio_kaitai_struct_datatype_DataType(values$2);
-      if ($is_Lio_kaitai_struct_datatype_DataType$Int1Type(t)) {
-        var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2) {
-          var x0$1 = $as_Lio_kaitai_struct_exprlang_Ast$expr(x0$1$2);
-          if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(x0$1)) {
-            var x2$1 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(x0$1);
-            var x$1 = x2$1.n$1;
-            var this$5 = $m_s_math_BigInt$();
-            if (x$1.$$less__s_math_BigInt__Z(this$5.apply__I__s_math_BigInt(0))) {
-              var jsx$3 = true
-            } else {
-              var this$6 = $m_s_math_BigInt$();
-              var jsx$3 = x$1.$$greater__s_math_BigInt__Z(this$6.apply__I__s_math_BigInt(255))
-            };
-            if (jsx$3) {
-              throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["got a weird byte value in byte array: ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$1])))
-            } else {
-              return x$1.byteValue__B()
-            }
-          } else {
-            throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["got ", " in byte array, unable to put it literally"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x0$1])))
-          }
-        }));
-        var this$7 = $m_sc_Seq$();
-        var literalBytes = $as_sc_Seq(values$2.map__F1__scg_CanBuildFrom__O(jsx$2, this$7.ReusableCBFInstance$2));
-        return this.doByteArrayLiteral__sc_Seq__T(literalBytes)
-      } else {
-        return this.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T(t, values$2)
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$CastToType(v)) {
-    var x18 = $as_Lio_kaitai_struct_exprlang_Ast$expr$CastToType(v);
-    var value$2 = x18.value$1;
-    var typeName = x18.typeName$1;
-    return this.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value$2, typeName.name$1)
-  };
-  throw new $c_s_MatchError().init___O(v)
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " + ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-});
-$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doStringLiteral__T__T = (function(s) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s)
-});
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_GoTranslator() {
-  $c_Lio_kaitai_struct_translators_TypeDetector.call(this);
-  this.out$2 = null;
-  this.provider$2 = null;
-  this.importList$2 = null;
-  this.returnRes$2 = null;
-  this.IMPORT$undCHARMAP$2 = null;
-  this.ENCODINGS$2 = null;
-  this.localVarNum$2 = 0;
-  this.asciiCharQuoteMap$2 = null
-}
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype = new $h_Lio_kaitai_struct_translators_TypeDetector();
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_GoTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_GoTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_GoTranslator.prototype = $c_Lio_kaitai_struct_translators_GoTranslator.prototype;
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.io$kaitai$struct$translators$CommonLiterals$$undsetter$und$asciiCharQuoteMap$und$eq__sci_Map__V = (function(x$1) {
-  this.asciiCharQuoteMap$2 = x$1
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trStringLiteral__T__Lio_kaitai_struct_translators_TranslatorResult = (function(s) {
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T($s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trIntLiteral__s_math_BigInt__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
-  var this$1 = n.bigInteger$3;
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T($m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.allocateLocalVar__I = (function() {
-  this.localVarNum$2 = ((1 + this.localVarNum$2) | 0);
-  return this.localVarNum$2
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T = (function(r) {
-  if ($is_Lio_kaitai_struct_translators_ResultString(r)) {
-    var x2 = $as_Lio_kaitai_struct_translators_ResultString(r);
-    var s = x2.s$1;
-    return s
-  } else if ($is_Lio_kaitai_struct_translators_ResultLocalVar(r)) {
-    var x3 = $as_Lio_kaitai_struct_translators_ResultLocalVar(r);
-    var n = x3.n$1;
-    return this.localVarName__I__T(n)
-  } else {
-    throw new $c_s_MatchError().init___O(r)
-  }
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.init___Lio_kaitai_struct_StringLanguageOutputWriter__Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(out, provider, importList) {
-  this.out$2 = out;
-  this.provider$2 = provider;
-  this.importList$2 = importList;
-  $c_Lio_kaitai_struct_translators_TypeDetector.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  $s_Lio_kaitai_struct_translators_CommonLiterals$class__$$init$__Lio_kaitai_struct_translators_CommonLiterals__V(this);
-  this.returnRes$2 = $m_s_None$();
-  this.IMPORT$undCHARMAP$2 = "golang.org/x/text/encoding/charmap";
-  var y = new $c_T2().init___O__O("charmap.CodePage437", this.IMPORT$undCHARMAP$2);
-  var jsx$6 = new $c_T2().init___O__O("cp437", y);
-  var y$1 = new $c_T2().init___O__O("charmap.ISO8859_1", this.IMPORT$undCHARMAP$2);
-  var jsx$5 = new $c_T2().init___O__O("iso8859-1", y$1);
-  var y$2 = new $c_T2().init___O__O("charmap.ISO8859_2", this.IMPORT$undCHARMAP$2);
-  var jsx$4 = new $c_T2().init___O__O("iso8859-2", y$2);
-  var y$3 = new $c_T2().init___O__O("charmap.ISO8859_3", this.IMPORT$undCHARMAP$2);
-  var jsx$3 = new $c_T2().init___O__O("iso8859-3", y$3);
-  var y$4 = new $c_T2().init___O__O("charmap.ISO8859_4", this.IMPORT$undCHARMAP$2);
-  var jsx$2 = new $c_T2().init___O__O("iso8859-4", y$4);
-  var y$5 = new $c_T2().init___O__O("japanese.ShiftJIS", "golang.org/x/text/encoding/japanese");
-  var jsx$1 = new $c_T2().init___O__O("sjis", y$5);
-  var y$6 = new $c_T2().init___O__O("traditionalchinese.Big5", "golang.org/x/text/encoding/traditionalchinese");
-  var array = [jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O("big5", y$6)];
-  var this$16 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$16.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
-  };
-  this.ENCODINGS$2 = $as_sci_Map(this$16.elems$1);
-  this.localVarNum$2 = 0;
-  return this
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trName__T__Lio_kaitai_struct_translators_TranslatorResult = (function(s) {
-  if ((($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === s) || (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === s) || (($m_Lio_kaitai_struct_format_Identifier$().IO$1 === s) || (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) || ($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s)))))) {
-    return new $c_Lio_kaitai_struct_translators_ResultString().init___T(this.specialName__T__T(s))
-  } else {
-    var this$1 = this.provider$2;
-    if (this$1.isLazy__Lio_kaitai_struct_format_ClassSpec__T__Z(this$1.nowClass$1, s)) {
-      return this.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
-    } else {
-      return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
-    }
-  }
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(bytesExpr, encoding) {
-  if ((!$is_Lio_kaitai_struct_exprlang_Ast$expr$Str(encoding))) {
-    throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("Variable encodings are not supported in Go yet"))
-  };
-  var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(encoding);
-  var s = x2.s$1;
-  var x1$2 = $as_T(s.toLowerCase());
-  if (((x1$2 === "ascii") || ((x1$2 === "utf-8") || (x1$2 === "utf8")))) {
-    return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["string(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr])))
-  } else {
-    var x1$3 = this.ENCODINGS$2.get__O__s_Option(x1$2);
-    if ($is_s_Some(x1$3)) {
-      var x2$2 = $as_s_Some(x1$3);
-      var p3 = $as_T2(x2$2.x$2);
-      if ((p3 !== null)) {
-        var decoderSrc = $as_T(p3.$$und1__O());
-        var importName = $as_T(p3.$$und2__O());
-        var this$2 = this.importList$2;
-        $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, importName);
-        return this.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai.BytesToStr(", ", ", ".NewDecoder())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, decoderSrc])))
-      }
-    };
-    var x = $m_s_None$();
-    if ((x === x1$3)) {
-      throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["encoding '", "' in not supported in Go"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x1$2]))))
-    };
-    throw new $c_s_MatchError().init___O(x1$3)
-  }
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trStrConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(left, right) {
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(((this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left) + " + ") + this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$2
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__booleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__T(this, op)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.specialName__T__T = (function(id) {
-  if ((($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === id) || (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === id) || ($m_Lio_kaitai_struct_format_Identifier$().IO$1 === id)))) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([id]))
-  } else if (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === id)) {
-    return "_it"
-  } else if (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === id)) {
-    return "_buf"
-  } else {
-    throw new $c_s_MatchError().init___O(id)
-  }
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.localVarName__I__T = (function(n) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["tmp", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([n]))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trBoolLiteral__Z__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(("" + n))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.outAddErrCheck__V = (function() {
-  this.out$2.puts__T__V("if err != nil {");
-  this.out$2.inc__V();
-  var x1 = this.returnRes$2;
-  var x = $m_s_None$();
-  if ((x === x1)) {
-    var noValueAndErr = "err"
-  } else {
-    if ((!$is_s_Some(x1))) {
-      throw new $c_s_MatchError().init___O(x1)
-    };
-    var x2 = $as_s_Some(x1);
-    var r = $as_T(x2.x$2);
-    var noValueAndErr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ", err"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([r]))
-  };
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([noValueAndErr])));
-  this.out$2.dec__V();
-  this.out$2.puts__T__V("}")
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trFloatLiteral__s_math_BigDecimal__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(n.bigDecimal$3.toString__T())
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.userType__Lio_kaitai_struct_datatype_DataType$UserType__T__Lio_kaitai_struct_translators_ResultLocalVar = (function(dataType, io) {
-  var v = this.allocateLocalVar__I();
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " := new(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v), $m_Lio_kaitai_struct_languages_GoCompiler$().types2class__sci_List__T($as_Lio_kaitai_struct_format_ClassSpec(dataType.classSpec$1.get__O()).name$1)])));
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["err = ", ".Read(", ", this, this._root)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v), io])));
-  this.outAddErrCheck__V();
-  return new $c_Lio_kaitai_struct_translators_ResultLocalVar().init___I(v)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralGenericCC__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai.Stream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar = (function(expr) {
-  var v1 = this.allocateLocalVar__I();
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ", err := ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v1), expr])));
-  this.outAddErrCheck__V();
-  return new $c_Lio_kaitai_struct_translators_ResultLocalVar().init___I(v1)
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.translate__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return this.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T(this.translateExpr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(v))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trNumericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_ResultString = (function(left, op, right) {
-  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(this.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op, right))
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.translateExpr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(v) {
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v)) {
-    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v);
-    var n = x2.n$1;
-    return this.trIntLiteral__s_math_BigInt__Lio_kaitai_struct_translators_TranslatorResult(n)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v)) {
-    var x3 = $as_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v);
-    var n$2 = x3.n$1;
-    return this.trFloatLiteral__s_math_BigDecimal__Lio_kaitai_struct_translators_TranslatorResult(n$2)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Str(v)) {
-    var x4 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(v);
-    var s = x4.s$1;
-    return this.trStringLiteral__T__Lio_kaitai_struct_translators_TranslatorResult(s)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v)) {
-    var x5 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v);
-    var n$3 = x5.n$1;
-    return this.trBoolLiteral__Z__Lio_kaitai_struct_translators_TranslatorResult(n$3)
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v)) {
-    var x6 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v);
-    var left = x6.left$1;
-    var op = x6.op$1;
-    var right = x6.right$1;
-    if ((left !== null)) {
-      if ((op !== null)) {
-        if ((right !== null)) {
-          var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-          var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2)) {
-              return this.trNumericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_ResultString(left, op, right)
-            }
-          };
-          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1)) {
-            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2)) {
-              var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Add$();
-              if ((x === op)) {
-                return this.trStrConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(left, right)
-              }
-            }
-          };
-          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't do ", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1, op, _2])))
-        }
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Name(v)) {
-    var x7 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Name(v);
-    var name = x7.id$1;
-    if ((name !== null)) {
-      return this.trName__T__Lio_kaitai_struct_translators_TranslatorResult(name.name$1)
-    }
-  };
-  throw new $c_s_MatchError().init___O(v)
-});
-var $d_Lio_kaitai_struct_translators_GoTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_GoTranslator: 0
-}, false, "io.kaitai.struct.translators.GoTranslator", {
-  Lio_kaitai_struct_translators_GoTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_GoTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_GoTranslator;
 /** @constructor */
 function $c_Ljava_nio_BufferOverflowException() {
   $c_jl_RuntimeException.call(this)
@@ -43405,6 +43208,135 @@ function $m_Lio_kaitai_struct_exprlang_Ast$unaryop$Not$() {
   return $n_Lio_kaitai_struct_exprlang_Ast$unaryop$Not$
 }
 /** @constructor */
+function $c_Lio_kaitai_struct_format_DynamicSized$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype = new $h_O();
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.constructor = $c_Lio_kaitai_struct_format_DynamicSized$;
+/** @constructor */
+function $h_Lio_kaitai_struct_format_DynamicSized$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_format_DynamicSized$.prototype = $c_Lio_kaitai_struct_format_DynamicSized$.prototype;
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.productPrefix__T = (function() {
+  return "DynamicSized"
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.productArity__I = (function() {
+  return 0
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.productElement__I__O = (function(x$1) {
+  throw new $c_jl_IndexOutOfBoundsException().init___T(("" + x$1))
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.toString__T = (function() {
+  return "DynamicSized"
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.hashCode__I = (function() {
+  return 734426020
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
+});
+var $d_Lio_kaitai_struct_format_DynamicSized$ = new $TypeData().initClass({
+  Lio_kaitai_struct_format_DynamicSized$: 0
+}, false, "io.kaitai.struct.format.DynamicSized$", {
+  Lio_kaitai_struct_format_DynamicSized$: 1,
+  O: 1,
+  Lio_kaitai_struct_format_Sized: 1,
+  s_Product: 1,
+  s_Equals: 1,
+  s_Serializable: 1,
+  Ljava_io_Serializable: 1
+});
+$c_Lio_kaitai_struct_format_DynamicSized$.prototype.$classData = $d_Lio_kaitai_struct_format_DynamicSized$;
+var $n_Lio_kaitai_struct_format_DynamicSized$ = (void 0);
+function $m_Lio_kaitai_struct_format_DynamicSized$() {
+  if ((!$n_Lio_kaitai_struct_format_DynamicSized$)) {
+    $n_Lio_kaitai_struct_format_DynamicSized$ = new $c_Lio_kaitai_struct_format_DynamicSized$().init___()
+  };
+  return $n_Lio_kaitai_struct_format_DynamicSized$
+}
+/** @constructor */
+function $c_Lio_kaitai_struct_format_FixedSized() {
+  $c_O.call(this);
+  this.n$1 = 0
+}
+$c_Lio_kaitai_struct_format_FixedSized.prototype = new $h_O();
+$c_Lio_kaitai_struct_format_FixedSized.prototype.constructor = $c_Lio_kaitai_struct_format_FixedSized;
+/** @constructor */
+function $h_Lio_kaitai_struct_format_FixedSized() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_format_FixedSized.prototype = $c_Lio_kaitai_struct_format_FixedSized.prototype;
+$c_Lio_kaitai_struct_format_FixedSized.prototype.productPrefix__T = (function() {
+  return "FixedSized"
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.productArity__I = (function() {
+  return 1
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.equals__O__Z = (function(x$1) {
+  if ((this === x$1)) {
+    return true
+  } else if ($is_Lio_kaitai_struct_format_FixedSized(x$1)) {
+    var FixedSized$1 = $as_Lio_kaitai_struct_format_FixedSized(x$1);
+    return (this.n$1 === FixedSized$1.n$1)
+  } else {
+    return false
+  }
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.productElement__I__O = (function(x$1) {
+  switch (x$1) {
+    case 0: {
+      return this.n$1;
+      break
+    }
+    default: {
+      throw new $c_jl_IndexOutOfBoundsException().init___T(("" + x$1))
+    }
+  }
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$().$$undtoString__s_Product__T(this)
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.init___I = (function(n) {
+  this.n$1 = n;
+  return this
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.hashCode__I = (function() {
+  var acc = (-889275714);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, this.n$1);
+  return $m_sr_Statics$().finalizeHash__I__I__I(acc, 1)
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
+});
+function $is_Lio_kaitai_struct_format_FixedSized(obj) {
+  return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Lio_kaitai_struct_format_FixedSized)))
+}
+function $as_Lio_kaitai_struct_format_FixedSized(obj) {
+  return (($is_Lio_kaitai_struct_format_FixedSized(obj) || (obj === null)) ? obj : $throwClassCastException(obj, "io.kaitai.struct.format.FixedSized"))
+}
+function $isArrayOf_Lio_kaitai_struct_format_FixedSized(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lio_kaitai_struct_format_FixedSized)))
+}
+function $asArrayOf_Lio_kaitai_struct_format_FixedSized(obj, depth) {
+  return (($isArrayOf_Lio_kaitai_struct_format_FixedSized(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lio.kaitai.struct.format.FixedSized;", depth))
+}
+var $d_Lio_kaitai_struct_format_FixedSized = new $TypeData().initClass({
+  Lio_kaitai_struct_format_FixedSized: 0
+}, false, "io.kaitai.struct.format.FixedSized", {
+  Lio_kaitai_struct_format_FixedSized: 1,
+  O: 1,
+  Lio_kaitai_struct_format_Sized: 1,
+  s_Product: 1,
+  s_Equals: 1,
+  s_Serializable: 1,
+  Ljava_io_Serializable: 1
+});
+$c_Lio_kaitai_struct_format_FixedSized.prototype.$classData = $d_Lio_kaitai_struct_format_FixedSized;
+/** @constructor */
 function $c_Lio_kaitai_struct_format_GenericStructClassSpec$() {
   $c_O.call(this)
 }
@@ -44044,6 +43976,57 @@ function $m_Lio_kaitai_struct_format_NoRepeat$() {
     $n_Lio_kaitai_struct_format_NoRepeat$ = new $c_Lio_kaitai_struct_format_NoRepeat$().init___()
   };
   return $n_Lio_kaitai_struct_format_NoRepeat$
+}
+/** @constructor */
+function $c_Lio_kaitai_struct_format_NotCalculatedSized$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype = new $h_O();
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.constructor = $c_Lio_kaitai_struct_format_NotCalculatedSized$;
+/** @constructor */
+function $h_Lio_kaitai_struct_format_NotCalculatedSized$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_format_NotCalculatedSized$.prototype = $c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype;
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.productPrefix__T = (function() {
+  return "NotCalculatedSized"
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.productArity__I = (function() {
+  return 0
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.productElement__I__O = (function(x$1) {
+  throw new $c_jl_IndexOutOfBoundsException().init___T(("" + x$1))
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.toString__T = (function() {
+  return "NotCalculatedSized"
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.hashCode__I = (function() {
+  return (-1336437198)
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
+});
+var $d_Lio_kaitai_struct_format_NotCalculatedSized$ = new $TypeData().initClass({
+  Lio_kaitai_struct_format_NotCalculatedSized$: 0
+}, false, "io.kaitai.struct.format.NotCalculatedSized$", {
+  Lio_kaitai_struct_format_NotCalculatedSized$: 1,
+  O: 1,
+  Lio_kaitai_struct_format_Sized: 1,
+  s_Product: 1,
+  s_Equals: 1,
+  s_Serializable: 1,
+  Ljava_io_Serializable: 1
+});
+$c_Lio_kaitai_struct_format_NotCalculatedSized$.prototype.$classData = $d_Lio_kaitai_struct_format_NotCalculatedSized$;
+var $n_Lio_kaitai_struct_format_NotCalculatedSized$ = (void 0);
+function $m_Lio_kaitai_struct_format_NotCalculatedSized$() {
+  if ((!$n_Lio_kaitai_struct_format_NotCalculatedSized$)) {
+    $n_Lio_kaitai_struct_format_NotCalculatedSized$ = new $c_Lio_kaitai_struct_format_NotCalculatedSized$().init___()
+  };
+  return $n_Lio_kaitai_struct_format_NotCalculatedSized$
 }
 /** @constructor */
 function $c_Lio_kaitai_struct_format_NumberedIdentifier() {
@@ -44810,6 +44793,57 @@ var $d_Lio_kaitai_struct_format_SpecialIdentifier = new $TypeData().initClass({
 });
 $c_Lio_kaitai_struct_format_SpecialIdentifier.prototype.$classData = $d_Lio_kaitai_struct_format_SpecialIdentifier;
 /** @constructor */
+function $c_Lio_kaitai_struct_format_StartedCalculationSized$() {
+  $c_O.call(this)
+}
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype = new $h_O();
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.constructor = $c_Lio_kaitai_struct_format_StartedCalculationSized$;
+/** @constructor */
+function $h_Lio_kaitai_struct_format_StartedCalculationSized$() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_format_StartedCalculationSized$.prototype = $c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype;
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.init___ = (function() {
+  return this
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.productPrefix__T = (function() {
+  return "StartedCalculationSized"
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.productArity__I = (function() {
+  return 0
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.productElement__I__O = (function(x$1) {
+  throw new $c_jl_IndexOutOfBoundsException().init___T(("" + x$1))
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.toString__T = (function() {
+  return "StartedCalculationSized"
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.hashCode__I = (function() {
+  return 713515451
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
+});
+var $d_Lio_kaitai_struct_format_StartedCalculationSized$ = new $TypeData().initClass({
+  Lio_kaitai_struct_format_StartedCalculationSized$: 0
+}, false, "io.kaitai.struct.format.StartedCalculationSized$", {
+  Lio_kaitai_struct_format_StartedCalculationSized$: 1,
+  O: 1,
+  Lio_kaitai_struct_format_Sized: 1,
+  s_Product: 1,
+  s_Equals: 1,
+  s_Serializable: 1,
+  Ljava_io_Serializable: 1
+});
+$c_Lio_kaitai_struct_format_StartedCalculationSized$.prototype.$classData = $d_Lio_kaitai_struct_format_StartedCalculationSized$;
+var $n_Lio_kaitai_struct_format_StartedCalculationSized$ = (void 0);
+function $m_Lio_kaitai_struct_format_StartedCalculationSized$() {
+  if ((!$n_Lio_kaitai_struct_format_StartedCalculationSized$)) {
+    $n_Lio_kaitai_struct_format_StartedCalculationSized$ = new $c_Lio_kaitai_struct_format_StartedCalculationSized$().init___()
+  };
+  return $n_Lio_kaitai_struct_format_StartedCalculationSized$
+}
+/** @constructor */
 function $c_Lio_kaitai_struct_format_TextRef() {
   $c_O.call(this);
   this.text$1 = null
@@ -45201,59 +45235,53 @@ var $d_Lio_kaitai_struct_precompile_TypeUndecidedError = new $TypeData().initCla
 });
 $c_Lio_kaitai_struct_precompile_TypeUndecidedError.prototype.$classData = $d_Lio_kaitai_struct_precompile_TypeUndecidedError;
 /** @constructor */
-function $c_Lio_kaitai_struct_translators_CSharpTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.importList$3 = null;
-  this.asciiCharQuoteMap$3 = null
+function $c_Lio_kaitai_struct_translators_BaseTranslator() {
+  $c_Lio_kaitai_struct_translators_TypeDetector.call(this);
+  this.provider$2 = null;
+  this.asciiCharQuoteMap$2 = null
 }
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_CSharpTranslator;
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype = new $h_Lio_kaitai_struct_translators_TypeDetector();
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_BaseTranslator;
 /** @constructor */
-function $h_Lio_kaitai_struct_translators_CSharpTranslator() {
+function $h_Lio_kaitai_struct_translators_BaseTranslator() {
   /*<skip>*/
 }
-$h_Lio_kaitai_struct_translators_CSharpTranslator.prototype = $c_Lio_kaitai_struct_translators_CSharpTranslator.prototype;
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Convert.ToInt64(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+$h_Lio_kaitai_struct_translators_BaseTranslator.prototype = $c_Lio_kaitai_struct_translators_BaseTranslator.prototype;
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doNumericCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__doNumericCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Count"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.io$kaitai$struct$translators$CommonLiterals$$undsetter$und$asciiCharQuoteMap$und$eq__sci_Map__V = (function(x$1) {
+  this.asciiCharQuoteMap$2 = x$1
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new string(Array.Reverse(", ".ToCharArray()))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doIntLiteral__s_math_BigInt__T = (function(n) {
+  var this$1 = n.bigInteger$3;
+  return $m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.enumClass__sci_List__T = (function(enumTypeAbs) {
-  var enumTypeRel = $m_Lio_kaitai_struct_Utils$().relClass__sci_List__sci_List__sci_List(enumTypeAbs, this.provider$2.nowClass$1.name$1);
-  return $m_Lio_kaitai_struct_languages_CSharpCompiler$().types2class__sci_List__T(enumTypeRel)
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return this.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "pos")
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ".Count - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.bytesToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value, expr) {
+  return this.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T(this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), expr)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System.Linq");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Min()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
+  return ("" + n)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$2
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.binOp__Lio_kaitai_struct_exprlang_Ast$operator__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$operator__T(this, op)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
-  var nativeType = $m_Lio_kaitai_struct_languages_CSharpCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(t);
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
   var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
     return (function(v$2) {
       var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
@@ -45261,1307 +45289,680 @@ $c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doArrayLiteral__Lio_
     })
   })(this));
   var this$1 = $m_sc_Seq$();
-  var commaStr = $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new List<", "> { ", " }"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([nativeType, commaStr]))
+  return (("[" + $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + "]")
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Substring(", ", ", " - ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(long) (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  var this$1 = $m_s_math_BigInt$();
+  var jsx$1 = new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$1.apply__I__s_math_BigInt(1));
+  var this$2 = $m_s_math_BigInt$();
+  return this.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, jsx$1, new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(this$2.apply__I__s_math_BigInt(0)))
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
+  this.provider$2 = provider;
+  $c_Lio_kaitai_struct_translators_TypeDetector.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  $s_Lio_kaitai_struct_translators_CommonLiterals$class__$$init$__Lio_kaitai_struct_translators_CommonLiterals__V(this);
+  return this
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System.Linq");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Max()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doLocalName__T__T = (function(s) {
+  return this.doName__T__T(s)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Convert.ToString((long) (", "), ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T(this, op)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doName__T__T = (function(s) {
-  return ((($uI(s.length) >= 0) && ($as_T(s.substring(0, $uI("_".length))) === "_")) ? (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["M", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__booleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__T(this, op)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(typeName), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return this.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "size")
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["System.Text.Encoding.GetEncoding(", ").GetString(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding), bytesExpr]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return this.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, "is_eof")
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-  if (((op !== null) && (op === x$2))) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " == ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-  } else {
-    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-    if (((op !== null) && (op === x$4))) {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " != ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-    } else {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".CompareTo(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
-    }
-  }
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".ByteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
-  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__doStrCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new byte[] { ", " }"]));
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
   var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
     var x$1 = $uB(x$1$2);
     return (255 & x$1)
   }));
   var this$1 = $m_sc_Seq$();
-  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")]))
+  return (("[" + $as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + "]")
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(label)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__doBytesCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
 });
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
-  this.importList$3 = importList;
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$9 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$8 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$7 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$6 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$5 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(0);
-  var jsx$4 = new $c_T2().init___O__O(self$5, "\\0");
-  var self$6 = new $c_jl_Character().init___C(7);
-  var jsx$3 = new $c_T2().init___O__O(self$6, "\\a");
-  var self$7 = new $c_jl_Character().init___C(12);
-  var jsx$2 = new $c_T2().init___O__O(self$7, "\\f");
-  var self$8 = new $c_jl_Character().init___C(11);
-  var jsx$1 = new $c_T2().init___O__O(self$8, "\\v");
-  var self$9 = new $c_jl_Character().init___C(8);
-  var array = [jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$9, "\\b")];
-  var this$42 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$42.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
-  };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$42.elems$1);
-  return this
-});
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), id]))
-});
-var $d_Lio_kaitai_struct_translators_CSharpTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_CSharpTranslator: 0
-}, false, "io.kaitai.struct.translators.CSharpTranslator", {
-  Lio_kaitai_struct_translators_CSharpTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_CSharpTranslator;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_CppTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.importListSrc$3 = null;
-  this.CHARSET$undUTF8$3 = null;
-  this.asciiCharQuoteMap$3 = null
-}
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_CppTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_CppTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_CppTranslator.prototype = $c_Lio_kaitai_struct_translators_CppTranslator.prototype;
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  return ((("" + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["std::stoi(", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))) + ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", 0, ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr])))) + ")")
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::reverse(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->at(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->back()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importListSrc$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "algorithm");
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["*std::min_element(", "->begin(), ", "->end())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->front()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") ? (", ") : (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, values) {
-  throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("C++ literal arrays are not implemented yet"))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substr(", ", (", ") - (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<int>(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importListSrc$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "algorithm");
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["*std::max_element(", "->begin(), ", "->end())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  if ((baseStr === "10")) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::to_string(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
-  } else {
-    throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
-  }
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s])))))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
-  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<", "*>(", ")"]));
-  var jsx$1 = $m_Lio_kaitai_struct_languages_CppCompiler$();
-  $m_sci_List$();
-  var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array([typeName]);
-  var this$2 = $m_sci_List$();
-  var cbf = this$2.ReusableCBFInstance$2;
-  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([jsx$1.types2class__sci_List__T($as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf))), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::bytes_to_str(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-  if (((op !== null) && (op === x$2))) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " == (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-  } else {
-    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-    if (((op !== null) && (op === x$4))) {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " != ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-    } else {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".compare(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
-    }
-  }
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
   return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
 });
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  return (((("std::string(\"" + $m_Lio_kaitai_struct_Utils$().hexEscapeByteArray__sc_Seq__T(arr)) + "\", ") + arr.length__I()) + ")")
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralGenericCC__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
 });
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
-  var thiz = (($as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType)) + "_") + label);
-  return $as_T(thiz.toUpperCase())
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
 });
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importListSrc) {
-  this.importListSrc$3 = importListSrc;
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  this.CHARSET$undUTF8$3 = $m_Ljava_nio_charset_Charset$().forName__T__Ljava_nio_charset_Charset("UTF-8");
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(7);
-  var jsx$3 = new $c_T2().init___O__O(self$5, "\\a");
-  var self$6 = new $c_jl_Character().init___C(12);
-  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
-  var self$7 = new $c_jl_Character().init___C(11);
-  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
-  var self$8 = new $c_jl_Character().init___C(8);
-  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\b")];
-  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.bytesToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, expr) {
+  return this.bytesToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, expr)
+});
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.userTypeField__Lio_kaitai_struct_datatype_DataType$UserType__Lio_kaitai_struct_exprlang_Ast$expr__T__O = (function(ut, value, name) {
+  return this.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, name)
+});
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.translate__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v)) {
+    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v);
+    var n = x2.n$1;
+    return this.doIntLiteral__s_math_BigInt__T(n)
   };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
-  return this
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doEnumById__sci_List__T__T = (function(enumType, id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<", ">(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_CppCompiler$().types2class__sci_List__T(enumType), id]))
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doStringLiteral__T__T = (function(s) {
-  var lenSuffix = (($uI(s.indexOf("\u0000")) !== (-1)) ? (", " + $m_sjsr_RuntimeString$().getBytes__T__Ljava_nio_charset_Charset__AB(s, this.CHARSET$undUTF8$3).u.length) : "");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["std::string(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s), lenSuffix]))
-});
-var $d_Lio_kaitai_struct_translators_CppTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_CppTranslator: 0
-}, false, "io.kaitai.struct.translators.CppTranslator", {
-  Lio_kaitai_struct_translators_CppTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_CppTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_CppTranslator;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_JavaScriptTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this)
-}
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_JavaScriptTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_JavaScriptTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype = $c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype;
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Number.parseInt(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Array.from(", ").reverse().join('')"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ".length - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".arrayMin(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " | 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  return this
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doLocalName__T__T = (function(s) {
-  return ((s === "_") ? s : (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)])))))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Math.trunc(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".arrayMax(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").toString(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".isEof()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doName__T__T = (function(s) {
-  return (((s === "_root") || ((s === "_parent") || (s === "_io"))) ? s : $m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".bytesToStr(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Math.floor(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v)) {
+    var x3 = $as_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v);
+    var n$2 = x3.n$1;
+    return n$2.bigDecimal$3.toString__T()
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Str(v)) {
+    var x4 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(v);
+    var s = x4.s$1;
+    return this.doStringLiteral__T__T(s)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v)) {
+    var x5 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v);
+    var n$3 = x5.n$1;
+    return this.doBoolLiteral__Z__T(n$3)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$EnumById(v)) {
+    var x6 = $as_Lio_kaitai_struct_exprlang_Ast$expr$EnumById(v);
+    var enumType = x6.enumName$1;
+    var id = x6.id$1;
+    var this$1 = this.provider$2;
+    var enumName = enumType.name$1;
+    var enumSpec = this$1.resolveEnum__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_format_EnumSpec(this$1.nowClass$1, enumName);
+    return this.doEnumById__sci_List__T__T(enumSpec.name$1, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(id))
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$EnumByLabel(v)) {
+    var x7 = $as_Lio_kaitai_struct_exprlang_Ast$expr$EnumByLabel(v);
+    var enumType$2 = x7.enumName$1;
+    var label = x7.label$1;
+    var this$2 = this.provider$2;
+    var enumName$1 = enumType$2.name$1;
+    var enumSpec$2 = this$2.resolveEnum__Lio_kaitai_struct_format_ClassSpec__T__Lio_kaitai_struct_format_EnumSpec(this$2.nowClass$1, enumName$1);
+    return this.doEnumByLabel__sci_List__T__T(enumSpec$2.name$1, label.name$1)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Name(v)) {
+    var x8 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Name(v);
+    var name = x8.id$1;
+    if ((name !== null)) {
+      return this.doLocalName__T__T(name.name$1)
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$UnaryOp(v)) {
+    var x9 = $as_Lio_kaitai_struct_exprlang_Ast$expr$UnaryOp(v);
+    var op = x9.op$1;
+    var inner = x9.operand$1;
+    if ((op !== null)) {
+      if ((inner !== null)) {
+        return (("" + this.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T(op)) + (($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(inner) || $is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(inner)) ? this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(inner) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(inner)]))))
       }
     }
   };
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x$3 === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".byteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaScriptCompiler$().types2class__sci_List__T(enumType), $as_T(label.toUpperCase())]))
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, label) {
-  return label
-});
-var $d_Lio_kaitai_struct_translators_JavaScriptTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_JavaScriptTranslator: 0
-}, false, "io.kaitai.struct.translators.JavaScriptTranslator", {
-  Lio_kaitai_struct_translators_JavaScriptTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_JavaScriptTranslator;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_JavaTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.importList$3 = null
-}
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_JavaTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_JavaTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_JavaTranslator.prototype = $c_Lio_kaitai_struct_translators_JavaTranslator.prototype;
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Long.parseLong(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doIntLiteral__s_math_BigInt__T = (function(n) {
-  var this$1 = n.bigInteger$3;
-  var literal = $m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1);
-  var this$2 = $m_s_math_BigInt$();
-  if (n.$$greater__s_math_BigInt__Z(this$2.apply__I__s_math_BigInt(2147483647))) {
-    var suffix = "L"
-  } else {
-    var suffix = ""
-  };
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([literal, suffix]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".id()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new StringBuilder(", ").reverse().toString()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.enumClass__sci_List__T = (function(enumTypeAbs) {
-  var enumTypeRel = $m_Lio_kaitai_struct_Utils$().relClass__sci_List__sci_List__sci_List(enumTypeAbs, this.provider$2.nowClass$1.name$1);
-  var f = (function(x$2) {
-    var x = $as_T(x$2);
-    return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(x)
-  });
-  var this$1 = $m_sci_List$();
-  var bf = this$1.ReusableCBFInstance$2;
-  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-    if ((enumTypeRel === $m_sci_Nil$())) {
-      var jsx$1 = $m_sci_Nil$()
-    } else {
-      var arg1 = enumTypeRel.head__O();
-      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-      var t = h;
-      var rest = enumTypeRel.tail__sci_List();
-      while ((rest !== $m_sci_Nil$())) {
-        var arg1$1 = rest.head__O();
-        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-        t.tl$5 = nx;
-        t = nx;
-        var this$2 = rest;
-        rest = this$2.tail__sci_List()
-      };
-      var jsx$1 = h
-    }
-  } else {
-    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(enumTypeRel, bf);
-    var these = enumTypeRel;
-    while ((!these.isEmpty__Z())) {
-      var arg1$2 = these.head__O();
-      b.$$plus$eq__O__scm_Builder(f(arg1$2));
-      var this$3 = these;
-      these = this$3.tail__sci_List()
-    };
-    var jsx$1 = b.result__O()
-  };
-  return $as_sc_TraversableOnce(jsx$1).mkString__T__T(".")
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get((int) ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get(", ".size() - 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Collections");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Collections.min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get(0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
-  var javaType = $m_Lio_kaitai_struct_languages_JavaCompiler$().kaitaiType2JavaTypeBoxed__Lio_kaitai_struct_datatype_DataType__T(t);
-  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
-    return (function(v$2) {
-      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
-      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-    })
-  })(this));
-  var this$1 = $m_sc_Seq$();
-  var commaStr = $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ArrayList<", ">(Arrays.asList(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([javaType, commaStr]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(int) (", " + 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Collections");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Collections.max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Long.toString(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === s) ? s : (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === s) ? "_parent()" : (($m_Lio_kaitai_struct_format_Identifier$().IO$1 === s) ? "_io()" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_it" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "_buf" : (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s)])))))))))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(typeName), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.nio.charset.Charset");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new String(", ", Charset.forName(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-  if (((op !== null) && (op === x$2))) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".equals(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-  } else {
-    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-    if (((op !== null) && (op === x$4))) {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["!(", ").equals(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-    } else {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".compareTo(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
-    }
-  }
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-  if ((x === op)) {
-    var this$1 = this.importList$3;
-    $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Arrays");
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Arrays.equals(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-  } else {
-    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-    if ((x$3 === op)) {
-      var this$2 = this.importList$3;
-      $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, "java.util.Arrays");
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["!Arrays.equals(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-    } else {
-      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".byteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
-    }
-  }
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new byte[] { ", " }"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([arr.mkString__T__T(", ")]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), $as_T(label.toUpperCase())]))
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
-  this.importList$3 = importList;
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  return this
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".byId(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), id]))
-});
-var $d_Lio_kaitai_struct_translators_JavaTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_JavaTranslator: 0
-}, false, "io.kaitai.struct.translators.JavaTranslator", {
-  Lio_kaitai_struct_translators_JavaTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_JavaTranslator;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_PHPTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.asciiCharQuoteMap$3 = null;
-  this.namespaceRef$3 = null
-}
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PHPTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_PHPTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_PHPTranslator.prototype = $c_Lio_kaitai_struct_translators_PHPTranslator.prototype;
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["count(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strrev(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(provider, config) {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(36);
-  var jsx$3 = new $c_T2().init___O__O(self$5, "\\$");
-  var self$6 = new $c_jl_Character().init___C(12);
-  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
-  var self$7 = new $c_jl_Character().init___C(11);
-  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
-  var self$8 = new $c_jl_Character().init___C(27);
-  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\e")];
-  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
-  };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
-  var thiz = config.phpNamespace$1;
-  if ((thiz === null)) {
-    throw new $c_jl_NullPointerException().init___()
-  };
-  this.namespaceRef$3 = ((thiz === "") ? "" : ("\\" + config.phpNamespace$1));
-  return this
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.types2classAbs__sci_List__T = (function(names) {
-  $m_sci_List$();
-  var o9 = new $c_s_Some().init___O(names);
-  if ((o9.x$2 !== null)) {
-    var this$2 = $as_sc_LinearSeqOptimized(o9.x$2);
-    var jsx$1 = ($s_sc_LinearSeqOptimized$class__lengthCompare__sc_LinearSeqOptimized__I__I(this$2, 1) === 0)
-  } else {
-    var jsx$1 = false
-  };
-  if (jsx$1) {
-    var this$3 = $as_sc_LinearSeqOptimized(o9.x$2);
-    var p3 = $as_T($s_sc_LinearSeqOptimized$class__apply__sc_LinearSeqOptimized__I__O(this$3, 0));
-    if ((p3 === "kaitai_struct")) {
-      return "\\Kaitai\\Struct\\Struct"
-    }
-  };
-  return ((this.namespaceRef$3 + "\\") + $m_Lio_kaitai_struct_languages_PHPCompiler$().types2classRel__sci_List__T(names))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[count(", ") - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
-  var this$2 = new $c_sci_StringOps().init___T("\\u{%x}");
-  var array = [code];
-  var jsx$2 = $m_sjsr_RuntimeString$();
-  var $$this = this$2.repr$1;
-  $m_sc_Seq$();
-  $m_sjs_js_WrappedArray$();
-  var array$1 = [];
-  $uI(array.length);
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
-    array$1.push(elem);
-    i = ((1 + i) | 0)
-  };
-  $m_s_reflect_ManifestFactory$ObjectManifest$();
-  var len$1 = $uI(array$1.length);
-  var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
-  var len$2 = result.u.length;
-  var i$1 = 0;
-  var j = 0;
-  var x = $uI(array$1.length);
-  var x$1 = ((x < len$2) ? x : len$2);
-  var that = result.u.length;
-  var end = ((x$1 < that) ? x$1 : that);
-  while ((i$1 < end)) {
-    var jsx$1 = j;
-    var index$1 = i$1;
-    result.set(jsx$1, array$1[index$1]);
-    i$1 = ((1 + i$1) | 0);
-    j = ((1 + j) | 0)
-  };
-  return jsx$2.format__T__AO__T($$this, result)
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doLocalName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "$_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "$_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "$i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$this->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)])))))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strlen(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  return ((baseStr === "10") ? new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)])) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["base_convert(strval(", "), 10, ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), baseStr])))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doName__T__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::bytesToStr(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["\\Kaitai\\Struct\\Stream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
-      if ((x$3 === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["\\Kaitai\\Struct\\Stream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  return (("\"" + $m_Lio_kaitai_struct_Utils$().hexEscapeByteArray__sc_Seq__T(arr)) + "\"")
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
-  var enumClass = this.types2classAbs__sci_List__T(enumTypeAbs);
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([enumClass, $as_T(label.toUpperCase())]))
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
-  return id
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " . ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-});
-var $d_Lio_kaitai_struct_translators_PHPTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_PHPTranslator: 0
-}, false, "io.kaitai.struct.translators.PHPTranslator", {
-  Lio_kaitai_struct_translators_PHPTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PHPTranslator;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_PerlTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.importList$3 = null;
-  this.asciiCharQuoteMap$3 = null
-}
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PerlTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_PerlTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_PerlTranslator.prototype = $c_Lio_kaitai_struct_translators_PerlTranslator.prototype;
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  if ((baseStr === "8")) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["oct(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-  } else if ((baseStr === "10")) {
-    return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
-  } else if ((baseStr === "16")) {
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["hex(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-  } else {
-    throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
-  }
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["scalar(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["scalar(reverse(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var x1 = $as_Lio_kaitai_struct_datatype_DataType$ArrayType(this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(a)).elType$1;
-  var funcName = ($is_Lio_kaitai_struct_datatype_DataType$StrType(x1) ? "minstr" : "min");
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "List::Util");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["List::Util::", "(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([funcName, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
-  return (n ? "1" : "0")
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
-  var this$2 = new $c_sci_StringOps().init___T("\\N{U+%04x}");
-  var array = [code];
-  var jsx$2 = $m_sjsr_RuntimeString$();
-  var $$this = this$2.repr$1;
-  $m_sc_Seq$();
-  $m_sjs_js_WrappedArray$();
-  var array$1 = [];
-  $uI(array.length);
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
-    array$1.push(elem);
-    i = ((1 + i) | 0)
-  };
-  $m_s_reflect_ManifestFactory$ObjectManifest$();
-  var len$1 = $uI(array$1.length);
-  var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
-  var len$2 = result.u.length;
-  var i$1 = 0;
-  var j = 0;
-  var x = $uI(array$1.length);
-  var x$1 = ((x < len$2) ? x : len$2);
-  var that = result.u.length;
-  var end = ((x$1 < that) ? x$1 : that);
-  while ((i$1 < end)) {
-    var jsx$1 = j;
-    var index$1 = i$1;
-    result.set(jsx$1, array$1[index$1]);
-    i$1 = ((1 + i$1) | 0);
-    j = ((1 + j) | 0)
-  };
-  return jsx$2.format__T__AO__T($$this, result)
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
-  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
-    return (function(v$2) {
-      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
-      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-    })
-  })(this));
-  var this$1 = $m_sc_Seq$();
-  return (("(" + $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + ")")
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.userTypeField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ":", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doLocalName__T__T = (function(s) {
-  return (((s === "_") || (s === "_on")) ? ("$" + s) : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? this.doName__T__T(s) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$self->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)]))))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["length(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  var x1 = $as_Lio_kaitai_struct_datatype_DataType$ArrayType(this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(a)).elType$1;
-  var funcName = ($is_Lio_kaitai_struct_datatype_DataType$StrType(x1) ? "maxstr" : "max");
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "List::Util");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["List::Util::", "(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([funcName, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  if ((baseStr === "8")) {
-    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["%o"])).s__sc_Seq__T($m_sci_Nil$())
-  } else if ((baseStr === "10")) {
-    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["%d"])).s__sc_Seq__T($m_sci_Nil$())
-  } else {
-    if ((baseStr !== "16")) {
-      throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
-    };
-    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["0x%X"])).s__sc_Seq__T($m_sci_Nil$())
-  };
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["sprintf('", "', ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([format, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "$_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "$_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "$i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s])))))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "Encode");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Encode::decode(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding), bytesExpr]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
-  if ((x === op)) {
-    var opStr = "eq"
-  } else {
-    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
-    if ((x$3 === op)) {
-      var opStr = "ne"
-    } else {
-      var x$5 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Lt$();
-      if ((x$5 === op)) {
-        var opStr = "lt"
-      } else {
-        var x$7 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$LtE$();
-        if ((x$7 === op)) {
-          var opStr = "le"
-        } else {
-          var x$9 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Gt$();
-          if ((x$9 === op)) {
-            var opStr = "gt"
-          } else {
-            var x$11 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$GtE$();
-            if ((!(x$11 === op))) {
-              throw new $c_s_MatchError().init___O(op)
-            };
-            var opStr = "ge"
-          }
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Compare(v)) {
+    var x10 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Compare(v);
+    var left = x10.left$1;
+    var op$2 = x10.ops$1;
+    var right = x10.right$1;
+    if ((left !== null)) {
+      if ((op$2 !== null)) {
+        if ((right !== null)) {
+          var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+          var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2)) {
+              return this.doNumericCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$BooleanType(_2)) {
+              var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+              if ((x === op$2)) {
+                var jsx$1 = true
+              } else {
+                var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+                var jsx$1 = (x$3 === op$2)
+              };
+              if (jsx$1) {
+                return this.doNumericCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
+              } else {
+                throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare booleans using ", " operator"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([op$2])))
+              }
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2)) {
+              return this.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$BytesType(_2)) {
+              return this.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op$2, right)
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(_1)) {
+            var x12 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(_1);
+            var ltype = x12.name$1;
+            if ($is_Lio_kaitai_struct_datatype_DataType$EnumType(_2)) {
+              var x14 = $as_Lio_kaitai_struct_datatype_DataType$EnumType(_2);
+              var rtype = x14.name$1;
+              if ((!((ltype === null) ? (rtype === null) : ltype.equals__O__Z(rtype)))) {
+                throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare enums type ", " and ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ltype, rtype])))
+              } else {
+                return $s_Lio_kaitai_struct_translators_CommonOps$class__doEnumCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op$2, right)
+              }
+            }
+          };
+          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't compare ", " and ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1, _2])))
         }
       }
     }
   };
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), opStr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  return this.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op, right)
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["pack('C*', (", "))"]));
-  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
-    var x$1 = $uB(x$1$2);
-    return (255 & x$1)
-  }));
-  var this$1 = $m_sc_Seq$();
-  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v)) {
+    var x11 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v);
+    var left$2 = x11.left$1;
+    var op$3 = x11.op$1;
+    var right$2 = x11.right$1;
+    if ((left$2 !== null)) {
+      if ((op$3 !== null)) {
+        if ((right$2 !== null)) {
+          var _1$1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left$2);
+          var _2$1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right$2);
+          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1$1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2$1)) {
+              return this.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(left$2, op$3, right$2)
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1$1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2$1)) {
+              var x$7 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Add$();
+              if ((x$7 === op$3)) {
+                return this.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(left$2, right$2)
+              }
+            }
+          };
+          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't do ", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1$1, op$3, _2$1])))
+        }
       }
     }
   };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
-  var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$", "_", ""]));
-  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType));
-  return jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_T(thiz.toUpperCase()), $as_T(label.toUpperCase())]))
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
-  this.importList$3 = importList;
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$11 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$10 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$9 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$8 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$7 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(36);
-  var jsx$6 = new $c_T2().init___O__O(self$5, "\\$");
-  var self$6 = new $c_jl_Character().init___C(64);
-  var jsx$5 = new $c_T2().init___O__O(self$6, "\\@");
-  var self$7 = new $c_jl_Character().init___C(37);
-  var jsx$4 = new $c_T2().init___O__O(self$7, "\\%");
-  var self$8 = new $c_jl_Character().init___C(7);
-  var jsx$3 = new $c_T2().init___O__O(self$8, "\\a");
-  var self$9 = new $c_jl_Character().init___C(12);
-  var jsx$2 = new $c_T2().init___O__O(self$9, "\\f");
-  var self$10 = new $c_jl_Character().init___C(27);
-  var jsx$1 = new $c_T2().init___O__O(self$10, "\\e");
-  var self$11 = new $c_jl_Character().init___C(8);
-  var array = [jsx$11, jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$11, "\\b")];
-  var this$50 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$50.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BoolOp(v)) {
+    var x12$2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BoolOp(v);
+    var op$4 = x12$2.op$1;
+    var values = x12$2.values$1;
+    if ((op$4 !== null)) {
+      if ((values !== null)) {
+        return $s_Lio_kaitai_struct_translators_CommonOps$class__doBooleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__sc_Seq__T(this, op$4, values)
+      }
+    }
   };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$50.elems$1);
-  return this
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IfExp(v)) {
+    var x13 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IfExp(v);
+    var condition = x13.condition$1;
+    var ifTrue = x13.ifTrue$1;
+    var ifFalse = x13.ifFalse$1;
+    return this.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(condition, ifTrue, ifFalse)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Subscript(v)) {
+    var x14$2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Subscript(v);
+    var container = x14$2.value$1;
+    var idx = x14$2.idx$1;
+    if ((container !== null)) {
+      if ((idx !== null)) {
+        var x1$6 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(idx);
+        if ($is_Lio_kaitai_struct_datatype_DataType$IntType(x1$6)) {
+          return this.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(container, idx)
+        } else {
+          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't use ", " as array index (need int, got ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([idx, x1$6])))
+        }
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v)) {
+    var x30 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v);
+    return $as_T($s_Lio_kaitai_struct_translators_CommonMethods$class__translateAttribute__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Attribute__O(this, x30))
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Call(v)) {
+    var x31 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Call(v);
+    return $as_T($s_Lio_kaitai_struct_translators_CommonMethods$class__translateCall__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Call__O(this, x31))
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$List(v)) {
+    var x15 = $as_Lio_kaitai_struct_exprlang_Ast$expr$List(v);
+    var values$2 = x15.elts$1;
+    if ((values$2 !== null)) {
+      var t = this.detectArrayType__sc_Seq__Lio_kaitai_struct_datatype_DataType(values$2);
+      if ($is_Lio_kaitai_struct_datatype_DataType$Int1Type(t)) {
+        var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2) {
+          var x0$1 = $as_Lio_kaitai_struct_exprlang_Ast$expr(x0$1$2);
+          if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(x0$1)) {
+            var x2$1 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(x0$1);
+            var x$1 = x2$1.n$1;
+            var this$3 = $m_s_math_BigInt$();
+            if (x$1.$$less__s_math_BigInt__Z(this$3.apply__I__s_math_BigInt(0))) {
+              var jsx$3 = true
+            } else {
+              var this$4 = $m_s_math_BigInt$();
+              var jsx$3 = x$1.$$greater__s_math_BigInt__Z(this$4.apply__I__s_math_BigInt(255))
+            };
+            if (jsx$3) {
+              throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["got a weird byte value in byte array: ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$1])))
+            } else {
+              return x$1.byteValue__B()
+            }
+          } else {
+            throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["got ", " in byte array, unable to put it literally"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x0$1])))
+          }
+        }));
+        var this$5 = $m_sc_Seq$();
+        var literalBytes = $as_sc_Seq(values$2.map__F1__scg_CanBuildFrom__O(jsx$2, this$5.ReusableCBFInstance$2));
+        return this.doByteArrayLiteral__sc_Seq__T(literalBytes)
+      } else {
+        return this.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T(t, values$2)
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$CastToType(v)) {
+    var x16 = $as_Lio_kaitai_struct_exprlang_Ast$expr$CastToType(v);
+    var value = x16.value$1;
+    var typeName = x16.typeName$1;
+    return this.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T(value, typeName.name$1)
+  };
+  throw new $c_s_MatchError().init___O(v)
 });
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
-  return id
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " + ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
 });
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " . ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doStringLiteral__T__T = (function(s) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s)
 });
-var $d_Lio_kaitai_struct_translators_PerlTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_PerlTranslator: 0
-}, false, "io.kaitai.struct.translators.PerlTranslator", {
-  Lio_kaitai_struct_translators_PerlTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PerlTranslator;
 /** @constructor */
-function $c_Lio_kaitai_struct_translators_PythonTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.importList$3 = null;
-  this.asciiCharQuoteMap$3 = null
+function $c_Lio_kaitai_struct_translators_GoTranslator() {
+  $c_Lio_kaitai_struct_translators_TypeDetector.call(this);
+  this.out$2 = null;
+  this.provider$2 = null;
+  this.importList$2 = null;
+  this.returnRes$2 = null;
+  this.IMPORT$undCHARMAP$2 = null;
+  this.ENCODINGS$2 = null;
+  this.localVarNum$2 = 0;
+  this.asciiCharQuoteMap$2 = null
 }
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PythonTranslator;
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype = new $h_Lio_kaitai_struct_translators_TypeDetector();
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_GoTranslator;
 /** @constructor */
-function $h_Lio_kaitai_struct_translators_PythonTranslator() {
+function $h_Lio_kaitai_struct_translators_GoTranslator() {
   /*<skip>*/
 }
-$h_Lio_kaitai_struct_translators_PythonTranslator.prototype = $c_Lio_kaitai_struct_translators_PythonTranslator.prototype;
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  var add = ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr])));
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), add]))
+$h_Lio_kaitai_struct_translators_GoTranslator.prototype = $c_Lio_kaitai_struct_translators_GoTranslator.prototype;
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".value"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trStringLiteral__T__Lio_kaitai_struct_translators_TranslatorResult = (function(s) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T($s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s))
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["len(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.io$kaitai$struct$translators$CommonLiterals$$undsetter$und$asciiCharQuoteMap$und$eq__sci_Map__V = (function(x$1) {
+  this.asciiCharQuoteMap$2 = x$1
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[::-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".pos()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
-  return (n ? "True" : "False")
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " if ", " else ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ":", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T = (function(op) {
-  var x = $m_Lio_kaitai_struct_exprlang_Ast$unaryop$Not$();
-  if ((x === op)) {
-    return "not "
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.userTypeField__Lio_kaitai_struct_datatype_DataType$UserType__Lio_kaitai_struct_exprlang_Ast$expr__T__Lio_kaitai_struct_translators_TranslatorResult = (function(ut, value, name) {
+  var valueStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value);
+  if ((($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === name) || (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === name) || ($m_Lio_kaitai_struct_format_Identifier$().IO$1 === name)))) {
+    var _1 = this.specialName__T__T(name);
+    var x1$2_$_$$und1$f = _1;
+    var x1$2_$_$$und2$f = false
   } else {
-    return $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T(this, op)
+    var _1$1 = $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name);
+    var _2 = this.provider$2.isLazy__Lio_kaitai_struct_format_ClassSpec__T__Z($as_Lio_kaitai_struct_format_ClassSpec(ut.classSpec$1.get__O()), name);
+    var x1$2_$_$$und1$f = _1$1;
+    var x1$2_$_$$und2$f = _2
+  };
+  var call = $as_T(x1$2_$_$$und1$f);
+  var twoOuts = $uZ(x1$2_$_$$und2$f);
+  return (twoOuts ? this.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([valueStr, call]))) : new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([valueStr, call]))))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trIntLiteral__s_math_BigInt__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
+  var this$1 = n.bigInteger$3;
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T($m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.allocateLocalVar__I = (function() {
+  this.localVarNum$2 = ((1 + this.localVarNum$2) | 0);
+  return this.localVarNum$2
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T = (function(r) {
+  if ($is_Lio_kaitai_struct_translators_ResultString(r)) {
+    var x2 = $as_Lio_kaitai_struct_translators_ResultString(r);
+    var s = x2.s$1;
+    return s
+  } else if ($is_Lio_kaitai_struct_translators_ResultLocalVar(r)) {
+    var x3 = $as_Lio_kaitai_struct_translators_ResultLocalVar(r);
+    var n = x3.n$1;
+    return this.localVarName__I__T(n)
+  } else {
+    throw new $c_s_MatchError().init___O(r)
   }
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doLocalName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["self.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s]))))
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["len(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
-  var x = $m_Lio_kaitai_struct_exprlang_Ast$boolop$Or$();
-  if ((x === op)) {
-    return "or"
-  } else {
-    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$boolop$And$();
-    if ((x$3 === op)) {
-      return "and"
-    } else {
-      throw new $c_s_MatchError().init___O(op)
-    }
-  }
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  if ((baseStr === "2")) {
-    var func = "bin"
-  } else if ((baseStr === "8")) {
-    var func = "oct"
-  } else if ((baseStr === "10")) {
-    var func = "str"
-  } else {
-    if ((baseStr !== "16")) {
-      throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
-    };
-    var func = "hex"
-  };
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([func, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".is_eof()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doName__T__T = (function(s) {
-  return s
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").decode(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  var this$1 = this.importList$3;
-  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "import struct");
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["struct.pack('", "b', ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([arr.length__I(), arr.mkString__T__T(", ")]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
-  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
-  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
-  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
-    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
-      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
-      if ((x === op)) {
-        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " // ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
-      }
-    }
-  };
-  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_PythonCompiler$().types2class__sci_List__T(enumTypeAbs), label]))
-});
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
-  this.importList$3 = importList;
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(7);
-  var jsx$3 = new $c_T2().init___O__O(self$5, "\\a");
-  var self$6 = new $c_jl_Character().init___C(12);
-  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
-  var self$7 = new $c_jl_Character().init___C(11);
-  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
-  var self$8 = new $c_jl_Character().init___C(8);
-  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\b")];
-  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.init___Lio_kaitai_struct_StringLanguageOutputWriter__Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(out, provider, importList) {
+  this.out$2 = out;
+  this.provider$2 = provider;
+  this.importList$2 = importList;
+  $c_Lio_kaitai_struct_translators_TypeDetector.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  $s_Lio_kaitai_struct_translators_CommonLiterals$class__$$init$__Lio_kaitai_struct_translators_CommonLiterals__V(this);
+  this.returnRes$2 = $m_s_None$();
+  this.IMPORT$undCHARMAP$2 = "golang.org/x/text/encoding/charmap";
+  var y = new $c_T2().init___O__O("charmap.CodePage437", this.IMPORT$undCHARMAP$2);
+  var jsx$6 = new $c_T2().init___O__O("cp437", y);
+  var y$1 = new $c_T2().init___O__O("charmap.ISO8859_1", this.IMPORT$undCHARMAP$2);
+  var jsx$5 = new $c_T2().init___O__O("iso8859-1", y$1);
+  var y$2 = new $c_T2().init___O__O("charmap.ISO8859_2", this.IMPORT$undCHARMAP$2);
+  var jsx$4 = new $c_T2().init___O__O("iso8859-2", y$2);
+  var y$3 = new $c_T2().init___O__O("charmap.ISO8859_3", this.IMPORT$undCHARMAP$2);
+  var jsx$3 = new $c_T2().init___O__O("iso8859-3", y$3);
+  var y$4 = new $c_T2().init___O__O("charmap.ISO8859_4", this.IMPORT$undCHARMAP$2);
+  var jsx$2 = new $c_T2().init___O__O("iso8859-4", y$4);
+  var y$5 = new $c_T2().init___O__O("japanese.ShiftJIS", "golang.org/x/text/encoding/japanese");
+  var jsx$1 = new $c_T2().init___O__O("sjis", y$5);
+  var y$6 = new $c_T2().init___O__O("traditionalchinese.Big5", "golang.org/x/text/encoding/traditionalchinese");
+  var array = [jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O("big5", y$6)];
+  var this$16 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
   var i = 0;
   var len = $uI(array.length);
   while ((i < len)) {
     var index = i;
     var arg1 = array[index];
-    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    this$16.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
     i = ((1 + i) | 0)
   };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
+  this.ENCODINGS$2 = $as_sci_Map(this$16.elems$1);
+  this.localVarNum$2 = 0;
   return this
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_PythonCompiler$().types2class__sci_List__T(enumTypeAbs), id]))
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(s)
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doStringLiteral__T__T = (function(s) {
-  return ("u" + $s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s))
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(value)
 });
-var $d_Lio_kaitai_struct_translators_PythonTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_PythonTranslator: 0
-}, false, "io.kaitai.struct.translators.PythonTranslator", {
-  Lio_kaitai_struct_translators_PythonTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(bytesExpr, encoding) {
+  if ((!$is_Lio_kaitai_struct_exprlang_Ast$expr$Str(encoding))) {
+    throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("Variable encodings are not supported in Go yet"))
+  };
+  var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(encoding);
+  var s = x2.s$1;
+  var x1$2 = $as_T(s.toLowerCase());
+  if (((x1$2 === "ascii") || ((x1$2 === "utf-8") || (x1$2 === "utf8")))) {
+    return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["string(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr])))
+  } else {
+    var x1$3 = this.ENCODINGS$2.get__O__s_Option(x1$2);
+    if ($is_s_Some(x1$3)) {
+      var x2$2 = $as_s_Some(x1$3);
+      var p3 = $as_T2(x2$2.x$2);
+      if ((p3 !== null)) {
+        var decoderSrc = $as_T(p3.$$und1__O());
+        var importName = $as_T(p3.$$und2__O());
+        var this$2 = this.importList$2;
+        $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, importName);
+        return this.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai.BytesToStr(", ", ", ".NewDecoder())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, decoderSrc])))
+      }
+    };
+    var x = $m_s_None$();
+    if ((x === x1$3)) {
+      throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["encoding '", "' in not supported in Go"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x1$2]))))
+    };
+    throw new $c_s_MatchError().init___O(x1$3)
+  }
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trStrConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(left, right) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(((this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left) + " + ") + this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$2
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.binOp__Lio_kaitai_struct_exprlang_Ast$operator__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$operator__T(this, op)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trLocalName__T__Lio_kaitai_struct_translators_TranslatorResult = (function(s) {
+  if ((($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === s) || (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === s) || ($m_Lio_kaitai_struct_format_Identifier$().IO$1 === s)))) {
+    return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.specialName__T__T(s)])))
+  } else if ((($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) || ($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s))) {
+    return new $c_Lio_kaitai_struct_translators_ResultString().init___T(this.specialName__T__T(s))
+  } else {
+    var this$1 = this.provider$2;
+    if (this$1.isLazy__Lio_kaitai_struct_format_ClassSpec__T__Z(this$1.nowClass$1, s)) {
+      return this.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
+    } else {
+      return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(value) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)])))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__booleanOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$boolop__T(this, op)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.specialName__T__T = (function(id) {
+  if ((($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === id) || (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === id) || ($m_Lio_kaitai_struct_format_Identifier$().IO$1 === id)))) {
+    return id
+  } else if (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === id)) {
+    return "_it"
+  } else if (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === id)) {
+    return "_buf"
+  } else {
+    throw new $c_s_MatchError().init___O(id)
+  }
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.localVarName__I__T = (function(n) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["tmp", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([n]))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trBoolLiteral__Z__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(("" + n))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T = (function(op) {
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.outAddErrCheck__V = (function() {
+  this.out$2.puts__T__V("if err != nil {");
+  this.out$2.inc__V();
+  var x1 = this.returnRes$2;
+  var x = $m_s_None$();
+  if ((x === x1)) {
+    var noValueAndErr = "err"
+  } else {
+    if ((!$is_s_Some(x1))) {
+      throw new $c_s_MatchError().init___O(x1)
+    };
+    var x2 = $as_s_Some(x1);
+    var r = $as_T(x2.x$2);
+    var noValueAndErr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ", err"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([r]))
+  };
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([noValueAndErr])));
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("}")
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trFloatLiteral__s_math_BigDecimal__Lio_kaitai_struct_translators_TranslatorResult = (function(n) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(n.bigDecimal$3.toString__T())
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.userType__Lio_kaitai_struct_datatype_DataType$UserType__T__Lio_kaitai_struct_translators_ResultLocalVar = (function(dataType, io) {
+  var v = this.allocateLocalVar__I();
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " := new(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v), $m_Lio_kaitai_struct_languages_GoCompiler$().types2class__sci_List__T($as_Lio_kaitai_struct_format_ClassSpec(dataType.classSpec$1.get__O()).name$1)])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["err = ", ".Read(", ", this, this._root)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v), io])));
+  this.outAddErrCheck__V();
+  return new $c_Lio_kaitai_struct_translators_ResultLocalVar().init___I(v)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralGenericCC__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai.Stream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.outVarCheckRes__T__Lio_kaitai_struct_translators_ResultLocalVar = (function(expr) {
+  var v1 = this.allocateLocalVar__I();
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ", err := ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.localVarName__I__T(v1), expr])));
+  this.outAddErrCheck__V();
+  return new $c_Lio_kaitai_struct_translators_ResultLocalVar().init___I(v1)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.bytesToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, expr) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.userTypeField__Lio_kaitai_struct_datatype_DataType$UserType__Lio_kaitai_struct_exprlang_Ast$expr__T__O = (function(ut, value, name) {
+  return this.userTypeField__Lio_kaitai_struct_datatype_DataType$UserType__Lio_kaitai_struct_exprlang_Ast$expr__T__Lio_kaitai_struct_translators_TranslatorResult(ut, value, name)
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(s) {
+  var this$1 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "unicode/utf8");
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["utf8.RuneCountInString(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)])))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.translate__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return this.resToStr__Lio_kaitai_struct_translators_TranslatorResult__T(this.translateExpr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(v))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.trNumericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_ResultString = (function(left, op, right) {
+  return new $c_Lio_kaitai_struct_translators_ResultString().init___T(this.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op, right))
+});
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.translateExpr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult = (function(v) {
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v)) {
+    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(v);
+    var n = x2.n$1;
+    return this.trIntLiteral__s_math_BigInt__Lio_kaitai_struct_translators_TranslatorResult(n)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v)) {
+    var x3 = $as_Lio_kaitai_struct_exprlang_Ast$expr$FloatNum(v);
+    var n$2 = x3.n$1;
+    return this.trFloatLiteral__s_math_BigDecimal__Lio_kaitai_struct_translators_TranslatorResult(n$2)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Str(v)) {
+    var x4 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Str(v);
+    var s = x4.s$1;
+    return this.trStringLiteral__T__Lio_kaitai_struct_translators_TranslatorResult(s)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v)) {
+    var x5 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(v);
+    var n$3 = x5.n$1;
+    return this.trBoolLiteral__Z__Lio_kaitai_struct_translators_TranslatorResult(n$3)
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v)) {
+    var x6 = $as_Lio_kaitai_struct_exprlang_Ast$expr$BinOp(v);
+    var left = x6.left$1;
+    var op = x6.op$1;
+    var right = x6.right$1;
+    if ((left !== null)) {
+      if ((op !== null)) {
+        if ((right !== null)) {
+          var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+          var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+          if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$NumericType(_2)) {
+              return this.trNumericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_ResultString(left, op, right)
+            }
+          };
+          if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_1)) {
+            if ($is_Lio_kaitai_struct_datatype_DataType$StrType(_2)) {
+              var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Add$();
+              if ((x === op)) {
+                return this.trStrConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_translators_TranslatorResult(left, right)
+              }
+            }
+          };
+          throw new $c_Lio_kaitai_struct_precompile_TypeMismatchError().init___T(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["can't do ", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([_1, op, _2])))
+        }
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Name(v)) {
+    var x7 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Name(v);
+    var name = x7.id$1;
+    if ((name !== null)) {
+      return this.trLocalName__T__Lio_kaitai_struct_translators_TranslatorResult(name.name$1)
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v)) {
+    var x12 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Attribute(v);
+    return $as_Lio_kaitai_struct_translators_TranslatorResult($s_Lio_kaitai_struct_translators_CommonMethods$class__translateAttribute__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Attribute__O(this, x12))
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Call(v)) {
+    var x13 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Call(v);
+    return $as_Lio_kaitai_struct_translators_TranslatorResult($s_Lio_kaitai_struct_translators_CommonMethods$class__translateCall__Lio_kaitai_struct_translators_CommonMethods__Lio_kaitai_struct_exprlang_Ast$expr$Call__O(this, x13))
+  };
+  throw new $c_s_MatchError().init___O(v)
+});
+var $d_Lio_kaitai_struct_translators_GoTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_GoTranslator: 0
+}, false, "io.kaitai.struct.translators.GoTranslator", {
+  Lio_kaitai_struct_translators_GoTranslator: 1,
   Lio_kaitai_struct_translators_TypeDetector: 1,
   O: 1,
   Lio_kaitai_struct_translators_AbstractTranslator: 1,
   Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
 });
-$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PythonTranslator;
+$c_Lio_kaitai_struct_translators_GoTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_GoTranslator;
 /** @constructor */
 function $c_Lio_kaitai_struct_translators_ResultLocalVar() {
   $c_O.call(this);
@@ -46717,136 +46118,6 @@ var $d_Lio_kaitai_struct_translators_ResultString = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_Lio_kaitai_struct_translators_ResultString.prototype.$classData = $d_Lio_kaitai_struct_translators_ResultString;
-/** @constructor */
-function $c_Lio_kaitai_struct_translators_RubyTranslator() {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
-  this.asciiCharQuoteMap$3 = null
-}
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_RubyTranslator;
-/** @constructor */
-function $h_Lio_kaitai_struct_translators_RubyTranslator() {
-  /*<skip>*/
-}
-$h_Lio_kaitai_struct_translators_RubyTranslator.prototype = $c_Lio_kaitai_struct_translators_RubyTranslator.prototype;
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
-  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
-  return ((this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s) + ".to_i") + ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr]))))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
-  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"]));
-  var jsx$1 = $m_Lio_kaitai_struct_languages_RubyCompiler$();
-  var this$1 = et.name$1;
-  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(this$1));
-  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([jsx$1.inverseEnumName__T__T($as_T(thiz.toUpperCase())), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".reverse"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".last"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".min"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".first"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
-  return this.asciiCharQuoteMap$3
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
-  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
-  var self = new $c_jl_Character().init___C(9);
-  var jsx$10 = new $c_T2().init___O__O(self, "\\t");
-  var self$1 = new $c_jl_Character().init___C(10);
-  var jsx$9 = new $c_T2().init___O__O(self$1, "\\n");
-  var self$2 = new $c_jl_Character().init___C(13);
-  var jsx$8 = new $c_T2().init___O__O(self$2, "\\r");
-  var self$3 = new $c_jl_Character().init___C(34);
-  var jsx$7 = new $c_T2().init___O__O(self$3, "\\\"");
-  var self$4 = new $c_jl_Character().init___C(92);
-  var jsx$6 = new $c_T2().init___O__O(self$4, "\\\\");
-  var self$5 = new $c_jl_Character().init___C(35);
-  var jsx$5 = new $c_T2().init___O__O(self$5, "\\#");
-  var self$6 = new $c_jl_Character().init___C(7);
-  var jsx$4 = new $c_T2().init___O__O(self$6, "\\a");
-  var self$7 = new $c_jl_Character().init___C(12);
-  var jsx$3 = new $c_T2().init___O__O(self$7, "\\f");
-  var self$8 = new $c_jl_Character().init___C(11);
-  var jsx$2 = new $c_T2().init___O__O(self$8, "\\v");
-  var self$9 = new $c_jl_Character().init___C(27);
-  var jsx$1 = new $c_T2().init___O__O(self$9, "\\e");
-  var self$10 = new $c_jl_Character().init___C(8);
-  var array = [jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$10, "\\b")];
-  var this$46 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$46.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
-  };
-  this.asciiCharQuoteMap$3 = $as_sci_Map(this$46.elems$1);
-  return this
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ", (", " - 1)]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").to_i"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".max"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
-  return (("" + this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)) + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([".to_s(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)])))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".eof?"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doName__T__T = (function(s) {
-  return (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : s)
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").force_encoding(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".pack('C*')"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doByteArrayLiteral__sc_Seq__T.call(this, arr)]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([":", "_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumTypeAbs), label]))
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doEnumById__sci_List__T__T = (function(enumType, id) {
-  var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::resolve_enum(", ", ", ")"]));
-  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType));
-  return jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Kaitai::Struct::Stream", $as_T(thiz.toUpperCase()), id]))
-});
-var $d_Lio_kaitai_struct_translators_RubyTranslator = new $TypeData().initClass({
-  Lio_kaitai_struct_translators_RubyTranslator: 0
-}, false, "io.kaitai.struct.translators.RubyTranslator", {
-  Lio_kaitai_struct_translators_RubyTranslator: 1,
-  Lio_kaitai_struct_translators_BaseTranslator: 1,
-  Lio_kaitai_struct_translators_TypeDetector: 1,
-  O: 1,
-  Lio_kaitai_struct_translators_AbstractTranslator: 1,
-  Lio_kaitai_struct_translators_CommonLiterals: 1,
-  Lio_kaitai_struct_translators_CommonOps: 1
-});
-$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_RubyTranslator;
 /** @constructor */
 function $c_Ljava_io_PrintStream() {
   $c_Ljava_io_FilterOutputStream.call(this);
@@ -48975,7 +48246,8 @@ function $c_Lio_kaitai_struct_format_ClassSpec() {
   this.enums$1 = null;
   this.parentClass$1 = null;
   this.name$1 = null;
-  this.upClass$1 = null
+  this.upClass$1 = null;
+  this.seqSize$1 = null
 }
 $c_Lio_kaitai_struct_format_ClassSpec.prototype = new $h_O();
 $c_Lio_kaitai_struct_format_ClassSpec.prototype.constructor = $c_Lio_kaitai_struct_format_ClassSpec;
@@ -49003,6 +48275,7 @@ $c_Lio_kaitai_struct_format_ClassSpec.prototype.init___sci_List__Z__Lio_kaitai_s
   this.parentClass$1 = $m_Lio_kaitai_struct_format_UnknownClassSpec$();
   this.name$1 = $m_sci_Nil$();
   this.upClass$1 = $m_s_None$();
+  this.seqSize$1 = $m_Lio_kaitai_struct_format_NotCalculatedSized$();
   return this
 });
 $c_Lio_kaitai_struct_format_ClassSpec.prototype.equals__O__Z = (function(x$1) {
@@ -49948,6 +49221,2184 @@ var $d_Lio_kaitai_struct_precompile_TypeNotFoundError = new $TypeData().initClas
 });
 $c_Lio_kaitai_struct_precompile_TypeNotFoundError.prototype.$classData = $d_Lio_kaitai_struct_precompile_TypeNotFoundError;
 /** @constructor */
+function $c_Lio_kaitai_struct_translators_CSharpTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importList$3 = null;
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_CSharpTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_CSharpTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_CSharpTranslator.prototype = $c_Lio_kaitai_struct_translators_CSharpTranslator.prototype;
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Convert.ToInt64(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Count"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new string(Array.Reverse(", ".ToCharArray()))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.enumClass__sci_List__T = (function(enumTypeAbs) {
+  var enumTypeRel = $m_Lio_kaitai_struct_Utils$().relClass__sci_List__sci_List__sci_List(enumTypeAbs, this.provider$2.nowClass$1.name$1);
+  return $m_Lio_kaitai_struct_languages_CSharpCompiler$().types2class__sci_List__T(enumTypeRel)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ".Count - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System.Linq");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Min()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
+  var nativeType = $m_Lio_kaitai_struct_languages_CSharpCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(t);
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(v$2) {
+      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
+      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+    })
+  })(this));
+  var this$1 = $m_sc_Seq$();
+  var commaStr = $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new List<", "> { ", " }"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([nativeType, commaStr]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Substring(", ", ", " - ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(long) (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System.Linq");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Max()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "System");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Convert.ToString((long) (", "), ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doName__T__T = (function(s) {
+  return ((($uI(s.length) >= 0) && ($as_T(s.substring(0, $uI("_".length))) === "_")) ? (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["M", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(s)])))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(typeName), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["System.Text.Encoding.GetEncoding(", ").GetString(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding), bytesExpr]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+  if (((op !== null) && (op === x$2))) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " == ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  } else {
+    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+    if (((op !== null) && (op === x$4))) {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " != ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+    } else {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".CompareTo(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".ByteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".Mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.strLiteralGenericCC__C__T = (function(code) {
+  return $s_Lio_kaitai_struct_translators_CommonLiterals$class__strLiteralUnicode__Lio_kaitai_struct_translators_CommonLiterals__C__T(this, code)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new byte[] { ", " }"]));
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
+    var x$1 = $uB(x$1$2);
+    return (255 & x$1)
+  }));
+  var this$1 = $m_sc_Seq$();
+  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(label)]))
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
+  this.importList$3 = importList;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$9 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$8 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$7 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$6 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$5 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(0);
+  var jsx$4 = new $c_T2().init___O__O(self$5, "\\0");
+  var self$6 = new $c_jl_Character().init___C(7);
+  var jsx$3 = new $c_T2().init___O__O(self$6, "\\a");
+  var self$7 = new $c_jl_Character().init___C(12);
+  var jsx$2 = new $c_T2().init___O__O(self$7, "\\f");
+  var self$8 = new $c_jl_Character().init___C(11);
+  var jsx$1 = new $c_T2().init___O__O(self$8, "\\v");
+  var self$9 = new $c_jl_Character().init___C(8);
+  var array = [jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$9, "\\b")];
+  var this$42 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$42.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$42.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), id]))
+});
+var $d_Lio_kaitai_struct_translators_CSharpTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_CSharpTranslator: 0
+}, false, "io.kaitai.struct.translators.CSharpTranslator", {
+  Lio_kaitai_struct_translators_CSharpTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_CSharpTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_CSharpTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_CppTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importListSrc$3 = null;
+  this.CHARSET$undUTF8$3 = null;
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_CppTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_CppTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_CppTranslator.prototype = $c_Lio_kaitai_struct_translators_CppTranslator.prototype;
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  return ((("" + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["std::stoi(", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))) + ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", 0, ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr])))) + ")")
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::reverse(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->at(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->back()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importListSrc$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "algorithm");
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["*std::min_element(", "->begin(), ", "->end())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->front()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") ? (", ") : (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, values) {
+  throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("C++ literal arrays are not implemented yet"))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") ? 1 : 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substr(", ", (", ") - (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<int>(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importListSrc$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "algorithm");
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["*std::max_element(", "->begin(), ", "->end())"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  if ((baseStr === "10")) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::to_string(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
+  } else {
+    throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
+  }
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s])))))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
+  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<", "*>(", ")"]));
+  var jsx$1 = $m_Lio_kaitai_struct_languages_CppCompiler$();
+  $m_sci_List$();
+  var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array([typeName]);
+  var this$2 = $m_sci_List$();
+  var cbf = this$2.ReusableCBFInstance$2;
+  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([jsx$1.types2class__sci_List__T($as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf))), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::bytes_to_str(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+  if (((op !== null) && (op === x$2))) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " == (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  } else {
+    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+    if (((op !== null) && (op === x$4))) {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " != ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+    } else {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".compare(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["kaitai::kstream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  return (((("std::string(\"" + $m_Lio_kaitai_struct_Utils$().hexEscapeByteArray__sc_Seq__T(arr)) + "\", ") + arr.length__I()) + ")")
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
+  var thiz = (($as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType)) + "_") + label);
+  return $as_T(thiz.toUpperCase())
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importListSrc) {
+  this.importListSrc$3 = importListSrc;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  this.CHARSET$undUTF8$3 = $m_Ljava_nio_charset_Charset$().forName__T__Ljava_nio_charset_Charset("UTF-8");
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(7);
+  var jsx$3 = new $c_T2().init___O__O(self$5, "\\a");
+  var self$6 = new $c_jl_Character().init___C(12);
+  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
+  var self$7 = new $c_jl_Character().init___C(11);
+  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
+  var self$8 = new $c_jl_Character().init___C(8);
+  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\b")];
+  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doEnumById__sci_List__T__T = (function(enumType, id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["static_cast<", ">(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_CppCompiler$().types2class__sci_List__T(enumType), id]))
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.doStringLiteral__T__T = (function(s) {
+  var lenSuffix = (($uI(s.indexOf("\u0000")) !== (-1)) ? (", " + $m_sjsr_RuntimeString$().getBytes__T__Ljava_nio_charset_Charset__AB(s, this.CHARSET$undUTF8$3).u.length) : "");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["std::string(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s), lenSuffix]))
+});
+var $d_Lio_kaitai_struct_translators_CppTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_CppTranslator: 0
+}, false, "io.kaitai.struct.translators.CppTranslator", {
+  Lio_kaitai_struct_translators_CppTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_CppTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_CppTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_JavaScriptTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this)
+}
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_JavaScriptTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_JavaScriptTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype = $c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype;
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Number.parseInt(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Array.from(", ").reverse().join('')"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ".length - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".arrayMin(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " | 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  return this
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Math.trunc(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doLocalName__T__T = (function(s) {
+  return ((s === "_") ? s : (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)])))))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".arrayMax(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").toString(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doName__T__T = (function(s) {
+  return (((s === "_root") || ((s === "_parent") || (s === "_io"))) ? s : $m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".isEof()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".bytesToStr(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".byteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Math.floor(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x$3 === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x$5 = $m_Lio_kaitai_struct_exprlang_Ast$operator$RShift$();
+      if ((x$5 === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " >>> ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaScriptCompiler$().types2class__sci_List__T(enumType), $as_T(label.toUpperCase())]))
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, label) {
+  return label
+});
+var $d_Lio_kaitai_struct_translators_JavaScriptTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_JavaScriptTranslator: 0
+}, false, "io.kaitai.struct.translators.JavaScriptTranslator", {
+  Lio_kaitai_struct_translators_JavaScriptTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_JavaScriptTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_JavaScriptTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_JavaTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importList$3 = null
+}
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_JavaTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_JavaTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_JavaTranslator.prototype = $c_Lio_kaitai_struct_translators_JavaTranslator.prototype;
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Long.parseLong(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doIntLiteral__s_math_BigInt__T = (function(n) {
+  var this$1 = n.bigInteger$3;
+  var literal = $m_Ljava_math_Conversion$().toDecimalScaledString__Ljava_math_BigInteger__T(this$1);
+  var this$2 = $m_s_math_BigInt$();
+  if (n.$$greater__s_math_BigInt__Z(this$2.apply__I__s_math_BigInt(2147483647))) {
+    var suffix = "L"
+  } else {
+    var suffix = ""
+  };
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([literal, suffix]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".id()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new StringBuilder(", ").reverse().toString()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.enumClass__sci_List__T = (function(enumTypeAbs) {
+  var enumTypeRel = $m_Lio_kaitai_struct_Utils$().relClass__sci_List__sci_List__sci_List(enumTypeAbs, this.provider$2.nowClass$1.name$1);
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(x)
+  });
+  var this$1 = $m_sci_List$();
+  var bf = this$1.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((enumTypeRel === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = enumTypeRel.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = enumTypeRel.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$2 = rest;
+        rest = this$2.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(enumTypeRel, bf);
+    var these = enumTypeRel;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$3 = these;
+      these = this$3.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return $as_sc_TraversableOnce(jsx$1).mkString__T__T(".")
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get((int) ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get(", ".size() - 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Collections");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Collections.min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get(0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
+  var javaType = $m_Lio_kaitai_struct_languages_JavaCompiler$().kaitaiType2JavaTypeBoxed__Lio_kaitai_struct_datatype_DataType__T(t);
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(v$2) {
+      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
+      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+    })
+  })(this));
+  var this$1 = $m_sc_Seq$();
+  var commaStr = $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ArrayList<", ">(Arrays.asList(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([javaType, commaStr]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(int) (", " + 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Collections");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Collections.max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Long.toString(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ROOT$1 === s) ? s : (($m_Lio_kaitai_struct_format_Identifier$().PARENT$1 === s) ? "_parent()" : (($m_Lio_kaitai_struct_format_Identifier$().IO$1 === s) ? "_io()" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_it" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "_buf" : (($m_Lio_kaitai_struct_format_Identifier$().SWITCH$undON$1 === s) ? "on" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s)])))))))))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doCast__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, typeName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["((", ") (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(typeName), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.nio.charset.Charset");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new String(", ", Charset.forName(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T(value, et)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var x$2 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+  if (((op !== null) && (op === x$2))) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".equals(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  } else {
+    var x$4 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+    if (((op !== null) && (op === x$4))) {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["!(", ").equals(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+    } else {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".compareTo(", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+  if ((x === op)) {
+    var this$1 = this.importList$3;
+    $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "java.util.Arrays");
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Arrays.equals(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+    if ((x$3 === op)) {
+      var this$2 = this.importList$3;
+      $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, "java.util.Arrays");
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["!Arrays.equals(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+    } else {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ".byteArrayCompare(", ", ", ") ", " 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right), $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)]))
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new byte[] { ", " }"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([arr.mkString__T__T(", ")]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), $as_T(label.toUpperCase())]))
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
+  this.importList$3 = importList;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  return this
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".byId(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.enumClass__sci_List__T(enumTypeAbs), id]))
+});
+var $d_Lio_kaitai_struct_translators_JavaTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_JavaTranslator: 0
+}, false, "io.kaitai.struct.translators.JavaTranslator", {
+  Lio_kaitai_struct_translators_JavaTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_JavaTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_JavaTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_LuaTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importList$3 = null;
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_LuaTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_LuaTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_LuaTranslator.prototype = $c_Lio_kaitai_struct_translators_LuaTranslator.prototype;
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  var add = ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr])));
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["tonumber(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), add]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doNumericCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var f = (function(n$2) {
+    var n = $uZ(n$2);
+    return (n ? "1" : "0")
+  });
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(left)) {
+    var x4 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(left);
+    var l = x4.n$1;
+    if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(right)) {
+      var x5 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(right);
+      var r = x5.n$1;
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([f(l), this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), f(r)]))
+    }
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(left)) {
+    var x7 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(left);
+    var l$2 = x7.n$1;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([f(l$2), this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+  };
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$Bool(right)) {
+    var x9 = $as_Lio_kaitai_struct_exprlang_Ast$expr$Bool(right);
+    var r$3 = x9.n$1;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T(op), f(r$3)]))
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__doNumericCompareOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".value"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["#", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["string.reverse(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  if ($is_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(idx)) {
+    var x2 = $as_Lio_kaitai_struct_exprlang_Ast$expr$IntNum(idx);
+    var n = x2.n$1;
+    var this$1 = $m_s_math_BigInt$();
+    var fixedIdx = new $c_Lio_kaitai_struct_exprlang_Ast$expr$IntNum().init___s_math_BigInt(n.$$plus__s_math_BigInt__s_math_BigInt(this$1.apply__I__s_math_BigInt(1)))
+  } else {
+    var fixedIdx = idx
+  };
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(fixedIdx)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":pos()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var table = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[#", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([table, table]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
+  var this$2 = new $c_sci_StringOps().init___T("\\u{%04x}");
+  var array = [code];
+  var jsx$2 = $m_sjsr_RuntimeString$();
+  var $$this = this$2.repr$1;
+  $m_sc_Seq$();
+  $m_sjs_js_WrappedArray$();
+  var array$1 = [];
+  $uI(array.length);
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
+    array$1.push(elem);
+    i = ((1 + i) | 0)
+  };
+  $m_s_reflect_ManifestFactory$ObjectManifest$();
+  var len$1 = $uI(array$1.length);
+  var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
+  var len$2 = result.u.length;
+  var i$1 = 0;
+  var j = 0;
+  var x = $uI(array$1.length);
+  var x$1 = ((x < len$2) ? x : len$2);
+  var that = result.u.length;
+  var end = ((x$1 < that) ? x$1 : that);
+  while ((i$1 < end)) {
+    var jsx$1 = j;
+    var index$1 = i$1;
+    result.set(jsx$1, array$1[index$1]);
+    i$1 = ((1 + i$1) | 0);
+    j = ((1 + j) | 0)
+  };
+  return jsx$2.format__T__AO__T($$this, result)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
+  return (n ? "true" : "false")
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "local utils = require(\"utils\")");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["utils.array_min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(((", ") and (", ")) or (", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.binOp__Lio_kaitai_struct_exprlang_Ast$operator__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$BitXor$();
+  if ((x === op)) {
+    return "~"
+  } else {
+    return $s_Lio_kaitai_struct_translators_CommonOps$class__binOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$operator__T(this, op)
+  }
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(v$2) {
+      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
+      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+    })
+  })(this));
+  var this$1 = $m_sc_Seq$();
+  return (("{" + $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + "}")
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " and 1 or 0)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["string.sub(", ", ", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " > 0) and math.floor(", ") or math.ceil(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["string.len(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doLocalName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["self.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s]))))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$unaryop$Not$();
+  if ((x === op)) {
+    return "not"
+  } else {
+    return $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T(this, op)
+  }
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "local utils = require(\"utils\")");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["utils.array_max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$boolop$Or$();
+  if ((x === op)) {
+    return "or"
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$boolop$And$();
+    if ((x$3 === op)) {
+      return "and"
+    } else {
+      throw new $c_s_MatchError().init___O(op)
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  if ((baseStr === "10")) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["tostring(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
+  } else {
+    throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
+  }
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doName__T__T = (function(s) {
+  return s
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":is_eof()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "local str_decode = require(\"string_decode\")");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["str_decode.decode(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.cmpOp__Lio_kaitai_struct_exprlang_Ast$cmpop__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+  if ((x === op)) {
+    return "~="
+  } else {
+    return $s_Lio_kaitai_struct_translators_CommonOps$class__cmpOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$cmpop__T(this, op)
+  }
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T(value, et)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.decEscapeByteArray__p3__sc_Seq__T = (function(arr) {
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$2) {
+    var x = $uB(x$2);
+    var this$2 = new $c_sci_StringOps().init___T("\\%03d");
+    var array = [(255 & x)];
+    var jsx$3 = $m_sjsr_RuntimeString$();
+    var $$this = this$2.repr$1;
+    $m_sc_Seq$();
+    $m_sjs_js_WrappedArray$();
+    var array$1 = [];
+    $uI(array.length);
+    var i = 0;
+    var len = $uI(array.length);
+    while ((i < len)) {
+      var index = i;
+      var arg1 = array[index];
+      var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
+      array$1.push(elem);
+      i = ((1 + i) | 0)
+    };
+    $m_s_reflect_ManifestFactory$ObjectManifest$();
+    var len$1 = $uI(array$1.length);
+    var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
+    var len$2 = result.u.length;
+    var i$1 = 0;
+    var j = 0;
+    var x$1 = $uI(array$1.length);
+    var x$3 = ((x$1 < len$2) ? x$1 : len$2);
+    var that = result.u.length;
+    var end = ((x$3 < that) ? x$3 : that);
+    while ((i$1 < end)) {
+      var jsx$2 = j;
+      var index$1 = i$1;
+      result.set(jsx$2, array$1[index$1]);
+      i$1 = ((1 + i$1) | 0);
+      j = ((1 + j) | 0)
+    };
+    return jsx$3.format__T__AO__T($$this, result)
+  }));
+  var this$16 = $m_sc_Seq$();
+  return $as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$16.ReusableCBFInstance$2)).mkString__T()
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  return (("\"" + this.decEscapeByteArray__p3__sc_Seq__T(arr)) + "\"")
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(enumTypeAbs), label]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
+  this.importList$3 = importList;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$9 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$8 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$7 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$6 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$5 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(7);
+  var jsx$4 = new $c_T2().init___O__O(self$5, "\\a");
+  var self$6 = new $c_jl_Character().init___C(8);
+  var jsx$3 = new $c_T2().init___O__O(self$6, "\\b");
+  var self$7 = new $c_jl_Character().init___C(11);
+  var jsx$2 = new $c_T2().init___O__O(self$7, "\\v");
+  var self$8 = new $c_jl_Character().init___C(12);
+  var jsx$1 = new $c_T2().init___O__O(self$8, "\\f");
+  var self$9 = new $c_jl_Character().init___C(27);
+  var array = [jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$9, "\\027")];
+  var this$42 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$42.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$42.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(enumTypeAbs), id]))
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " .. ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+});
+var $d_Lio_kaitai_struct_translators_LuaTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_LuaTranslator: 0
+}, false, "io.kaitai.struct.translators.LuaTranslator", {
+  Lio_kaitai_struct_translators_LuaTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_LuaTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_LuaTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_PHPTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.asciiCharQuoteMap$3 = null;
+  this.namespaceRef$3 = null
+}
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PHPTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_PHPTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_PHPTranslator.prototype = $c_Lio_kaitai_struct_translators_PHPTranslator.prototype;
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["count(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strrev(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(provider, config) {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(36);
+  var jsx$3 = new $c_T2().init___O__O(self$5, "\\$");
+  var self$6 = new $c_jl_Character().init___C(12);
+  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
+  var self$7 = new $c_jl_Character().init___C(11);
+  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
+  var self$8 = new $c_jl_Character().init___C(27);
+  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\e")];
+  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
+  var thiz = config.phpNamespace$1;
+  if ((thiz === null)) {
+    throw new $c_jl_NullPointerException().init___()
+  };
+  this.namespaceRef$3 = ((thiz === "") ? "" : ("\\" + config.phpNamespace$1));
+  return this
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.types2classAbs__sci_List__T = (function(names) {
+  $m_sci_List$();
+  var o9 = new $c_s_Some().init___O(names);
+  if ((o9.x$2 !== null)) {
+    var this$2 = $as_sc_LinearSeqOptimized(o9.x$2);
+    var jsx$1 = ($s_sc_LinearSeqOptimized$class__lengthCompare__sc_LinearSeqOptimized__I__I(this$2, 1) === 0)
+  } else {
+    var jsx$1 = false
+  };
+  if (jsx$1) {
+    var this$3 = $as_sc_LinearSeqOptimized(o9.x$2);
+    var p3 = $as_T($s_sc_LinearSeqOptimized$class__apply__sc_LinearSeqOptimized__I__O(this$3, 0));
+    if ((p3 === "kaitai_struct")) {
+      return "\\Kaitai\\Struct\\Struct"
+    }
+  };
+  return ((this.namespaceRef$3 + "\\") + $m_Lio_kaitai_struct_languages_PHPCompiler$().types2classRel__sci_List__T(names))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var v = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[count(", ") - 1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([v, v]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
+  var this$2 = new $c_sci_StringOps().init___T("\\u{%x}");
+  var array = [code];
+  var jsx$2 = $m_sjsr_RuntimeString$();
+  var $$this = this$2.repr$1;
+  $m_sc_Seq$();
+  $m_sjs_js_WrappedArray$();
+  var array$1 = [];
+  $uI(array.length);
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
+    array$1.push(elem);
+    i = ((1 + i) | 0)
+  };
+  $m_s_reflect_ManifestFactory$ObjectManifest$();
+  var len$1 = $uI(array$1.length);
+  var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
+  var len$2 = result.u.length;
+  var i$1 = 0;
+  var j = 0;
+  var x = $uI(array$1.length);
+  var x$1 = ((x < len$2) ? x : len$2);
+  var that = result.u.length;
+  var end = ((x$1 < that) ? x$1 : that);
+  while ((i$1 < end)) {
+    var jsx$1 = j;
+    var index$1 = i$1;
+    result.set(jsx$1, array$1[index$1]);
+    i$1 = ((1 + i$1) | 0);
+    j = ((1 + j) | 0)
+  };
+  return jsx$2.format__T__AO__T($$this, result)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".substring(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doLocalName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "$_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "$_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "$i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$this->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)])))))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strlen(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  return ((baseStr === "10") ? new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["strval(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)])) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["base_convert(strval(", "), 10, ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i), baseStr])))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doName__T__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().lowerCamelCase__T__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::bytesToStr(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["\\Kaitai\\Struct\\Stream", bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["intval(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$operator$Mod$();
+      if ((x$3 === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::mod(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["\\Kaitai\\Struct\\Stream", this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  return (("\"" + $m_Lio_kaitai_struct_Utils$().hexEscapeByteArray__sc_Seq__T(arr)) + "\"")
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  var enumClass = this.types2classAbs__sci_List__T(enumTypeAbs);
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([enumClass, $as_T(label.toUpperCase())]))
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return id
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " . ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+});
+var $d_Lio_kaitai_struct_translators_PHPTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_PHPTranslator: 0
+}, false, "io.kaitai.struct.translators.PHPTranslator", {
+  Lio_kaitai_struct_translators_PHPTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_PHPTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PHPTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_PerlTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importList$3 = null;
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PerlTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_PerlTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_PerlTranslator.prototype = $c_Lio_kaitai_struct_translators_PerlTranslator.prototype;
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  if ((baseStr === "8")) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["oct(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+  } else if ((baseStr === "10")) {
+    return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+  } else if ((baseStr === "16")) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["hex(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+  } else {
+    throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
+  }
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["scalar(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["scalar(reverse(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var x1 = $as_Lio_kaitai_struct_datatype_DataType$ArrayType(this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(a)).elType$1;
+  var funcName = ($is_Lio_kaitai_struct_datatype_DataType$StrType(x1) ? "minstr" : "min");
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "List::Util");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["List::Util::", "(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([funcName, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
+  return (n ? "1" : "0")
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strLiteralUnicode__C__T = (function(code) {
+  var this$2 = new $c_sci_StringOps().init___T("\\N{U+%04x}");
+  var array = [code];
+  var jsx$2 = $m_sjsr_RuntimeString$();
+  var $$this = this$2.repr$1;
+  $m_sc_Seq$();
+  $m_sjs_js_WrappedArray$();
+  var array$1 = [];
+  $uI(array.length);
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    var elem = $s_sci_StringLike$class__unwrapArg__p0__sci_StringLike__O__O(this$2, arg1);
+    array$1.push(elem);
+    i = ((1 + i) | 0)
+  };
+  $m_s_reflect_ManifestFactory$ObjectManifest$();
+  var len$1 = $uI(array$1.length);
+  var result = $newArrayObject($d_O.getArrayOf(), [len$1]);
+  var len$2 = result.u.length;
+  var i$1 = 0;
+  var j = 0;
+  var x = $uI(array$1.length);
+  var x$1 = ((x < len$2) ? x : len$2);
+  var that = result.u.length;
+  var end = ((x$1 < that) ? x$1 : that);
+  while ((i$1 < end)) {
+    var jsx$1 = j;
+    var index$1 = i$1;
+    result.set(jsx$1, array$1[index$1]);
+    i$1 = ((1 + i$1) | 0);
+    j = ((1 + j) | 0)
+  };
+  return jsx$2.format__T__AO__T($$this, result)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["@{", "}[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doArrayLiteral__Lio_kaitai_struct_datatype_DataType__sc_Seq__T = (function(t, value) {
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(v$2) {
+      var v = $as_Lio_kaitai_struct_exprlang_Ast$expr(v$2);
+      return arg$outer.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+    })
+  })(this));
+  var this$1 = $m_sc_Seq$();
+  return (("(" + $as_sc_TraversableOnce(value.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")) + ")")
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ":", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doLocalName__T__T = (function(s) {
+  return (((s === "_") || (s === "_on")) ? ("$" + s) : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? this.doName__T__T(s) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$self->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.doName__T__T(s)]))))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["length(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  var x1 = $as_Lio_kaitai_struct_datatype_DataType$ArrayType(this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(a)).elType$1;
+  var funcName = ($is_Lio_kaitai_struct_datatype_DataType$StrType(x1) ? "maxstr" : "max");
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "List::Util");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["List::Util::", "(@{", "})"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([funcName, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  if ((baseStr === "8")) {
+    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["%o"])).s__sc_Seq__T($m_sci_Nil$())
+  } else if ((baseStr === "10")) {
+    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["%d"])).s__sc_Seq__T($m_sci_Nil$())
+  } else {
+    if ((baseStr !== "16")) {
+      throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
+    };
+    var format = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["0x%X"])).s__sc_Seq__T($m_sci_Nil$())
+  };
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["sprintf('", "', ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([format, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "$_" : (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 === s) ? "$_buf" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "$i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s])))))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "Encode");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Encode::decode(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding), bytesExpr]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.anyField__Lio_kaitai_struct_exprlang_Ast$expr__T__T = (function(value, attrName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "->", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value), this.doName__T__T(attrName)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$();
+  if ((x === op)) {
+    var opStr = "eq"
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$NotEq$();
+    if ((x$3 === op)) {
+      var opStr = "ne"
+    } else {
+      var x$5 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Lt$();
+      if ((x$5 === op)) {
+        var opStr = "lt"
+      } else {
+        var x$7 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$LtE$();
+        if ((x$7 === op)) {
+          var opStr = "le"
+        } else {
+          var x$9 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Gt$();
+          if ((x$9 === op)) {
+            var opStr = "gt"
+          } else {
+            var x$11 = $m_Lio_kaitai_struct_exprlang_Ast$cmpop$GtE$();
+            if ((!(x$11 === op))) {
+              throw new $c_s_MatchError().init___O(op)
+            };
+            var opStr = "ge"
+          }
+        }
+      }
+    }
+  };
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), opStr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doBytesCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  return this.doStrCompareOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr__T(left, op, right)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["pack('C*', (", "))"]));
+  var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(x$1$2) {
+    var x$1 = $uB(x$1$2);
+    return (255 & x$1)
+  }));
+  var this$1 = $m_sc_Seq$();
+  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_sc_TraversableOnce(arr.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", " / ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumType, label) {
+  var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$", "_", ""]));
+  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType));
+  return jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$as_T(thiz.toUpperCase()), $as_T(label.toUpperCase())]))
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
+  this.importList$3 = importList;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$11 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$10 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$9 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$8 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$7 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(36);
+  var jsx$6 = new $c_T2().init___O__O(self$5, "\\$");
+  var self$6 = new $c_jl_Character().init___C(64);
+  var jsx$5 = new $c_T2().init___O__O(self$6, "\\@");
+  var self$7 = new $c_jl_Character().init___C(37);
+  var jsx$4 = new $c_T2().init___O__O(self$7, "\\%");
+  var self$8 = new $c_jl_Character().init___C(7);
+  var jsx$3 = new $c_T2().init___O__O(self$8, "\\a");
+  var self$9 = new $c_jl_Character().init___C(12);
+  var jsx$2 = new $c_T2().init___O__O(self$9, "\\f");
+  var self$10 = new $c_jl_Character().init___C(27);
+  var jsx$1 = new $c_T2().init___O__O(self$10, "\\e");
+  var self$11 = new $c_jl_Character().init___C(8);
+  var array = [jsx$11, jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$11, "\\b")];
+  var this$50 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$50.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$50.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return id
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.strConcat__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, right) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " . ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+});
+var $d_Lio_kaitai_struct_translators_PerlTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_PerlTranslator: 0
+}, false, "io.kaitai.struct.translators.PerlTranslator", {
+  Lio_kaitai_struct_translators_PerlTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_PerlTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PerlTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_PythonTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.importList$3 = null;
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_PythonTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_PythonTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_PythonTranslator.prototype = $c_Lio_kaitai_struct_translators_PythonTranslator.prototype;
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  var add = ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr])));
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), add]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".value"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["len(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[::-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".pos()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[-1]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["min(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doBoolLiteral__Z__T = (function(n) {
+  return (n ? "True" : "False")
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[0]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " if ", " else ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.boolToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ":", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.unaryOp__Lio_kaitai_struct_exprlang_Ast$unaryop__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$unaryop$Not$();
+  if ((x === op)) {
+    return "not "
+  } else {
+    return $s_Lio_kaitai_struct_translators_CommonOps$class__unaryOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$unaryop__T(this, op)
+  }
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doLocalName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1 === s) ? "_" : (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["self.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s]))))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["len(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["max(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.booleanOp__Lio_kaitai_struct_exprlang_Ast$boolop__T = (function(op) {
+  var x = $m_Lio_kaitai_struct_exprlang_Ast$boolop$Or$();
+  if ((x === op)) {
+    return "or"
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_exprlang_Ast$boolop$And$();
+    if ((x$3 === op)) {
+      return "and"
+    } else {
+      throw new $c_s_MatchError().init___O(op)
+    }
+  }
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamSize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  if ((baseStr === "2")) {
+    var func = "bin"
+  } else if ((baseStr === "8")) {
+    var func = "oct"
+  } else if ((baseStr === "10")) {
+    var func = "str"
+  } else {
+    if ((baseStr !== "16")) {
+      throw new $c_jl_UnsupportedOperationException().init___T(baseStr)
+    };
+    var func = "hex"
+  };
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([func, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".is_eof()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doName__T__T = (function(s) {
+  return s
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").decode(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T(value, et)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  var this$1 = this.importList$3;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "import struct");
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["struct.pack('", "b', ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([arr.length__I(), arr.mkString__T__T(", ")]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.numericBinOp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(left, op, right) {
+  var _1 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(left);
+  var _2 = this.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(right);
+  if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_1)) {
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(_2)) {
+      var x = $m_Lio_kaitai_struct_exprlang_Ast$operator$Div$();
+      if ((x === op)) {
+        return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " // ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(left), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(right)]))
+      }
+    }
+  };
+  return $s_Lio_kaitai_struct_translators_CommonOps$class__numericBinOp__Lio_kaitai_struct_translators_CommonOps__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$operator__Lio_kaitai_struct_exprlang_Ast$expr__T(this, left, op, right)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamPos__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_PythonCompiler$().types2class__sci_List__T(enumTypeAbs), label]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList = (function(provider, importList) {
+  this.importList$3 = importList;
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$8 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$7 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$6 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$5 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$4 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(7);
+  var jsx$3 = new $c_T2().init___O__O(self$5, "\\a");
+  var self$6 = new $c_jl_Character().init___C(12);
+  var jsx$2 = new $c_T2().init___O__O(self$6, "\\f");
+  var self$7 = new $c_jl_Character().init___C(11);
+  var jsx$1 = new $c_T2().init___O__O(self$7, "\\v");
+  var self$8 = new $c_jl_Character().init___C(8);
+  var array = [jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$8, "\\b")];
+  var this$38 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$38.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$38.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doEnumById__sci_List__T__T = (function(enumTypeAbs, id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_PythonCompiler$().types2class__sci_List__T(enumTypeAbs), id]))
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.doStringLiteral__T__T = (function(s) {
+  return ("u" + $s_Lio_kaitai_struct_translators_CommonLiterals$class__doStringLiteral__Lio_kaitai_struct_translators_CommonLiterals__T__T(this, s))
+});
+var $d_Lio_kaitai_struct_translators_PythonTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_PythonTranslator: 0
+}, false, "io.kaitai.struct.translators.PythonTranslator", {
+  Lio_kaitai_struct_translators_PythonTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_PythonTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_PythonTranslator;
+/** @constructor */
+function $c_Lio_kaitai_struct_translators_RubyTranslator() {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.call(this);
+  this.asciiCharQuoteMap$3 = null
+}
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype = new $h_Lio_kaitai_struct_translators_BaseTranslator();
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.constructor = $c_Lio_kaitai_struct_translators_RubyTranslator;
+/** @constructor */
+function $h_Lio_kaitai_struct_translators_RubyTranslator() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_translators_RubyTranslator.prototype = $c_Lio_kaitai_struct_translators_RubyTranslator.prototype;
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, base) {
+  var baseStr = this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base);
+  return ((this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s) + ".to_i") + ((baseStr === "10") ? "" : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([baseStr]))))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T = (function(v, et) {
+  var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"]));
+  var jsx$1 = $m_Lio_kaitai_struct_languages_RubyCompiler$();
+  var this$1 = et.name$1;
+  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(this$1));
+  return jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([jsx$1.inverseEnumName__T__T($as_T(thiz.toUpperCase())), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, from, to) {
+  return this.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, from, to)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".length"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".reverse"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doSubscript__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(container, idx) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(container), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(idx)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".last"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".min"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".first"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value, num) {
+  return this.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(value, num)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doIfExp__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition, ifTrue, ifFalse) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", " ? ", " : ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(condition), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifTrue), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(ifFalse)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.asciiCharQuoteMap__sci_Map = (function() {
+  return this.asciiCharQuoteMap$3
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(value) {
+  return this.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T(value)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider = (function(provider) {
+  $c_Lio_kaitai_struct_translators_BaseTranslator.prototype.init___Lio_kaitai_struct_translators_TypeProvider.call(this, provider);
+  var self = new $c_jl_Character().init___C(9);
+  var jsx$10 = new $c_T2().init___O__O(self, "\\t");
+  var self$1 = new $c_jl_Character().init___C(10);
+  var jsx$9 = new $c_T2().init___O__O(self$1, "\\n");
+  var self$2 = new $c_jl_Character().init___C(13);
+  var jsx$8 = new $c_T2().init___O__O(self$2, "\\r");
+  var self$3 = new $c_jl_Character().init___C(34);
+  var jsx$7 = new $c_T2().init___O__O(self$3, "\\\"");
+  var self$4 = new $c_jl_Character().init___C(92);
+  var jsx$6 = new $c_T2().init___O__O(self$4, "\\\\");
+  var self$5 = new $c_jl_Character().init___C(35);
+  var jsx$5 = new $c_T2().init___O__O(self$5, "\\#");
+  var self$6 = new $c_jl_Character().init___C(7);
+  var jsx$4 = new $c_T2().init___O__O(self$6, "\\a");
+  var self$7 = new $c_jl_Character().init___C(12);
+  var jsx$3 = new $c_T2().init___O__O(self$7, "\\f");
+  var self$8 = new $c_jl_Character().init___C(11);
+  var jsx$2 = new $c_T2().init___O__O(self$8, "\\v");
+  var self$9 = new $c_jl_Character().init___C(27);
+  var jsx$1 = new $c_T2().init___O__O(self$9, "\\e");
+  var self$10 = new $c_jl_Character().init___C(8);
+  var array = [jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$10, "\\b")];
+  var this$46 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i = 0;
+  var len = $uI(array.length);
+  while ((i < len)) {
+    var index = i;
+    var arg1 = array[index];
+    this$46.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+    i = ((1 + i) | 0)
+  };
+  this.asciiCharQuoteMap$3 = $as_sci_Map(this$46.elems$1);
+  return this
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strSubstring__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s, from, to) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[", ", (", " - 1)]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(from), this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(to)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.floatToInt__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(v) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").to_i"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(v)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strLength__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(s) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".size"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(s)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMax__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(a) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".max"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.intToStr__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(i, base) {
+  return (("" + this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(i)) + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([".to_s(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(base)])))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doName__T__T = (function(s) {
+  return (($m_Lio_kaitai_struct_format_Identifier$().INDEX$1 === s) ? "i" : s)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.kaitaiStreamEof__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(value) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".eof?"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s, base) {
+  return this.strToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$expr__T(s, base)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.bytesToStr__T__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(bytesExpr, encoding) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["(", ").force_encoding(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([bytesExpr, this.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(encoding)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__O = (function(value, et) {
+  return this.enumToInt__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType$EnumType__T(value, et)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arraySize__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(s) {
+  return this.strReverse__Lio_kaitai_struct_exprlang_Ast$expr__T(s)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doByteArrayLiteral__sc_Seq__T = (function(arr) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".pack('C*')"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$c_Lio_kaitai_struct_translators_BaseTranslator.prototype.doByteArrayLiteral__sc_Seq__T.call(this, arr)]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayLast__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayMin__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doEnumByLabel__sci_List__T__T = (function(enumTypeAbs, label) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([":", "_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumTypeAbs), label]))
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__O = (function(a) {
+  return this.arrayFirst__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.doEnumById__sci_List__T__T = (function(enumType, id) {
+  var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "::resolve_enum(", ", ", ")"]));
+  var thiz = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(enumType));
+  return jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Kaitai::Struct::Stream", $as_T(thiz.toUpperCase()), id]))
+});
+var $d_Lio_kaitai_struct_translators_RubyTranslator = new $TypeData().initClass({
+  Lio_kaitai_struct_translators_RubyTranslator: 0
+}, false, "io.kaitai.struct.translators.RubyTranslator", {
+  Lio_kaitai_struct_translators_RubyTranslator: 1,
+  Lio_kaitai_struct_translators_BaseTranslator: 1,
+  Lio_kaitai_struct_translators_TypeDetector: 1,
+  O: 1,
+  Lio_kaitai_struct_translators_AbstractTranslator: 1,
+  Lio_kaitai_struct_translators_CommonLiterals: 1,
+  Lio_kaitai_struct_translators_CommonOps: 1,
+  Lio_kaitai_struct_translators_CommonMethods: 1
+});
+$c_Lio_kaitai_struct_translators_RubyTranslator.prototype.$classData = $d_Lio_kaitai_struct_translators_RubyTranslator;
+/** @constructor */
 function $c_Ljava_nio_StringCharBuffer() {
   $c_Ljava_nio_CharBuffer.call(this);
   this.java$nio$StringCharBuffer$$$undcsq$f = null;
@@ -50670,6 +52121,11 @@ $c_s_math_BigInt.prototype.isValidFloat__Z = (function() {
 });
 $c_s_math_BigInt.prototype.$$less__s_math_BigInt__Z = (function(that) {
   return (this.bigInteger$3.compareTo__Ljava_math_BigInteger__I(that.bigInteger$3) < 0)
+});
+$c_s_math_BigInt.prototype.$$plus__s_math_BigInt__s_math_BigInt = (function(that) {
+  var this$1 = this.bigInteger$3;
+  var bi = that.bigInteger$3;
+  return new $c_s_math_BigInt().init___Ljava_math_BigInteger($m_Ljava_math_Elementary$().add__Ljava_math_BigInteger__Ljava_math_BigInteger__Ljava_math_BigInteger(this$1, bi))
 });
 $c_s_math_BigInt.prototype.$$less$eq__s_math_BigInt__Z = (function(that) {
   return (this.bigInteger$3.compareTo__Ljava_math_BigInteger__I(that.bigInteger$3) <= 0)
@@ -56837,6 +58293,7 @@ $c_Lio_kaitai_struct_languages_CppCompiler.prototype.readHeader__s_Option__Z__V 
     };
     var suffix = ""
   };
+  this.ensureMode__Lio_kaitai_struct_languages_CppCompiler$AccessMode__V(this.PrivateAccess__Lio_kaitai_struct_languages_CppCompiler$PrivateAccess$());
   this.outHdr$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["void _read", "();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([suffix])));
   var this$1 = this.outSrc$2;
   this$1.sb$2.append__T__scm_StringBuilder("\n");
@@ -56947,7 +58404,8 @@ $c_Lio_kaitai_struct_languages_CppCompiler.prototype.condRepeatUntilHeader__Lio_
 });
 $c_Lio_kaitai_struct_languages_CppCompiler.prototype.readFooter__V = (function() {
   this.outSrc$2.dec__V();
-  this.outSrc$2.puts__T__V("}")
+  this.outSrc$2.puts__T__V("}");
+  this.ensureMode__Lio_kaitai_struct_languages_CppCompiler$AccessMode__V(this.PublicAccess__Lio_kaitai_struct_languages_CppCompiler$PublicAccess$())
 });
 $c_Lio_kaitai_struct_languages_CppCompiler.prototype.switchStart__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, on) {
   var onType = this.translator$2.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(on);
@@ -57415,8 +58873,7 @@ $c_Lio_kaitai_struct_languages_CppCompiler.prototype.fileHeader__T__V = (functio
   this.outHdrHeader$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["// ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild"])));
   var this$4 = this.outHdrHeader$2;
   this$4.sb$2.append__T__scm_StringBuilder("\n");
-  this.outHdrHeader$2.puts__T__V("#include <kaitai/kaitaistruct.h>");
-  this.outHdrHeader$2.puts__T__V("#include <kaitai/kaitaistream.h>");
+  this.outHdrHeader$2.puts__T__V("#include \"kaitai/kaitaistruct.h\"");
   var this$5 = this.outHdrHeader$2;
   this$5.sb$2.append__T__scm_StringBuilder("\n");
   var this$6 = this.importListHdr$2;
@@ -58803,6 +60260,9 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchEnd__V = (func
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.debugClassSequence__sci_List__V = (function(seq) {
   /*<skip>*/
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$outHeader$und$eq__Lio_kaitai_struct_StringLanguageOutputWriter__V = (function(x$1) {
+  this.outHeader$2 = x$1
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatExprHeader__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, io, dataType, needRaw, repeatExpr) {
   if (needRaw) {
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = new Array(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id)), $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])))
@@ -58814,17 +60274,14 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatExprHeader
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["for (var i = 0; i < ", "; i++) {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])));
   this.out$2.inc__V()
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$outHeader$und$eq__Lio_kaitai_struct_StringLanguageOutputWriter__V = (function(x$1) {
-  this.outHeader$2 = x$1
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.userTypeDebugRead__T__V = (function(id) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "._read();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([id])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceCheckCacheAndReturn__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if (", " !== undefined)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])));
   this.out$2.inc__V();
   this.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V(instName);
   this.out$2.dec__V()
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.userTypeDebugRead__T__V = (function(id) {
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "._read();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([id])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrParseHybrid__F0__F0__V = (function(leProc, beProc) {
   this.out$2.puts__T__V("if (this._is_le) {");
@@ -58846,9 +60303,6 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceHeader__sci_
   this.out$2.puts__T__V("get: function() {");
   this.out$2.inc__V()
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.privateMemberName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatEosHeader__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__V = (function(id, io, dataType, needRaw) {
   if (needRaw) {
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = [];"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id))])))
@@ -58861,6 +60315,9 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatEosHeader_
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["while (!", ".isEof()) {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])));
   this.out$2.inc__V()
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.privateMemberName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.seek__T__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(io, pos) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".seek(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, pos)])))
 });
@@ -58871,6 +60328,9 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatEosFooter_
   this.out$2.puts__T__V("i++;");
   this.out$2.dec__V();
   this.out$2.puts__T__V("}")
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.pushPos__T__V = (function(io) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var _pos = ", ".pos;"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classConstructorHeader__sci_List__Lio_kaitai_struct_datatype_DataType__sci_List__Z__sci_List__V = (function(name, parentClassName, rootClassName, isHybrid, params) {
   var endianSuffix = (isHybrid ? ", _is_le" : "");
@@ -58941,9 +60401,6 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classConstructorHead
   var this$5 = this.out$2;
   this$5.sb$2.append__T__scm_StringBuilder("\n")
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.pushPos__T__V = (function(io) {
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var _pos = ", ".pos;"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.useIO__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(ioEx) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var io = ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, ioEx)])));
   return "io"
@@ -58955,6 +60412,12 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchCaseFirstStart
   } else {
     this.switchCaseStart__Lio_kaitai_struct_exprlang_Ast$expr__V(condition)
   }
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.runRead__V = (function() {
+  this.out$2.puts__T__V("this._read();")
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classDoc__sci_List__Lio_kaitai_struct_format_DocSpec__V = (function(name, doc) {
+  this.universalDoc__Lio_kaitai_struct_format_DocSpec__V(doc)
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.parseExpr__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_datatype_DataType__T__s_Option__T = (function(dataType, assignType, io, defEndian) {
   if ($is_Lio_kaitai_struct_datatype_DataType$ReadableType(dataType)) {
@@ -58984,15 +60447,42 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.parseExpr__Lio_kaita
       return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".readBitsInt(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, width]))
     } else if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType)) {
       var x10 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dataType);
-      var addArgs = (x10.isOpaque__Z() ? "" : ", this, this._root");
-      var x1$2 = $as_Lio_kaitai_struct_format_ClassSpec(x10.classSpec$1.get__O()).meta$1.endian$1;
+      var rc8 = false;
+      var x2$2 = null;
+      var x1$2 = x10.forcedParent$1;
+      matchEnd9: {
+        var parent;
+        if ($is_s_Some(x1$2)) {
+          rc8 = true;
+          x2$2 = $as_s_Some(x1$2);
+          var p3 = $as_Lio_kaitai_struct_exprlang_Ast$expr(x2$2.x$2);
+          var x$3 = $m_Lio_kaitai_struct_datatype_DataType$().USER$undTYPE$undNO$undPARENT$1;
+          if (((x$3 === null) ? (p3 === null) : x$3.equals__O__Z(p3))) {
+            var parent = "null";
+            break matchEnd9
+          }
+        };
+        if (rc8) {
+          var fp = $as_Lio_kaitai_struct_exprlang_Ast$expr(x2$2.x$2);
+          var parent = this.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(fp);
+          break matchEnd9
+        };
+        var x$5 = $m_s_None$();
+        if ((x$5 === x1$2)) {
+          var parent = "this";
+          break matchEnd9
+        };
+        throw new $c_s_MatchError().init___O(x1$2)
+      };
+      var root = (x10.isOpaque__Z() ? "null" : "this._root");
+      var x1$3 = $as_Lio_kaitai_struct_format_ClassSpec(x10.classSpec$1.get__O()).meta$1.endian$1;
       matchEnd6: {
         var addEndian;
-        if ($is_s_Some(x1$2)) {
-          var x2$2 = $as_s_Some(x1$2);
-          var p3 = $as_Lio_kaitai_struct_datatype_Endianness(x2$2.x$2);
-          var x$3 = $m_Lio_kaitai_struct_datatype_InheritedEndian$();
-          if ((x$3 === p3)) {
+        if ($is_s_Some(x1$3)) {
+          var x2$3 = $as_s_Some(x1$3);
+          var p3$2 = $as_Lio_kaitai_struct_datatype_Endianness(x2$3.x$2);
+          var x$7 = $m_Lio_kaitai_struct_datatype_InheritedEndian$();
+          if ((x$7 === p3$2)) {
             var addEndian = ", this._is_le";
             break matchEnd6
           }
@@ -59009,10 +60499,10 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.parseExpr__Lio_kaita
       })(this));
       var this$1 = $m_sc_Seq$();
       var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), ", ", ", ", "");
-      var jsx$5 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ", "(", "", "", "", ")"]));
+      var jsx$5 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ", "(", ", ", ", ", "", "", ")"]));
       var this$2 = x10.name$1;
       var name = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(this$2));
-      return jsx$5.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name), io, addArgs, addEndian, addParams]))
+      return jsx$5.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name), io, parent, root, addEndian, addParams]))
     } else {
       throw new $c_s_MatchError().init___O(dataType)
     }
@@ -59042,11 +60532,178 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrDebugStart__Lio_
   };
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = { ", "", "", " };"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([debugName, ioProps, (((ioProps !== "") && (enumNameProps !== "")) ? ", " : ""), enumNameProps])))
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classDoc__sci_List__Lio_kaitai_struct_format_DocSpec__V = (function(name, doc) {
-  this.universalDoc__Lio_kaitai_struct_format_DocSpec__V(doc)
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.runRead__V = (function() {
-  this.out$2.puts__T__V("this._read();")
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$3 = this$1.list$1.toList__sci_List();
+  var f = (function(arg$outer) {
+    return (function(x$2) {
+      var x = $as_T(x$2);
+      return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(x)
+    })
+  })(this);
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((this$3 === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = this$3.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = this$3.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$4 = rest;
+        rest = this$4.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
+    var these = this$3;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$5 = these;
+      these = this$5.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  var importClasses = $as_sci_List(jsx$1);
+  $m_sci_List$();
+  var xs = new $c_sjs_js_WrappedArray().init___sjs_js_Array(["'kaitai-struct/KaitaiStream'"]);
+  var this$7 = $m_sci_List$();
+  var cbf = this$7.ReusableCBFInstance$2;
+  var jsx$4 = $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf));
+  var f$1 = (function(x$2$1) {
+    var x$1 = $as_T(x$2$1);
+    return (("'./" + x$1) + "'")
+  });
+  var this$8 = $m_sci_List$();
+  var bf$1 = this$8.ReusableCBFInstance$2;
+  if ((bf$1 === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((importClasses === $m_sci_Nil$())) {
+      var jsx$3 = $m_sci_Nil$()
+    } else {
+      var arg1$3 = importClasses.head__O();
+      var h$1 = new $c_sci_$colon$colon().init___O__sci_List(f$1(arg1$3), $m_sci_Nil$());
+      var t$1 = h$1;
+      var rest$1 = importClasses.tail__sci_List();
+      while ((rest$1 !== $m_sci_Nil$())) {
+        var arg1$4 = rest$1.head__O();
+        var nx$1 = new $c_sci_$colon$colon().init___O__sci_List(f$1(arg1$4), $m_sci_Nil$());
+        t$1.tl$5 = nx$1;
+        t$1 = nx$1;
+        var this$9 = rest$1;
+        rest$1 = this$9.tail__sci_List()
+      };
+      var jsx$3 = h$1
+    }
+  } else {
+    var b$1 = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(importClasses, bf$1);
+    var these$1 = importClasses;
+    while ((!these$1.isEmpty__Z())) {
+      var arg1$5 = these$1.head__O();
+      b$1.$$plus$eq__O__scm_Builder(f$1(arg1$5));
+      var this$10 = these$1;
+      these$1 = this$10.tail__sci_List()
+    };
+    var jsx$3 = b$1.result__O()
+  };
+  var jsx$2 = $as_sc_GenTraversableOnce(jsx$3);
+  var this$11 = $m_sci_List$();
+  var impModuleNames = $as_sci_List(jsx$4.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$2, this$11.ReusableCBFInstance$2));
+  var defineArgs = $s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(impModuleNames, "", ", ", "");
+  var f$2 = (function(x$2$2) {
+    var x$3 = $as_T(x$2$2);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["require(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$3]))
+  });
+  var this$12 = $m_sci_List$();
+  var bf$2 = this$12.ReusableCBFInstance$2;
+  if ((bf$2 === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((impModuleNames === $m_sci_Nil$())) {
+      var jsx$5 = $m_sci_Nil$()
+    } else {
+      var arg1$6 = impModuleNames.head__O();
+      var h$2 = new $c_sci_$colon$colon().init___O__sci_List(f$2(arg1$6), $m_sci_Nil$());
+      var t$2 = h$2;
+      var rest$2 = impModuleNames.tail__sci_List();
+      while ((rest$2 !== $m_sci_Nil$())) {
+        var arg1$7 = rest$2.head__O();
+        var nx$2 = new $c_sci_$colon$colon().init___O__sci_List(f$2(arg1$7), $m_sci_Nil$());
+        t$2.tl$5 = nx$2;
+        t$2 = nx$2;
+        var this$13 = rest$2;
+        rest$2 = this$13.tail__sci_List()
+      };
+      var jsx$5 = h$2
+    }
+  } else {
+    var b$2 = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(impModuleNames, bf$2);
+    var these$2 = impModuleNames;
+    while ((!these$2.isEmpty__Z())) {
+      var arg1$8 = these$2.head__O();
+      b$2.$$plus$eq__O__scm_Builder(f$2(arg1$8));
+      var this$14 = these$2;
+      these$2 = this$14.tail__sci_List()
+    };
+    var jsx$5 = b$2.result__O()
+  };
+  var moduleArgs = $as_sc_TraversableOnce(jsx$5).mkString__T__T(", ");
+  $m_sci_List$();
+  var xs$1 = new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream"]);
+  var this$16 = $m_sci_List$();
+  var cbf$1 = this$16.ReusableCBFInstance$2;
+  var jsx$6 = $as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs$1, cbf$1));
+  var this$17 = $m_sci_List$();
+  var argClasses = $as_sci_List(jsx$6.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(importClasses, this$17.ReusableCBFInstance$2));
+  var f$3 = (function(x$2$3) {
+    var x$4 = $as_T(x$2$3);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["root.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x$4]))
+  });
+  var this$18 = $m_sci_List$();
+  var bf$3 = this$18.ReusableCBFInstance$2;
+  if ((bf$3 === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((argClasses === $m_sci_Nil$())) {
+      var jsx$7 = $m_sci_Nil$()
+    } else {
+      var arg1$9 = argClasses.head__O();
+      var h$3 = new $c_sci_$colon$colon().init___O__sci_List(f$3(arg1$9), $m_sci_Nil$());
+      var t$3 = h$3;
+      var rest$3 = argClasses.tail__sci_List();
+      while ((rest$3 !== $m_sci_Nil$())) {
+        var arg1$10 = rest$3.head__O();
+        var nx$3 = new $c_sci_$colon$colon().init___O__sci_List(f$3(arg1$10), $m_sci_Nil$());
+        t$3.tl$5 = nx$3;
+        t$3 = nx$3;
+        var this$19 = rest$3;
+        rest$3 = this$19.tail__sci_List()
+      };
+      var jsx$7 = h$3
+    }
+  } else {
+    var b$3 = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(argClasses, bf$3);
+    var these$3 = argClasses;
+    while ((!these$3.isEmpty__Z())) {
+      var arg1$11 = these$3.head__O();
+      b$3.$$plus$eq__O__scm_Builder(f$3(arg1$11));
+      var this$20 = these$3;
+      these$3 = this$20.tail__sci_List()
+    };
+    var jsx$7 = b$3.result__O()
+  };
+  var rootArgs = $as_sc_TraversableOnce(jsx$7).mkString__T__T(", ");
+  var this$22 = new $c_sci_StringOps().init___T("  ");
+  var jsx$11 = $s_sci_StringLike$class__$$times__sci_StringLike__I__T(this$22, 2);
+  var jsx$10 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["define([", "], factory);\\n"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([defineArgs]));
+  var this$24 = new $c_sci_StringOps().init___T("  ");
+  var jsx$9 = $s_sci_StringLike$class__$$times__sci_StringLike__I__T(this$24, 2);
+  var jsx$8 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["module.exports = factory(", ");\\n"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([moduleArgs]));
+  var this$26 = new $c_sci_StringOps().init___T("  ");
+  return (((((((((("(function (root, factory) {\n  if (typeof define === 'function' && define.amd) {\n" + jsx$11) + jsx$10) + "  } else if (typeof module === 'object' && module.exports) {\n") + jsx$9) + jsx$8) + "  } else {\n") + $s_sci_StringLike$class__$$times__sci_StringLike__I__T(this$26, 2)) + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["root.", " = factory(", ");\\n"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaScriptCompiler$().types2class__sci_List__T(topClass.name$1), rootArgs]))) + "  }\n") + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["}(this, function (", ") {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(argClasses, "", ", ", "")])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.out$2.dec__V();
@@ -59089,11 +60746,11 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.idToStr__Lio_kaitai_
     throw new $c_s_MatchError().init___O(id)
   }
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.localTemporaryName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
-  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_t_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.alignToByte__T__V = (function(io) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".alignToByte();"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.localTemporaryName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_t_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.out__Lio_kaitai_struct_StringLanguageOutputWriter = (function() {
   return this.out$2
@@ -59112,45 +60769,29 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.handleAssignmentRepe
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var ", " = ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([tmpName, expr])));
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".push(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), tmpName])))
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.type2class__T__T = (function(name) {
-  return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attributeDeclaration__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.opaqueClassDeclaration__Lio_kaitai_struct_format_ClassSpec__V = (function(classSpec) {
+  var typeName = $as_T(classSpec.name$1.head__O());
+  var this$1 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, typeName)
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$out$und$eq__Lio_kaitai_struct_StringLanguageOutputWriter__V = (function(x$1) {
   this.out$2 = x$1
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.opaqueClassDeclaration__Lio_kaitai_struct_format_ClassSpec__V = (function(classSpec) {
-  var typeName = $as_T(classSpec.name$1.head__O());
-  var this$1 = this.out$2;
-  this$1.sb$2.append__T__scm_StringBuilder("\n");
-  this.out$2.puts__T__V("if (typeof require === 'function')");
-  this.out$2.inc__V();
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var ", " = require('./", "');"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(typeName), this.outFileName__T__T(typeName)])));
-  this.out$2.dec__V()
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attributeDeclaration__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
-  /*<skip>*/
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.handleAssignmentRepeatEos__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".push(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.type2class__T__T = (function(name) {
+  return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condIfHeader__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(expr) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if (", ") {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, expr)])));
   this.out$2.inc__V()
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.handleAssignmentRepeatEos__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".push(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.handleAssignmentRepeatExpr__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i] = ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.results__Lio_kaitai_struct_format_ClassSpec__sci_Map = (function(topClass) {
-  return $s_Lio_kaitai_struct_languages_components_SingleOutputFile$class__results__Lio_kaitai_struct_languages_components_SingleOutputFile__Lio_kaitai_struct_format_ClassSpec__sci_Map(this, topClass)
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classHeader__sci_List__V = (function(name) {
-  var name$1 = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(name));
-  var shortClassName = $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name$1);
-  var addNameExpr = (($s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(name) > 1) ? new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([" = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaScriptCompiler$().types2class__sci_List__T(name.takeRight__I__sci_List(2))])) : "");
-  var this$1 = this.out$2;
-  this$1.sb$2.append__T__scm_StringBuilder("\n");
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var ", "", " = (function() {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([shortClassName, addNameExpr])));
-  this.out$2.inc__V()
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.readHeader__s_Option__Z__V = (function(endian, isEmpty) {
   if ($is_s_Some(endian)) {
@@ -59172,11 +60813,20 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.readHeader__s_Option
   jsx$2.puts__T__V(jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name), suffix])));
   this.out$2.inc__V()
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.classHeader__sci_List__V = (function(name) {
+  var name$1 = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(name));
+  var shortClassName = $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name$1);
+  var addNameExpr = (($s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(name) > 1) ? new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([" = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaScriptCompiler$().types2class__sci_List__T(name.takeRight__I__sci_List(2))])) : "");
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var ", "", " = (function() {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([shortClassName, addNameExpr])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.results__Lio_kaitai_struct_format_ClassSpec__sci_Map = (function(topClass) {
+  return $s_Lio_kaitai_struct_languages_components_SingleOutputFile$class__results__Lio_kaitai_struct_languages_components_SingleOutputFile__Lio_kaitai_struct_format_ClassSpec__sci_Map(this, topClass)
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrParse2__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V = (function(id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignTypeOpt) {
   $s_Lio_kaitai_struct_languages_components_EveryReadIsExpression$class__attrParse2__Lio_kaitai_struct_languages_components_EveryReadIsExpression__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V(this, id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignTypeOpt)
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchCaseStart__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(condition) {
   if (this.switchIfs$2) {
@@ -59186,6 +60836,9 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchCaseStart__Lio
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["case ", ":"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, condition)])));
     this.out$2.inc__V()
   }
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])))
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrDebugNeeded__p2__Lio_kaitai_struct_format_Identifier__Z = (function(attrId) {
   if (($is_Lio_kaitai_struct_format_NamedIdentifier(attrId) || ($is_Lio_kaitai_struct_format_NumberedIdentifier(attrId) || $is_Lio_kaitai_struct_format_InstanceIdentifier(attrId)))) {
@@ -59241,6 +60894,10 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condRepeatUntilHeade
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$importList$und$eq__Lio_kaitai_struct_ImportList__V = (function(x$1) {
   this.importList$2 = x$1
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.readFooter__V = (function() {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("}")
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchStart__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, on) {
   var onType = this.translator$2.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(on);
   this.typeProvider$2.$$undcurrentSwitchType$1 = new $c_s_Some().init___O(onType);
@@ -59256,38 +60913,16 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchStart__Lio_kai
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["switch (", ") {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, on)])))
   }
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.readFooter__V = (function() {
-  this.out$2.dec__V();
-  this.out$2.puts__T__V("}")
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchCmpExpr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition) {
-  var e = new $c_Lio_kaitai_struct_exprlang_Ast$expr$Compare().init___Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr(this.NAME$undSWITCH$undON$2, $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$(), condition);
-  return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, e)
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrParse2$default$8__s_Option = (function() {
   return $m_s_None$()
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.fileFooter__T__V = (function(name) {
-  var this$1 = this.out$2;
-  this$1.sb$2.append__T__scm_StringBuilder("\n");
-  this.out$2.puts__T__V("// Export for amd environments");
-  this.out$2.puts__T__V("if (typeof define === 'function' && define.amd) {");
-  this.out$2.inc__V();
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["define('", "', [], function() {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)])));
-  this.out$2.inc__V();
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)])));
-  this.out$2.dec__V();
-  this.out$2.puts__T__V("});");
-  this.out$2.dec__V();
-  this.out$2.puts__T__V("}");
-  var this$2 = this.out$2;
-  this$2.sb$2.append__T__scm_StringBuilder("\n");
-  this.out$2.puts__T__V("// Export for CommonJS");
-  this.out$2.puts__T__V("if (typeof module === 'object' && module && module.exports) {");
-  this.out$2.inc__V();
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["module.exports = ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)])));
-  this.out$2.dec__V();
-  this.out$2.puts__T__V("}")
+  this.out$2.puts__T__V("}));")
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchCmpExpr__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(condition) {
+  var e = new $c_Lio_kaitai_struct_exprlang_Ast$expr$Compare().init___Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_exprlang_Ast$cmpop__Lio_kaitai_struct_exprlang_Ast$expr(this.NAME$undSWITCH$undON$2, $m_Lio_kaitai_struct_exprlang_Ast$cmpop$Eq$(), condition);
+  return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, e)
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.universalDoc__Lio_kaitai_struct_format_DocSpec__V = (function(doc) {
   var this$1 = this.out$2;
@@ -59394,6 +61029,15 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.condIfFooter__Lio_ka
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.normalIO__T = (function() {
   return this.privateMemberName__Lio_kaitai_struct_format_Identifier__T($m_Lio_kaitai_struct_format_IoIdentifier$())
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchElseStart__V = (function() {
+  if (this.switchIfs$2) {
+    this.out$2.puts__T__V("else {");
+    this.out$2.inc__V()
+  } else {
+    this.out$2.puts__T__V("default:");
+    this.out$2.inc__V()
+  }
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.enumDeclaration__sci_List__T__sc_Seq__V = (function(curClass, enumName, enumColl) {
   var jsx$2 = this.out$2;
   var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", " = Object.freeze({"]));
@@ -59442,15 +61086,6 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.enumDeclaration__sci
   var this$4 = this.out$2;
   this$4.sb$2.append__T__scm_StringBuilder("\n")
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.switchElseStart__V = (function() {
-  if (this.switchIfs$2) {
-    this.out$2.puts__T__V("else {");
-    this.out$2.inc__V()
-  } else {
-    this.out$2.puts__T__V("default:");
-    this.out$2.inc__V()
-  }
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.indent__T = (function() {
   return "  "
 });
@@ -59491,6 +61126,12 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrProcess__Lio_kai
     }
   }
 });
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceCalculate__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(instName, dataType, value) {
+  $s_Lio_kaitai_struct_languages_components_EveryReadIsExpression$class__instanceCalculate__Lio_kaitai_struct_languages_components_EveryReadIsExpression__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V(this, instName, dataType, value)
+});
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.outHeader__Lio_kaitai_struct_StringLanguageOutputWriter = (function() {
+  return this.outHeader$2
+});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrDebugName__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_RepeatSpec__Z__T = (function(attrId, rep, end) {
   var x = $m_Lio_kaitai_struct_format_NoRepeat$();
   if ((x === rep)) {
@@ -59505,12 +61146,6 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attrDebugName__Lio_k
     var arrIndexExpr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([".arr[", ".length", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(attrId), (end ? " - 1" : "")]))
   };
   return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["this._debug.", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(attrId), arrIndexExpr]))
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.outHeader__Lio_kaitai_struct_StringLanguageOutputWriter = (function() {
-  return this.outHeader$2
-});
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.instanceCalculate__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(instName, dataType, value) {
-  $s_Lio_kaitai_struct_languages_components_EveryReadIsExpression$class__instanceCalculate__Lio_kaitai_struct_languages_components_EveryReadIsExpression__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V(this, instName, dataType, value)
 });
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.allocateIO__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_RepeatSpec__T = (function(varName, rep) {
   var langName = this.idToStr__Lio_kaitai_struct_format_Identifier__T(varName);
@@ -59531,14 +61166,13 @@ $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.allocateIO__Lio_kait
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["var ", " = new ", "(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ioName, "KaitaiStream", args])));
   return ioName
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.fileHeader__T__V = (function(topClassName) {
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["// ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild"])))
-});
 $c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.attributeReader__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
   /*<skip>*/
 });
-$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.outImports__T = (function() {
-  return ""
+$c_Lio_kaitai_struct_languages_JavaScriptCompiler.prototype.fileHeader__T__V = (function(topClassName) {
+  this.outHeader$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["// ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild"])));
+  var this$1 = this.outHeader$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
 });
 var $d_Lio_kaitai_struct_languages_JavaScriptCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_JavaScriptCompiler: 0
@@ -59779,6 +61413,46 @@ $c_Lio_kaitai_struct_languages_PerlCompiler.prototype.runRead__V = (function() {
 });
 $c_Lio_kaitai_struct_languages_PerlCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
+});
+$c_Lio_kaitai_struct_languages_PerlCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$3 = this$1.list$1.toList__sci_List();
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["use ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
+  });
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((this$3 === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = this$3.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = this$3.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$4 = rest;
+        rest = this$4.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
+    var these = this$3;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$5 = these;
+      these = this$5.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")
 });
 $c_Lio_kaitai_struct_languages_PerlCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
   this.typeProvider$2 = typeProvider;
@@ -60165,46 +61839,6 @@ $c_Lio_kaitai_struct_languages_PerlCompiler.prototype.enumValue__T__T__T = (func
   var this$2 = $m_sci_List$();
   var cbf = this$2.ReusableCBFInstance$2;
   return jsx$1.doEnumByLabel__sci_List__T__T($as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf)), enumLabel)
-});
-$c_Lio_kaitai_struct_languages_PerlCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var this$3 = this$1.list$1.toList__sci_List();
-  var f = (function(x$2) {
-    var x = $as_T(x$2);
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["use ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
-  });
-  var this$2 = $m_sci_List$();
-  var bf = this$2.ReusableCBFInstance$2;
-  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-    if ((this$3 === $m_sci_Nil$())) {
-      var jsx$1 = $m_sci_Nil$()
-    } else {
-      var arg1 = this$3.head__O();
-      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-      var t = h;
-      var rest = this$3.tail__sci_List();
-      while ((rest !== $m_sci_Nil$())) {
-        var arg1$1 = rest.head__O();
-        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-        t.tl$5 = nx;
-        t = nx;
-        var this$4 = rest;
-        rest = this$4.tail__sci_List()
-      };
-      var jsx$1 = h
-    }
-  } else {
-    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
-    var these = this$3;
-    while ((!these.isEmpty__Z())) {
-      var arg1$2 = these.head__O();
-      b.$$plus$eq__O__scm_Builder(f(arg1$2));
-      var this$5 = these;
-      these = this$5.tail__sci_List()
-    };
-    var jsx$1 = b.result__O()
-  };
-  return $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")
 });
 var $d_Lio_kaitai_struct_languages_PerlCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_PerlCompiler: 0
@@ -60973,7 +62607,8 @@ $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.condRepeatExprHeader__Li
     this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = new List<byte[]>((int) (", "));"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id)), $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])))
   };
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = new ", "((int) (", "));"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), $m_Lio_kaitai_struct_languages_CSharpCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(new $c_Lio_kaitai_struct_datatype_DataType$ArrayType().init___Lio_kaitai_struct_datatype_DataType(dataType)), $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])));
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["for (var i = 0; i < ", "; i++) {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["for (var i = 0; i < ", "; i++)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])));
+  this.out$2.puts__T__V("{");
   this.out$2.inc__V()
 });
 $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.userTypeDebugRead__T__V = (function(id) {
@@ -61167,6 +62802,46 @@ $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.parseExpr__Lio_kaitai_st
 $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.attrDebugStart__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__s_Option__Lio_kaitai_struct_format_RepeatSpec__V = (function(attrName, attrType, io, repeat) {
   /*<skip>*/
 });
+$c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$3 = this$1.list$1.toList__sci_List();
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["using ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
+  });
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((this$3 === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = this$3.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = this$3.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$4 = rest;
+        rest = this$4.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
+    var these = this$3;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$5 = these;
+      these = this$5.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")
+});
 $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.fileFooter__T__V(null)
 });
@@ -61276,7 +62951,8 @@ $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.readHeader__s_Option__Z_
     };
     var suffix = ""
   };
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " void _read", "() {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([readAccessAndType, suffix])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " void _read", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([readAccessAndType, suffix])));
+  this.out$2.puts__T__V("{");
   this.out$2.inc__V()
 });
 $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.classHeader__sci_List__V = (function(name) {
@@ -61647,6 +63323,23 @@ $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.attrProcess__Lio_kaitai_
       var rotValue = x3.key$1;
       var expr = (isLeft ? $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["8 - (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue)])));
       this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".ProcessRotateLeft(", ", ", ", 1);"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, this.privateMemberName__Lio_kaitai_struct_format_Identifier__T($m_Lio_kaitai_struct_format_IoIdentifier$()), srcName, expr])))
+    } else if ($is_Lio_kaitai_struct_format_ProcessCustom(proc)) {
+      var x4 = $as_Lio_kaitai_struct_format_ProcessCustom(proc);
+      var name = x4.name$1;
+      var args = x4.args$1;
+      var procClass = $m_Lio_kaitai_struct_languages_CSharpCompiler$().types2class__sci_List__T(name);
+      var procName = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_process_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(varSrc)]));
+      var jsx$3 = this.out$2;
+      var jsx$2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " ", " = new ", "(", ");"]));
+      var jsx$1 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+        return (function(e$2) {
+          var e = $as_Lio_kaitai_struct_exprlang_Ast$expr(e$2);
+          return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(arg$outer, e)
+        })
+      })(this));
+      var this$1 = $m_sc_Seq$();
+      jsx$3.puts__T__V(jsx$2.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([procClass, procName, procClass, $as_sc_TraversableOnce(args.map__F1__scg_CanBuildFrom__O(jsx$1, this$1.ReusableCBFInstance$2)).mkString__T__T(", ")])));
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".Decode(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, procName, srcName])))
     } else {
       throw new $c_s_MatchError().init___O(proc)
     }
@@ -61700,46 +63393,6 @@ $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.fileHeader__T__V = (func
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["namespace ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ns])));
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["{"])).s__sc_Seq__T($m_sci_Nil$()));
   this.out$2.inc__V()
-});
-$c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var this$3 = this$1.list$1.toList__sci_List();
-  var f = (function(x$2) {
-    var x = $as_T(x$2);
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["using ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
-  });
-  var this$2 = $m_sci_List$();
-  var bf = this$2.ReusableCBFInstance$2;
-  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-    if ((this$3 === $m_sci_Nil$())) {
-      var jsx$1 = $m_sci_Nil$()
-    } else {
-      var arg1 = this$3.head__O();
-      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-      var t = h;
-      var rest = this$3.tail__sci_List();
-      while ((rest !== $m_sci_Nil$())) {
-        var arg1$1 = rest.head__O();
-        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-        t.tl$5 = nx;
-        t = nx;
-        var this$4 = rest;
-        rest = this$4.tail__sci_List()
-      };
-      var jsx$1 = h
-    }
-  } else {
-    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
-    var these = this$3;
-    while ((!these.isEmpty__Z())) {
-      var arg1$2 = these.head__O();
-      b.$$plus$eq__O__scm_Builder(f(arg1$2));
-      var this$5 = these;
-      these = this$5.tail__sci_List()
-    };
-    var jsx$1 = b.result__O()
-  };
-  return $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")
 });
 $c_Lio_kaitai_struct_languages_CSharpCompiler.prototype.instanceClear__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = false;"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.flagForInstName__Lio_kaitai_struct_format_Identifier__T(instName)])))
@@ -61861,6 +63514,61 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.runRead__V = (function() {
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
 });
+$c_Lio_kaitai_struct_languages_GoCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var imp = this$1.list$1.toList__sci_List();
+  var x1 = $s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(imp);
+  switch (x1) {
+    case 0: {
+      return "";
+      break
+    }
+    case 1: {
+      return (("import \"" + imp.head__O()) + "\"");
+      break
+    }
+    default: {
+      var f = (function(arg$outer) {
+        return (function(x$2) {
+          var x = $as_T(x$2);
+          return (("\t\"" + x) + "\"")
+        })
+      })(this);
+      var this$2 = $m_sci_List$();
+      var bf = this$2.ReusableCBFInstance$2;
+      if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+        if ((imp === $m_sci_Nil$())) {
+          var jsx$1 = $m_sci_Nil$()
+        } else {
+          var arg1 = imp.head__O();
+          var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+          var t = h;
+          var rest = imp.tail__sci_List();
+          while ((rest !== $m_sci_Nil$())) {
+            var arg1$1 = rest.head__O();
+            var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+            t.tl$5 = nx;
+            t = nx;
+            var this$3 = rest;
+            rest = this$3.tail__sci_List()
+          };
+          var jsx$1 = h
+        }
+      } else {
+        var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(imp, bf);
+        var these = imp;
+        while ((!these.isEmpty__Z())) {
+          var arg1$2 = these.head__O();
+          b.$$plus$eq__O__scm_Builder(f(arg1$2));
+          var this$4 = these;
+          these = this$4.tail__sci_List()
+        };
+        var jsx$1 = b.result__O()
+      };
+      return (("import (\n" + $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")) + ")\n")
+    }
+  }
+});
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
   this.typeProvider$2 = typeProvider;
   this.config$2 = config;
@@ -61890,6 +63598,10 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.idToStr__Lio_kaitai_struct_f
     var x6 = $as_Lio_kaitai_struct_format_RawIdentifier(id);
     var innerId = x6.innerId$2;
     return ("_raw_" + this.idToStr__Lio_kaitai_struct_format_Identifier__T(innerId))
+  } else if ($is_Lio_kaitai_struct_format_IoStorageIdentifier(id)) {
+    var x7 = $as_Lio_kaitai_struct_format_IoStorageIdentifier(id);
+    var innerId$2 = x7.innerId$2;
+    return ("_io_" + this.idToStr__Lio_kaitai_struct_format_Identifier__T(innerId$2))
   } else {
     throw new $c_s_MatchError().init___O(id)
   }
@@ -62207,7 +63919,8 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.universalFooter__V = (functi
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.instanceCalculate__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(instName, dataType, value) {
   var r = this.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(value);
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName), $m_Lio_kaitai_struct_languages_GoCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(dataType), r])))
+  var converted = ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType) ? r : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_GoCompiler$().kaitaiType2NativeType__Lio_kaitai_struct_datatype_DataType__T(dataType), r])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName), converted])))
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.parseExpr__Lio_kaitai_struct_datatype_DataType__T__s_Option__T = (function(dataType, io, defEndian) {
   if ($is_Lio_kaitai_struct_datatype_DataType$ReadableType(dataType)) {
@@ -62279,8 +63992,8 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.outHeader__Lio_kaitai_struct
   return this.outHeader$2
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.allocateIO__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_RepeatSpec__T = (function(varName, rep) {
-  var javaName = this.idToStr__Lio_kaitai_struct_format_Identifier__T(varName);
-  var ioName = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_io_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([javaName]));
+  var javaName = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varName);
+  var ioName = this.idToStr__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_IoStorageIdentifier().init___Lio_kaitai_struct_format_Identifier(varName));
   var x = $m_Lio_kaitai_struct_format_RepeatEos$();
   if (((x === rep) || $is_Lio_kaitai_struct_format_RepeatExpr(rep))) {
     var args = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".get(", ".size() - 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([javaName, javaName]))
@@ -62293,7 +64006,9 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.allocateIO__Lio_kaitai_struc
     };
     var args = javaName
   };
-  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " := ", "(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ioName, "kaitai.Stream", args])));
+  var this$1 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "bytes");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " := kaitai.NewStream(bytes.NewReader(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([ioName, args])));
   return ioName
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.fileHeader__T__V = (function(topClassName) {
@@ -62317,61 +64032,6 @@ $c_Lio_kaitai_struct_languages_GoCompiler.prototype.fileHeader__T__V = (function
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.attributeReader__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
   /*<skip>*/
 });
-$c_Lio_kaitai_struct_languages_GoCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var imp = this$1.list$1.toList__sci_List();
-  var x1 = $s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(imp);
-  switch (x1) {
-    case 0: {
-      return "";
-      break
-    }
-    case 1: {
-      return (("import \"" + imp.head__O()) + "\"");
-      break
-    }
-    default: {
-      var f = (function(arg$outer) {
-        return (function(x$2) {
-          var x = $as_T(x$2);
-          return (("\t\"" + x) + "\"")
-        })
-      })(this);
-      var this$2 = $m_sci_List$();
-      var bf = this$2.ReusableCBFInstance$2;
-      if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-        if ((imp === $m_sci_Nil$())) {
-          var jsx$1 = $m_sci_Nil$()
-        } else {
-          var arg1 = imp.head__O();
-          var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-          var t = h;
-          var rest = imp.tail__sci_List();
-          while ((rest !== $m_sci_Nil$())) {
-            var arg1$1 = rest.head__O();
-            var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-            t.tl$5 = nx;
-            t = nx;
-            var this$3 = rest;
-            rest = this$3.tail__sci_List()
-          };
-          var jsx$1 = h
-        }
-      } else {
-        var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(imp, bf);
-        var these = imp;
-        while ((!these.isEmpty__Z())) {
-          var arg1$2 = these.head__O();
-          b.$$plus$eq__O__scm_Builder(f(arg1$2));
-          var this$4 = these;
-          these = this$4.tail__sci_List()
-        };
-        var jsx$1 = b.result__O()
-      };
-      return (("import (\n" + $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T("", "\n", "\n")) + ")\n")
-    }
-  }
-});
 var $d_Lio_kaitai_struct_languages_GoCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_GoCompiler: 0
 }, false, "io.kaitai.struct.languages.GoCompiler", {
@@ -62390,6 +64050,688 @@ var $d_Lio_kaitai_struct_languages_GoCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_components_FixedContentsUsingArrayByteLiteral: 1
 });
 $c_Lio_kaitai_struct_languages_GoCompiler.prototype.$classData = $d_Lio_kaitai_struct_languages_GoCompiler;
+/** @constructor */
+function $c_Lio_kaitai_struct_languages_LuaCompiler() {
+  $c_Lio_kaitai_struct_languages_components_LanguageCompiler.call(this);
+  this.typeProvider$2 = null;
+  this.translator$2 = null;
+  this.outHeader$2 = null;
+  this.out$2 = null;
+  this.importList$2 = null
+}
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype = new $h_Lio_kaitai_struct_languages_components_LanguageCompiler();
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.constructor = $c_Lio_kaitai_struct_languages_LuaCompiler;
+/** @constructor */
+function $h_Lio_kaitai_struct_languages_LuaCompiler() {
+  /*<skip>*/
+}
+$h_Lio_kaitai_struct_languages_LuaCompiler.prototype = $c_Lio_kaitai_struct_languages_LuaCompiler.prototype;
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchEnd__V = (function() {
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatExprHeader__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, io, dataType, needRaw, repeatExpr) {
+  if (needRaw) {
+    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id))])))
+  };
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id)])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["for i = 1, ", " do"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, repeatExpr)])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$outHeader$und$eq__Lio_kaitai_struct_StringLanguageOutputWriter__V = (function(x$1) {
+  this.outHeader$2 = x$1
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.instanceCheckCacheAndReturn__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if self.", " ~= nil then"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(instName)])));
+  this.out$2.inc__V();
+  this.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V(instName);
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.userTypeDebugRead__T__V = (function(id) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrParseHybrid__F0__F0__V = (function(leProc, beProc) {
+  this.out$2.puts__T__V("if self._is_le then");
+  this.out$2.inc__V();
+  leProc.apply$mcV$sp__V();
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("else");
+  this.out$2.inc__V();
+  beProc.apply$mcV$sp__V();
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.instanceHeader__sci_List__Lio_kaitai_struct_format_InstanceIdentifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(className, instName, dataType, isNullable) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".property.", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(className), this.publicMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["function ", ".property.", ":get()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(className), this.publicMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.privateMemberName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["self.", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatEosHeader__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__V = (function(id, io, dataType, needRaw) {
+  if (needRaw) {
+    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id))])))
+  };
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id)])));
+  this.out$2.puts__T__V("local i = 1");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["while not ", ":is_eof() do"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.seek__T__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(io, pos) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":seek(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, pos)])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.handleAssignmentSimple__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatEosFooter__V = (function() {
+  this.out$2.puts__T__V("i = i + 1");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.pushPos__T__V = (function(io) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_pos = ", ":pos()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.classConstructorHeader__sci_List__Lio_kaitai_struct_datatype_DataType__sci_List__Z__sci_List__V = (function(name, parentType, rootClassName, isHybrid, params) {
+  var endianAdd = (isHybrid ? ", is_le" : "");
+  var jsx$2 = $m_Lio_kaitai_struct_Utils$();
+  var f = (function(arg$outer) {
+    return (function(p$2) {
+      var p = $as_Lio_kaitai_struct_format_ParamDefSpec(p$2);
+      var id = p.id$1;
+      return arg$outer.idToStr__Lio_kaitai_struct_format_Identifier__T(id)
+    })
+  })(this);
+  var this$1 = $m_sci_List$();
+  var bf = this$1.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((params === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = params.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = params.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$2 = rest;
+        rest = this$2.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(params, bf);
+    var these = params;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$3 = these;
+      these = this$3.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  var paramsList = jsx$2.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$1), "", ", ", ", ");
+  this.out$2.puts__T__V((("" + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["function ", ":_init(", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(name), paramsList]))) + new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["io, parent, root", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([endianAdd]))));
+  this.out$2.inc__V();
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "._init(self, io)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStruct"])));
+  this.out$2.puts__T__V("self._parent = parent");
+  this.out$2.puts__T__V("self._root = root or self");
+  if (isHybrid) {
+    this.out$2.puts__T__V("self._is_le = is_le")
+  };
+  var these$1 = params;
+  while ((!these$1.isEmpty__Z())) {
+    var arg1$3 = these$1.head__O();
+    var p$1 = $as_Lio_kaitai_struct_format_ParamDefSpec(arg1$3);
+    var jsx$3 = p$1.id$1;
+    var id$1 = p$1.id$1;
+    this.handleAssignmentSimple__Lio_kaitai_struct_format_Identifier__T__V(jsx$3, this.idToStr__Lio_kaitai_struct_format_Identifier__T(id$1));
+    var this$4 = these$1;
+    these$1 = this$4.tail__sci_List()
+  }
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.useIO__Lio_kaitai_struct_exprlang_Ast$expr__T = (function(ioEx) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["local io = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, ioEx)])));
+  return "io"
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchCaseFirstStart__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(condition) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if _on == ", " then"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, condition)])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.parseExpr__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_datatype_DataType__T__s_Option__T = (function(dataType, assignType, io, defEndian) {
+  if ($is_Lio_kaitai_struct_datatype_DataType$ReadableType(dataType)) {
+    var x5 = $as_Lio_kaitai_struct_datatype_DataType$ReadableType(dataType);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, x5.apiCall__s_Option__T(defEndian)]))
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType)) {
+    var x6 = $as_Lio_kaitai_struct_datatype_DataType$BytesLimitType(dataType);
+    var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_bytes(", ")"]));
+    var e = x6.size$2;
+    return jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, e)]))
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesEosType(dataType)) {
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_bytes_full()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io]))
+  } else if ($is_Lio_kaitai_struct_datatype_DataType$BytesTerminatedType(dataType)) {
+    var x2 = $as_Lio_kaitai_struct_datatype_DataType$BytesTerminatedType(dataType);
+    var terminator = x2.terminator$2;
+    var include = x2.include$2;
+    var consume = x2.consume$2;
+    var eosError = x2.eosError$2;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_bytes_term(", ", ", ", ", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, terminator, include, consume, eosError]))
+  } else {
+    var x = $m_Lio_kaitai_struct_datatype_DataType$BitsType1$();
+    if ((x === dataType)) {
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_bits_int(1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io]))
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$BitsType(dataType)) {
+      var x4 = $as_Lio_kaitai_struct_datatype_DataType$BitsType(dataType);
+      var width = x4.width$3;
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":read_bits_int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, width]))
+    } else if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType)) {
+      var x10 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dataType);
+      var jsx$4 = $m_Lio_kaitai_struct_Utils$();
+      var jsx$3 = x10.args$1;
+      var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+        return (function(a$2) {
+          var a = $as_Lio_kaitai_struct_exprlang_Ast$expr(a$2);
+          return arg$outer.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+        })
+      })(this));
+      var this$1 = $m_sc_Seq$();
+      var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), "", ", ", ", ");
+      if (x10.isOpaque__Z()) {
+        var addArgs = ""
+      } else {
+        var x1$2 = x10.forcedParent$1;
+        if ($is_s_Some(x1$2)) {
+          var x2$2 = $as_s_Some(x1$2);
+          var fp = $as_Lio_kaitai_struct_exprlang_Ast$expr(x2$2.x$2);
+          var parent = this.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(fp)
+        } else {
+          var x$3 = $m_s_None$();
+          if ((!(x$3 === x1$2))) {
+            throw new $c_s_MatchError().init___O(x1$2)
+          };
+          var parent = "self"
+        };
+        var x1$3 = $as_Lio_kaitai_struct_format_ClassSpec(x10.classSpec$1.get__O()).meta$1.endian$1;
+        matchEnd6: {
+          var addEndian;
+          if ($is_s_Some(x1$3)) {
+            var x2$3 = $as_s_Some(x1$3);
+            var p3 = $as_Lio_kaitai_struct_datatype_Endianness(x2$3.x$2);
+            var x$5 = $m_Lio_kaitai_struct_datatype_InheritedEndian$();
+            if ((x$5 === p3)) {
+              var addEndian = ", self._is_le";
+              break matchEnd6
+            }
+          };
+          var addEndian = ""
+        };
+        var addArgs = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ", self._root", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([parent, addEndian]))
+      };
+      return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "(", "", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T($as_Lio_kaitai_struct_format_ClassSpec(x10.classSpec$1.get__O()).name$1), addParams, io, addArgs]))
+    } else {
+      throw new $c_s_MatchError().init___O(dataType)
+    }
+  }
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrDebugStart__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__s_Option__Lio_kaitai_struct_format_RepeatSpec__V = (function(attrName, attrType, io, repeat) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.classDoc__sci_List__Lio_kaitai_struct_format_DocSpec__V = (function(name, doc) {
+  this.universalDoc__Lio_kaitai_struct_format_DocSpec__V(doc)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.runRead__V = (function() {
+  this.out$2.puts__T__V("self:_read()")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatExprFooter__V = (function() {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$2 = this$1.list$1.toList__sci_List();
+  return $s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(this$2, "", "\n", "\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
+  this.typeProvider$2 = typeProvider;
+  $c_Lio_kaitai_struct_languages_components_LanguageCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig.call(this, typeProvider, config);
+  $s_Lio_kaitai_struct_languages_components_SingleOutputFile$class__$$init$__Lio_kaitai_struct_languages_components_SingleOutputFile__V(this);
+  this.translator$2 = new $c_Lio_kaitai_struct_translators_LuaTranslator().init___Lio_kaitai_struct_translators_TypeProvider__Lio_kaitai_struct_ImportList(typeProvider, this.importList$2);
+  return this
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.handleAssignmentTempVar__Lio_kaitai_struct_datatype_DataType__T__T__V = (function(dataType, id, expr) {
+  $m_s_Predef$().$$qmark$qmark$qmark__sr_Nothing$()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.idToStr__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  if ($is_Lio_kaitai_struct_format_SpecialIdentifier(id)) {
+    var x2 = $as_Lio_kaitai_struct_format_SpecialIdentifier(id);
+    var name = x2.name$2;
+    return name
+  } else if ($is_Lio_kaitai_struct_format_NamedIdentifier(id)) {
+    var x3 = $as_Lio_kaitai_struct_format_NamedIdentifier(id);
+    var name$2 = x3.name$2;
+    return name$2
+  } else if ($is_Lio_kaitai_struct_format_NumberedIdentifier(id)) {
+    var x4 = $as_Lio_kaitai_struct_format_NumberedIdentifier(id);
+    var idx = x4.idx$2;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_format_NumberedIdentifier$().TEMPLATE$1, idx]))
+  } else if ($is_Lio_kaitai_struct_format_InstanceIdentifier(id)) {
+    var x5 = $as_Lio_kaitai_struct_format_InstanceIdentifier(id);
+    var name$3 = x5.name$2;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_m_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([name$3]))
+  } else if ($is_Lio_kaitai_struct_format_RawIdentifier(id)) {
+    var x6 = $as_Lio_kaitai_struct_format_RawIdentifier(id);
+    var innerId = x6.innerId$2;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_raw_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(innerId)]))
+  } else {
+    throw new $c_s_MatchError().init___O(id)
+  }
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.localTemporaryName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_t_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.idToStr__Lio_kaitai_struct_format_Identifier__T(id)]))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.alignToByte__T__V = (function(io) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":align_to_byte()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.out__Lio_kaitai_struct_StringLanguageOutputWriter = (function() {
+  return this.out$2
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchCaseEnd__V = (function() {
+  this.out$2.dec__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.innerEnums__Z = (function() {
+  return true
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.handleAssignmentRepeatUntil__Lio_kaitai_struct_format_Identifier__T__Z__V = (function(id, expr, isRaw) {
+  var s = (isRaw ? $m_Lio_kaitai_struct_format_Identifier$().ITERATOR2$1 : $m_Lio_kaitai_struct_format_Identifier$().ITERATOR$1);
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([s, expr])));
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i] = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), s])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.type2class__T__T = (function(name) {
+  return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$out$und$eq__Lio_kaitai_struct_StringLanguageOutputWriter__V = (function(x$1) {
+  this.out$2 = x$1
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.opaqueClassDeclaration__Lio_kaitai_struct_format_ClassSpec__V = (function(classSpec) {
+  this.out$2.puts__T__V((("require(\"" + classSpec.name$1.head__O()) + "\")"))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attributeDeclaration__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.handleAssignmentRepeatEos__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i] = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condIfHeader__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(expr) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if ", " then"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, expr)])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.handleAssignmentRepeatExpr__Lio_kaitai_struct_format_Identifier__T__V = (function(id, expr) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i] = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id), expr])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.results__Lio_kaitai_struct_format_ClassSpec__sci_Map = (function(topClass) {
+  return $s_Lio_kaitai_struct_languages_components_SingleOutputFile$class__results__Lio_kaitai_struct_languages_components_SingleOutputFile__Lio_kaitai_struct_format_ClassSpec__sci_Map(this, topClass)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.classHeader__sci_List__V = (function(name) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = class.class(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(name), "KaitaiStruct"])));
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.readHeader__s_Option__Z__V = (function(endian, isEmpty) {
+  if ($is_s_Some(endian)) {
+    var x2 = $as_s_Some(endian);
+    var e = $as_Lio_kaitai_struct_datatype_FixedEndian(x2.x$2);
+    var suffix = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([e.toSuffix__T()]))
+  } else {
+    var x = $m_s_None$();
+    if ((!(x === endian))) {
+      throw new $c_s_MatchError().init___O(endian)
+    };
+    var suffix = ""
+  };
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["function ", ":_read", "()"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(this.typeProvider$2.nowClass$1.name$1), suffix])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrParse2__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V = (function(id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignTypeOpt) {
+  $s_Lio_kaitai_struct_languages_components_EveryReadIsExpression$class__attrParse2__Lio_kaitai_struct_languages_components_EveryReadIsExpression__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__scm_ListBuffer__Lio_kaitai_struct_format_RepeatSpec__Z__s_Option__s_Option__V(this, id, dataType, io, extraAttrs, rep, isRaw, defEndian, assignTypeOpt)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.innerClasses__Z = (function() {
+  return false
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchCaseStart__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(condition) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["elseif _on == ", " then"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, condition)])));
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.instanceReturn__Lio_kaitai_struct_format_InstanceIdentifier__V = (function(instName) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["return ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(instName)])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.classConstructorFooter__V = (function() {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.popPos__T__V = (function(io) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ":seek(_pos)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrFixedContentsParse__Lio_kaitai_struct_format_Identifier__T__V = (function(attrName, contents) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = self._io:ensure_fixed_contents(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(attrName), contents])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.runReadCalc__V = (function() {
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if self._is_le then"])).s__sc_Seq__T($m_sci_Nil$()));
+  this.out$2.inc__V();
+  this.out$2.puts__T__V("self:_read_le()");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["elseif not self._is_le then"])).s__sc_Seq__T($m_sci_Nil$()));
+  this.out$2.inc__V();
+  this.out$2.puts__T__V("self:_read_be()");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("else");
+  this.out$2.inc__V();
+  this.out$2.puts__T__V("error(\"unable to decide endianness\")");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.outFileName__T__T = (function(topClassName) {
+  return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".lua"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([topClassName]))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatUntilHeader__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, io, datatype, needRaw, repeatExpr) {
+  if (needRaw) {
+    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(new $c_Lio_kaitai_struct_format_RawIdentifier().init___Lio_kaitai_struct_format_Identifier(id))])))
+  };
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = {}"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(id)])));
+  this.out$2.puts__T__V("local i = 1");
+  this.out$2.puts__T__V("while true do");
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.io$kaitai$struct$languages$components$SingleOutputFile$$undsetter$und$importList$und$eq__Lio_kaitai_struct_ImportList__V = (function(x$1) {
+  this.importList$2 = x$1
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchStart__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, on) {
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["local _on = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, on)])))
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.readFooter__V = (function() {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrParse2$default$8__s_Option = (function() {
+  return $m_s_None$()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.universalDoc__Lio_kaitai_struct_format_DocSpec__V = (function(doc) {
+  var x1 = doc.summary$1;
+  if ($is_s_Some(x1)) {
+    var x2 = $as_s_Some(x1);
+    var summary = $as_T(x2.x$2);
+    var this$2 = new $c_sci_StringOps().init___T(summary);
+    var c = $s_sc_IndexedSeqOptimized$class__last__sc_IndexedSeqOptimized__O(this$2);
+    if ((c === null)) {
+      var lastChar = 0
+    } else {
+      var this$4 = $as_jl_Character(c);
+      var lastChar = this$4.value$1
+    };
+    var docStr = (((lastChar === 46) || (lastChar === 10)) ? summary : (summary + "."))
+  } else {
+    var x = $m_s_None$();
+    if ((!(x === x1))) {
+      throw new $c_s_MatchError().init___O(x1)
+    };
+    var docStr = ""
+  };
+  if ((docStr === null)) {
+    throw new $c_jl_NullPointerException().init___()
+  };
+  if ((docStr === "")) {
+    var jsx$1 = true
+  } else {
+    var this$7 = new $c_sci_StringOps().init___T(docStr);
+    var c$1 = $s_sc_IndexedSeqOptimized$class__last__sc_IndexedSeqOptimized__O(this$7);
+    if ((c$1 === null)) {
+      var jsx$2 = 0
+    } else {
+      var this$9 = $as_jl_Character(c$1);
+      var jsx$2 = this$9.value$1
+    };
+    var jsx$1 = (jsx$2 === 10)
+  };
+  if (jsx$1) {
+    var extraNewLine = ""
+  } else {
+    var extraNewLine = "\n"
+  };
+  var x1$2 = doc.ref$1;
+  if ($is_Lio_kaitai_struct_format_TextRef(x1$2)) {
+    var x2$2 = $as_Lio_kaitai_struct_format_TextRef(x1$2);
+    var text = x2$2.text$1;
+    var refStr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["See also: ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([text]))
+  } else if ($is_Lio_kaitai_struct_format_UrlRef(x1$2)) {
+    var x3 = $as_Lio_kaitai_struct_format_UrlRef(x1$2);
+    var url = x3.url$1;
+    var text$2 = x3.text$1;
+    var refStr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["See also: ", " (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([text$2, url]))
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_format_NoRef$();
+    if ((!(x$3 === x1$2))) {
+      throw new $c_s_MatchError().init___O(x1$2)
+    };
+    var refStr = ""
+  };
+  this.out$2.putsLines__T__T__T__V("", (((("--[[" + docStr) + extraNewLine) + refStr) + "--]]"), "")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.classFooter__sci_List__V = (function(name) {
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.instanceFooter__V = (function() {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  var this$1 = this.out$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attributeDoc__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_DocSpec__V = (function(id, doc) {
+  this.universalDoc__Lio_kaitai_struct_format_DocSpec__V(doc)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrDebugEnd__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__T__Lio_kaitai_struct_format_RepeatSpec__V = (function(attrName, attrType, io, repeat) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condRepeatUntilFooter__Lio_kaitai_struct_format_Identifier__T__Lio_kaitai_struct_datatype_DataType__Z__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(id, io, dataType, needRaw, untilExpr) {
+  this.typeProvider$2.$$undcurrentIteratorType$1 = new $c_s_Some().init___O(dataType);
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["if ", " then"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, untilExpr)])));
+  this.out$2.inc__V();
+  this.out$2.puts__T__V("break");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  this.out$2.puts__T__V("i = i + 1");
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end");
+  this.out$2.dec__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.publicMemberName__Lio_kaitai_struct_format_Identifier__T = (function(id) {
+  if ($is_Lio_kaitai_struct_format_SpecialIdentifier(id)) {
+    var x2 = $as_Lio_kaitai_struct_format_SpecialIdentifier(id);
+    var name = x2.name$2;
+    return name
+  } else if ($is_Lio_kaitai_struct_format_NamedIdentifier(id)) {
+    var x3 = $as_Lio_kaitai_struct_format_NamedIdentifier(id);
+    var name$2 = x3.name$2;
+    return name$2
+  } else if ($is_Lio_kaitai_struct_format_InstanceIdentifier(id)) {
+    var x4 = $as_Lio_kaitai_struct_format_InstanceIdentifier(id);
+    var name$3 = x4.name$2;
+    return name$3
+  } else if ($is_Lio_kaitai_struct_format_RawIdentifier(id)) {
+    var x5 = $as_Lio_kaitai_struct_format_RawIdentifier(id);
+    var innerId = x5.innerId$2;
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_raw_", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.publicMemberName__Lio_kaitai_struct_format_Identifier__T(innerId)]))
+  } else {
+    throw new $c_s_MatchError().init___O(id)
+  }
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.bytesPadTermExpr__T__s_Option__s_Option__Z__T = (function(expr0, padRight, terminator, include) {
+  if ($is_s_Some(padRight)) {
+    var x2 = $as_s_Some(padRight);
+    var padByte = $uI(x2.x$2);
+    var expr1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".bytes_strip_right(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", expr0, padByte]))
+  } else {
+    var x = $m_s_None$();
+    if ((!(x === padRight))) {
+      throw new $c_s_MatchError().init___O(padRight)
+    };
+    var expr1 = expr0
+  };
+  if ($is_s_Some(terminator)) {
+    var x2$2 = $as_s_Some(terminator);
+    var term = $uI(x2$2.x$2);
+    var expr2 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".bytes_terminate(", ", ", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", expr1, term, include]))
+  } else {
+    var x$3 = $m_s_None$();
+    if ((!(x$3 === terminator))) {
+      throw new $c_s_MatchError().init___O(terminator)
+    };
+    var expr2 = expr1
+  };
+  return expr2
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.condIfFooter__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(expr) {
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("end")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.normalIO__T = (function() {
+  return this.privateMemberName__Lio_kaitai_struct_format_Identifier__T($m_Lio_kaitai_struct_format_IoIdentifier$())
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.switchElseStart__V = (function() {
+  this.out$2.puts__T__V("else");
+  this.out$2.inc__V()
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.enumDeclaration__sci_List__T__sc_Seq__V = (function(curClass, enumName, enumColl) {
+  var this$1 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "local enum = require(\"enum\")");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", " = enum.Enum {"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_LuaCompiler$().types2class__sci_List__T(curClass), $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(enumName)])));
+  this.out$2.inc__V();
+  enumColl.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+    return (function(x0$1$2) {
+      var x0$1 = $as_T2(x0$1$2);
+      if ((x0$1 !== null)) {
+        var t = x0$1.$$und1$mcJ$sp__J();
+        var lo = t.lo$2;
+        var hi = t.hi$2;
+        var label = $as_Lio_kaitai_struct_format_EnumValueSpec(x0$1.$$und2__O());
+        arg$outer.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ","])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([label.name$1, new $c_sjsr_RuntimeLong().init___I__I(lo, hi)])))
+      } else {
+        throw new $c_s_MatchError().init___O(x0$1)
+      }
+    })
+  })(this)));
+  this.out$2.dec__V();
+  this.out$2.puts__T__V("}");
+  var this$2 = this.out$2;
+  this$2.sb$2.append__T__scm_StringBuilder("\n")
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.indent__T = (function() {
+  return "  "
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.translator__Lio_kaitai_struct_translators_BaseTranslator = (function() {
+  return this.translator$2
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.translator__Lio_kaitai_struct_translators_AbstractTranslator = (function() {
+  return this.translator$2
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attrProcess__Lio_kaitai_struct_format_ProcessExpr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_Identifier__V = (function(proc, varSrc, varDest) {
+  if ($is_Lio_kaitai_struct_format_ProcessXor(proc)) {
+    var x2 = $as_Lio_kaitai_struct_format_ProcessXor(proc);
+    var xorValue = x2.key$1;
+    var x1$2 = this.translator$2.detectType__Lio_kaitai_struct_exprlang_Ast$expr__Lio_kaitai_struct_datatype_DataType(xorValue);
+    if ($is_Lio_kaitai_struct_datatype_DataType$IntType(x1$2)) {
+      var procName = "process_xor_one"
+    } else {
+      if ((!$is_Lio_kaitai_struct_datatype_DataType$BytesType(x1$2))) {
+        throw new $c_s_MatchError().init___O(x1$2)
+      };
+      var procName = "process_xor_many"
+    };
+    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".", "(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest), "KaitaiStream", procName, this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc), $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, xorValue)])))
+  } else {
+    var x = $m_Lio_kaitai_struct_format_ProcessZlib$();
+    if ((x === proc)) {
+      throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(new $c_jl_RuntimeException().init___T("Lua zlib not supported"))
+    } else if ($is_Lio_kaitai_struct_format_ProcessRotate(proc)) {
+      var x3 = $as_Lio_kaitai_struct_format_ProcessRotate(proc);
+      var isLeft = x3.left$1;
+      var rotValue = x3.key$1;
+      var expr = (isLeft ? $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["8 - (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue)])));
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".process_rotate_left(", ", ", ", 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest), "KaitaiStream", this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc), expr])))
+    } else {
+      throw new $c_s_MatchError().init___O(proc)
+    }
+  }
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.instanceCalculate__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V = (function(instName, dataType, value) {
+  $s_Lio_kaitai_struct_languages_components_EveryReadIsExpression$class__instanceCalculate__Lio_kaitai_struct_languages_components_EveryReadIsExpression__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Lio_kaitai_struct_exprlang_Ast$expr__V(this, instName, dataType, value)
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.outHeader__Lio_kaitai_struct_StringLanguageOutputWriter = (function() {
+  return this.outHeader$2
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.allocateIO__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_RepeatSpec__T = (function(varName, rep) {
+  var varStr = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varName);
+  var x = $m_Lio_kaitai_struct_format_RepeatEos$();
+  if (((x === rep) || $is_Lio_kaitai_struct_format_RepeatUntil(rep))) {
+    var args = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[#", "]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([varStr, varStr]))
+  } else if ($is_Lio_kaitai_struct_format_RepeatExpr(rep)) {
+    var args = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", "[i]"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([varStr]))
+  } else {
+    var x$3 = $m_Lio_kaitai_struct_format_NoRepeat$();
+    if ((!(x$3 === rep))) {
+      throw new $c_s_MatchError().init___O(rep)
+    };
+    var args = varStr
+  };
+  var this$1 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "local stringstream = require(\"string_stream\")");
+  this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["local io = ", "(stringstream(", "))"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["KaitaiStream", args])));
+  return "io"
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.attributeReader__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
+  /*<skip>*/
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.fileHeader__T__V = (function(topClassName) {
+  this.outHeader$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["-- ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild"])));
+  this.outHeader$2.puts__T__V("--");
+  this.outHeader$2.puts__T__V("-- This file is compatible with Lua 5.3");
+  var this$1 = this.outHeader$2;
+  this$1.sb$2.append__T__scm_StringBuilder("\n");
+  var this$2 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, "local class = require(\"class\")");
+  var this$3 = this.importList$2;
+  $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$3.list$1, "require(\"kaitaistruct\")");
+  var this$4 = this.out$2;
+  this$4.sb$2.append__T__scm_StringBuilder("\n")
+});
+var $d_Lio_kaitai_struct_languages_LuaCompiler = new $TypeData().initClass({
+  Lio_kaitai_struct_languages_LuaCompiler: 0
+}, false, "io.kaitai.struct.languages.LuaCompiler", {
+  Lio_kaitai_struct_languages_LuaCompiler: 1,
+  Lio_kaitai_struct_languages_components_LanguageCompiler: 1,
+  O: 1,
+  Lio_kaitai_struct_languages_components_SwitchOps: 1,
+  Lio_kaitai_struct_languages_components_AllocateIOLocalVar: 1,
+  Lio_kaitai_struct_languages_components_EveryReadIsExpression: 1,
+  Lio_kaitai_struct_languages_components_ObjectOrientedLanguage: 1,
+  Lio_kaitai_struct_languages_components_CommonReads: 1,
+  Lio_kaitai_struct_languages_components_FixedContentsUsingArrayByteLiteral: 1,
+  Lio_kaitai_struct_languages_components_SingleOutputFile: 1,
+  Lio_kaitai_struct_languages_components_UniversalDoc: 1,
+  Lio_kaitai_struct_languages_components_UniversalFooter: 1,
+  Lio_kaitai_struct_languages_components_UpperCamelCaseClasses: 1
+});
+$c_Lio_kaitai_struct_languages_LuaCompiler.prototype.$classData = $d_Lio_kaitai_struct_languages_LuaCompiler;
 /** @constructor */
 function $c_Lio_kaitai_struct_languages_PHPCompiler() {
   $c_Lio_kaitai_struct_languages_components_LanguageCompiler.call(this);
@@ -62753,6 +65095,9 @@ $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.runRead__V = (function() {
 $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
 });
+$c_Lio_kaitai_struct_languages_PHPCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  return ""
+});
 $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
   this.typeProvider$2 = typeProvider;
   this.config$2 = config;
@@ -63061,6 +65406,60 @@ $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.attrProcess__Lio_kaitai_str
       var rotValue = x3.key$1;
       var expr = (isLeft ? $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["8 - (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue)])));
       this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", "::processRotateLeft(", ", ", ", 1);"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, "\\Kaitai\\Struct\\Stream", srcName, expr])))
+    } else if ($is_Lio_kaitai_struct_format_ProcessCustom(proc)) {
+      var x4 = $as_Lio_kaitai_struct_format_ProcessCustom(proc);
+      var name = x4.name$1;
+      var args = x4.args$1;
+      var isAbsolute = ($s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(name) > 1);
+      var f = (function(arg$outer) {
+        return (function(x$2) {
+          var x$1 = $as_T(x$2);
+          return $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(x$1)
+        })
+      })(this);
+      var this$1 = $m_sci_List$();
+      var bf = this$1.ReusableCBFInstance$2;
+      if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+        if ((name === $m_sci_Nil$())) {
+          var jsx$1 = $m_sci_Nil$()
+        } else {
+          var arg1 = name.head__O();
+          var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+          var t = h;
+          var rest = name.tail__sci_List();
+          while ((rest !== $m_sci_Nil$())) {
+            var arg1$1 = rest.head__O();
+            var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+            t.tl$5 = nx;
+            t = nx;
+            var this$2 = rest;
+            rest = this$2.tail__sci_List()
+          };
+          var jsx$1 = h
+        }
+      } else {
+        var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(name, bf);
+        var these = name;
+        while ((!these.isEmpty__Z())) {
+          var arg1$2 = these.head__O();
+          b.$$plus$eq__O__scm_Builder(f(arg1$2));
+          var this$3 = these;
+          these = this$3.tail__sci_List()
+        };
+        var jsx$1 = b.result__O()
+      };
+      var procClass = $as_sc_TraversableOnce(jsx$1).mkString__T__T__T__T((isAbsolute ? "\\" : ""), "\\", "");
+      var jsx$4 = this.out$2;
+      var jsx$3 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["$_process = new ", "(", ");"]));
+      var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer$1) {
+        return (function(e$2) {
+          var e = $as_Lio_kaitai_struct_exprlang_Ast$expr(e$2);
+          return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(arg$outer$1, e)
+        })
+      })(this));
+      var this$4 = $m_sc_Seq$();
+      jsx$4.puts__T__V(jsx$3.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([procClass, $as_sc_TraversableOnce(args.map__F1__scg_CanBuildFrom__O(jsx$2, this$4.ReusableCBFInstance$2)).mkString__T__T(", ")])));
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = $_process->decode(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, srcName])))
     } else {
       throw new $c_s_MatchError().init___O(proc)
     }
@@ -63108,9 +65507,6 @@ $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.attributeReader__Lio_kaitai
 $c_Lio_kaitai_struct_languages_PHPCompiler.prototype.fileHeader__T__V = (function(topClassName) {
   this.out$2.puts__T__V("<?php");
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["// ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild"])))
-});
-$c_Lio_kaitai_struct_languages_PHPCompiler.prototype.outImports__T = (function() {
-  return ""
 });
 var $d_Lio_kaitai_struct_languages_PHPCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_PHPCompiler: 0
@@ -63477,19 +65873,19 @@ $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.parseExpr__Lio_kaitai_stru
           };
           var addEndian = ""
         };
-        var jsx$4 = $m_Lio_kaitai_struct_Utils$();
-        var jsx$3 = x10.args$1;
-        var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
-          return (function(a$2) {
-            var a = $as_Lio_kaitai_struct_exprlang_Ast$expr(a$2);
-            return arg$outer.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
-          })
-        })(this));
-        var this$1 = $m_sc_Seq$();
-        var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), ", ", ", ", "");
-        var addArgs = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ", _root", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([parent, addEndian, addParams]))
+        var addArgs = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ", _root", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([parent, addEndian]))
       };
-      var expr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ", "(", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaCompiler$().types2class__sci_List__T(x10.name$1), io, addArgs]))
+      var jsx$4 = $m_Lio_kaitai_struct_Utils$();
+      var jsx$3 = x10.args$1;
+      var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+        return (function(a$2) {
+          var a = $as_Lio_kaitai_struct_exprlang_Ast$expr(a$2);
+          return arg$outer.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+        })
+      })(this));
+      var this$1 = $m_sc_Seq$();
+      var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), ", ", ", ", "");
+      var expr = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["new ", "(", "", "", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaCompiler$().types2class__sci_List__T(x10.name$1), io, addArgs, addParams]))
     }
   };
   if ((!((assignType === null) ? (dataType === null) : assignType.equals__O__Z(dataType)))) {
@@ -63543,6 +65939,46 @@ $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.attrDebugStart__Lio_kaitai
       throw e
     }
   }
+});
+$c_Lio_kaitai_struct_languages_JavaCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$3 = this$1.list$1.toList__sci_List();
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["import ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
+  });
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((this$3 === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = this$3.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = this$3.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$4 = rest;
+        rest = this$4.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
+    var these = this$3;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$5 = these;
+      these = this$5.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return (("\n" + $as_sc_TraversableOnce(jsx$1).mkString__T__T("\n")) + "\n")
 });
 $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
@@ -64150,10 +66586,9 @@ $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.attrProcess__Lio_kaitai_st
       var x4 = $as_Lio_kaitai_struct_format_ProcessCustom(proc);
       var name = x4.name$1;
       var args = x4.args$1;
-      var this$1 = name.slice__I__I__sci_List(0, (((-1) + $s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(name)) | 0));
-      var namespace = $s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(this$1, "", ".", "");
-      var this$3 = new $c_sci_StringOps().init___T(namespace);
-      if ($s_sc_TraversableOnce$class__nonEmpty__sc_TraversableOnce__Z(this$3)) {
+      var namespace = $as_sc_TraversableOnce($s_sc_TraversableLike$class__init__sc_TraversableLike__O(name)).mkString__T__T(".");
+      var this$2 = new $c_sci_StringOps().init___T(namespace);
+      if ($s_sc_TraversableOnce$class__nonEmpty__sc_TraversableOnce__Z(this$2)) {
         var jsx$1 = "."
       } else {
         var jsx$1 = ""
@@ -64169,8 +66604,8 @@ $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.attrProcess__Lio_kaitai_st
           return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(arg$outer, e)
         })
       })(this));
-      var this$4 = $m_sc_Seq$();
-      jsx$4.puts__T__V(jsx$3.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([procClass, procName, procClass, $as_sc_TraversableOnce(args.map__F1__scg_CanBuildFrom__O(jsx$2, this$4.ReusableCBFInstance$2)).mkString__T__T(", ")])));
+      var this$3 = $m_sc_Seq$();
+      jsx$4.puts__T__V(jsx$3.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([procClass, procName, procClass, $as_sc_TraversableOnce(args.map__F1__scg_CanBuildFrom__O(jsx$2, this$3.ReusableCBFInstance$2)).mkString__T__T(", ")])));
       this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".decode(", ");"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, procName, srcName])))
     } else {
       throw new $c_s_MatchError().init___O(proc)
@@ -64238,46 +66673,6 @@ $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.fileHeader__T__V = (functi
 });
 $c_Lio_kaitai_struct_languages_JavaCompiler.prototype.attributeReader__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_datatype_DataType__Z__V = (function(attrName, attrType, isNullable) {
   this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["public ", " ", "() { return ", "; }"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_languages_JavaCompiler$().kaitaiType2JavaType__Lio_kaitai_struct_datatype_DataType__Z__T(attrType, isNullable), this.idToStr__Lio_kaitai_struct_format_Identifier__T(attrName), this.idToStr__Lio_kaitai_struct_format_Identifier__T(attrName)])))
-});
-$c_Lio_kaitai_struct_languages_JavaCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var this$3 = this$1.list$1.toList__sci_List();
-  var f = (function(x$2) {
-    var x = $as_T(x$2);
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["import ", ";"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
-  });
-  var this$2 = $m_sci_List$();
-  var bf = this$2.ReusableCBFInstance$2;
-  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-    if ((this$3 === $m_sci_Nil$())) {
-      var jsx$1 = $m_sci_Nil$()
-    } else {
-      var arg1 = this$3.head__O();
-      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-      var t = h;
-      var rest = this$3.tail__sci_List();
-      while ((rest !== $m_sci_Nil$())) {
-        var arg1$1 = rest.head__O();
-        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-        t.tl$5 = nx;
-        t = nx;
-        var this$4 = rest;
-        rest = this$4.tail__sci_List()
-      };
-      var jsx$1 = h
-    }
-  } else {
-    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
-    var these = this$3;
-    while ((!these.isEmpty__Z())) {
-      var arg1$2 = these.head__O();
-      b.$$plus$eq__O__scm_Builder(f(arg1$2));
-      var this$5 = these;
-      these = this$5.tail__sci_List()
-    };
-    var jsx$1 = b.result__O()
-  };
-  return (("\n" + $as_sc_TraversableOnce(jsx$1).mkString__T__T("\n")) + "\n")
 });
 var $d_Lio_kaitai_struct_languages_JavaCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_JavaCompiler: 0
@@ -64487,6 +66882,11 @@ $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.classDoc__sci_List__Lio_
 });
 $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.universalFooter__V()
+});
+$c_Lio_kaitai_struct_languages_PythonCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$2 = this$1.list$1.toList__sci_List();
+  return $s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(this$2, "", "\n", "\n")
 });
 $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
   this.typeProvider$2 = typeProvider;
@@ -64900,6 +67300,8 @@ $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.classConstructorHeader__
   }
 });
 $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.attrProcess__Lio_kaitai_struct_format_ProcessExpr__Lio_kaitai_struct_format_Identifier__Lio_kaitai_struct_format_Identifier__V = (function(proc, varSrc, varDest) {
+  var srcName = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc);
+  var destName = this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest);
   if ($is_Lio_kaitai_struct_format_ProcessXor(proc)) {
     var x2 = $as_Lio_kaitai_struct_format_ProcessXor(proc);
     var xorValue = x2.key$1;
@@ -64912,19 +67314,50 @@ $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.attrProcess__Lio_kaitai_
       };
       var procName = "process_xor_many"
     };
-    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".", "(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest), "KaitaiStream", procName, this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc), $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, xorValue)])))
+    this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".", "(", ", ", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, "KaitaiStream", procName, srcName, $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, xorValue)])))
   } else {
     var x = $m_Lio_kaitai_struct_format_ProcessZlib$();
     if ((x === proc)) {
       var this$1 = this.importList$2;
       $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$1.list$1, "import zlib");
-      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = zlib.decompress(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest), this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc)])))
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = zlib.decompress(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, srcName])))
     } else if ($is_Lio_kaitai_struct_format_ProcessRotate(proc)) {
       var x3 = $as_Lio_kaitai_struct_format_ProcessRotate(proc);
       var isLeft = x3.left$1;
       var rotValue = x3.key$1;
       var expr = (isLeft ? $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue) : new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["8 - (", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(this, rotValue)])));
-      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".process_rotate_left(", ", ", ", 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varDest), "KaitaiStream", this.privateMemberName__Lio_kaitai_struct_format_Identifier__T(varSrc), expr])))
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = ", ".process_rotate_left(", ", ", ", 1)"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, "KaitaiStream", srcName, expr])))
+    } else if ($is_Lio_kaitai_struct_format_ProcessCustom(proc)) {
+      var x4 = $as_Lio_kaitai_struct_format_ProcessCustom(proc);
+      var name = x4.name$1;
+      var args = x4.args$1;
+      if (($s_sc_LinearSeqOptimized$class__length__sc_LinearSeqOptimized__I(name) === 1)) {
+        var onlyName = $as_T(name.head__O());
+        var className = $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(onlyName);
+        var this$2 = this.importList$2;
+        var s = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["from ", " import ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([onlyName, className]));
+        $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$2.list$1, s);
+        var procClass = className
+      } else {
+        var pkgName = $as_sc_TraversableOnce($s_sc_TraversableLike$class__init__sc_TraversableLike__O(name)).mkString__T__T(".");
+        var this$3 = this.importList$2;
+        var s$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["import ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([pkgName]));
+        $m_Lio_kaitai_struct_Utils$().addUniqueAttr__scm_ListBuffer__O__V(this$3.list$1, s$1);
+        var jsx$1 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".", ""]));
+        var name$1 = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(name));
+        var procClass = jsx$1.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([pkgName, $m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name$1)]))
+      };
+      var jsx$4 = this.out$2;
+      var jsx$3 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["_process = ", "(", ")"]));
+      var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+        return (function(e$2) {
+          var e = $as_Lio_kaitai_struct_exprlang_Ast$expr(e$2);
+          return $s_Lio_kaitai_struct_languages_components_ObjectOrientedLanguage$class__expression__Lio_kaitai_struct_languages_components_ObjectOrientedLanguage__Lio_kaitai_struct_exprlang_Ast$expr__T(arg$outer, e)
+        })
+      })(this));
+      var this$4 = $m_sc_Seq$();
+      jsx$4.puts__T__V(jsx$3.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([procClass, $as_sc_TraversableOnce(args.map__F1__scg_CanBuildFrom__O(jsx$2, this$4.ReusableCBFInstance$2)).mkString__T__T(", ")])));
+      this.out$2.puts__T__V(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", " = _process.decode(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([destName, srcName])))
     } else {
       throw new $c_s_MatchError().init___O(proc)
     }
@@ -64980,11 +67413,6 @@ $c_Lio_kaitai_struct_languages_PythonCompiler.prototype.fileHeader__T__V = (func
   this.out$2.dec__V();
   var this$6 = this.out$2;
   this$6.sb$2.append__T__scm_StringBuilder("\n")
-});
-$c_Lio_kaitai_struct_languages_PythonCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var this$2 = this$1.list$1.toList__sci_List();
-  return $s_sc_TraversableOnce$class__mkString__sc_TraversableOnce__T__T__T__T(this$2, "", "\n", "\n")
 });
 var $d_Lio_kaitai_struct_languages_PythonCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_PythonCompiler: 0
@@ -65167,6 +67595,16 @@ $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.parseExpr__Lio_kaitai_stru
       return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".read_bits_int(", ")"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([io, width]))
     } else if ($is_Lio_kaitai_struct_datatype_DataType$UserType(dataType)) {
       var x10 = $as_Lio_kaitai_struct_datatype_DataType$UserType(dataType);
+      var jsx$4 = $m_Lio_kaitai_struct_Utils$();
+      var jsx$3 = x10.args$1;
+      var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
+        return (function(a$2) {
+          var a = $as_Lio_kaitai_struct_exprlang_Ast$expr(a$2);
+          return arg$outer.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
+        })
+      })(this));
+      var this$1 = $m_sc_Seq$();
+      var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), ", ", ", ", "");
       if (x10.isOpaque__Z()) {
         var addArgs = ""
       } else {
@@ -65196,22 +67634,12 @@ $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.parseExpr__Lio_kaitai_stru
           };
           var addEndian = ""
         };
-        var jsx$4 = $m_Lio_kaitai_struct_Utils$();
-        var jsx$3 = x10.args$1;
-        var jsx$2 = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(arg$outer) {
-          return (function(a$2) {
-            var a = $as_Lio_kaitai_struct_exprlang_Ast$expr(a$2);
-            return arg$outer.translator$2.translate__Lio_kaitai_struct_exprlang_Ast$expr__T(a)
-          })
-        })(this));
-        var this$1 = $m_sc_Seq$();
-        var addParams = jsx$4.join__sc_TraversableOnce__T__T__T__T($as_sc_TraversableOnce(jsx$3.map__F1__scg_CanBuildFrom__O(jsx$2, this$1.ReusableCBFInstance$2)), ", ", ", ", "");
-        var addArgs = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ", @_root", "", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([parent, addEndian, addParams]))
+        var addArgs = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array([", ", ", @_root", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([parent, addEndian]))
       };
-      var jsx$5 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".new(", "", ")"]));
+      var jsx$5 = new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["", ".new(", "", "", ")"]));
       var this$2 = x10.name$1;
       var name = $as_T($s_sc_LinearSeqOptimized$class__last__sc_LinearSeqOptimized__O(this$2));
-      return jsx$5.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name), io, addArgs]))
+      return jsx$5.s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([$m_Lio_kaitai_struct_Utils$().upperCamelCase__T__T(name), io, addArgs, addParams]))
     } else {
       throw new $c_s_MatchError().init___O(dataType)
     }
@@ -65263,6 +67691,46 @@ $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.runRead__V = (function() {
 $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.condRepeatExprFooter__V = (function() {
   this.out$2.dec__V();
   this.out$2.puts__T__V("}")
+});
+$c_Lio_kaitai_struct_languages_RubyCompiler.prototype.outImports__Lio_kaitai_struct_format_ClassSpec__T = (function(topClass) {
+  var this$1 = this.importList$2;
+  var this$3 = this$1.list$1.toList__sci_List();
+  var f = (function(x$2) {
+    var x = $as_T(x$2);
+    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["require '", "'"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
+  });
+  var this$2 = $m_sci_List$();
+  var bf = this$2.ReusableCBFInstance$2;
+  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
+    if ((this$3 === $m_sci_Nil$())) {
+      var jsx$1 = $m_sci_Nil$()
+    } else {
+      var arg1 = this$3.head__O();
+      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
+      var t = h;
+      var rest = this$3.tail__sci_List();
+      while ((rest !== $m_sci_Nil$())) {
+        var arg1$1 = rest.head__O();
+        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
+        t.tl$5 = nx;
+        t = nx;
+        var this$4 = rest;
+        rest = this$4.tail__sci_List()
+      };
+      var jsx$1 = h
+    }
+  } else {
+    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
+    var these = this$3;
+    while ((!these.isEmpty__Z())) {
+      var arg1$2 = these.head__O();
+      b.$$plus$eq__O__scm_Builder(f(arg1$2));
+      var this$5 = these;
+      these = this$5.tail__sci_List()
+    };
+    var jsx$1 = b.result__O()
+  };
+  return ($as_sc_TraversableOnce(jsx$1).mkString__T__T("\n") + "\n")
 });
 $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.init___Lio_kaitai_struct_ClassTypeProvider__Lio_kaitai_struct_RuntimeConfig = (function(typeProvider, config) {
   this.typeProvider$2 = typeProvider;
@@ -65764,46 +68232,6 @@ $c_Lio_kaitai_struct_languages_RubyCompiler.prototype.enumValue__T__T__T = (func
   var this$2 = $m_sci_List$();
   var cbf = this$2.ReusableCBFInstance$2;
   return jsx$1.doEnumByLabel__sci_List__T__T($as_sci_List($s_sc_TraversableLike$class__to__sc_TraversableLike__scg_CanBuildFrom__O(xs, cbf)), enumLabel)
-});
-$c_Lio_kaitai_struct_languages_RubyCompiler.prototype.outImports__T = (function() {
-  var this$1 = this.importList$2;
-  var this$3 = this$1.list$1.toList__sci_List();
-  var f = (function(x$2) {
-    var x = $as_T(x$2);
-    return new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["require '", "'"])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([x]))
-  });
-  var this$2 = $m_sci_List$();
-  var bf = this$2.ReusableCBFInstance$2;
-  if ((bf === $m_sci_List$().ReusableCBFInstance$2)) {
-    if ((this$3 === $m_sci_Nil$())) {
-      var jsx$1 = $m_sci_Nil$()
-    } else {
-      var arg1 = this$3.head__O();
-      var h = new $c_sci_$colon$colon().init___O__sci_List(f(arg1), $m_sci_Nil$());
-      var t = h;
-      var rest = this$3.tail__sci_List();
-      while ((rest !== $m_sci_Nil$())) {
-        var arg1$1 = rest.head__O();
-        var nx = new $c_sci_$colon$colon().init___O__sci_List(f(arg1$1), $m_sci_Nil$());
-        t.tl$5 = nx;
-        t = nx;
-        var this$4 = rest;
-        rest = this$4.tail__sci_List()
-      };
-      var jsx$1 = h
-    }
-  } else {
-    var b = $s_sc_TraversableLike$class__builder$1__p0__sc_TraversableLike__scg_CanBuildFrom__scm_Builder(this$3, bf);
-    var these = this$3;
-    while ((!these.isEmpty__Z())) {
-      var arg1$2 = these.head__O();
-      b.$$plus$eq__O__scm_Builder(f(arg1$2));
-      var this$5 = these;
-      these = this$5.tail__sci_List()
-    };
-    var jsx$1 = b.result__O()
-  };
-  return ($as_sc_TraversableOnce(jsx$1).mkString__T__T("\n") + "\n")
 });
 var $d_Lio_kaitai_struct_languages_RubyCompiler = new $TypeData().initClass({
   Lio_kaitai_struct_languages_RubyCompiler: 0
