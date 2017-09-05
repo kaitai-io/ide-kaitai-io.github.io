@@ -77,8 +77,6 @@ function exportValue(obj, debug, path, noLazy) {
 }
 importScripts("../entities.js");
 importScripts("../../lib/_npm/kaitai-struct/KaitaiStream.js");
-this["define"] = function (name, deps, getter) { myself[name] = getter(); };
-define.amd = true;
 var apiMethods = {
     initCode: (sourceCode, mainClassName, ksyTypes) => {
         wi.ksyTypes = ksyTypes;

@@ -44,6 +44,7 @@ enums:
     0x1000000:  abi64     # flag
     0x1000007:  x86_64    # abi64 | i386
     0x1000012:  powerpc64 # abi64 | powerpc
+    0x100000c:  arm64     # abi64 | arm
   file_type:
     # http://opensource.apple.com//source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/mach-o/loader.h
     0x1: object      # relocatable object file
@@ -96,13 +97,12 @@ enums:
     0x21      : encryption_info    # encrypted segment information
     0x22      : dyld_info          # compressed dyld information
     0x80000022: dyld_info_only     # compressed dyld information only
-    0x23      : load_upward_dylib
+    0x80000023: load_upward_dylib
     0x24      : version_min_macosx
     0x25      : version_min_iphoneos
     0x26      : function_starts
     0x27      : dyld_environment
-    0x28      : main
-    0x80000028: main2
+    0x80000028: main
     0x29      : data_in_code
     0x2A      : source_version
     0x2B      : dylib_code_sign_drs
@@ -138,13 +138,6 @@ enums:
     0x800000 : has_tlv_descriptors
     0x1000000: no_heap_execution
     0x2000000: app_extension_safe
-  vm_prot:
-    0x00: none
-    0x01: read
-    0x02: write
-    0x04: execute
-    0x08: no_change
-    0x10: copy
 types:
   mach_header:
     seq:
@@ -171,27 +164,88 @@ types:
         type: u4
         enum: load_command_type
       - id: size
+        -orig-id: cmdsize
         type: u4
       - id: body
         size: size - 8
         type:
           switch-on: type
           cases:
-            'load_command_type::segment_64'        : segment_command_64
-            'load_command_type::dyld_info_only'    : dyld_info_command
-            'load_command_type::symtab'            : symtab_command
-            'load_command_type::dysymtab'          : dysymtab_command
-            'load_command_type::load_dylinker'     : dylinker_command
-            'load_command_type::uuid'              : uuid_command
-            'load_command_type::version_min_macosx': version_min_command
-            'load_command_type::source_version'    : source_version_command
-            'load_command_type::main'              : entry_point_command
-            'load_command_type::load_dylib'        : dylib_command
-            'load_command_type::rpath'             : rpath_command
-            'load_command_type::function_starts'   : linkedit_data_command
-            'load_command_type::data_in_code'      : linkedit_data_command
-            'load_command_type::code_signature'    : code_signature_command
+            'load_command_type::segment_64'              : segment_command_64
+            'load_command_type::dyld_info'               : dyld_info_command
+            'load_command_type::dyld_info_only'          : dyld_info_command
+            'load_command_type::symtab'                  : symtab_command
+            'load_command_type::dysymtab'                : dysymtab_command
+            'load_command_type::load_dylinker'           : dylinker_command
+            'load_command_type::id_dylinker'             : dylinker_command
+            'load_command_type::dyld_environment'        : dylinker_command
+            'load_command_type::uuid'                    : uuid_command
+            'load_command_type::version_min_macosx'      : version_min_command
+            'load_command_type::version_min_iphoneos'    : version_min_command
+            'load_command_type::version_min_tvos'        : version_min_command
+            'load_command_type::version_min_watchos'     : version_min_command
+            'load_command_type::source_version'          : source_version_command
+            'load_command_type::main'                    : entry_point_command
+            'load_command_type::load_dylib'              : dylib_command
+            'load_command_type::load_upward_dylib'       : dylib_command
+            'load_command_type::id_dylib'                : dylib_command
+            'load_command_type::load_weak_dylib'         : dylib_command
+            'load_command_type::lazy_load_dylib'         : dylib_command
+            'load_command_type::reexport_dylib'          : dylib_command
+            'load_command_type::rpath'                   : rpath_command
+            'load_command_type::function_starts'         : linkedit_data_command
+            'load_command_type::data_in_code'            : linkedit_data_command
+            'load_command_type::dylib_code_sign_drs'     : linkedit_data_command
+            'load_command_type::linker_optimization_hint': linkedit_data_command
+            'load_command_type::segment_split_info'      : linkedit_data_command
+            'load_command_type::code_signature'          : code_signature_command
+            'load_command_type::encryption_info_64'      : encryption_info_command
+            'load_command_type::encryption_info'         : encryption_info_command
+            'load_command_type::twolevel_hints'          : twolevel_hints_command
+            'load_command_type::linker_option'           : linker_option_command
+            'load_command_type::sub_framework'           : sub_command
+            'load_command_type::sub_umbrella'            : sub_command
+            'load_command_type::sub_client'              : sub_command
+            'load_command_type::sub_library'             : sub_command
+            'load_command_type::routines_64'             : routines_command_64
+            'load_command_type::routines'                : routines_command
     -webide-representation: '{type}: {body}'
+  vm_prot:
+    seq:
+      - id: strip_read
+        type: b1
+        doc: Special marker to support execute-only protection.
+        -orig-id: VM_PROT_STRIP_READ
+      - id: is_mask
+        doc: Indicates to use value as a mask against the actual protection bits.
+        -orig-id: VM_PROT_IS_MASK
+        type: b1
+      - id: reserved0
+        type: b1
+        doc: Reserved (unused) bit.
+      - id: copy
+        type: b1
+        doc: Used when write permission can not be obtained, to mark the entry as COW.
+        -orig-id: VM_PROT_COPY
+      - id: no_change
+        type: b1
+        doc: Used only by memory_object_lock_request to indicate no change to page locks.
+        -orig-id: VM_PROT_NO_CHANGE
+      - id: execute
+        type: b1
+        doc: Execute permission.
+        -orig-id: VM_PROT_EXECUTE
+      - id: write
+        type: b1
+        doc: Write permission.
+        -orig-id: VM_PROT_WRITE
+      - id: read
+        type: b1
+        doc: Read permission.
+        -orig-id: VM_PROT_READ
+      - id: reserved1
+        type: b24
+        doc: Reserved (unused) bits.
   uleb128:
     seq:
       - id: b1
@@ -254,11 +308,9 @@ types:
       - id: filesize
         type: u8
       - id: maxprot
-        type: u4
-        enum: vm_prot
+        type: vm_prot
       - id: initprot
-        type: u4
-        enum: vm_prot
+        type: vm_prot
       - id: nsects
         type: u4
       - id: flags
@@ -271,11 +323,13 @@ types:
       section_64:
         seq:
           - id: sect_name
+            -orig-id: sectname
             size: 16
             type: str
             pad-right: 0
             encoding: ascii
           - id: seg_name
+            -orig-id: segname
             size: 16
             type: str
             pad-right: 0
@@ -586,12 +640,16 @@ types:
   symtab_command:
     seq:
       - id: sym_off
+        -orig-id: symoff
         type: u4
       - id: n_syms
+        -orig-id: nsyms
         type: u4
       - id: str_off
+        -orig-id: stroff
         type: u4
       - id: str_size
+        -orig-id: strsize
         type: u4
     instances:
       symbols:
@@ -632,40 +690,58 @@ types:
   dysymtab_command:
     seq:
       - id: i_local_sym
+        -orig-id: ilocalsym
         type: u4
       - id: n_local_sym
+        -orig-id: nlocalsym
         type: u4
       - id: i_ext_def_sym
+        -orig-id: iextdefsym
         type: u4
       - id: n_ext_def_sym
+        -orig-id: nextdefsym
         type: u4
       - id: i_undef_sym
+        -orig-id: iundefsym
         type: u4
       - id: n_undef_sym
+        -orig-id: nundefsym
         type: u4
       - id: toc_off
+        -orig-id: tocoff
         type: u4
       - id: n_toc
+        -orig-id: ntoc
         type: u4
       - id: mod_tab_off
+        -orig-id: modtaboff
         type: u4
       - id: n_mod_tab
+        -orig-id: nmodtab
         type: u4
       - id: ext_ref_sym_off
+        -orig-id: extrefsymoff
         type: u4
       - id: n_ext_ref_syms
+        -orig-id: nextrefsyms
         type: u4
       - id: indirect_sym_off
+        -orig-id: indirectsymoff
         type: u4
       - id: n_indirect_syms
+        -orig-id: nindirectsyms
         type: u4
       - id: ext_rel_off
+        -orig-id: extreloff
         type: u4
       - id: n_ext_rel
+        -orig-id: nextrel
         type: u4
       - id: loc_rel_off
+        -orig-id: locreloff
         type: u4
       - id: n_loc_rel
+        -orig-id: nlocrel
         type: u4
     instances:
       indirect_symbols:
@@ -677,8 +753,10 @@ types:
   lc_str:
     seq:
       - id: length
+        -orig-id: offset
         type: u4
       - id: value
+        -orig-id: ptr
         type: strz
         encoding: UTF-8
     -webide-representation: '{value}'
@@ -703,11 +781,59 @@ types:
       - id: release
         type: u1
     -webide-representation: '{major:dec}.{minor:dec}'
+  encryption_info_command:
+    seq:
+      - id: cryptoff
+        type: u4
+      - id: cryptsize
+        type: u4
+      - id: cryptid
+        type: u4
+      - id: pad
+        type: u4
+        if: _root.magic == magic_type::macho_be_x64 or _root.magic == magic_type::macho_le_x64
+  twolevel_hints_command:
+    seq:
+      - id: offset
+        type: u4
+      - id: num_hints
+        -orig-id: nhints
+        type: u4
+  linker_option_command:
+    seq:
+      - id: num_strings
+        -orig-id: count
+        type: u4
+      - id: strings
+        type: strz
+        encoding: utf-8
+        repeat: expr
+        repeat-expr: num_strings
+  sub_command:
+    seq:
+      - id: name
+        type: lc_str
+  routines_command_64:
+    seq:
+        - id: init_address
+          type: u8
+        - id: init_module
+          type: u8
+        - id: reserved
+          size: 48 # u8 * 6
+  routines_command:
+    seq:
+        - id: init_address
+          type: u4
+        - id: init_module
+          type: u4
+        - id: reserved
+          size: 24 # u4 * 6
   version_min_command:
     seq:
       - id: version
         type: version
-      - id: reserved
+      - id: sdk
         type: version
     -webide-representation: 'v:{version}, r:{reserved}'
   source_version_command:
@@ -718,8 +844,10 @@ types:
   entry_point_command:
     seq:
       - id: entry_off
+        -orig-id: entryoff
         type: u8
       - id: stack_size
+        -orig-id: stacksize
         type: u8
     -webide-representation: 'entry_off={entry_off}, stack_size={stack_size}'
   dylib_command:
@@ -747,8 +875,10 @@ types:
   linkedit_data_command:
     seq:
       - id: data_off
+        -orig-id: dataoff
         type: u4
       - id: data_size
+        -orig-id: datasize
         type: u4
     -webide-representation: 'offs={data_off}, size={data_size}'
   code_signature_command:
