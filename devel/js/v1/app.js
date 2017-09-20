@@ -76,8 +76,11 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             if (!compiled)
                 return;
             var fileNames = Object.keys(compiled.release);
-            this.ui.genCodeViewer.setValue(fileNames.map(x => compiled.release[x]).join(""), -1);
-            this.ui.genCodeDebugViewer.setValue(fileNames.map(x => compiled.debug[x]).join(""), -1);
+            let debugUserTypes = localStorage.getItem("userTypes") || "";
+            if (debugUserTypes)
+                debugUserTypes += "\n\n";
+            this.ui.genCodeViewer.setValue(debugUserTypes + fileNames.map(x => compiled.release[x]).join(""), -1);
+            this.ui.genCodeDebugViewer.setValue(debugUserTypes + fileNames.map(x => compiled.debug[x]).join(""), -1);
             await this.reparse();
         }
         async reparse() {
@@ -177,8 +180,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "a4d13d4a579277b329d9bfbd8668312d0453fb01";
-    kaitaiIde.commitDate = "2017-09-16 08:14:29";
+    kaitaiIde.commitId = "ee13b5b30f24083229362eeb31dbe75ea1acab8d";
+    kaitaiIde.commitDate = "2017-09-20 18:40:10";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
