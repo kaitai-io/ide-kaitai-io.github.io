@@ -77,6 +77,8 @@ function exportValue(obj, debug, path, noLazy) {
 }
 importScripts("../entities.js");
 importScripts("../../lib/_npm/kaitai-struct/KaitaiStream.js");
+KaitaiStream.depUrls = KaitaiStream.depUrls || {};
+KaitaiStream.depUrls.zlib = "../../lib/_npm/pako/pako_inflate.min.js";
 var apiMethods = {
     initCode: (sourceCode, mainClassName, ksyTypes) => {
         wi.ksyTypes = ksyTypes;
