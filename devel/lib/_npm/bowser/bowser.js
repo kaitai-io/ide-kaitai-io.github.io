@@ -130,7 +130,6 @@
     else if (windowsphone) {
       result = {
         name: 'Windows Phone'
-      , osname: 'Windows Phone'
       , windowsphone: t
       }
       if (edgeVersion) {
@@ -151,7 +150,6 @@
     } else if (chromeos) {
       result = {
         name: 'Chrome'
-      , osname: 'Chrome OS'
       , chromeos: t
       , chromeBook: t
       , chrome: t
@@ -174,7 +172,6 @@
     else if (sailfish) {
       result = {
         name: 'Sailfish'
-      , osname: 'Sailfish OS'
       , sailfish: t
       , version: getFirstMatch(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
       }
@@ -194,7 +191,6 @@
       }
       if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
         result.firefoxos = t
-        result.osname = 'Firefox OS'
       }
     }
     else if (silk) {
@@ -221,7 +217,6 @@
     else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
       result = {
         name: 'BlackBerry'
-      , osname: 'BlackBerry OS'
       , blackberry: t
       , version: versionIdentifier || getFirstMatch(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
       }
@@ -229,7 +224,6 @@
     else if (webos) {
       result = {
         name: 'WebOS'
-      , osname: 'WebOS'
       , webos: t
       , version: versionIdentifier || getFirstMatch(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
       };
@@ -238,7 +232,6 @@
     else if (/bada/i.test(ua)) {
       result = {
         name: 'Bada'
-      , osname: 'Bada'
       , bada: t
       , version: getFirstMatch(/dolfin\/(\d+(\.\d+)?)/i)
       };
@@ -246,7 +239,6 @@
     else if (tizen) {
       result = {
         name: 'Tizen'
-      , osname: 'Tizen'
       , tizen: t
       , version: getFirstMatch(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || versionIdentifier
       };
@@ -331,23 +323,17 @@
     // set OS flags for platforms that have multiple browsers
     if (!result.windowsphone && !result.msedge && (android || result.silk)) {
       result.android = t
-      result.osname = 'Android'
     } else if (!result.windowsphone && !result.msedge && iosdevice) {
       result[iosdevice] = t
       result.ios = t
-      result.osname = 'iOS'
     } else if (mac) {
       result.mac = t
-      result.osname = 'macOS'
     } else if (xbox) {
       result.xbox = t
-      result.osname = 'Xbox'
     } else if (windows) {
       result.windows = t
-      result.osname = 'Windows'
     } else if (linux) {
       result.linux = t
-      result.osname = 'Linux'
     }
 
     function getWindowsVersion (s) {
