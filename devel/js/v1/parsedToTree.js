@@ -71,8 +71,11 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                 text += "]";
                 return utils_1.s `${text}`;
             }
+            else if (exported.type === ObjectType.Undefined) {
+                return utils_1.s `<missing>`;
+            }
             else
-                throw new Error("primitiveToText: object is not primitive!");
+                throw new Error(`primitiveToText: object is not primitive: ${exported.type}!`);
         }
         reprObject(obj) {
             var repr = obj.object.ksyType && obj.object.ksyType["-webide-representation"];
