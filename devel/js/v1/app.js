@@ -14,6 +14,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             window["_ga"]("send", "event", category, action, label, value);
     }
     exports.ga = ga;
+    const qs = {};
+    location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => qs[x[0]] = x[1]);
     let AppVM = class AppVM extends Vue {
         constructor() {
             super(...arguments);
@@ -180,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "b3d827f352d9605628e48ae18f85d81a3437f5c6";
-    kaitaiIde.commitDate = "2018-01-28 12:50:53";
+    kaitaiIde.commitId = "7ea7069b96f3785cadbab657c625c5d54300593e";
+    kaitaiIde.commitDate = "2018-02-01 22:58:53";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -200,11 +202,10 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         });
         exports.app.ui.hexViewer.onSelectionChanged = () => exports.app.onHexViewerSelectionChanged();
         exports.app.refreshSelectionInput();
-        exports.app.ui.genCodeDebugViewer.commands.addCommand({
-            name: "compile",
-            bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
-            exec: function (editor) { exports.app.reparse(); }
-        });
+        exports.app.ui.genCodeDebugViewer.commands.addCommand({ name: "compile", bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+            exec: function (editor) { exports.app.reparse(); } });
+        exports.app.ui.ksyEditor.commands.addCommand({ name: "compile", bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+            exec: function (editor) { exports.app.recompile(); } });
         FileDrop_1.initFileDrop("fileDrop", (files) => exports.app.addNewFiles(files));
         async function loadCachedFsItem(cacheKey, defFsType, defSample) {
             let fsItem = await localforage.getItem(cacheKey);
@@ -218,7 +219,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 exports.app.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);
         });
         var editDelay = new utils_1.Delayed(500);
-        exports.app.ui.ksyEditor.on("change", () => editDelay.do(() => exports.app.recompile()));
+        if (!("noAutoCompile" in qs))
+            exports.app.ui.ksyEditor.on("change", () => editDelay.do(() => exports.app.recompile()));
         var inputContextMenu = $("#inputContextMenu");
         var downloadInput = $("#inputContextMenu .downloadItem");
         $("#hexViewer").on("contextmenu", e => {
