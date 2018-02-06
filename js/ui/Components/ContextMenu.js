@@ -17,8 +17,9 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
         }
         open(event, model) {
             this.item = model;
-            this.top = event.pageY + "px";
-            this.left = event.pageX + "px";
+            const parentRect = this.$el.parentElement.getBoundingClientRect();
+            this.top = (event.pageY - parentRect.top) + "px";
+            this.left = (event.pageX - parentRect.left) + "px";
             this.visible = true;
             window.addEventListener("click", this.clickHandler, true);
             window.addEventListener("keyup", this.escapeHandler, true);

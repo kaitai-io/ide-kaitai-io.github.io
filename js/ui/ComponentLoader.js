@@ -29,7 +29,7 @@ define(["require", "exports", "vue", "jquery"], function (require, exports, Vue,
                 var tag = tagMatch[1], content = tagMatch[3], attrs = {};
                 /\s(\w+)="(\w+)"/g.matches(tagMatch[2]).forEach(attrMatch => attrs[attrMatch[1]] = attrMatch[2]);
                 if (tag === "template") {
-                    var jsClassName = attrs.id || url.split('/').last().replace('.html', '');
+                    var jsClassName = attrs.id || url.split("/").last().replace(".html", "");
                     var template = this.templates[jsClassName] = content.replace(/<!--nobr-->\s*/gi, "");
                     if (this.templatePromises[jsClassName]) {
                         for (var resolve of this.templatePromises[jsClassName])
@@ -51,7 +51,6 @@ define(["require", "exports", "vue", "jquery"], function (require, exports, Vue,
             }
         }
     }
-    ;
     window["vue"] = Vue;
     exports.componentLoader = new ComponentLoader();
 });

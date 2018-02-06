@@ -26,14 +26,12 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                 this.selectedItem.dblclick();
             else
                 this.selectNode("next");
-            this.scrollSelectedIntoView();
         }
         closeSelected() {
             if (this.selectedItem.open)
                 this.selectedItem.dblclick();
             else if (this.selectedItem.parent.parent)
                 this.setSelected(this.selectedItem.parent);
-            this.scrollSelectedIntoView();
         }
         selectRelativeNode(node, dir) {
             if (dir === "next") {
@@ -41,8 +39,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
                     this.setSelected(node.children[0]);
                 else {
                     while (node.parent) {
-                        var children = node.parent.children;
-                        var thisIdx = children.indexOf(node);
+                        let children = node.parent.children;
+                        let thisIdx = children.indexOf(node);
                         if (thisIdx + 1 < children.length) {
                             this.setSelected(children[thisIdx + 1]);
                             break;
@@ -54,8 +52,8 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             }
             else if (dir === "prev") {
                 if (node.parent) {
-                    var children = node.parent.children;
-                    var thisIdx = children.indexOf(node);
+                    let children = node.parent.children;
+                    let thisIdx = children.indexOf(node);
                     if (thisIdx - 1 >= 0) {
                         var selChildren = children[thisIdx - 1];
                         while (selChildren.open && selChildren.children && selChildren.children.length > 0)
@@ -93,10 +91,38 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.selectedItem = newSelected;
             this.selectedItem.selected = true;
             this.scrollSelectedIntoView();
+            this.$emit("selected", this.selectedItem.model);
+        }
+        async searchNode(searchCallback, loadChildrenIfNeeded = true) {
+            let currNode = null;
+            let forceLoadChildren = false;
+            while (true) {
+                if (currNode && !currNode.open)
+                    await currNode.openNode();
+                if (loadChildrenIfNeeded && currNode && (!currNode.children || currNode.children.length === 0 || forceLoadChildren))
+                    await currNode.model.loadChildren();
+                let nextNode = null;
+                for (const child of (currNode || this).children) {
+                    const matchResult = searchCallback(child.model);
+                    if (matchResult === "match")
+                        return child;
+                    else if (matchResult === "children") {
+                        nextNode = child;
+                        forceLoadChildren = false;
+                        break;
+                    }
+                }
+                if (nextNode !== null)
+                    currNode = nextNode;
+                else if (!forceLoadChildren)
+                    forceLoadChildren = true;
+                else
+                    return null;
+            }
         }
     };
     TreeView = __decorate([
-        Component_1.default
+        Component_1.default({ props: { "wholeRow": { default: false } } })
     ], TreeView);
     exports.TreeView = TreeView;
     let TreeViewItem = class TreeViewItem extends Vue {
@@ -107,25 +133,38 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
             this.childrenLoading = false;
             this.loadingError = null;
         }
-        get icon() {
-            return this.model["icon"] ? this.model["icon"] :
-                this.model.isFolder ? (this.open ? "glyphicon-folder-open" : "glyphicon-folder-close") : "glyphicon-list-alt";
-        }
-        ;
         get treeView() { return UIHelper_1.default.findParent(this, TreeView); }
         get children() { return this.$children; }
         get parent() { return this.$parent; }
-        dblclick() {
-            if (this.model.isFolder) {
-                this.open = !this.open;
-                if (this.open && !this.model.children) {
-                    this.childrenLoading = true;
-                    this.loadingError = null;
-                    setTimeout(() => this.model.loadChildren().catch(x => {
-                        console.error(x);
-                        this.loadingError = `${x}`;
-                    }).then(() => this.childrenLoading = false), 0);
-                }
+        created() {
+            this.model.$vm = this;
+            //console.log('model', this.model);
+        }
+        async openNode() {
+            if (this.open || !this.model.hasChildren)
+                return;
+            this.childrenLoading = true;
+            this.loadingError = null;
+            try {
+                if (!this.model.children)
+                    await this.model.loadChildren();
+                this.open = true;
+            }
+            catch (e) {
+                console.error(e);
+                this.loadingError = `${e}`;
+            }
+            this.childrenLoading = false;
+        }
+        closeNode() {
+            this.open = false;
+        }
+        async dblclick() {
+            if (this.model.hasChildren) {
+                if (this.open)
+                    this.closeNode();
+                else
+                    await this.openNode();
             }
             else {
                 this.treeView.$emit("item-dblclick", this.model);

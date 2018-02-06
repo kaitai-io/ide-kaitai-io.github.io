@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "vue", "../Component"], function (require, exports, Vue, Component_1) {
+define(["require", "exports", "vue", "jquery", "../Component"], function (require, exports, Vue, $, Component_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let SelectionInputPart = class SelectionInputPart extends Vue {
@@ -16,7 +16,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
         get parent() { return this.$parent; }
         get width() { return this.getTextWidth(this.text); }
         mounted() {
-            this.inputSizeEl = $("<span>").css({ display: 'none' }).appendTo(this.$parent.$el);
+            this.inputSizeEl = $("<span>").css({ display: "none" }).appendTo(this.parent.$el);
             this.$watch("text", () => this.parent.inputChanged(this));
         }
         getTextWidth(text) {
@@ -51,7 +51,7 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
             this.setAddrInput(this.endPart, this.hasSelection && this.start !== this.end ? this.end : null);
         }
         setAddrInput(ctrl, value) {
-            var newValue = value < 0 ? 0 : value >= this.maxLength ? this.maxLength - 1 : value;
+            const newValue = value < 0 ? 0 : value >= this.maxLength ? this.maxLength - 1 : value;
             ctrl.text = newValue === null ? "" : this.useHexAddr ? `0x${newValue.toString(16)}` : `${newValue}`;
         }
         move(ctrl, dir) {
@@ -62,7 +62,8 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
                 this.useHexAddr = ctrl.text.startsWith("0x");
             var start = this.startPart.value;
             var end = this.endPart.value;
-            this.$emit("selectionchanged", start !== null ? start : -1, end === null || end < start ? start : end);
+            if (ctrl.focused)
+                this.$emit("selection-changed", start !== null ? start : -1, end === null || end < start ? start : end);
         }
     };
     SelectionInput = __decorate([

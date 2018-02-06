@@ -9,21 +9,42 @@ class AmdModule {
         //console.log("create module url", url);
     }
 }
-window["module"] = { exports: null };
+const isWorker = typeof window === "undefined";
+this["module"] = { exports: null };
+if (isWorker)
+    this["window"] = { exports: null };
 class AmdLoader {
     constructor() {
         this.modules = {};
         this.paths = {};
+        this.projectBase = "";
         this.moduleLoadedHook = null;
         this.beforeLoadHook = null;
+        this.projectBase = isWorker ? "" : window.location.href;
     }
-    loadWithScriptTag(src) {
+    get currentScriptSrc() { return typeof document !== "undefined" ? document.currentScript["src"] : self["currentScriptSrc"]; }
+    loadScript(src) {
         return new Promise((resolve, reject) => {
-            let scriptEl = document.createElement("script");
-            scriptEl.onload = e => resolve(scriptEl);
-            scriptEl.onerror = e => reject(e);
-            scriptEl.src = src;
-            document.head.appendChild(scriptEl);
+            if (typeof document === "undefined") {
+                try {
+                    const oldScriptSrc = self["currentScriptSrc"];
+                    self["currentScriptSrc"] = src;
+                    //console.log(`importScripts("${src}")`);
+                    importScripts(src);
+                    self["currentScriptSrc"] = oldScriptSrc;
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            }
+            else {
+                let scriptEl = document.createElement("script");
+                scriptEl.onload = e => resolve();
+                scriptEl.onerror = e => reject(e);
+                scriptEl.src = src;
+                document.head.appendChild(scriptEl);
+            }
         });
     }
     getUrlFromName(name, baseUrl) {
@@ -32,9 +53,9 @@ class AmdLoader {
         let pathMatches = Object.keys(this.paths).filter(path => name === path || name.startsWith(path + "/"));
         if (pathMatches.length > 1)
             throw Error(`Module "${name}" can be loaded from multiple paths: ${pathMatches.join(", ")}`);
-        let url = isRelative ? new URL(`${name}.js`, baseUrl || document.currentScript["src"] || window.location).href :
-            pathMatches.length > 0 ? new URL(`${this.paths[pathMatches[0]]}${name.substr(pathMatches[0].length)}.js`, window.location.href).href :
-                new URL(`js/${name}.js`, window.location.href).href;
+        let url = isRelative ? new URL(`${name}.js`, baseUrl || this.currentScriptSrc || this.projectBase).href :
+            pathMatches.length > 0 ? new URL(`${this.paths[pathMatches[0]]}${name.substr(pathMatches[0].length)}.js`, this.projectBase).href :
+                new URL(`js/${name}.js`, this.projectBase).href;
         return url;
     }
     getModule(name) {
@@ -57,12 +78,16 @@ class AmdLoader {
             if (this.beforeLoadHook)
                 await this.beforeLoadHook(module);
             //console.log("will load ", module.url, "exports", module.exports, "module", module);
-            this.loadWithScriptTag(module.url).then(x => this.onScriptLoaded(module), x => loadPromiseReject(module.url));
+            this.loadScript(module.url).then(() => this.onScriptLoaded(module), x => loadPromiseReject(module.url));
         }
         return module.loadPromise;
     }
     async onModuleLoaded(moduleDesc, value) {
-        //console.log("onModuleLoaded", moduleDesc.url);
+        //console.log("onModuleLoaded", moduleDesc.url, value);
+        if (!value) {
+            debugger;
+            throw new Error(`Module result is null! ${moduleDesc.url}`);
+        }
         moduleDesc.exports = value;
         if (this.moduleLoadedHook)
             await this.moduleLoadedHook(moduleDesc);
@@ -73,7 +98,7 @@ class AmdLoader {
     async onScriptLoaded(module) {
         //console.log("script loaded", module.url);
         if (!module.loaded && !module.amdLoading)
-            this.onModuleLoaded(module, window["module"].exports);
+            this.onModuleLoaded(module, self["module"].exports || self["window"]);
     }
     parseArgs(argumentsObj, isDefine) {
         let args = Array.from(argumentsObj);
@@ -109,9 +134,8 @@ class AmdLoader {
         return callbackResult || moduleObj.exports;
     }
     async define(name, deps, callback) {
-        let currScript = document.currentScript;
-        //console.log("define", currScript, name, deps, callback);
-        let moduleDesc = name ? this.getModule(name) : currScript && currScript["src"] && this.modules[currScript["src"]];
+        //console.log("define", this.currentScriptSrc, name, deps, callback);
+        let moduleDesc = name ? this.getModule(name) : this.currentScriptSrc && this.modules[this.currentScriptSrc];
         if (moduleDesc)
             moduleDesc.amdLoading = true;
         var promise = async () => {
@@ -123,21 +147,22 @@ class AmdLoader {
             //console.log("define ENDED", currScript, name, deps, callback);
             return moduleDesc;
         };
-        if (!moduleDesc.loadPromise)
+        if (moduleDesc && !moduleDesc.loadPromise)
             moduleDesc.loadPromise = promise();
         else
             promise();
     }
+    get notLoaded() { return Object.values(this.modules).filter(x => !x.loaded); }
 }
 let loader = new AmdLoader;
-function require() {
-    if (arguments.length === 1 && typeof arguments[0] === "string")
-        return loader.requireLoaded(arguments[0]);
-    return loader.require.apply(loader, loader.parseArgs(arguments, false));
+function require(...args) {
+    if (args.length === 1 && typeof args[0] === "string")
+        return loader.requireLoaded(args[0]);
+    return loader.require.apply(loader, loader.parseArgs(args, false));
 }
 function define() {
     return loader.define.apply(loader, loader.parseArgs(arguments, true));
 }
 define["amd"] = true;
-window["requirejs"] = require; // hack to bypass requirejs detections
+this["requirejs"] = require; // hack to bypass requirejs detections
 //# sourceMappingURL=AmdLoader.js.map

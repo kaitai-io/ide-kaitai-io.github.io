@@ -39,6 +39,21 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.Delayed = Delayed;
+    class EventSilencer {
+        constructor() {
+            this.silence = false;
+        }
+        silenceThis(callback) {
+            this.silence = true;
+            callback();
+            this.silence = false;
+        }
+        do(callback) {
+            if (!this.silence)
+                callback();
+        }
+    }
+    exports.EventSilencer = EventSilencer;
     class Convert {
         static utf8StrToBytes(str) {
             return new TextEncoder("utf-8").encode(str);
@@ -76,12 +91,10 @@ define(["require", "exports"], function (require, exports) {
         });
     }
     exports.readBlob = readBlob;
-    function htmlescape(s) {
-        return $("<div/>").text(s).html();
+    function htmlescape(str) {
+        return $("<div/>").text(str).html();
     }
     exports.htmlescape = htmlescape;
-    ;
-    ;
     function processFiles(files) {
         var resFiles = [];
         for (var i = 0; i < files.length; i++) {
