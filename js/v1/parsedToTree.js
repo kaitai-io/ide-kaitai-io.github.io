@@ -106,6 +106,8 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                     return utils_1.s `"${utils_1.asciiEncode(currItem.bytes)}"`;
                 else if (format.hex && currItem.type === ObjectType.TypedArray)
                     return utils_1.s `${utils_1.hexEncode(currItem.bytes)}`;
+                else if (format.uuid && currItem.type === ObjectType.TypedArray && currItem.bytes.byteLength === 16)
+                    return utils_1.s `${utils_1.uuidEncode(currItem.bytes, format.uuid === "ms")}`;
                 else if (format.dec && currItem.type === ObjectType.Primitive && Number.isInteger(currItem.primitiveValue))
                     return utils_1.s `${currItem.primitiveValue}`;
                 else if (currItem.type === ObjectType.Array) {

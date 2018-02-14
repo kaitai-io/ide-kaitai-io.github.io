@@ -68,14 +68,28 @@ define(["require", "exports"], function (require, exports) {
         return binary;
     }
     exports.asciiEncode = asciiEncode;
+    function encodeHexNum(num) {
+        return (num < 16 ? "0" : "") + num.toString(16);
+    }
     function hexEncode(bytes) {
         var len = bytes.byteLength;
         var binary = "0x";
         for (var i = 0; i < len; i++)
-            binary += bytes[i].toString(16);
+            binary += encodeHexNum(bytes[i]);
         return binary;
     }
     exports.hexEncode = hexEncode;
+    function uuidEncode(bytes, isMs) {
+        const byteOrder = isMs ? [3, 2, 1, 0, "-", 5, 4, "-", 7, 6, "-", 8, 9, "-", 10, 11, 12, 13, 14, 15] : [0, 1, 2, 3, "-", 4, 5, "-", 6, 7, "-", 8, 9, "-", 10, 11, 12, 13, 14, 15];
+        var uuid = "";
+        for (const desc of byteOrder)
+            if (typeof desc === "number")
+                uuid += encodeHexNum(bytes[desc]);
+            else
+                uuid += desc;
+        return uuid;
+    }
+    exports.uuidEncode = uuidEncode;
     function arrayBufferToBase64(buffer) {
         var bytes = new Uint8Array(buffer);
         var binary = asciiEncode(bytes);
