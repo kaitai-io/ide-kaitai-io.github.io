@@ -905,47 +905,94 @@ types:
         type: format20
         if: format.major == 2 and format.minor == 0
   name:
+    doc: |
+      Name table is meant to include human-readable string metadata
+      that describes font: name of the font, its styles, copyright &
+      trademark notices, vendor and designer info, etc.
+
+      The table includes a list of "name records", each of which
+      corresponds to a single metadata entry.
+    doc-ref: https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6name.html
     types:
       name_record:
         seq:
           - id: platform_id
+            -orig-id: platformID
             type: u2
+            enum: platforms
           - id: encoding_id
+            -orig-id: platformSpecificID
             type: u2
           - id: language_id
+            -orig-id: languageID
             type: u2
           - id: name_id
+            -orig-id: nameID
             type: u2
-          - id: string_length
+            enum: names
+          - id: len_str
+            -orig-id: length
             type: u2
-          - id: string_offset
+          - id: ofs_str
+            -orig-id: offset
             type: u2
         instances:
           ascii_value:
             type: str
-            size: string_length
+            size: len_str
             encoding: ascii
             io: _parent._io
-            pos: _parent.string_storage_offset + string_offset
+            pos: _parent.ofs_strings + ofs_str
             #if: encoding_id == 0
             -webide-parse-mode: eager
           unicode_value:
             type: str
-            size: string_length
+            size: len_str
             encoding: utf-16be
             io: _parent._io
-            pos: _parent.string_storage_offset + string_offset
+            pos: _parent.ofs_strings + ofs_str
             #if: encoding_id == 1
             -webide-parse-mode: eager
         -webide-representation: "{ascii_value}"
     seq:
       - id: format_selector
+        -orig-id: format
         type: u2
-      - id: name_record_count
+      - id: num_name_records
+        -orig-id: count
         type: u2
-      - id: string_storage_offset
+      - id: ofs_strings
+        -orig-id: stringOffset
         type: u2
       - id: name_records
+        -orig-id: nameRecord
         type: name_record
         repeat: expr
-        repeat-expr: name_record_count
+        repeat-expr: num_name_records
+    enums:
+      platforms:
+        0: unicode
+        1: macintosh
+        2: reserved_2
+        3: microsoft
+      names:
+        0: copyright
+        1: font_family
+        2: font_subfamily
+        3: unique_subfamily_id
+        4: full_font_name
+        5: name_table_version
+        6: postscript_font_name
+        7: trademark
+        8: manufacturer
+        9: designer
+        10: description
+        11: url_vendor
+        12: url_designer
+        13: license
+        14: url_license
+        15: reserved_15
+        16: preferred_family
+        17: preferred_subfamily
+        18: compatible_full_name
+        19: sample_text
