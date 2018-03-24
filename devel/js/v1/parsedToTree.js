@@ -100,7 +100,11 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                 });
                 if (!currItem)
                     return "";
-                if (currItem.type === ObjectType.Object)
+                if (format.flags && currItem.type === ObjectType.Object) {
+                    const values = Object.keys(currItem.object.fields).filter(x => currItem.object.fields[x].primitiveValue === true);
+                    return values.length > 0 ? values.map(x => utils_1.s `<span class="flags">${x}</span>`).join("|") : "🚫";
+                }
+                else if (currItem.type === ObjectType.Object)
                     return this.reprObject(currItem);
                 else if (format.str && currItem.type === ObjectType.TypedArray)
                     return utils_1.s `"${utils_1.asciiEncode(currItem.bytes)}"`;
