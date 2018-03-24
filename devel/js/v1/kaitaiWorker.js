@@ -66,8 +66,9 @@ function exportValue(obj, debug, path, noLazy) {
         const propNames = obj.constructor !== Object ?
             Object.getOwnPropertyNames(obj.constructor.prototype).filter(x => x[0] !== "_" && x !== "constructor") : [];
         for (const propName of propNames) {
-            var ksyInstanceData = ksyType && ksyType.instancesByJsName[propName];
-            var eagerLoad = ksyInstanceData && ksyInstanceData["-webide-parse-mode"] === "eager";
+            const ksyInstanceData = ksyType && ksyType.instancesByJsName[propName] || {};
+            const parseMode = ksyInstanceData["-webide-parse-mode"];
+            const eagerLoad = parseMode === "eager" || (parseMode !== "lazy" && ksyInstanceData.value);
             if (eagerLoad || noLazy)
                 result.object.fields[propName] = exportValue(obj[propName], obj._debug["_m_" + propName], path.concat(propName), noLazy);
             else
