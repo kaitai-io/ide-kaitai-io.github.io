@@ -92,7 +92,7 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                     if (!currItem || !currItem.object)
                         currItem = null;
                     else {
-                        var child = k === "_parent" ? currItem.parent : currItem.object.fields[ksyNameToJsName(k)];
+                        var child = k === "_parent" ? currItem.parent : k === "this" ? currItem : currItem.object.fields[ksyNameToJsName(k)];
                         //if (!child)
                         //    console.log("[webrepr] child not found in object", currItem, k);
                         currItem = child;
