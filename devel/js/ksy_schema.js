@@ -1,15 +1,7 @@
 
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-        define('ksy_schema',["require", "exports"], factory);
-    }
-})(function (require, exports) {
-exports.ksy_schema =
-{
+define(function(){
+
+return {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "ksy schema",
   "description": "the schema for ksy files",
@@ -399,5 +391,6 @@ exports.ksy_schema =
     }
   }
 }
+
 
 });
