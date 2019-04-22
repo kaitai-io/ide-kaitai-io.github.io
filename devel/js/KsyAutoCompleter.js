@@ -50,8 +50,8 @@ define(["require", "exports"], function (require, exports) {
         static async setup(editor) {
             const completer = new KsyAutoCompleter();
             editor["completers"] = [completer];
-            await loader.getLoadedModule("ace/ext-language_tools");
-            editor.setOptions({ enableBasicAutocompletion: true, enableLiveAutocompletion: true });
+            // await loader.getLoadedModule("ace/ext-language_tools");
+            // editor.setOptions({ enableBasicAutocompletion: true, enableLiveAutocompletion: true });
             //console.log("auto completer", editor);
             return completer;
         }
@@ -72,8 +72,8 @@ define(["require", "exports"], function (require, exports) {
             var suggestions = [];
             try {
                 this.editor = editor;
-                this.ksy = YAML.parse(editor.getValue(), false, null, true);
-                this.context = this.getContext(editor.getSelectionRange().start.row + 1);
+                this.ksy = YAML.safeLoad(editor.getModel().getValue());
+                this.context = this.getContext(editor.getSelection().startLineNumber + 1);
                 //console.log("context", this.context);
                 if (this.context.current) {
                     suggestions = this.generateSuggestions(this.context.current).map(x => ({ value: x }));
@@ -96,12 +96,12 @@ define(["require", "exports"], function (require, exports) {
         }
         getContext(row) {
             const lineDict = YamlHelper.getLineInfoFromYaml(this.ksy);
-            var linePadding = KsyAutoCompleter.getPaddingLen(this.editor.session.getLine(row - 1));
+            var linePadding = KsyAutoCompleter.getPaddingLen(this.editor.getModel().getLineContent(row - 1));
             var result = {};
             if (lineDict[row])
                 result.current = lineDict[row--];
             while (true && row >= 0) {
-                var line = this.editor.session.getLine(row - 1);
+                var line = this.editor.getModel().getLineContent(row - 1);
                 if (KsyAutoCompleter.getPaddingLen(line) < linePadding && lineDict[row]) {
                     // "seq/0/id" and "seq/0" are on the same line, but we want to get "seq/0", not "seq/0/id"
                     result.parent = line.trim().startsWith("- ") ? KsyAutoCompleter.getParentPath(lineDict[row]) : lineDict[row];

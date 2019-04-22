@@ -46,7 +46,7 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
                 loadFn = "/formats/" + loadFn;
             console.log(`import yaml: ${name}, mode: ${mode}, loadFn: ${loadFn}, root:`, this.rootFsItem);
             let ksyContent = await app_files_1.fss[this.rootFsItem.fsType].get(`${loadFn}.ksy`);
-            var ksyModel = YAML.parse(ksyContent);
+            var ksyModel = YAML.safeLoad(ksyContent);
             return ksyModel;
         }
     }
@@ -65,10 +65,10 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
             var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
             this.jsImporter.rootFsItem = srcYamlFsItem;
             try {
-                this.ksySchema = YAML.parse(srcYaml);
+                this.ksySchema = YAML.safeLoad(srcYaml);
                 this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);
                 // we have to modify the schema (add typesByJsName for example) before sending into the compiler so we need a copy
-                var compilerSchema = YAML.parse(srcYaml);
+                var compilerSchema = YAML.safeLoad(srcYaml);
             }
             catch (parseErr) {
                 return Promise.reject(new CompilationError("yaml", parseErr));

@@ -1,4 +1,5 @@
 "use strict";
+// tslint:ignore
 // issue: https://github.com/Microsoft/TypeScript/issues/582
 var myself = self;
 var wi = {

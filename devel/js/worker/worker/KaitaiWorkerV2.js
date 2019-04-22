@@ -1,6 +1,6 @@
 /// <reference path="../../lib/ts-types/kaitai.d.ts" />
 /// <reference path="../KsySchema.ts" />
-define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs", "./ObjectExporter", "./JsonExporter", "./SchemaUtils", "./TemplateCompiler"], function (require, exports, KaitaiStructCompiler, KaitaiStream, yamljs_1, ObjectExporter_1, JsonExporter_1, SchemaUtils_1, TemplateCompiler_1) {
+define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "js-yaml", "./ObjectExporter", "./JsonExporter", "./SchemaUtils", "./TemplateCompiler"], function (require, exports, KaitaiStructCompiler, KaitaiStream, YAML, ObjectExporter_1, JsonExporter_1, SchemaUtils_1, TemplateCompiler_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class KaitaiServices {
@@ -46,7 +46,7 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
         }
         async setKsys(ksyCodes) {
             for (const importFn of Object.keys(ksyCodes))
-                this.ksys[importFn] = yamljs_1.YAML.parse(ksyCodes[importFn]);
+                this.ksys[importFn] = YAML.safeLoad(ksyCodes[importFn]);
             return await this.getMissingImports();
         }
         async compile(ksyUri, template) {
@@ -54,7 +54,7 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             const ksy = this.ksys[ksyUri];
             var releaseCode, debugCode;
             if (template) {
-                const templateSchema = yamljs_1.YAML.parse(template);
+                const templateSchema = YAML.safeLoad(template);
                 releaseCode = await this.templateCompiler.compile(templateSchema, ksy, this, false);
                 debugCode = await this.templateCompiler.compile(templateSchema, ksy, this, true);
             }
@@ -102,7 +102,7 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
             return { version: this.kaitaiCompiler.version, buildDate: this.kaitaiCompiler.buildDate };
         }
         async generateParser(ksyContent, lang, debug) {
-            const ksy = yamljs_1.YAML.parse(ksyContent);
+            const ksy = YAML.safeLoad(ksyContent);
             const compiledCode = await this.kaitaiCompiler.compile(lang, ksy, this, debug);
             return compiledCode;
         }

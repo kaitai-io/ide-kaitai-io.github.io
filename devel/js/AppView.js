@@ -53,7 +53,7 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
         addFileView(title, content, lang) {
             const component = this.layout.files.addComponent(title, { isClosable: true });
             const editor = AppLayout_1.LayoutHelper.setupEditor(component, lang);
-            editor.setValue(content, -1);
+            editor.setValue(content);
             return editor;
         }
     }

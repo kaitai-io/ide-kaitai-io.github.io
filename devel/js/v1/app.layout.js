@@ -23,7 +23,7 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
         }
         addEditorTab(title, data, lang = null, parent = "codeTab") {
             var componentName = `dynComp${this.dynCompId++}`;
-            this.addEditor(componentName, lang, true, (editor) => editor.setValue(data, -1));
+            this.addEditor(componentName, lang, true, (editor) => editor.setValue(data));
             this.getLayoutNodeById(parent).addChild({ type: "component", componentName, title });
         }
         addComponent(name, generatorCallback) {
@@ -33,8 +33,8 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
                 //console.log("addComponent id", name, container.getElement());
                 container.getElement().attr("id", name);
                 if (generatorCallback) {
-                    container.on("resize", () => { if (editor && editor.resize)
-                        editor.resize(); });
+                    container.on("resize", () => { if (editor && editor.layout)
+                        editor.layout(); });
                     container.on("open", () => { self.ui[name] = editor = generatorCallback(container) || container; });
                 }
                 else
@@ -51,15 +51,24 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
         }
         addEditor(name, lang, isReadOnly = false, callback = null) {
             this.addComponent(name, container => {
-                var editor = ace.edit(container.getElement().get(0));
-                editor.setTheme("ace/theme/monokai");
-                editor.getSession().setMode(`ace/mode/${lang}`);
-                if (lang === "yaml")
-                    editor.setOption("tabSize", 2);
-                editor.$blockScrolling = Infinity; // TODO: remove this line after they fix ACE not to throw warning to the console
-                editor.setReadOnly(isReadOnly);
-                if (callback)
-                    callback(editor);
+                let editor;
+                if (name === "ksyEditor") {
+                    const uri = monaco.Uri.parse("inmemory://model/main");
+                    editor = monaco.editor.create(container.getElement().get(0), {
+                        language: lang,
+                        theme: "vs-dark",
+                        showFoldingControls: "always",
+                        model: monaco.editor.createModel("", lang, uri)
+                    });
+                }
+                else {
+                    editor = monaco.editor.create(container.getElement().get(0), {
+                        language: lang,
+                        theme: "vs-dark",
+                    });
+                }
+                console.log(editor.getModel().uri.toString());
+                editor.getModel().updateOptions({ tabSize: 2 });
                 return editor;
             });
         }
