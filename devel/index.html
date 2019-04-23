@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -15,7 +15,7 @@
     <script>
         Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
             environment: "devel",
-            release: "8a0df2db3ad24cea9cd8448c674f5cbbb7e85a03",
+            release: "b98df0269e13a3d91c40874fdbc21a0fa86b4b48",
         }).install();
     </script>
     <!-- Google Analytics -->
@@ -66,7 +66,7 @@
         require(["vs/editor/editor.main",], () => {
             require([
                 "vs/language/yaml/monaco.contribution",
-                "../../out/js/ksy_schema",
+                "../../js/ksy_schema",
             ], function(_, ksySchema) {
                 monaco.languages.yaml.yamlDefaults.setDiagnosticsOptions({
                     enableSchemaRequest: true,
