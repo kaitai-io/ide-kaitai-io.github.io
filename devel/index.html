@@ -15,7 +15,7 @@
     <script>
         Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
             environment: "devel",
-            release: "b98df0269e13a3d91c40874fdbc21a0fa86b4b48",
+            release: "b98e2e977361467710d8ff21315822e548280d27",
         }).install();
     </script>
     <!-- Google Analytics -->
@@ -56,7 +56,7 @@
             name => paths[name] = `../../lib/_npm/${name}/${name}`);
         paths["big-integer"] = "../../lib/_npm/BigInteger/BigInteger";
         paths["vs"] = "../../lib/_npm/monaco/vs";
-        paths["vs/language/yaml"] = "../../../lib/_npm/monaco-yaml"
+        paths["vs/language/yaml"] = "../../lib/_npm/monaco-yaml"
 
         requirejs.config({ baseUrl: "js/v1/", paths: paths });
         require(["app.unsupportedBrowser"]);
