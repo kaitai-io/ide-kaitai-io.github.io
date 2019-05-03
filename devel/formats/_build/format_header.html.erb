@@ -57,6 +57,19 @@
                     </div>
                     <%   end %>
                     <% end %>
+                    <% if meta['xref'] %>
+                    <%   xref = meta['xref'] %>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">References</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <% ['iso', 'rfc', 'loc', 'pronom', 'wikidata', 'forensicswiki', 'justsolve'].each { |k| %>
+                            <%= xref_li(k, xref[k]) %>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <% end %>
                 </div>
             </div>
         </div>
