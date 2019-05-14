@@ -1,4 +1,4 @@
-define(["require", "exports", "js-yaml", "./worker/TemplateCompiler", "./worker/ExpressionLanguage/ExpressionParser"], function (require, exports, YAML, TemplateCompiler_1, ExpressionParser_1) {
+define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/ExpressionLanguage/ExpressionParser"], function (require, exports, yamljs_1, TemplateCompiler_1, ExpressionParser_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function cloneWithFilter(obj, filterFunc) {
@@ -24,8 +24,8 @@ define(["require", "exports", "js-yaml", "./worker/TemplateCompiler", "./worker/
         }
         const ksyContent = await (await fetch("template_compiler/test.ksy")).text();
         const templateContent = await (await fetch("template_compiler/test.kcy.yaml")).text();
-        const ksy = YAML.safeLoad(ksyContent);
-        const kcy = YAML.safeLoad(templateContent);
+        const ksy = yamljs_1.YAML.parse(ksyContent, null, null, true);
+        const kcy = yamljs_1.YAML.parse(templateContent);
         const compiledTemplate = TemplateCompiler_1.TemplateCompiler.compileTemplateSchema(kcy);
         console.log("compiledTemplate", compiledTemplate);
         const ksyAny = ksy;

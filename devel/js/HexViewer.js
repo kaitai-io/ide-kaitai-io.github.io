@@ -64,34 +64,15 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
             this.dataProvider = dataProvider;
             this.scrollbox = $(container).addClass("hexViewer");
             this.heightbox = $(`<div class="heightbox"></div>`).appendTo(this.scrollbox);
-            // because it wouldn've been too long on one line
-            this.heightbox.css({
-                width: "100%",
-                background: "transparent",
-                height: "100%",
-                position: "absolute",
-                overflowY: "scroll",
-                zIndex: "100",
-            });
-            // necessary to expand the heightbox
-            this.heightTracker = $(`<div class="heighttracker"></div>`).appendTo(this.heightbox);
             this.contentOuter = $(`<div class="contentOuter" tabindex="1"></div>`).appendTo(this.scrollbox);
-            // displays weather it's in scroll or select mode
-            this.modeDisplay = $(`<div>mode: <span id="mode">scroll</span></div>`).appendTo(this.scrollbox);
-            this.modeDisplay.css({
-                position: "absolute",
-                right: "0",
-                top: "0",
-                fontSize: "18px",
-            });
             var charSpans = "0123456789ABCDEF".split("").map((x, i) => `<span class="c${i}">${x}</span>`).join("");
             this.contentOuter.append($(`<div class="header"><span class="hex">${charSpans}</span><span class="ascii">${charSpans}</span></div>`));
             this.content = $(`<div class="content"></div>`).appendTo(this.contentOuter).on("mousedown", e => this.cellMouseAction(e));
             $(document).mouseup(e => this.cellMouseAction(e));
             this.intervals = null;
-            // instead of using the "scrollbox" itself, use the "heightbox" element
-            this.heightbox.on("scroll", (e) => {
-                var scrollTop = this.heightbox.scrollTop();
+            this.scrollbox.on("scroll", e => {
+                var scrollTop = this.scrollbox.scrollTop();
+                this.contentOuter.css("top", scrollTop + "px");
                 var percent = scrollTop / this.maxScrollHeight;
                 var newTopRow = Math.round(this.maxRow * percent);
                 if (this.topRow !== newTopRow) {
@@ -99,25 +80,13 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
                     this.refresh();
                 }
             });
-            //
-            this.heightbox.on("click", (e) => {
-                document.getElementById("mode").innerText = "select";
-                this.heightbox.css("pointerEvents", "none");
-            });
-            this.scrollbox.on("wheel", (e) => {
-                document.getElementById("mode").innerText = "scroll";
-                this.heightbox.css("pointerEvents", "auto");
-            });
             $(window).on("resize", () => this.resize());
             this.resize();
             this.contentOuter.on("keydown", e => {
                 var bytesPerPage = this.bytesPerLine * (this.rowCount - 2);
-                var selDiff = e.key === "ArrowDown" ? this.bytesPerLine :
-                    e.key === "ArrowUp" ? -this.bytesPerLine :
-                        e.key === "PageDown" ? bytesPerPage :
-                            e.key === "PageUp" ? -bytesPerPage :
-                                e.key === "ArrowRight" ? 1 :
-                                    e.key === "ArrowLeft" ? -1 : null;
+                var selDiff = e.key === "ArrowDown" ? this.bytesPerLine : e.key === "ArrowUp" ? -this.bytesPerLine :
+                    e.key === "PageDown" ? bytesPerPage : e.key === "PageUp" ? -bytesPerPage :
+                        e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : null;
                 if (selDiff === null)
                     return;
                 var newSel = this.selectionStart + selDiff;
@@ -164,7 +133,7 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
             this.totalHeight = totalRowCount * this.rowHeight;
             if (totalRowCount > 1 * 1024 * 1024)
                 this.totalHeight = totalRowCount;
-            this.heightTracker.height(this.totalHeight + 16);
+            this.heightbox.height(this.totalHeight + 16);
             //console.log("totalRowCount", totalRowCount, "heightbox.height", this.heightbox.height(), "totalHeight", this.totalHeight);
             var boxHeight = this.contentOuter.innerHeight() - 16;
             this.content.html("");

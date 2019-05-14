@@ -1,3 +1,9 @@
+declare module "yamljs" {
+    export class YAML {
+        static parse(yaml: string, exceptionOnInvalidType?: boolean, objectDecoder?: any, saveMeta?: boolean): any;
+    }
+}
+
 interface IYamlImporter {
     importYaml(name: string, mode: string): Promise<any>;
 }

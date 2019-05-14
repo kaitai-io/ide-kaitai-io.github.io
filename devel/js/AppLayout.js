@@ -1,4 +1,4 @@
-define(["require", "exports", "./LayoutManagerV2", "monaco/monaco"], function (require, exports, LayoutManagerV2_1, monaco) {
+define(["require", "exports", "./LayoutManagerV2", "ace/ace"], function (require, exports, LayoutManagerV2_1, ace) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Layout {
@@ -31,10 +31,13 @@ define(["require", "exports", "./LayoutManagerV2", "monaco/monaco"], function (r
     exports.Layout = Layout;
     class LayoutHelper {
         static setupEditor(parent, lang) {
-            var editor = monaco.editor.create(parent.element, {
-                language: lang,
-                theme: "vs-dark"
-            });
+            var editor = ace.edit(parent.element);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode(`ace/mode/${lang}`);
+            if (lang === "yaml")
+                editor.setOption("tabSize", 2);
+            editor.$blockScrolling = Infinity; // TODO: remove this line after they fix ACE not to throw warning to the console
+            parent.container.on("resize", () => editor.resize());
             return editor;
         }
     }

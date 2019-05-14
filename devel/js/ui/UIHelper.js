@@ -19,14 +19,14 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
             this.changeCallback = changeCallback;
             this.editDelay = new utils_1.Delayed(delay);
             if (this.editor)
-                this.editor.getModel().onDidChangeContent(() => this.editDelay.do(() => this.changeCallback(this.editor.getValue(), !this.internalChange)));
+                this.editor.on("change", () => this.editDelay.do(() => this.changeCallback(this.editor.getValue(), !this.internalChange)));
         }
         setContent(newContent) {
             if (!this.editor)
                 return;
             if (this.editor.getValue() !== newContent) {
                 this.internalChange = true;
-                this.editor.setValue(newContent);
+                this.editor.setValue(newContent, -1);
                 this.internalChange = false;
             }
         }

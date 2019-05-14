@@ -125,8 +125,8 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
                 await this.setupImports(mainKsyUri, ksyContent);
                 const compilationResult = await this.sandbox.kaitaiServices.compile(mainKsyUri, template);
                 console.log("compilationResult", compilationResult);
-                this.view.jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"));
-                this.view.jsCodeDebug.setValue(compilationResult.debugCodeAll);
+                this.view.jsCode.setValue(Object.values(compilationResult.releaseCode).join("\n"), -1);
+                this.view.jsCodeDebug.setValue(compilationResult.debugCodeAll, -1);
                 await this.reparse();
             }
             catch (e) {

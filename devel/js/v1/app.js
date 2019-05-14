@@ -57,57 +57,12 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         compile(srcYamlFsItem, srcYaml, kslang, debug) {
             return this.compilerService.compile(srcYamlFsItem, srcYaml, kslang, debug).then(result => {
                 ga("compile", "success");
-                // clear error
-                monaco.editor.setModelMarkers(this.ui.ksyEditor.getModel(), "err check", []);
                 return result;
             }, (error) => {
-                // ANCHOR IN-EDITOR ERROR REPORTING
-                //console.log(error.error.s$1.split(" "));
-                this.showError(error);
                 ga("compile", "error", `${error.type}: ${error.error}`);
                 this.errors.handle(error.error);
                 return Promise.reject(error);
             });
-        }
-        showError(error) {
-            console.log(error);
-            if (!error.error.s$1)
-                return;
-            let path = error.error.s$1.split(" ")[0].split("/");
-            path.shift();
-            for (const [i, route] of path.entries()) {
-                if (parseInt(route) >= 0) {
-                    if (route !== "0")
-                        path.splice(i, 1, ...(new Array(parseInt(route)).fill("  },")));
-                    else
-                        path.splice(i, 1);
-                }
-            }
-            if (path[path.length - 1] === "  },")
-                path.push("  },");
-            let location;
-            let searchItem = 0;
-            console.log(path);
-            for (const [i, line] of this.ui.ksyEditor.getValue().split("\n").entries()) {
-                // console.log(line);
-                if (line.includes(path[searchItem])) {
-                    console.log(line);
-                    searchItem++;
-                    if (searchItem === path.length) {
-                        console.log(line, "found!");
-                        location = [i, line.indexOf(path[searchItem - 1])];
-                    }
-                }
-            }
-            console.log(location);
-            monaco.editor.setModelMarkers(this.ui.ksyEditor.getModel(), "err check", [{
-                    message: error.error.msg$4,
-                    startLineNumber: location[0] + 1,
-                    endLineNumber: location[0] + 1,
-                    startColumn: location[1] + 1,
-                    endColumn: 100,
-                    severity: 8
-                }]);
         }
         async recompile() {
             let ksyFsItem = await localforage.getItem(this.ksyFsItemName);
@@ -126,8 +81,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             let debugUserTypes = localStorage.getItem("userTypes") || "";
             if (debugUserTypes)
                 debugUserTypes += "\n\n";
-            this.ui.genCodeViewer.setValue(debugUserTypes + fileNames.map(x => compiled.release[x]).join(""));
-            this.ui.genCodeDebugViewer.setValue(debugUserTypes + fileNames.map(x => compiled.debug[x]).join(""));
+            this.ui.genCodeViewer.setValue(debugUserTypes + fileNames.map(x => compiled.release[x]).join(""), -1);
+            this.ui.genCodeDebugViewer.setValue(debugUserTypes + fileNames.map(x => compiled.debug[x]).join(""), -1);
             await this.reparse();
         }
         async reparse() {
@@ -171,7 +126,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 this.lastKsyFsItem = fsItem;
                 this.lastKsyContent = content;
                 if (this.ui.ksyEditor.getValue() !== content)
-                    this.ui.ksyEditor.setValue(content);
+                    this.ui.ksyEditor.setValue(content, -1);
                 var ksyEditor = this.ui.layout.getLayoutNodeById("ksyEditor");
                 ksyEditor.container.setTitle(fsItem.fn);
             }
@@ -227,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "ec6708171868746d63c2b265e7643aec2d578a0f";
-    kaitaiIde.commitDate = "2019-05-03 08:33:36";
+    kaitaiIde.commitId = "a4b00156ea0ff89bf47fc4b01cc8a972bc6d8ddb";
+    kaitaiIde.commitDate = "2019-05-14 06:47:57";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -247,12 +202,10 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         });
         exports.app.ui.hexViewer.onSelectionChanged = () => exports.app.onHexViewerSelectionChanged();
         exports.app.refreshSelectionInput();
-        exports.app.ui.ksyEditor.addAction({
-            id: "recompile-ksy",
-            label: "recompile ksy file",
-            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-            run() { exports.app.recompile(); }
-        });
+        exports.app.ui.genCodeDebugViewer.commands.addCommand({ name: "compile", bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+            exec: function (editor) { exports.app.reparse(); } });
+        exports.app.ui.ksyEditor.commands.addCommand({ name: "compile", bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+            exec: function (editor) { exports.app.recompile(); } });
         FileDrop_1.initFileDrop("fileDrop", (files) => exports.app.addNewFiles(files));
         async function loadCachedFsItem(cacheKey, defFsType, defSample) {
             let fsItem = await localforage.getItem(cacheKey);
@@ -267,7 +220,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         });
         var editDelay = new utils_1.Delayed(500);
         if (!("noAutoCompile" in qs))
-            exports.app.ui.ksyEditor.onDidChangeModelContent(() => editDelay.do(() => exports.app.recompile()));
+            exports.app.ui.ksyEditor.on("change", () => editDelay.do(() => exports.app.recompile()));
         var inputContextMenu = $("#inputContextMenu");
         var downloadInput = $("#inputContextMenu .downloadItem");
         $("#hexViewer").on("contextmenu", e => {
