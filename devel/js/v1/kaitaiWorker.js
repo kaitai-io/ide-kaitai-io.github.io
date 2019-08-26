@@ -55,7 +55,7 @@ function exportValue(obj, debug, path, noLazy) {
     }
     else if (result.type === ObjectType.Object) {
         var childIoOffset = obj._io ? obj._io._byteOffset : 0;
-        if (result.start === childIoOffset) {
+        if (result.start === childIoOffset) { // new KaitaiStream was used, fix start position
             result.ioOffset = childIoOffset;
             result.start -= childIoOffset;
             result.end -= childIoOffset;

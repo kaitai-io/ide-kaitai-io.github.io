@@ -27,7 +27,7 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
                 try {
                     this.errorWnd.close();
                 }
-                catch (e) { }
+                catch (e) { /* nop */ }
                 this.errorWnd = null;
             }
         }

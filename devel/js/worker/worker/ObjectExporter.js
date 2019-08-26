@@ -42,7 +42,7 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
                 try {
                     propertyValue = obj[propName];
                 }
-                catch (e2) { }
+                catch (e2) { /* same as previous or does not happen */ }
             }
             const exportedProperty = this.exportValue(propertyValue, obj._debug["_m_" + propName], objPath.concat(propName));
             exportedProperty.exception = propertyException;
@@ -153,7 +153,7 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
             }
             else if (result.type === WorkerShared_1.ObjectType.Object) {
                 var childIoOffset = obj._io._byteOffset;
-                if (result.start === childIoOffset) {
+                if (result.start === childIoOffset) { // new KaitaiStream was used, fix start position
                     result.ioOffset = childIoOffset;
                     result.start -= childIoOffset;
                     result.end -= childIoOffset;
