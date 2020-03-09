@@ -227,7 +227,7 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                                 continue;
                             var start = exp.ioOffset + exp.start;
                             var end = exp.ioOffset + exp.end - 1;
-                            if (start <= lastEnd || start > end)
+                            if (Number.isNaN(start) || Number.isNaN(end) || start <= lastEnd || start > end)
                                 continue;
                             lastEnd = end;
                             intervals.push({ start: start, end: end, exp: exp });
