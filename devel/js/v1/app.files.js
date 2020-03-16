@@ -104,6 +104,10 @@ define(["require", "exports", "localforage", "dateformat", "./app", "../utils"],
     var fileTreeCont;
     function initFileTree() {
         fileTreeCont = app_1.app.ui.fileTreeCont.find(".fileTree");
+        if (!kaitaiRoot.children["formats"]) {
+            console.error("'formats' node is missing from js/kaitaiFsFiles.js, are you sure 'formats' git submodule is initialized? Try run 'git submodule init; git submodule update --recursive; ./genKaitaiFsFiles.py'!");
+            kaitaiRoot.children["formats"] = {};
+        }
         app_1.app.ui.fileTree = fileTreeCont.jstree({
             core: {
                 check_callback: function (operation, node, node_parent, node_position, more) {
