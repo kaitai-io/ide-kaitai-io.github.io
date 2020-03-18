@@ -182,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "80661c638013de994651ad20618a35fb2f5c2f12";
-    kaitaiIde.commitDate = "2020-03-16 21:15:17";
+    kaitaiIde.commitId = "6ee91f885dd2237e9192d620e9b8d3d82f21a5a3";
+    kaitaiIde.commitDate = "2020-03-18 21:15:38";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -225,7 +225,11 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         var downloadInput = $("#inputContextMenu .downloadItem");
         $("#hexViewer").on("contextmenu", e => {
             downloadInput.toggleClass("disabled", exports.app.ui.hexViewer.selectionStart === -1);
-            inputContextMenu.css({ display: "block", left: e.pageX, top: e.pageY });
+            inputContextMenu.css({ display: "block" });
+            var x = Math.min(e.pageX, $(window).width() - inputContextMenu.width());
+            var h = inputContextMenu.height();
+            var y = e.pageY > ($(window).height() - h) ? e.pageY - h : e.pageY;
+            inputContextMenu.css({ left: x, top: y });
             return false;
         });
         function ctxAction(obj, callback) {
