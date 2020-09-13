@@ -33,19 +33,21 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
     class JsImporter {
         async importYaml(name, mode) {
             var loadFn;
-            if (mode === "abs")
-                loadFn = name;
+            var importedFsType = this.rootFsItem.fsType;
+            if (mode === "abs") {
+                loadFn = "/formats/" + name;
+                importedFsType = "kaitai";
+            }
             else {
                 var fnParts = this.rootFsItem.fn.split("/");
                 fnParts.pop();
                 loadFn = fnParts.join("/") + "/" + name;
+                if (loadFn.startsWith("/")) {
+                    loadFn = loadFn.substr(1);
+                }
             }
-            if (loadFn.startsWith("/"))
-                loadFn = loadFn.substr(1);
-            if (this.rootFsItem.fsType === "kaitai" && mode === "abs")
-                loadFn = "/formats/" + loadFn;
             console.log(`import yaml: ${name}, mode: ${mode}, loadFn: ${loadFn}, root:`, this.rootFsItem);
-            let ksyContent = await app_files_1.fss[this.rootFsItem.fsType].get(`${loadFn}.ksy`);
+            let ksyContent = await app_files_1.fss[importedFsType].get(`${loadFn}.ksy`);
             var ksyModel = YAML.parse(ksyContent);
             return ksyModel;
         }
