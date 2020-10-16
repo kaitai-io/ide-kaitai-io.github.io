@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Kaitai Web IDE</title>    
+    <title>Kaitai Web IDE</title>
     <script>
         // HTTPS redirect
         var loc = location.toString();
@@ -13,22 +13,24 @@
     <!-- SCRIPT_INJECTION_POINT -->
     <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
     <script>
-        Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
-            environment: "stable",
-            release: "b2479d8491e41a665d1912d9b6524c40ab7acda2",
-        }).install();
+            Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
+                    environment: "stable",
+                    release: "7950b8df56dd36acaf56333add2aab270f439a37",
+            }).install();
     </script>
+
     <!-- Google Analytics -->
     <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','_ga');
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','_ga');
 
-        _ga('create', 'UA-76299550-2', 'auto');
-        _ga('send', 'pageview');
+            _ga('create', 'UA-76299550-2', 'auto');
+            _ga('send', 'pageview');
     </script>
     <!-- End Google Analytics -->
+
 
     <link rel="stylesheet" type="text/css" href="lib/_npm/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/contextmenu.css" />
@@ -76,9 +78,12 @@
         Drag &amp; drop a file here<br />to upload
     </div>
 </div>
-    
+
 <div id="infoPanel">
     <selection-input :start="selectionStart" :end="selectionEnd" @selectionChanged="selectionChanged"></selection-input>
+    <div id="selectionLengthDiv">
+      Selection length: <span>{{selectionEnd-selectionStart+1}}</span>
+    </div>
     <div id="disableLazyParsingDiv">
         <input type="checkbox" id="disableLazyParsing" v-model="disableLazyParsing" />
         <label for="disableLazyParsing">disable lazy parsing</label>
@@ -99,8 +104,8 @@
         <a id="aboutWebIde" @click="about" href="#">about webide</a>
     </div>
 </div>
-    
-<converter-panel id="converterPanel" :model="model"></converter-panel>    
+
+<converter-panel id="converterPanel" :model="model"></converter-panel>
 
 <div id="fileTreeCont">
     <div id="fileTree" class="fileTree">
@@ -124,6 +129,7 @@
             <ul class="dropdown-menu">
                 <li><a tabindex="-1" href="#" data-kslang="cpp_stl" data-acelang="c_cpp">CPP-STL</a></li>
                 <li><a tabindex="-1" href="#" data-kslang="csharp" data-acelang="csharp">C#</a></li>
+                <li><a tabindex="-1" href="#" data-kslang="go" data-acelang="golang">Go</a></li>
                 <li><a tabindex="-1" href="#" data-kslang="graphviz" data-acelang="dot">Graphviz</a></li>
                 <li><a tabindex="-1" href="#" data-kslang="java" data-acelang="java">Java</a></li>
                 <li><a tabindex="-1" href="#" data-kslang="java" data-ksdebug="true" data-acelang="java">Java (debug)</a></li>
@@ -170,7 +176,7 @@
         </div>
     </div>
 </div>
-    
+
 <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -179,25 +185,25 @@
                     <h4 class="modal-title" id="welcomeModalLabel">Hey there!</h4>
                 </div>
                 <div class="form-group">
-                    If this is the first time you are using Kaitai WebIDE then I recommend scrolling through our 
+                    If this is the first time you are using Kaitai WebIDE then I recommend scrolling through our
                     <a href="https://github.com/kaitai-io/kaitai_struct_webide/wiki/Features" target="_blank">Features page</a>.
                 </div>
                 <div class="form-group">
-                    You can read more about Kaitai Struct on our website (<a href="http://kaitai.io" target="_blank">kaitai.io</a>) and 
+                    You can read more about Kaitai Struct on our website (<a href="http://kaitai.io" target="_blank">kaitai.io</a>) and
                     learn the basics of using it by reading <a href="http://doc.kaitai.io" target="_blank">our documentation</a>.
                 </div>
                 <div class="form-group">
-                    We would be pleased if you could visit us and share your thoughts about Kaitai Struct or WebIDE in our 
+                    We would be pleased if you could visit us and share your thoughts about Kaitai Struct or WebIDE in our
                     <a href="https://gitter.im/kaitai_struct/Lobby" target="_blank">Gitter chatroom</a>.
                 </div>
                 <div class="form-group">
-                    You can view the source code or create issues on Github 
-                    for the <a href="https://github.com/koczkatamas/kaitai_struct_webide" target="_blank">WebIDE</a> or
+                    You can view the source code or create issues on Github
+                    for the <a href="https://github.com/kaitai-io/kaitai_struct_webide" target="_blank">WebIDE</a> or
                     <a href="https://github.com/kaitai-io/kaitai_struct" target="_blank">Kaitai Struct</a>.
                 </div>
                 <div class="form-group">
-                    Kaitai WebIDE was made possible by using 
-                    <a href="https://github.com/koczkatamas/kaitai_struct_webide/blob/master/docs/wiki/3rd-party-libraries.md" target="_blank">open-source libraries listed here</a>
+                    Kaitai WebIDE was made possible by using
+                    <a href="https://github.com/kaitai-io/kaitai_struct_webide/blob/master/docs/wiki/3rd-party-libraries.md" target="_blank">open-source libraries listed here</a>
                     (<a href="LICENSE-3RD-PARTY.txt" target="_blank">licensing information</a>).
                 </div>
                 <div class="form-group">
@@ -211,7 +217,7 @@
                     <div>
                         Kaitai WebIDE version: <span id="webIdeVersion"></span>-SNAPSHOT-<a id="webideCommitId" href=""></a>
                         (<span id="webideCommitDate"></span>,
-                            <a href="https://raw.githubusercontent.com/koczkatamas/kaitai_struct_webide/master/LICENSE" target="_blank">license</a>)
+                            <a href="https://raw.githubusercontent.com/kaitai-io/kaitai_struct_webide/master/LICENSE" target="_blank">license</a>)
                     </div>
                     <div>Kaitai compiler version: <span id="compilerVersion"></span></div>
                 </div>
@@ -224,6 +230,6 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 </body>
 </html>

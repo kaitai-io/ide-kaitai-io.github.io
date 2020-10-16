@@ -2,6 +2,13 @@ meta:
   id: gif
   file-extension: gif
   title: GIF (Graphics Interchange Format) image file
+  xref:
+    justsolve: GIF
+    loc: fdd000133
+    mime: image/gif
+    pronom:
+      - fmt/3
+      - fmt/4
   endian: le
   license: CC0-1.0
 doc: |
@@ -143,7 +150,7 @@ types:
       - id: subblocks
         type: subblock
         repeat: until
-        repeat-until: _.num_bytes == 0
+        repeat-until: _.len_bytes == 0
   ext_graphic_control:
     doc-ref: https://www.w3.org/Graphics/GIF/spec-gif89a.txt - section 23
     seq:
@@ -167,13 +174,13 @@ types:
       - id: entries
         type: subblock
         repeat: until
-        repeat-until: _.num_bytes == 0
+        repeat-until: _.len_bytes == 0
   subblock:
     seq:
-      - id: num_bytes
+      - id: len_bytes
         type: u1
       - id: bytes
-        size: num_bytes
+        size: len_bytes
 enums:
   block_type:
     0x21: extension

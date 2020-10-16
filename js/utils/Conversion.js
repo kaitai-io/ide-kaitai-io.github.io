@@ -6,7 +6,7 @@ define(["require", "exports"], function (require, exports) {
             return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
         }
         static strToUtf8Bytes(str) {
-            return new TextEncoder("utf-8").encode(str).buffer;
+            return new TextEncoder().encode(str).buffer;
         }
     }
     exports.Conversion = Conversion;
