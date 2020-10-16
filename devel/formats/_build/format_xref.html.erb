@@ -24,6 +24,7 @@
         <table class="table">
             <tr>
                 <th rowspan="2">Kaitai Struct ID</th>
+                <th rowspan="3">File extension</th>
                 <th rowspan="3">.ksy License</th>
                 <th colspan="2">Standards</th>
                 <th colspan="3">Registries</th>
@@ -38,7 +39,7 @@
                 <th>GOST</th>
                 <th><abbr title="Japanese Industrial Standards">JIS</abbr></th>
                 -->
-                
+
                 <th>Media type (<abbr title="Multipurpose Internet Mail Extensions">MIME</abbr>)</th>
                 <th>LOC FDD</th>
                 <th>PRONOM</th>
@@ -67,8 +68,9 @@
             xref = meta['xref'] || {} %>
             <tr>
                 <td><a href="<%= id %>/index.html"><%= id %></a></td>
+                <td><%= meta['file-extension'] %></td>
                 <td><%= meta['license'] %></td>
-                
+
                 <td><%= xref['iso'] %></td>
                 <td><%= xref_a('rfc', xref['rfc']) %></td>
                 <!--
@@ -77,15 +79,15 @@
                 <td><%= xref['gost'] %></td>
                 <td><%= xref['jis'] %></td>
                 -->
-                
+
                 <td><%= xref_a('mime', xref['mime']) %></td>
                 <td><%= xref_a('loc', xref['loc']) %></td>
                 <td><%= xref_a('pronom', xref['pronom']) %></td>
-                
+
                 <td><%= xref_a('forensicswiki', xref['forensicswiki']) %></td>
                 <td><%= xref_a('justsolve', xref['justsolve']) %></td>
                 <td><%= xref_a('wikidata', xref['wikidata']) %></td>
-                
+
                 <td>
             </tr>
         <% } %>
