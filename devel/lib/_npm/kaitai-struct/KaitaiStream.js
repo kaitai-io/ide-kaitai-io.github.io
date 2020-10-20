@@ -478,7 +478,7 @@ KaitaiStream.prototype.readBitsIntLe = function(n) {
   // derive reading result
   var res = this.bits & mask;
   // remove bottom bits that we've just read by shifting
-  this.bits >>= n;
+  this.bits >>>= n;
   this.bitsLeft -= n;
 
   return res;
@@ -788,6 +788,16 @@ var ValidationNotAnyOfError = KaitaiStream.ValidationNotAnyOfError = function(ac
 
 ValidationNotAnyOfError.prototype = Object.create(Error.prototype);
 ValidationNotAnyOfError.prototype.constructor = ValidationNotAnyOfError;
+
+var ValidationExprError = KaitaiStream.ValidationExprError = function(actual, io, srcPath) {
+  this.name = "ValidationExprError";
+  this.message = "not matching the expression, got [" + actual + "]";
+  this.actual = actual;
+  this.stack = (new Error()).stack;
+};
+
+ValidationExprError.prototype = Object.create(Error.prototype);
+ValidationExprError.prototype.constructor = ValidationExprError;
 
 /**
   Ensures that we have an least `length` bytes left in the stream.
