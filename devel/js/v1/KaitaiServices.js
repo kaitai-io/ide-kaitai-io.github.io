@@ -63,12 +63,21 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         constructor() {
             this.jsImporter = new JsImporter();
         }
-        compile(srcYamlFsItem, srcYaml, kslang, debug) {
+        async compile(srcYamlFsItem, srcYaml, kslang, debug) {
             var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
             this.jsImporter.rootFsItem = srcYamlFsItem;
             try {
                 this.ksySchema = YAML.parse(srcYaml);
-                this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);
+                if (this.ksySchema.meta.imports) {
+                    let imports = this.ksySchema.meta.imports.map(item => this.jsImporter.importYaml(item, "rel"));
+                    let importedSchemas = await Promise.all(imports);
+                    let allSchemes = [...importedSchemas, this.ksySchema];
+                    this.ksyTypes = {};
+                    Object.assign(this.ksyTypes, ...allSchemes.map(item => SchemaUtils.collectKsyTypes(item)));
+                }
+                else {
+                    this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);
+                }
                 // we have to modify the schema (add typesByJsName for example) before sending into the compiler so we need a copy
                 var compilerSchema = YAML.parse(srcYaml);
             }
