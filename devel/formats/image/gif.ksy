@@ -1,16 +1,18 @@
 meta:
   id: gif
-  file-extension: gif
   title: GIF (Graphics Interchange Format) image file
+  file-extension: gif
   xref:
+    forensicswiki: GIF
     justsolve: GIF
-    loc: fdd000133
+    loc: fdd000133 # GIF 89a
     mime: image/gif
     pronom:
-      - fmt/3
-      - fmt/4
-  endian: le
+      - fmt/3 # GIF 87a
+      - fmt/4 # GIF 89a
+    wikidata: Q2192
   license: CC0-1.0
+  endian: le
 doc: |
   GIF (Graphics Interchange Format) is an image file format, developed
   in 1987. It became popular in 1990s as one of the main image formats
@@ -18,7 +20,7 @@ doc: |
 
   GIF format allows encoding of palette-based images up to 256 colors
   (each of the colors can be chosen from a 24-bit RGB
-  colorspace). Image data stream uses LZW (Lempel–Ziv–Welch) lossless
+  colorspace). Image data stream uses LZW (Lempel-Ziv-Welch) lossless
   compression.
 
   Over the years, several version of the format were published and

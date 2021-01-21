@@ -2,6 +2,23 @@ meta:
   id: elf
   title: Executable and Linkable Format
   application: SVR4 ABI and up, many *nix systems
+  xref:
+    justsolve: Executable_and_Linkable_Format
+    mime:
+      - application/x-elf
+      - application/x-coredump
+      - application/x-executable
+      - application/x-object
+      - application/x-sharedlib
+    pronom:
+      - fmt/688 # 32bit Little Endian
+      - fmt/689 # 32bit Big Endian
+      - fmt/690 # 64bit Little Endian
+      - fmt/691 # 64bit Big Endian
+    wikidata: Q1343830
+  tags:
+    - executable
+    - linux
   license: CC0-1.0
   ks-version: 0.8
 doc-ref: https://sourceware.org/git/?p=glibc.git;a=blob;f=elf/elf.h;hb=HEAD
@@ -307,8 +324,8 @@ types:
           dynamic:
             io: _root._io
             pos: offset
-            type: dynamic_section
             size: filesz
+            type: dynamic_section
             if: type == ph_type::dynamic
           flags_obj:
             type: phdr_type_flags(flags64|flags32)
@@ -468,16 +485,16 @@ types:
     instances:
       program_headers:
         pos: program_header_offset
-        repeat: expr
-        repeat-expr: qty_program_header
         size: program_header_entry_size
         type: program_header
+        repeat: expr
+        repeat-expr: qty_program_header
       section_headers:
         pos: section_header_offset
-        repeat: expr
-        repeat-expr: qty_section_header
         size: section_header_entry_size
         type: section_header
+        repeat: expr
+        repeat-expr: qty_section_header
       strings:
         pos: section_headers[section_names_idx].ofs_body
         size: section_headers[section_names_idx].len_body

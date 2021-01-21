@@ -2,11 +2,6 @@ meta:
   id: wav
   title: Microsoft WAVE audio file
   file-extension: wav
-  license: BSD-3-Clause-Attribution
-  encoding: ASCII
-  endian: le
-  imports:
-    - /common/riff
   xref:
     justsolve: WAV
     loc: fdd000001
@@ -18,6 +13,13 @@ meta:
     pronom: fmt/6
     rfc: 2361
     wikidata: Q217570
+  tags:
+    - windows
+  license: BSD-3-Clause-Attribution
+  imports:
+    - /common/riff
+  encoding: ASCII
+  endian: le
 doc: |
   The WAVE file format is a subset of Microsoft's RIFF specification for the
   storage of multimedia files. A RIFF file starts out with a file header
@@ -41,8 +43,8 @@ instances:
   parent_chunk_data:
     io: chunk.data_slot._io
     pos: 0
-    if: is_riff_chunk
     type: 'riff::parent_chunk_data'
+    if: is_riff_chunk
   form_type:
     value: parent_chunk_data.form_type
     enum: fourcc
@@ -51,9 +53,9 @@ instances:
   subchunks:
     io: parent_chunk_data.subchunks_slot._io
     pos: 0
-    if: is_form_type_wave
     type: chunk_type
     repeat: eos
+    if: is_form_type_wave
 types:
   chunk_type:
     seq:
@@ -168,16 +170,6 @@ types:
         size-eos: true
 
   format_chunk_type:
-    instances:
-      is_extensible:
-        value: w_format_tag == w_format_tag_type::extensible
-      is_basic_pcm:
-        value: w_format_tag == w_format_tag_type::pcm
-      is_basic_float:
-        value: w_format_tag == w_format_tag_type::ieee_float
-      is_cb_size_meaningful:
-        value: not is_basic_pcm and cb_size != 0
-
     seq:
       - id: w_format_tag
         type: u2
@@ -201,6 +193,15 @@ types:
       - id: channel_mask_and_subformat
         type: channel_mask_and_subformat_type
         if: is_extensible
+    instances:
+      is_extensible:
+        value: w_format_tag == w_format_tag_type::extensible
+      is_basic_pcm:
+        value: w_format_tag == w_format_tag_type::pcm
+      is_basic_float:
+        value: w_format_tag == w_format_tag_type::ieee_float
+      is_cb_size_meaningful:
+        value: not is_basic_pcm and cb_size != 0
 
   channel_mask_and_subformat_type:
     seq:

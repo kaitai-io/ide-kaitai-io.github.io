@@ -1,8 +1,10 @@
 meta:
   id: utf8_string
   title: UTF-8-encoded string
-  license: CC0-1.0
   file-extension: txt
+  xref:
+    wikidata: Q193537
+  license: CC0-1.0
 doc: |
   UTF-8 is a popular character encoding scheme that allows to
   represent strings as sequence of code points defined in Unicode
@@ -17,7 +19,7 @@ doc: |
 
   WARNING: For the vast majority of practical purposes of format
   definitions in Kaitai Struct, you'd likely NOT want to use this and
-  rather just use `type: str` with `encoding: utf8`. That will use
+  rather just use `type: str` with `encoding: utf-8`. That will use
   native string implementations, which are most likely more efficient
   and will give you native language strings, rather than an array of
   individual codepoints.  This format definition is provided mostly
