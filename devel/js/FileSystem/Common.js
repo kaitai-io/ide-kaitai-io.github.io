@@ -8,4 +8,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.FsItem = FsItem;
 });
-//# sourceMappingURL=Common.js.map

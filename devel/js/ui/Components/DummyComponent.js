@@ -24,4 +24,3 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
     ], DummyComponent);
     exports.DummyComponent = DummyComponent;
 });
-//# sourceMappingURL=DummyComponent.js.map

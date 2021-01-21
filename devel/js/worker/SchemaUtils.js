@@ -33,4 +33,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.SchemaUtils = SchemaUtils;
 });
-//# sourceMappingURL=SchemaUtils.js.map

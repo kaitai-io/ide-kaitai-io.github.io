@@ -32,4 +32,3 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
     }
     exports.initFileDrop = initFileDrop;
 });
-//# sourceMappingURL=FileDrop.js.map

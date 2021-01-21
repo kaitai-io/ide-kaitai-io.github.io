@@ -41,4 +41,3 @@ define(["require", "exports", "jquery"], function (require, exports, $) {
     }
     exports.FileUtils = FileUtils;
 });
-//# sourceMappingURL=FileUtils.js.map

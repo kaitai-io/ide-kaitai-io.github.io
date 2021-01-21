@@ -40,4 +40,3 @@ define(["require", "exports"], function (require, exports) {
         }
     };
 });
-//# sourceMappingURL=app.worker.js.map

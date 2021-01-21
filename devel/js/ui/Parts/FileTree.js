@@ -231,4 +231,3 @@ define(["require", "exports", "./../../FileSystem/GithubClient", "./../../FileSy
     ], FileTree);
     exports.FileTree = FileTree;
 });
-//# sourceMappingURL=FileTree.js.map

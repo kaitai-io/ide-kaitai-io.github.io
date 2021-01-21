@@ -48,4 +48,3 @@ define(["require", "exports", "vue", "jquery", "../Component", "../../utils/File
     ], DragAndDrop);
     exports.DragAndDrop = DragAndDrop;
 });
-//# sourceMappingURL=DragAndDrop.js.map

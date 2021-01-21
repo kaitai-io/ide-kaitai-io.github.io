@@ -27,4 +27,3 @@ define(["require", "exports", "vue", "../Component", "../Components/Stepper", ".
     ], InfoPanel);
     exports.InfoPanel = InfoPanel;
 });
-//# sourceMappingURL=InfoPanel.js.map

@@ -91,4 +91,3 @@ define(["require", "exports", "vue", "big-integer", "../Component", "dateformat"
     ], ConverterPanel);
     exports.ConverterPanel = ConverterPanel;
 });
-//# sourceMappingURL=ConverterPanel.js.map

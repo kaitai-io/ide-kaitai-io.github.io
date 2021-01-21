@@ -127,4 +127,3 @@ myself.onmessage = (ev) => {
     //console.log("[Worker] Send response", msg, ev);
     myself.postMessage(msg);
 };
-//# sourceMappingURL=kaitaiWorker.js.map

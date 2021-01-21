@@ -316,4 +316,3 @@ define(["require", "exports", "localforage", "dateformat", "./app", "../utils"],
     }
     exports.initFileTree = initFileTree;
 });
-//# sourceMappingURL=app.files.js.map

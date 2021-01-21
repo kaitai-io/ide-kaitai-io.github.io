@@ -40,4 +40,3 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
     }
     exports.ErrorWindowHandler = ErrorWindowHandler;
 });
-//# sourceMappingURL=app.errors.js.map

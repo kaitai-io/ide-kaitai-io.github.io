@@ -48,4 +48,3 @@ define(["require", "exports", "dateformat"], function (require, exports, dateFor
     })(PerformanceHelper || (PerformanceHelper = {}));
     exports.performanceHelper = new PerformanceHelper();
 });
-//# sourceMappingURL=PerformanceHelper.js.map

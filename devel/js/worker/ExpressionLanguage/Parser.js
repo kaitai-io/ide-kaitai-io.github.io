@@ -167,4 +167,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.Parser = Parser;
 });
-//# sourceMappingURL=Parser.js.map

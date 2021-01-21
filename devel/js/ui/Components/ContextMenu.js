@@ -57,4 +57,3 @@ define(["require", "exports", "vue", "../Component", "../UIHelper"], function (r
     ], MenuItem);
     exports.MenuItem = MenuItem;
 });
-//# sourceMappingURL=ContextMenu.js.map

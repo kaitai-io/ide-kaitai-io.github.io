@@ -345,4 +345,3 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
     }
     exports.ParsedTreeHandler = ParsedTreeHandler;
 });
-//# sourceMappingURL=parsedToTree.js.map

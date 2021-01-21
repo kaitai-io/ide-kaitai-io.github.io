@@ -50,4 +50,3 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
     }
     exports.JsonExporter = JsonExporter;
 });
-//# sourceMappingURL=JsonExporter.js.map

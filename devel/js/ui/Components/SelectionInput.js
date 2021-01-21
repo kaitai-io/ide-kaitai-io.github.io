@@ -71,4 +71,3 @@ define(["require", "exports", "vue", "jquery", "../Component"], function (requir
     ], SelectionInput);
     exports.SelectionInput = SelectionInput;
 });
-//# sourceMappingURL=SelectionInput.js.map

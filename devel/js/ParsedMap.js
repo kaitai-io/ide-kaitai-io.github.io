@@ -57,4 +57,3 @@ define(["require", "exports", "./utils/IntervalHelper", "worker/WorkerShared"], 
     }
     exports.ParsedMap = ParsedMap;
 });
-//# sourceMappingURL=ParsedMap.js.map

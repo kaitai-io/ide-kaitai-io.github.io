@@ -18,4 +18,3 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
     ], ErrorWindow);
     exports.ErrorWindow = ErrorWindow;
 });
-//# sourceMappingURL=ErrorWindow.js.map
