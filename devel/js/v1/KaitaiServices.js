@@ -35,7 +35,7 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
             var loadFn;
             var importedFsType = this.rootFsItem.fsType;
             if (mode === "abs") {
-                loadFn = "/formats/" + name;
+                loadFn = "formats/" + name;
                 importedFsType = "kaitai";
             }
             else {
