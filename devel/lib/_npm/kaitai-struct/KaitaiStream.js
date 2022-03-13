@@ -419,7 +419,7 @@ KaitaiStream.prototype.alignToByte = function() {
 KaitaiStream.prototype.readBitsIntBe = function(n) {
   // JS only supports bit operations on 32 bits
   if (n > 32) {
-    throw new Error(`readBitsIntBe: the maximum supported bit length is 32 (tried to read ${n} bits)`);
+    throw new Error("readBitsIntBe: the maximum supported bit length is 32 (tried to read " + n + " bits)");
   }
   var bitsNeeded = n - this.bitsLeft;
   if (bitsNeeded > 0) {
@@ -458,7 +458,7 @@ KaitaiStream.prototype.readBitsInt = KaitaiStream.prototype.readBitsIntBe;
 KaitaiStream.prototype.readBitsIntLe = function(n) {
   // JS only supports bit operations on 32 bits
   if (n > 32) {
-    throw new Error(`readBitsIntLe: the maximum supported bit length is 32 (tried to read ${n} bits)`);
+    throw new Error("readBitsIntLe: the maximum supported bit length is 32 (tried to read " + n + " bits)");
   }
   var bitsNeeded = n - this.bitsLeft;
   if (bitsNeeded > 0) {
@@ -546,16 +546,18 @@ KaitaiStream.prototype.ensureFixedContents = function(expected) {
 
 KaitaiStream.bytesStripRight = function(data, padByte) {
   var newLen = data.length;
-  while (data[newLen - 1] === padByte)
+  while (data[newLen - 1] === padByte) {
     newLen--;
+  }
   return data.slice(0, newLen);
 };
 
 KaitaiStream.bytesTerminate = function(data, term, include) {
   var newLen = 0;
   var maxLen = data.length;
-  while (newLen < maxLen && data[newLen] !== term)
+  while (newLen < maxLen && data[newLen] !== term) {
     newLen++;
+  }
   if (include && newLen < maxLen)
     newLen++;
   return data.slice(0, newLen);
