@@ -118,7 +118,7 @@ myself.onmessage = (ev) => {
         }
         catch (error) {
             console.log("[Worker] Error", error);
-            msg.error = error.toString();
+            msg.error = error;
         }
     }
     else {

@@ -9,7 +9,7 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
         }
         async show(...args) {
             console.error.apply(window, args);
-            var errMsg = args.filter(x => x.toString() !== {}.toString()).join(" ");
+            var errMsg = args.filter(x => typeof x !== 'object').join(" ");
             if (!this.errorWnd) {
                 var newPanel = app_1.app.ui.layout.addPanel();
                 this.parentContainer.addChild({ type: "component", componentName: newPanel.componentName, title: "Errors" });
@@ -32,10 +32,22 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
             }
         }
         handle(error) {
-            if (error)
-                this.show("Parse error" + (error.name ? ` (${error.name})` : "") + `: ${error.message}\nCall stack: ${error.stack}`, error);
-            else
+            if (error) {
+                var msg;
+                if ('getMessage__T' in error && error.toString().startsWith('io.kaitai.struct')) {
+                    msg = error.getMessage__T(); // compile error message
+                }
+                else if (error.toString !== Object.prototype.toString && error.toString !== Error.prototype.toString) {
+                    msg = error.toString();
+                }
+                else {
+                    msg = "Parse error" + (error.name ? ` (${error.name})` : "") + `${error.message ? ': ' + error.message : ''}\nCall stack: ${error.stack}`;
+                }
+                this.show(msg, error);
+            }
+            else {
                 this.hide();
+            }
         }
     }
     exports.ErrorWindowHandler = ErrorWindowHandler;
