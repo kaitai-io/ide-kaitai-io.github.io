@@ -126,4 +126,3 @@ define(["require", "exports", "vue", "./../Component", "../../worker/WorkerShare
     ], ParsedTree);
     exports.ParsedTree = ParsedTree;
 });
-//# sourceMappingURL=ParsedTree.js.map

@@ -30,4 +30,3 @@ define(["require", "exports", "./Common", "./FsUri"], function (require, exports
     }
     exports.StaticFileSystem = StaticFileSystem;
 });
-//# sourceMappingURL=StaticFileSystem.js.map

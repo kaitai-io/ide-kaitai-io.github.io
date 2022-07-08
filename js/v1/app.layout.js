@@ -115,4 +115,3 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
     }
     exports.UI = UI;
 });
-//# sourceMappingURL=app.layout.js.map

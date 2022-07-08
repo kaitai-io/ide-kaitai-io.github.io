@@ -85,4 +85,3 @@ RegExp.prototype.matches = function (value) {
         matches.push(match);
     return matches;
 };
-//# sourceMappingURL=extensions.js.map

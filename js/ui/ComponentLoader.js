@@ -54,4 +54,3 @@ define(["require", "exports", "vue", "jquery"], function (require, exports, Vue,
     window["vue"] = Vue;
     exports.componentLoader = new ComponentLoader();
 });
-//# sourceMappingURL=ComponentLoader.js.map

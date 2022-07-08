@@ -186,4 +186,3 @@ define(["require", "exports", "./WorkerShared"], function (require, exports, Wor
     }
     exports.ObjectExporter = ObjectExporter;
 });
-//# sourceMappingURL=ObjectExporter.js.map

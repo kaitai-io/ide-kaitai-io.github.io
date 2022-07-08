@@ -130,4 +130,3 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
         console.log("Worker error", e);
     }
 });
-//# sourceMappingURL=KaitaiWorkerV2.js.map

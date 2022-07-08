@@ -1,12 +1,12 @@
 meta:
   id: java_class
-  endian: be
   file-extension: class
   xref:
     justsolve: Java
     pronom: x-fmt/415
     wikidata: Q2193155
   license: CC0-1.0
+  endian: be
 doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1'
 seq:
   - id: magic
@@ -15,10 +15,13 @@ seq:
     type: u2
   - id: version_major
     type: u2
+    valid:
+      # https://github.com/file/file/blob/905ca555/magic/Magdir/cafebabe#L11-L12
+      min: 43
   - id: constant_pool_count
     type: u2
   - id: constant_pool
-    type: constant_pool_entry
+    type: 'constant_pool_entry(_index != 0 ? constant_pool[_index - 1].is_two_entries : false)'
     repeat: expr
     repeat-expr: constant_pool_count - 1
   - id: access_flags
@@ -53,10 +56,15 @@ seq:
     repeat-expr: attributes_count
 types:
   constant_pool_entry:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4'
+    params:
+      - id: is_prev_two_entries
+        type: bool
     seq:
       - id: tag
         type: u1
         enum: tag_enum
+        if: not is_prev_two_entries
       - id: cp_info
         type:
           switch-on: tag
@@ -75,6 +83,10 @@ types:
             'tag_enum::method_handle': method_handle_cp_info
             'tag_enum::method_type': method_type_cp_info
             'tag_enum::invoke_dynamic': invoke_dynamic_cp_info
+        if: not is_prev_two_entries
+    instances:
+      is_two_entries:
+        value: 'is_prev_two_entries ? false : tag == tag_enum::long or tag == tag_enum::double'
     enums:
       tag_enum:
         7: class_type
@@ -91,7 +103,6 @@ types:
         15: method_handle
         16: method_type
         18: invoke_dynamic
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4'
   class_cp_info:
     doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1'
     seq:
@@ -139,31 +150,32 @@ types:
       name_and_type_as_info:
         value: _root.constant_pool[name_and_type_index - 1].cp_info.as<name_and_type_cp_info>
   string_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.3'
     seq:
       - id: string_index
         type: u2
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.3'
   integer_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.4'
     seq:
       - id: value
         type: u4
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.4'
   float_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5'
     seq:
       - id: value
         type: f4
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5'
   long_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5'
     seq:
       - id: value
         type: u8
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5'
   double_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6'
     seq:
       - id: value
         type: f8
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6'
   name_and_type_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6'
     seq:
       - id: name_index
         type: u2
@@ -178,8 +190,8 @@ types:
         value: _root.constant_pool[descriptor_index - 1].cp_info.as<utf8_cp_info>
       descriptor_as_str:
         value: descriptor_as_info.value
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6'
   utf8_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7'
     seq:
       - id: str_len
         type: u2
@@ -187,8 +199,8 @@ types:
         type: str
         size: str_len
         encoding: UTF-8
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7'
   method_handle_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.8'
     seq:
       - id: reference_kind
         type: u1
@@ -206,20 +218,20 @@ types:
         7: invoke_special
         8: new_invoke_special
         9: invoke_interface
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.8'
   method_type_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.9'
     seq:
       - id: descriptor_index
         type: u2
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.9'
   invoke_dynamic_cp_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10'
     seq:
       - id: bootstrap_method_attr_index
         type: u2
       - id: name_and_type_index
         type: u2
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10'
   field_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5'
     seq:
       - id: access_flags
         type: u2
@@ -236,7 +248,6 @@ types:
     instances:
       name_as_str:
         value: _root.constant_pool[name_index - 1].cp_info.as<utf8_cp_info>.value
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5'
   attribute_info:
     doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7'
     seq:
@@ -351,6 +362,7 @@ types:
               - id: line_number
                 type: u2
   method_info:
+    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6'
     seq:
       - id: access_flags
         type: u2
@@ -367,4 +379,3 @@ types:
     instances:
       name_as_str:
         value: _root.constant_pool[name_index - 1].cp_info.as<utf8_cp_info>.value
-    doc-ref: 'https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6'

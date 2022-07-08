@@ -182,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "7950b8df56dd36acaf56333add2aab270f439a37";
-    kaitaiIde.commitDate = "2020-10-16 11:55:17";
+    kaitaiIde.commitId = "e824b3e14fb930b954c749935f5af6e1273c06f8";
+    kaitaiIde.commitDate = "2022-07-08 23:13:36";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -254,4 +254,3 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });
 });
-//# sourceMappingURL=app.js.map

@@ -11,4 +11,3 @@ define(["require", "exports"], function (require, exports) {
         ObjectType["Undefined"] = "Undefined";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
 });
-//# sourceMappingURL=WorkerShared.js.map

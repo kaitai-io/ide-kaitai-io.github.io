@@ -28,4 +28,3 @@ define(["require", "exports", "vue", "../Component"], function (require, exports
     ], Stepper);
     exports.Stepper = Stepper;
 });
-//# sourceMappingURL=Stepper.js.map

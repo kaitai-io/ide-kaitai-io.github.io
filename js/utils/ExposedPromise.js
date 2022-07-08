@@ -12,4 +12,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.ExposedPromise = ExposedPromise;
 });
-//# sourceMappingURL=ExposedPromise.js.map

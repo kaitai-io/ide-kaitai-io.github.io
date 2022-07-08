@@ -57,4 +57,3 @@ define(["require", "exports", "./FsUri"], function (require, exports, FsUri_1) {
     }
     exports.GithubFileSystem = GithubFileSystem;
 });
-//# sourceMappingURL=GithubFileSystem.js.map

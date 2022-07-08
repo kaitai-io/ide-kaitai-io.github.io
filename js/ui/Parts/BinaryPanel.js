@@ -30,4 +30,3 @@ define(["require", "exports", "vue", "../Component", "../../HexViewer", "../../u
     ], BinaryPanel);
     exports.BinaryPanel = BinaryPanel;
 });
-//# sourceMappingURL=BinaryPanel.js.map

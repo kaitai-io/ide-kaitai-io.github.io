@@ -36,4 +36,3 @@ define(["require", "exports", "../utils"], function (require, exports, utils_1) 
     }
     exports.EditorChangeHandler = EditorChangeHandler;
 });
-//# sourceMappingURL=UIHelper.js.map

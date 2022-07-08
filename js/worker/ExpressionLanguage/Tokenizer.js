@@ -65,4 +65,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.Tokenizer = Tokenizer;
 });
-//# sourceMappingURL=Tokenizer.js.map

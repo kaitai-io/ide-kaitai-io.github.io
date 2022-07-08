@@ -59,4 +59,3 @@ define(["require", "exports", "vue", "jquery", "./AppLayout", "./ui/Parts/Parsed
     }
     exports.AppView = AppView;
 });
-//# sourceMappingURL=AppView.js.map

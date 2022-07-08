@@ -191,4 +191,3 @@ define(["require", "exports", "./AppView", "./LocalSettings", "./ui/Parts/FileTr
     var app = window["ide"] = new AppController();
     app.start();
 });
-//# sourceMappingURL=v2.js.map

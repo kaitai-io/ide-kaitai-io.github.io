@@ -22,4 +22,3 @@ define(["require", "exports", "./Common", "./FsUri", "../utils/WebHelper"], func
     }
     exports.HttpFileSystem = HttpFileSystem;
 });
-//# sourceMappingURL=HttpFileSystem.js.map

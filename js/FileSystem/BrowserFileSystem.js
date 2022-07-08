@@ -66,4 +66,3 @@ define(["require", "exports", "./FsUri", "./Common", "localforage"], function (r
     }
     exports.BrowserLegacyFileSystem = BrowserLegacyFileSystem;
 });
-//# sourceMappingURL=BrowserFileSystem.js.map

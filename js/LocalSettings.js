@@ -22,4 +22,3 @@ define(["require", "exports"], function (require, exports) {
         latestPath: ""
     });
 });
-//# sourceMappingURL=LocalSettings.js.map

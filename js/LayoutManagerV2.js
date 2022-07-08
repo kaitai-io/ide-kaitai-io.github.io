@@ -114,4 +114,3 @@ define(["require", "exports", "goldenlayout"], function (require, exports, Golde
     }
     exports.LayoutManager = LayoutManager;
 });
-//# sourceMappingURL=LayoutManagerV2.js.map

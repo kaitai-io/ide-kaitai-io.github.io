@@ -36,4 +36,3 @@ define(["require", "exports", "vue", "../Component", "jquery", "../../LocalSetti
     ], AboutModal);
     exports.AboutModal = AboutModal;
 });
-//# sourceMappingURL=AboutModal.js.map

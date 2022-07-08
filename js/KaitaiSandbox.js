@@ -33,4 +33,3 @@ define(["require", "exports", "./SandboxHandler"], function (require, exports, S
     }
     exports.InitKaitaiWithoutSandbox = InitKaitaiWithoutSandbox;
 });
-//# sourceMappingURL=KaitaiSandbox.js.map

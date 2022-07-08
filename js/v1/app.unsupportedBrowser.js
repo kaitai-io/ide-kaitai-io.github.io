@@ -8,4 +8,3 @@ define(["require", "exports", "bowser"], function (require, exports, bowser) {
         document.getElementById("unsupportedBrowser").style.display = "none";
     });
 });
-//# sourceMappingURL=app.unsupportedBrowser.js.map

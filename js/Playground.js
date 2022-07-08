@@ -43,4 +43,3 @@ define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/E
     }
     run();
 });
-//# sourceMappingURL=Playground.js.map

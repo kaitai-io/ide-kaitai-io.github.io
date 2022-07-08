@@ -3,9 +3,10 @@ meta:
   title: DNS (Domain Name Service) packet
   xref:
     rfc: 1035
+    wikidata: Q8767
   license: CC0-1.0
-  endian: be
   encoding: utf-8
+  endian: be
 doc: |
   (No support for Auth-Name + Add-Name for simplicity)
 seq:

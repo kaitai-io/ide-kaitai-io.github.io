@@ -31,4 +31,3 @@ define(["require", "exports", "vue", "../Component", "jquery"], function (requir
     ], InputModal);
     exports.InputModal = InputModal;
 });
-//# sourceMappingURL=InputModal.js.map

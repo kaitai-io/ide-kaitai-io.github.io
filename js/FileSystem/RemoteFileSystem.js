@@ -43,4 +43,3 @@ define(["require", "exports", "./FsUri", "./Common", "../utils/WebHelper"], func
     }
     exports.RemoteFileSystem = RemoteFileSystem;
 });
-//# sourceMappingURL=RemoteFileSystem.js.map

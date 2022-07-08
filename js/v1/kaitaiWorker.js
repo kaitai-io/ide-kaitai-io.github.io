@@ -118,7 +118,7 @@ myself.onmessage = (ev) => {
         }
         catch (error) {
             console.log("[Worker] Error", error);
-            msg.error = error.toString();
+            msg.error = error;
         }
     }
     else {
@@ -127,4 +127,3 @@ myself.onmessage = (ev) => {
     //console.log("[Worker] Send response", msg, ev);
     myself.postMessage(msg);
 };
-//# sourceMappingURL=kaitaiWorker.js.map

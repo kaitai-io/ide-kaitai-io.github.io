@@ -113,4 +113,3 @@ define(["require", "exports", "vue", "./ComponentLoader"], function (require, ex
     })(Component || (Component = {}));
     exports.default = Component;
 });
-//# sourceMappingURL=Component.js.map
