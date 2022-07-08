@@ -97,14 +97,18 @@ types:
         0x44676f53: logosync_cmm #LgoS
         0x48444d20: heidelberg_cmm #HDM
         0x6C636d73: little_cms_cmm #lcms
-        0x4b434d53: kodak_cmm #kcms
+        0x52494d58: reficcmax_cmm #RIMX
+        0x44494d58: demoiccmax_cmm #DIMX
+        0x4b434d53: kodak_cmm #KCMS
         0x4d434d44: konica_minolta_cmm #MCML
         0x57435320: windows_color_system_cmm #WCS
         0x5349474E: mutoh_cmm #SIGN
+        0x4f4e5958: onyx_graphics_cmm #ONYX
         0x52474d53: device_link_cmm #RGMS
         0x53494343: sample_icc_cmm #SICC
         0x54434d4d: toshiba_cmm #TCMM
         0x33324254: the_imaging_factory_cmm #32BT
+        0x7669766f: vivo_cmm #vivo
         0x57544720: ware_to_go_cmm #WTG
         0x7a633030: zoran_cmm #zc00
       profile_classes:
@@ -1159,7 +1163,7 @@ types:
               - id: number_of_entries
                 type: u4
               - id: curve_values
-                type: u4
+                type: u2
                 repeat: expr
                 repeat-expr: number_of_entries
                 if: number_of_entries > 1
@@ -1198,9 +1202,9 @@ types:
                 repeat: expr
                 repeat-expr: 9
               - id: number_of_input_table_entries
-                type: u4
+                type: u2
               - id: number_of_output_table_entries
-                type: u4
+                type: u2
               - id: input_tables
                 size: 2 * number_of_input_channels * number_of_input_table_entries
               - id: clut_values
@@ -1391,7 +1395,7 @@ types:
                   - id: device_coordinates
                     type: u2
                     repeat: expr
-                    repeat-expr: _parent.count_of_named_colours
+                    repeat-expr: _parent.number_of_device_coordinates_for_each_named_colour
                     if: _parent.number_of_device_coordinates_for_each_named_colour > 0
           parametric_curve_type:
             seq:
@@ -1655,6 +1659,8 @@ types:
             0x76756564: viewing_cond_desc #vued
             0x76696577: viewing_conditions #view
           tag_type_signatures:
+            0x6368726D: chromaticity_type #chrm
+            0x636C726F: colorant_order_type #clro
             0x636c7274: colorant_table_type #clrt
             0x63757276: curve_type #curv
             0x64617461: data_type #data

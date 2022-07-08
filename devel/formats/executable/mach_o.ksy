@@ -2,7 +2,7 @@
 # https://opensource.apple.com/source/python_modules/python_modules-43/Modules/macholib-1.5.1/macholib-1.5.1.tar.gz
 # https://github.com/comex/cs/blob/master/macho_cs.py
 # https://opensource.apple.com/source/Security/Security-55471/libsecurity_codesigning/requirements.grammar.auto.html
-# https://github.com/opensource-apple/xnu/blob/10.11/bsd/sys/codesign.h
+# https://github.com/apple/darwin-xnu/blob/xnu-2782.40.9/bsd/sys/codesign.h
 meta:
   id: mach_o
   xref:
@@ -10,6 +10,9 @@ meta:
       - fmt/692 # Mach-O 32bit
       - fmt/693 # Mach-O 64bit
     wikidata: Q2627217
+  license: MIT
+  imports:
+    - /serialization/asn1/asn1_der
   endian: le
 seq:
   - id: magic
@@ -51,7 +54,7 @@ enums:
     0x1000012:  powerpc64 # abi64 | powerpc
     0x100000c:  arm64     # abi64 | arm
   file_type:
-    # http://opensource.apple.com//source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/mach-o/loader.h
+    # https://opensource.apple.com/source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/mach-o/loader.h
     0x1: object      # relocatable object file
     0x2: execute     # demand paged executable file
     0x3: fvmlib      # fixed VM shared library file
@@ -64,7 +67,7 @@ enums:
     0xa: dsym        # companion file with only debug sections
     0xb: kext_bundle # x86_64 kexts
   load_command_type:
-    # http://opensource.apple.com//source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/mach-o/loader.h
+    # https://opensource.apple.com/source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/mach-o/loader.h
     0x80000000: req_dyld
     0x1       : segment        # segment of this file to be mapped
     0x2       : symtab         # link-edit stab symbol table info
@@ -1007,7 +1010,8 @@ types:
             'cs_magic::requirement'       : requirement
             'cs_magic::requirements'      : requirements
             'cs_magic::code_directory'    : code_directory
-            'cs_magic::entitlement'       : entitlement
+            'cs_magic::entitlements'      : entitlements
+            'cs_magic::der_entitlements'  : asn1_der
             'cs_magic::blob_wrapper'      : blob_wrapper
             'cs_magic::embedded_signature': super_blob
             'cs_magic::detached_signature': super_blob
@@ -1016,7 +1020,8 @@ types:
         0xfade0c00: requirement        # CSMAGIC_REQUIREMENT
         0xfade0c01: requirements       # CSMAGIC_REQUIREMENTS
         0xfade0c02: code_directory     # CSMAGIC_CODEDIRECTORY
-        0xfade7171: entitlement        # CSMAGIC_ENTITLEMENT
+        0xfade7171: entitlements       # CSMAGIC_EMBEDDED_ENTITLEMENTS
+        0xfade7172: der_entitlements   # CSMAGIC_EMBEDDED_DER_ENTITLEMENTS
         0xfade0b01: blob_wrapper       # CSMAGIC_BLOBWRAPPER
         0xfade0cc0: embedded_signature # CSMAGIC_EMBEDDED_SIGNATURE
         0xfade0cc1: detached_signature # CSMAGIC_DETACHED_SIGNATURE
@@ -1090,6 +1095,7 @@ types:
             3:       resource_dir               # CSSLOT_RESOURCEDIR
             4:       application                # CSSLOT_APPLICATION
             5:       entitlements               # CSSLOT_ENTITLEMENTS
+            7:       der_entitlements           # CSSLOT_DER_ENTITLEMENTS
             0x1000:  alternate_code_directories # CSSLOT_ALTERNATE_CODEDIRECTORIES
             0x10000: signature_slot             # CSSLOT_SIGNATURESLOT
       data:
@@ -1245,7 +1251,7 @@ types:
             type: u4be
           - id: expr
             type: expr
-      entitlement:
+      entitlements:
         -webide-representation: "{data:str}"
         seq:
           - id: data

@@ -10,7 +10,7 @@ meta:
     forensicswiki: Virtual_Disk_Image_(VDI)
     pronom: fmt/726
     wikidata: Q29209126
-  license: GPL3.0+
+  license: GPL-3.0-or-later
   encoding: utf-8
   endian: le
 doc-ref: https://github.com/qemu/qemu/blob/master/block/vdi.c
@@ -22,7 +22,6 @@ doc: |
   Images for testing can be downloaded from
    * https://www.osboxes.org/virtualbox-images/
    * https://virtualboxes.org/images/
-   * https://virtualboximages.com/
   or you can convert images of other formats.
 seq:
   - id: header
