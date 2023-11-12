@@ -34,7 +34,7 @@ define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/E
         console.log("compiledCode", compiledCode);
         console.log("ksy", ksy);
         //const compilerKsy = cloneWithFilter(ksy, prop => !prop.startsWith("$"));
-        //const compiler = new KaitaiStructCompiler();
+        //const compiler = KaitaiStructCompiler;
         //console.log(ksy);
         //console.log(compilerKsy);
         //const compiled = await compiler.compile("javascript", compilerKsy, null, false);
