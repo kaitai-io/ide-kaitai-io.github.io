@@ -31,6 +31,10 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         }
     }
     class JsImporter {
+        constructor(rootFsItem, ksyTypes) {
+            this.rootFsItem = rootFsItem;
+            this.ksyTypes = ksyTypes;
+        }
         async importYaml(name, mode) {
             var loadFn;
             var importedFsType = this.rootFsItem.fsType;
@@ -68,7 +72,10 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
                 throw error;
             }
             const ksyModel = YAML.parse(ksyContent);
-            return ksyModel;
+            Object.assign(this.ksyTypes, SchemaUtils.collectKsyTypes(ksyModel));
+            // we have to modify the schema (add typesByJsName for example) before sending into the compiler, so we need a copy
+            const compilerSchema = YAML.parse(ksyContent);
+            return compilerSchema;
         }
     }
     class CompilationError {
@@ -79,21 +86,18 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
     }
     exports.CompilationError = CompilationError;
     class CompilerService {
-        constructor() {
-            this.jsImporter = new JsImporter();
-        }
         compile(srcYamlFsItem, srcYaml, kslang, debug) {
             var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
-            this.jsImporter.rootFsItem = srcYamlFsItem;
             try {
                 this.ksySchema = YAML.parse(srcYaml);
                 this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);
-                // we have to modify the schema (add typesByJsName for example) before sending into the compiler so we need a copy
+                // we have to modify the schema (add typesByJsName for example) before sending into the compiler, so we need a copy
                 var compilerSchema = YAML.parse(srcYaml);
             }
             catch (parseErr) {
                 return Promise.reject(new CompilationError("yaml", parseErr));
             }
+            this.jsImporter = new JsImporter(srcYamlFsItem, this.ksyTypes);
             perfYamlParse.done();
             //console.log("ksySchema", ksySchema);
             if (kslang === "json")
