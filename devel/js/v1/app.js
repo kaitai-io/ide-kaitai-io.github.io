@@ -182,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "44e8329272b5430bd602b2b63ef5580b081b6fad";
-    kaitaiIde.commitDate = "2023-11-12 12:03:00";
+    kaitaiIde.commitId = "7dc1e117435bef48759860c1c70450cbf79e55b3";
+    kaitaiIde.commitDate = "2024-01-21 11:51:59";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -214,7 +214,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         exports.app.inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
         exports.app.formatReady = loadCachedFsItem(exports.app.ksyFsItemName, "kaitai", "formats/archive/zip.ksy");
         exports.app.inputReady.then(() => {
-            var storedSelection = JSON.parse(localStorage.getItem("selection"));
+            const value = localStorage.getItem("selection");
+            const storedSelection = value !== null ? JSON.parse(value) : null;
             if (storedSelection)
                 exports.app.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);
         });

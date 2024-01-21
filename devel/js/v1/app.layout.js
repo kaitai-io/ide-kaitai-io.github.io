@@ -102,7 +102,8 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
             this.layout.addEditor("genCodeDebugViewer", "javascript", false);
             this.layout.addComponent("hexViewer", () => {
                 var hexViewer = new HexViewer_1.HexViewer("#hexViewer");
-                hexViewer.bytesPerLine = parseInt(localStorage.getItem("HexViewer.bytesPerLine")) || 16;
+                const stored = localStorage.getItem("HexViewer.bytesPerLine");
+                hexViewer.bytesPerLine = (stored !== null && parseInt(stored, 10)) || 16;
                 return hexViewer;
             });
             this.layout.addComponent("errorWindow", cont => { cont.getElement().append($("<div />")); });

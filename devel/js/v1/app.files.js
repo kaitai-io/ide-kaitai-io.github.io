@@ -38,7 +38,15 @@ define(["require", "exports", "localforage", "dateformat", "./app", "../utils"],
             this.root = newRoot;
             return this.save();
         }
-        get(fn) { return localforage.getItem(this.fileKey(fn)); }
+        get(fn) {
+            return localforage.getItem(this.fileKey(fn))
+                .then(content => {
+                if (content === null) {
+                    throw new Error('file not found');
+                }
+                return content;
+            });
+        }
         put(fn, data) {
             return this.getRootNode().then(root => {
                 var node = fsHelper.selectNode(root, fn);
@@ -53,7 +61,26 @@ define(["require", "exports", "localforage", "dateformat", "./app", "../utils"],
         getRootNode() { return Promise.resolve(this.files); }
         get(fn) {
             if (fn.toLowerCase().endsWith(".ksy"))
-                return Promise.resolve($.ajax({ url: fn }));
+                return fetch(fn)
+                    .then(response => {
+                    if (!response.ok) {
+                        let msg;
+                        if (response.status === 404) {
+                            msg = 'file not found';
+                        }
+                        else {
+                            const textAppendix = response.statusText ? ` (${response.statusText})` : '';
+                            msg = `server responded with HTTP status ${response.status}${textAppendix}`;
+                        }
+                        throw new Error(msg);
+                    }
+                    return response.text();
+                }, err => {
+                    if (err instanceof TypeError) {
+                        throw new Error(`cannot reach the server (message: ${err.message}), check your internet connection`);
+                    }
+                    throw err;
+                });
             else
                 return utils_1.downloadFile(fn);
         }
