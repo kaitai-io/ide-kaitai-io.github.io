@@ -1,4 +1,4 @@
-define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaitai-struct-compiler"], function (require, exports, app_files_1, PerformanceHelper_1, KaitaiStructCompiler) {
+define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaitai-struct-compiler", "js-yaml"], function (require, exports, app_files_1, PerformanceHelper_1, KaitaiStructCompiler, jsyaml) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SchemaUtils {
@@ -55,7 +55,7 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
             const sourceAppendix = mode === 'abs' ? 'kaitai.io' : 'local storage';
             let ksyContent;
             try {
-                ksyContent = await app_files_1.fss[importedFsType].get(`${loadFn}.ksy`);
+                ksyContent = await app_files_1.fss[importedFsType].get(fn);
             }
             catch (e) {
                 const error = new Error(`failed to import spec ${fn} from ${sourceAppendix}${e.message ? ': ' + e.message : ''}`);
@@ -71,10 +71,10 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
                 };
                 throw error;
             }
-            const ksyModel = YAML.parse(ksyContent);
+            const ksyModel = parseYaml(ksyContent, fn);
             Object.assign(this.ksyTypes, SchemaUtils.collectKsyTypes(ksyModel));
             // we have to modify the schema (add typesByJsName for example) before sending into the compiler, so we need a copy
-            const compilerSchema = YAML.parse(ksyContent);
+            const compilerSchema = parseYaml(ksyContent, fn);
             return compilerSchema;
         }
     }
@@ -89,10 +89,10 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         compile(srcYamlFsItem, srcYaml, kslang, debug) {
             var perfYamlParse = PerformanceHelper_1.performanceHelper.measureAction("YAML parsing");
             try {
-                this.ksySchema = YAML.parse(srcYaml);
+                this.ksySchema = parseYaml(srcYaml, srcYamlFsItem.fn);
                 this.ksyTypes = SchemaUtils.collectKsyTypes(this.ksySchema);
                 // we have to modify the schema (add typesByJsName for example) before sending into the compiler, so we need a copy
-                var compilerSchema = YAML.parse(srcYaml);
+                var compilerSchema = parseYaml(srcYaml, srcYamlFsItem.fn);
             }
             catch (parseErr) {
                 return Promise.reject(new CompilationError("yaml", parseErr));
@@ -117,4 +117,11 @@ define(["require", "exports", "./app.files", "./utils/PerformanceHelper", "kaita
         }
     }
     exports.CompilerService = CompilerService;
+    function parseYaml(yamlContents, filename) {
+        const options = {
+            schema: jsyaml.CORE_SCHEMA,
+            filename: filename,
+        };
+        return jsyaml.load(yamlContents, options);
+    }
 });

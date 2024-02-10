@@ -15,7 +15,7 @@
     <script>
             Raven.config('https://a01cdb58ab3e43dd9ce695dd20a19d00@sentry.io/202888', {
                     environment: "devel",
-                    release: "80c94b13a7c9671bbb33b90a1a49a7f56ce766ce",
+                    release: "5de330d076e00f13063453d1eece9092a19549f5",
             }).install();
     </script>
 
@@ -45,7 +45,6 @@
     <script src="lib/_npm/requirejs/require.js"></script>
     <script src="lib/_npm/jquery/jquery.min.js"></script>
     <script src="lib/_npm/bootstrap/js/bootstrap.min.js"></script>
-    <script src="lib/_npm/yamljs/yaml.js"></script>
     <script src="lib/_npm/ace/ace.js"></script>
 
     <script src="js/autorefresh.js"></script>
@@ -57,6 +56,7 @@
         ["bowser", "jstree", "localforage", "goldenlayout", "vue", "kaitai-struct-compiler", "dateformat"].forEach(
             name => paths[name] = `../../lib/_npm/${name}/${name}`);
         paths["big-integer"] = "../../lib/_npm/BigInteger/BigInteger";
+        paths["js-yaml"] = "../../lib/_npm/js-yaml/js-yaml.min";
 
         requirejs.config({ baseUrl: "js/v1/", paths: paths });
         require(["app.unsupportedBrowser"]);
