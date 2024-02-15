@@ -6,45 +6,82 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
             this.jsTreeElement = jsTreeElement;
             this.exportedRoot = exportedRoot;
             this.ksyTypes = ksyTypes;
-            this.parsedTreeOpenedNodes = {};
-            this.saveOpenedNodesDisabled = false;
             this.nodeDatas = [];
             jsTreeElement.jstree("destroy");
             this.jstree = jsTreeElement.jstree({
                 core: {
-                    data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_1.app.errors.handle(e)), themes: { icons: false }, multiple: false, force_text: false
-                }
+                    data: (node, cb) => this.getNode(node).then(x => cb(x), e => app_1.app.errors.handle(e)),
+                    themes: { icons: false },
+                    multiple: false,
+                    force_text: false,
+                    allow_reselect: true,
+                    loaded_state: true,
+                },
+                plugins: ["state"],
+                state: {
+                    preserve_loaded: true,
+                    filter: function (state) {
+                        const openNodes = state.core.open;
+                        const nodesToLoad = new Set();
+                        for (const path of openNodes) {
+                            const pathParts = path.split("-");
+                            if (pathParts[0] !== "inputField") {
+                                continue;
+                            }
+                            let subPath = pathParts.shift();
+                            for (const part of pathParts) {
+                                subPath += "-" + part;
+                                if (this.is_loaded(subPath)) {
+                                    continue;
+                                }
+                                nodesToLoad.add(subPath);
+                            }
+                        }
+                        // If we want to preserve the open state of nodes with closed parents,
+                        // we must at least load their parents so that such nodes appear
+                        // in the internal list of nodes that jsTree knows and the jsTree
+                        // 'state' plugin can mark them as open.
+                        state.core.loaded = Array.from(nodesToLoad);
+                        return state;
+                    },
+                },
             }).jstree(true);
-            this.jstree.on = (...args) => this.jstree.element.on(...args);
-            this.jstree.off = (...args) => this.jstree.element.off(...args);
-            this.jstree.on("keyup.jstree", e => this.jstree.activate_node(e.target.id, null));
+            this.jstree.on = (...args) => this.jstree.get_container().on(...args);
+            this.jstree.off = (...args) => this.jstree.get_container().off(...args);
+            this.jstree.on("state_ready.jstree", () => {
+                // These settings have been set to `true` only temporarily so that our
+                // approach of populating the `state.core.loaded` property in the
+                // `state.filter` function takes effect.
+                this.jstree.settings.state.preserve_loaded = false;
+                this.jstree.settings.core.loaded_state = false;
+                this.updateActiveJstreeNode();
+            });
+            this.jstree.on("focus.jstree", ".jstree-anchor", e => {
+                const focusedNode = e.currentTarget;
+                if (!this.jstree.is_selected(focusedNode)) {
+                    this.jstree.deselect_all(true);
+                    this.jstree.select_node(focusedNode);
+                }
+            });
             this.intervalHandler = new IntervalHelper_1.IntervalHandler();
         }
-        saveOpenedNodes() {
-            if (this.saveOpenedNodesDisabled)
+        updateActiveJstreeNode() {
+            const selectedNode = this.jstree.get_selected()[0];
+            if (!selectedNode) {
                 return;
-            localStorage.setItem("parsedTreeOpenedNodes", Object.keys(this.parsedTreeOpenedNodes).join(","));
-        }
-        initNodeReopenHandling() {
-            var parsedTreeOpenedNodesStr = localStorage.getItem("parsedTreeOpenedNodes");
-            if (parsedTreeOpenedNodesStr)
-                parsedTreeOpenedNodesStr.split(",").forEach(x => this.parsedTreeOpenedNodes[x] = true);
-            return new Promise((resolve, reject) => {
-                this.jstree.on("ready.jstree", _ => {
-                    this.openNodes(Object.keys(this.parsedTreeOpenedNodes)).then(() => {
-                        this.jstree.on("open_node.jstree", (e, te) => {
-                            var node = te.node;
-                            this.parsedTreeOpenedNodes[this.getNodeId(node)] = true;
-                            this.saveOpenedNodes();
-                        }).on("close_node.jstree", (e, te) => {
-                            var node = te.node;
-                            delete this.parsedTreeOpenedNodes[this.getNodeId(node)];
-                            this.saveOpenedNodes();
-                        });
-                        resolve();
-                    }, err => reject(err));
-                });
-            });
+            }
+            // This ensures that next time the jsTree is focused (even when clicking
+            // somewhere in the empty space of the jsTree pane without clicking or
+            // hovering over any particular node first), the selected node (if any)
+            // will be focused. If we don't do this, jsTree will instead focus the
+            // most recently node that the user directly interacted with or (upon
+            // page load) the very first node of the entire tree, which is not
+            // ideal.
+            //
+            // As of jsTree 3.3.16, jsTree uses the `aria-activedescendant`
+            // attribute as the only means of persisting the active node, so we
+            // don't have much choice how to implement this.
+            this.jstree.get_container().attr('aria-activedescendant', selectedNode);
         }
         primitiveToText(exported, detailed = true) {
             if (exported.type === ObjectType.Primitive) {
@@ -274,72 +311,33 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
             var path = nodeData.exported ? nodeData.exported.path : nodeData.instance.path;
             if (nodeData.arrayStart || nodeData.arrayEnd)
                 path = path.concat([`${nodeData.arrayStart || 0}`, `${nodeData.arrayEnd || 0}`]);
-            return "inputField_" + path.join("_");
-        }
-        openNodes(nodesToOpen) {
-            return new Promise((resolve, reject) => {
-                this.saveOpenedNodesDisabled = true;
-                var origAnim = this.jstree.settings.core.animation;
-                this.jstree.settings.core.animation = 0;
-                //console.log("saveOpenedNodesDisabled = true");
-                var openCallCounter = 1;
-                var openRound = (e) => {
-                    openCallCounter--;
-                    //console.log("openRound", openCallCounter, nodesToOpen);
-                    var newNodesToOpen = [];
-                    var existingNodes = [];
-                    nodesToOpen.forEach(nodeId => {
-                        var node = this.jstree.get_node(nodeId);
-                        if (node) {
-                            if (!node.state.opened)
-                                existingNodes.push(node);
-                        }
-                        else
-                            newNodesToOpen.push(nodeId);
-                    });
-                    nodesToOpen = newNodesToOpen;
-                    //console.log("existingNodes", existingNodes, "openCallCounter", openCallCounter);
-                    if (existingNodes.length > 0)
-                        existingNodes.forEach(node => {
-                            openCallCounter++;
-                            //console.log(`open_node called on ${node.id}`)
-                            this.jstree.open_node(node);
-                        });
-                    else if (openCallCounter === 0) {
-                        //console.log("saveOpenedNodesDisabled = false");
-                        this.saveOpenedNodesDisabled = false;
-                        if (e)
-                            this.jstree.off(e);
-                        this.jstree.settings.core.animation = origAnim;
-                        this.saveOpenedNodes();
-                        resolve(nodesToOpen.length === 0);
-                    }
-                };
-                this.jstree.on("open_node.jstree", e => openRound(e));
-                openRound(null);
-            });
+            return ["inputField", ...path].join("-");
         }
         activatePath(path) {
-            var pathParts = typeof path === "string" ? path.split("/") : path;
-            var expandNodes = [];
-            var pathStr = "inputField";
-            for (var i = 0; i < pathParts.length; i++) {
-                pathStr += "_" + pathParts[i];
-                expandNodes.push(pathStr);
+            const pathParts = typeof path === "string" ? path.split("/") : path;
+            const nodesToLoad = [];
+            let pathStr = "inputField";
+            for (let i = 0; i < pathParts.length; i++) {
+                pathStr += "-" + pathParts[i];
+                nodesToLoad.push(pathStr);
             }
-            var activateId = expandNodes.pop();
-            return this.openNodes(expandNodes).then(foundAll => {
-                //console.log("activatePath", foundAll, activateId);
-                this.jstree.activate_node(activateId, null);
-                if (foundAll) {
-                    var element = $(`#${activateId}`).get(0);
-                    if (element)
+            const nodeToSelect = nodesToLoad.pop();
+            return new Promise((resolve, reject) => {
+                this.jstree.load_node(nodesToLoad, () => {
+                    // First select the node - the `select_node` method also recursively opens
+                    // all parents of the selected node by default.
+                    this.jstree.deselect_all(true);
+                    this.jstree.select_node(nodeToSelect);
+                    const element = this.jstree.get_node(nodeToSelect, true)[0];
+                    if (element) {
                         element.scrollIntoView();
-                    else {
-                        console.log("element not found", activateId);
                     }
-                }
-                return foundAll;
+                    else {
+                        console.warn("element not found", nodeToSelect);
+                    }
+                    this.updateActiveJstreeNode();
+                    resolve();
+                });
             });
         }
     }

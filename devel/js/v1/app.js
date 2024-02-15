@@ -95,20 +95,20 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 kaitaiIde.root = exportedRoot;
                 //console.log("reparse exportedRoot", exportedRoot);
                 this.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(this.ui.parsedDataTreeCont.getElement(), exportedRoot, this.compilerService.ksyTypes);
-                await this.ui.parsedDataTreeHandler.initNodeReopenHandling();
-                this.ui.hexViewer.onSelectionChanged();
-                this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
-                    var node = selectNodeArgs.node;
-                    //console.log("node", node);
-                    var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
-                    if (exp && exp.path)
-                        $("#parsedPath").text(exp.path.join("/"));
-                    if (!this.blockRecursive && exp && exp.start < exp.end) {
-                        this.selectedInTree = true;
-                        //console.log("setSelection", exp.ioOffset, exp.start);
-                        this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
-                        this.selectedInTree = false;
-                    }
+                this.ui.parsedDataTreeHandler.jstree.on("state_ready.jstree", () => {
+                    this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
+                        var node = selectNodeArgs.node;
+                        //console.log("node", node);
+                        var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
+                        if (exp && exp.path)
+                            $("#parsedPath").text(exp.path.join("/"));
+                        if (!this.blockRecursive && exp && exp.start < exp.end) {
+                            this.selectedInTree = true;
+                            //console.log("setSelection", exp.ioOffset, exp.start);
+                            this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
+                            this.selectedInTree = false;
+                        }
+                    });
                 });
                 this.errors.handle(null);
             }
@@ -182,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "5de330d076e00f13063453d1eece9092a19549f5";
-    kaitaiIde.commitDate = "2024-02-10 23:25:25";
+    kaitaiIde.commitId = "bd9c288c86b8e288243a7553028a5ae97cc0262c";
+    kaitaiIde.commitDate = "2024-02-15 22:05:48";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
