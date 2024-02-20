@@ -109,7 +109,7 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                 return utils_1.s `${text}`;
             }
             else if (exported.type === ObjectType.Undefined) {
-                return utils_1.s `<span class="missing">${"<no value>"}<span>`;
+                return utils_1.s `<span class="missing">${"<no value>"}</span>`;
             }
             else
                 throw new Error(`primitiveToText: object is not primitive: ${exported.type}!`);
