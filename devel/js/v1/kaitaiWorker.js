@@ -36,7 +36,15 @@ function exportValue(obj, debug, path, noLazy) {
         if (debug && debug.enumName) {
             result.enumName = debug.enumName;
             var enumObj = myself;
-            debug.enumName.split(".").forEach(p => enumObj = enumObj[p]);
+            var enumPath = debug.enumName.split(".");
+            // Because of https://github.com/kaitai-io/kaitai_struct/issues/1074,
+            // KSC-generated modules export a plain object (not the constructor
+            // function directly) - for example, the exported value from the
+            // `Zip.js` module is `{ Zip: function (_io, _parent, _root) {...} }`.
+            //
+            // This means we have to use the top-level name twice in the path resolution.
+            enumPath.unshift(enumPath[0]);
+            enumPath.forEach(p => enumObj = enumObj[p]);
             var flagCheck = 0, flagSuccess = true;
             var flagStr = Object.keys(enumObj).filter(x => isNaN(x)).filter(x => {
                 if (flagCheck & enumObj[x]) {
@@ -86,7 +94,7 @@ KaitaiStream.depUrls.zlib = "../../lib/_npm/pako/pako_inflate.min.js";
 var apiMethods = {
     initCode: (sourceCode, mainClassName, ksyTypes) => {
         wi.ksyTypes = ksyTypes;
-        eval(`${sourceCode}\nwi.MainClass = ${mainClassName};`);
+        eval(`${sourceCode}\nwi.MainClass = ${mainClassName}.${mainClassName};`);
     },
     setInput: (inputBuffer) => wi.inputBuffer = inputBuffer,
     reparse: (eagerMode) => {
