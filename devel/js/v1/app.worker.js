@@ -16,10 +16,14 @@ define(["require", "exports"], function (require, exports) {
             msgHandlers[request.msgId] = response => {
                 if (response.error) {
                     console.log("error", response.error);
+                }
+                if (response.error && (response.result === undefined || response.result === null)) {
                     reject(response.error);
                 }
-                else
-                    resolve(response.result);
+                else {
+                    const { result, error } = response;
+                    resolve({ result, error });
+                }
                 //console.info(`[performance] [${(new Date()).format("H:i:s.u")}] Got worker response: ${Date.now()}.`);
             };
             worker.postMessage(request);

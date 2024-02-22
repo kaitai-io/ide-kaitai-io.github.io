@@ -91,17 +91,25 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 let debugCode = this.ui.genCodeDebugViewer.getValue();
                 let jsClassName = this.compilerService.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
                 await app_worker_1.workerMethods.initCode(debugCode, jsClassName, this.compilerService.ksyTypes);
-                let exportedRoot = await app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing);
+                const { result: exportedRoot, error: parseError } = await app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing);
                 kaitaiIde.root = exportedRoot;
                 //console.log("reparse exportedRoot", exportedRoot);
                 this.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(this.ui.parsedDataTreeCont.getElement(), exportedRoot, this.compilerService.ksyTypes);
                 this.ui.parsedDataTreeHandler.jstree.on("state_ready.jstree", () => {
                     this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
-                        var node = selectNodeArgs.node;
+                        const node = selectNodeArgs.node;
                         //console.log("node", node);
-                        var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
+                        const exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
                         if (exp && exp.path)
                             $("#parsedPath").text(exp.path.join("/"));
+                        if (exp) {
+                            if (exp.instanceError !== undefined) {
+                                exports.app.errors.handle(exp.instanceError);
+                            }
+                            else if (exp.validationError !== undefined) {
+                                exports.app.errors.handle(exp.validationError);
+                            }
+                        }
                         if (!this.blockRecursive && exp && exp.start < exp.end) {
                             this.selectedInTree = true;
                             //console.log("setSelection", exp.ioOffset, exp.start);
@@ -110,7 +118,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                         }
                     });
                 });
-                this.errors.handle(null);
+                this.errors.handle(parseError);
             }
             catch (error) {
                 this.errors.handle(error);
@@ -182,8 +190,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "db130c9a1221dac47186507ca75d330c641aabfc";
-    kaitaiIde.commitDate = "2024-02-21 15:51:06";
+    kaitaiIde.commitId = "b8c359f18e0e66e847778a6e74c4d2be9ec48f36";
+    kaitaiIde.commitDate = "2024-02-22 13:07:09";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")

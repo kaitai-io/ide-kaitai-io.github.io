@@ -184,6 +184,47 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
             }
             else
                 text = (showProp ? utils_1.s `<span class="propName">${propName}</span> = ` : "") + this.primitiveToText(item);
+            if (item.incomplete || item.validationError !== undefined || item.instanceError !== undefined) {
+                const validationError = item.validationError !== undefined ?
+                    `${item.validationError.name}: ${item.validationError.message}` :
+                    undefined;
+                const instanceError = item.instanceError !== undefined ?
+                    `${item.instanceError.name}: ${item.instanceError.message}` :
+                    undefined;
+                const showAsError = validationError !== undefined ||
+                    item.type === ObjectType.Undefined ||
+                    (item.type === ObjectType.Object && Object.keys(item.object.fields).length === 0);
+                const icon = document.createElement('i');
+                icon.classList.add('glyphicon');
+                if (instanceError !== undefined) {
+                    icon.classList.add('instance-fail-color');
+                }
+                else {
+                    icon.classList.add(showAsError ? 'fail-color' : 'alert-color');
+                }
+                if (validationError !== undefined && (instanceError === undefined || item.instanceError === item.validationError)) {
+                    icon.classList.add('glyphicon-remove');
+                    const action = instanceError !== undefined ?
+                        "validation of this instance parsed on explicit request" :
+                        "validation of this field";
+                    icon.title = `${action} failed with "${validationError}"`;
+                }
+                else if (showAsError) {
+                    icon.classList.add('glyphicon-exclamation-sign');
+                    if (instanceError !== undefined) {
+                        icon.title = `explicit parsing of this instance failed with "${instanceError}"`;
+                    }
+                    else {
+                        icon.title = `parsing of this field failed`;
+                    }
+                }
+                else {
+                    icon.classList.add('glyphicon-alert');
+                    const instanceAppendix = instanceError !== undefined ? "explicit " : "";
+                    icon.title = `${instanceAppendix}parsing was interrupted by an error, data may be incomplete`;
+                }
+                text += ` ${icon.outerHTML}`;
+            }
             return { text: text, children: isObject || isArray, data: this.addNodeData({ exported: item }) };
         }
         exportedToNodes(exported, nodeData, showProp) {
@@ -251,7 +292,7 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
             var nodeData = this.getNodeData(node);
             var expNode = isRoot ? this.exportedRoot : nodeData.exported;
             var isInstance = !expNode;
-            var valuePromise = isInstance ? this.getProp(nodeData.instance.path).then(exp => nodeData.exported = exp) : Promise.resolve(expNode);
+            var valuePromise = isInstance ? this.getProp(nodeData.instance.path).then(({ result: exp }) => nodeData.exported = exp) : Promise.resolve(expNode);
             return valuePromise.then(valueExp => {
                 if (isRoot || isInstance) {
                     this.fillKsyTypes(valueExp);
