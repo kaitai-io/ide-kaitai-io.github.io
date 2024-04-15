@@ -18,8 +18,8 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
                 this.errorWnd.getElement().addClass("errorWindow");
             }
             this.errorWnd.on("resize", () => this.lastErrWndSize = this.errorWnd.getElement().outerHeight());
-            this.errorWnd.on("destroy", () => { app_1.ga("errorwnd", "destroy"); this.errorWnd = null; });
-            this.errorWnd.on("close", () => { app_1.ga("errorwnd", "close"); this.errorWnd = null; });
+            this.errorWnd.on("destroy", () => { this.errorWnd = null; });
+            this.errorWnd.on("close", () => { this.errorWnd = null; });
             this.errorWnd.getElement().empty().append($("<div>").html(utils_1.htmlescape(errMsg).replace(/\n|\\n/g, "<br>")));
         }
         hide() {

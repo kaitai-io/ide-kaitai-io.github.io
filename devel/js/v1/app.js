@@ -8,12 +8,6 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
-    function ga(category, action, label, value) {
-        console.log(`[GA Event] cat:${category} act:${action} lab:${label || ""}`);
-        if (typeof window["_ga"] !== "undefined")
-            window["_ga"]("send", "event", category, action, label, value);
-    }
-    exports.ga = ga;
     const qs = {};
     location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => qs[x[0]] = x[1]);
     let AppVM = class AppVM extends Vue {
@@ -56,10 +50,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         isKsyFile(fn) { return fn.toLowerCase().endsWith(".ksy"); }
         compile(srcYamlFsItem, srcYaml, kslang, debug) {
             return this.compilerService.compile(srcYamlFsItem, srcYaml, kslang, debug).then(result => {
-                ga("compile", "success");
                 return result;
             }, (error) => {
-                ga("compile", "error", `${error.type}: ${error.error}`);
                 this.errors.handle(error.error);
                 return Promise.reject(error);
             });
@@ -190,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "b8c359f18e0e66e847778a6e74c4d2be9ec48f36";
-    kaitaiIde.commitDate = "2024-02-22 13:07:09";
+    kaitaiIde.commitId = "f53caf2514c17f37d683f224020decd3b3547677";
+    kaitaiIde.commitDate = "2024-04-15 19:48:36";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -259,7 +251,5 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             utils_1.saveFile(new Uint8Array(exports.app.inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.app = exports.app;
-        utils_1.precallHook(exports.app.ui.layout.layout.constructor["__lm"].controls, "DragProxy", () => ga("layout", "window_drag"));
-        $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });
 });
