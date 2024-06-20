@@ -62,10 +62,15 @@ function exportValue(obj, debug, hasRawAttr, path, noLazy) {
         }
     }
     else if (result.type === ObjectType.Array) {
-        result.arrayItems = obj.map((item, i) => exportValue(item, debug && debug.arr && debug.arr[i], hasRawAttr, path.concat(i.toString()), noLazy));
-        if (result.incomplete && debug && debug.arr) {
-            debug.end = inferDebugEnd(debug.arr);
-            result.end = debug.end;
+        if (debug && debug.arr) {
+            result.arrayItems = debug.arr.map((itemDebug, i) => exportValue(obj[i], itemDebug, hasRawAttr, path.concat(i.toString()), noLazy));
+            if (result.incomplete) {
+                debug.end = inferDebugEnd(debug.arr);
+                result.end = debug.end;
+            }
+        }
+        else {
+            result.arrayItems = obj.map((item, i) => exportValue(item, undefined, hasRawAttr, path.concat(i.toString()), noLazy));
         }
     }
     else if (result.type === ObjectType.Object) {
