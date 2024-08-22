@@ -182,8 +182,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "08f45e6c8f557aaf1389cbfe96193b2fd21d4c04";
-    kaitaiIde.commitDate = "2024-06-20 15:08:57";
+    kaitaiIde.commitId = "daf28f51ab0222a2f3083f93e19e60bed1f194be";
+    kaitaiIde.commitDate = "2024-08-22 20:16:12";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
