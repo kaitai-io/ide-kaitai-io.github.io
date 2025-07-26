@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "../utils", "../ui/ComponentLoader", "../ui/Components/ConverterPanel", "./ExportToJson", "../ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, utils_1, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
+define(["require", "exports", "localforage", "vue", "a11y-dialog", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "../utils", "../ui/ComponentLoader", "../ui/Components/ConverterPanel", "./ExportToJson", "../ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, A11yDialog, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, utils_1, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
@@ -23,7 +23,23 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         selectInterval(interval) { this.selectionChanged(interval.start, interval.end); }
         selectionChanged(start, end) { this.ui.hexViewer.setSelection(start, end); }
         exportToJson(hex) { ExportToJson_1.exportToJson(hex).then(json => this.ui.layout.addEditorTab("json export", json, "json")); }
-        about() { $("#welcomeModal").modal(); }
+        about() {
+            this.aboutDialog.show();
+        }
+        initAboutDialog() {
+            // FIXME: eliminate duplication with "#newKsyModal"
+            const modal = $("#welcomeModal")[0];
+            this.aboutDialog = new A11yDialog(modal);
+            modal.addEventListener('click', () => this.aboutDialog.hide());
+            modal.querySelector('.dialog-content').addEventListener('click', e => e.stopPropagation());
+            const overlay = document.querySelector("#welcomeModalOverlay");
+            this.aboutDialog
+                .on('show', () => overlay.classList.remove("hidden"))
+                .on('hide', () => overlay.classList.add("hidden"));
+            if (localStorage.getItem("doNotShowWelcome") !== "true") {
+                this.aboutDialog.show();
+            }
+        }
     };
     AppVM = __decorate([
         Component_1.default
@@ -44,6 +60,7 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         init() {
             this.vm.ui = this.ui;
             this.ui.init();
+            this.vm.initAboutDialog();
             this.errors = new app_errors_1.ErrorWindowHandler(this.ui.layout.getLayoutNodeById("mainArea"));
             app_files_1.initFileTree();
         }
@@ -182,8 +199,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "2b6cfd5118a8563ab85abb4405e46082a5040b75";
-    kaitaiIde.commitDate = "2024-08-24 11:44:17";
+    kaitaiIde.commitId = "1ad85baa139c2b5485ef92ff1308c3836f1f529a";
+    kaitaiIde.commitDate = "2025-07-26 14:40:49";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
@@ -192,8 +209,6 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         $("#webideCommitDate").text(kaitaiIde.commitDate);
         $("#compilerVersion").text(KaitaiStructCompiler.version + " (" + KaitaiStructCompiler.buildDate + ")");
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
-        if (localStorage.getItem("doNotShowWelcome") !== "true")
-            $("#welcomeModal").modal();
         exports.app.init();
         ComponentLoader_1.componentLoader.load(["Components/ConverterPanel", "Components/Stepper", "Components/SelectionInput"]).then(() => {
             new Vue({ data: { model: exports.app.vm.converterPanelModel } }).$mount("#converterPanel");
@@ -224,8 +239,14 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             exports.app.ui.ksyEditor.on("change", () => editDelay.do(() => exports.app.recompile()));
         var inputContextMenu = $("#inputContextMenu");
         var downloadInput = $("#inputContextMenu .downloadItem");
+        let inputContextMenuDialog;
         $("#hexViewer").on("contextmenu", e => {
             downloadInput.toggleClass("disabled", exports.app.ui.hexViewer.selectionStart === -1);
+            if (!inputContextMenuDialog) {
+                const modal = $("#inputContextMenuModal")[0];
+                inputContextMenuDialog = new A11yDialog(modal);
+            }
+            inputContextMenuDialog.show();
             inputContextMenu.css({ display: "block" });
             var x = Math.min(e.pageX, $(window).width() - inputContextMenu.width());
             var h = inputContextMenu.height();
@@ -238,13 +259,10 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 if (!obj.hasClass("disabled")) {
                     inputContextMenu.hide();
                     callback(e);
+                    inputContextMenuDialog.hide();
                 }
             });
         }
-        $(document).on("mousedown", e => {
-            if ($(e.target).parents(".dropdown-menu").length === 0)
-                $(".dropdown").hide();
-        });
         ctxAction(downloadInput, e => {
             var start = exports.app.ui.hexViewer.selectionStart, end = exports.app.ui.hexViewer.selectionEnd;
             var newFn = `${exports.app.inputFsItem.fn.split("/").last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;

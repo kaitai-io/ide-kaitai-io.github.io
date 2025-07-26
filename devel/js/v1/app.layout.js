@@ -46,7 +46,6 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
             this.layout.registerComponent(name, function (container, componentState) {
                 self.ui[name + "Cont"] = container;
                 self.ui[name] = $(`#${name}`).appendTo(container.getElement());
-                $(() => self.ui[name].show());
             });
         }
         addEditor(name, lang, isReadOnly = false, callback = null) {
@@ -56,6 +55,7 @@ define(["require", "exports", "goldenlayout", "../HexViewer"], function (require
                 editor.getSession().setMode(`ace/mode/${lang}`);
                 if (lang === "yaml")
                     editor.setOption("tabSize", 2);
+                editor.setOption("enableKeyboardAccessibility", true);
                 editor.$blockScrolling = Infinity; // TODO: remove this line after they fix ACE not to throw warning to the console
                 editor.setReadOnly(isReadOnly);
                 if (callback)
