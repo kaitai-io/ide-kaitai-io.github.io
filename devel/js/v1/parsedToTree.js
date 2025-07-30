@@ -16,6 +16,8 @@ define(["require", "exports", "../utils/IntervalHelper", "../utils", "./app.work
                     force_text: false,
                     allow_reselect: true,
                     loaded_state: true,
+                    // NOTE: `worker: false` fixes https://github.com/kaitai-io/kaitai_struct_webide/issues/193
+                    worker: false,
                 },
                 plugins: ["state"],
                 state: {
