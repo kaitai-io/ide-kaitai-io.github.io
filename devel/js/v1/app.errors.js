@@ -7,9 +7,8 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
             this.lastErrWndSize = 100; // 34
             this.errorWnd = null;
         }
-        async show(...args) {
-            console.error.apply(window, args);
-            var errMsg = args.filter(x => typeof x !== 'object').join(" ");
+        async show(errMsg, errObj) {
+            console.error.call(window, errObj);
             if (!this.errorWnd) {
                 var newPanel = app_1.app.ui.layout.addPanel();
                 this.parentContainer.addChild({ type: "component", componentName: newPanel.componentName, title: "Errors" });
@@ -34,7 +33,7 @@ define(["require", "exports", "../utils", "./app"], function (require, exports, 
         handle(error) {
             if (error) {
                 var msg;
-                if ('getMessage__T' in error && error.toString().startsWith('io.kaitai.struct')) {
+                if (typeof error === "object" && 'getMessage__T' in error && error.toString().startsWith('io.kaitai.struct')) {
                     msg = error.getMessage__T(); // compile error message
                 }
                 else if (error.toString !== Object.prototype.toString && error.toString !== Error.prototype.toString) {

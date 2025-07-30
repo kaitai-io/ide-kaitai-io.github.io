@@ -48,17 +48,7 @@ function exportValue(obj, debug, hasRawAttr, path, noLazy) {
             // This means we have to use the top-level name twice in the path resolution.
             enumPath.unshift(enumPath[0]);
             enumPath.forEach(p => enumObj = enumObj[p]);
-            var flagCheck = 0, flagSuccess = true;
-            var flagStr = Object.keys(enumObj).filter(x => isNaN(x)).filter(x => {
-                if (flagCheck & enumObj[x]) {
-                    flagSuccess = false;
-                    return false;
-                }
-                flagCheck |= enumObj[x];
-                return obj & enumObj[x];
-            }).join("|");
-            //console.log(debug.enumName, enumObj, enumObj[obj], flagSuccess, flagStr);
-            result.enumStringValue = enumObj[obj] || (flagSuccess && flagStr);
+            result.enumStringValue = enumObj[obj];
         }
     }
     else if (result.type === ObjectType.Array) {
@@ -85,7 +75,7 @@ function exportValue(obj, debug, hasRawAttr, path, noLazy) {
         if (obj._debug) {
             Object.keys(obj._debug).forEach(k => fieldNames.add(k));
         }
-        const fieldNamesArr = Array.from(fieldNames).filter(x => x[0] !== "_");
+        const fieldNamesArr = Array.from(fieldNames).filter(x => x[0] !== "_" || x.startsWith("_unnamed"));
         fieldNamesArr
             .forEach(key => result.object.fields[key] = exportValue(obj[key], obj._debug && obj._debug[key], fieldNames.has(`_raw_${key}`), path.concat(key), noLazy));
         if (result.incomplete && !hasSubstream && obj._debug) {
@@ -93,7 +83,7 @@ function exportValue(obj, debug, hasRawAttr, path, noLazy) {
             result.end = debug.end;
         }
         const propNames = obj.constructor !== Object ?
-            Object.getOwnPropertyNames(obj.constructor.prototype).filter(x => x[0] !== "_" && x !== "constructor") : [];
+            Object.getOwnPropertyNames(obj.constructor.prototype).filter(x => x[0] !== "_" && x !== "constructor" && x !== "toString") : [];
         for (const propName of propNames) {
             const ksyInstanceData = ksyType && ksyType.instancesByJsName && ksyType.instancesByJsName[propName] || {};
             const parseMode = ksyInstanceData["-webide-parse-mode"];
