@@ -577,7 +577,7 @@
             if (i === blen) {
                 // we've read all the buffer and haven't found the terminator
                 if (eosError) {
-                    throw "End of stream reached, but no terminator " + terminator + " found";
+                    throw new Error("End of stream reached, but no terminator " + terminator + " found");
                 }
                 else {
                     return this.mapUint8Array(i);
@@ -780,7 +780,7 @@
          */
         KaitaiStream.processRotateLeft = function (data, amount, groupSize) {
             if (groupSize !== 1)
-                throw ("unable to rotate group of " + groupSize + " bytes yet");
+                throw new RangeError("unable to rotate group of " + groupSize + " bytes yet");
             var mask = groupSize * 8 - 1;
             var antiAmount = -amount & mask;
             var r = new Uint8Array(data.length);
@@ -825,7 +825,7 @@
          */
         KaitaiStream.mod = function (a, b) {
             if (b <= 0)
-                throw "mod divisor <= 0";
+                throw new RangeError("mod divisor <= 0");
             var r = a % b;
             if (r < 0)
                 r += b;
