@@ -43,7 +43,14 @@ define(["require", "exports", "./app.worker"], function (require, exports, app_w
                     result += `${JSON.stringify(value.primitiveValue)}`;
             }
         }
-        return app_worker_1.workerMethods.reparse(true).then(exportedRoot => {
+        return app_worker_1.workerMethods.reparse(true)
+            .then(response => {
+            if (response.error) {
+                throw response.error;
+            }
+            return response.result;
+        })
+            .then(exportedRoot => {
             console.log("exported", exportedRoot);
             expToNative(exportedRoot);
             return result;

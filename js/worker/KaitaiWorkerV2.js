@@ -6,7 +6,7 @@ define(["require", "exports", "kaitai-struct-compiler", "KaitaiStream", "yamljs"
     class KaitaiServices {
         constructor() {
             this.ksys = {};
-            this.kaitaiCompiler = new KaitaiStructCompiler();
+            this.kaitaiCompiler = KaitaiStructCompiler;
             this.templateCompiler = new TemplateCompiler_1.TemplateCompiler();
         }
         initCode() {

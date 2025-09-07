@@ -1,4 +1,4 @@
-define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/ExpressionLanguage/ExpressionParser"], function (require, exports, yamljs_1, TemplateCompiler_1, ExpressionParser_1) {
+define(["require", "exports", "js-yaml", "./worker/TemplateCompiler", "./worker/ExpressionLanguage/ExpressionParser"], function (require, exports, jsyaml, TemplateCompiler_1, ExpressionParser_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function cloneWithFilter(obj, filterFunc) {
@@ -24,8 +24,8 @@ define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/E
         }
         const ksyContent = await (await fetch("template_compiler/test.ksy")).text();
         const templateContent = await (await fetch("template_compiler/test.kcy.yaml")).text();
-        const ksy = yamljs_1.YAML.parse(ksyContent, null, null, true);
-        const kcy = yamljs_1.YAML.parse(templateContent);
+        const ksy = jsyaml.load(ksyContent, { schema: jsyaml.CORE_SCHEMA });
+        const kcy = jsyaml.load(templateContent, { schema: jsyaml.CORE_SCHEMA });
         const compiledTemplate = TemplateCompiler_1.TemplateCompiler.compileTemplateSchema(kcy);
         console.log("compiledTemplate", compiledTemplate);
         const ksyAny = ksy;
@@ -34,7 +34,7 @@ define(["require", "exports", "yamljs", "./worker/TemplateCompiler", "./worker/E
         console.log("compiledCode", compiledCode);
         console.log("ksy", ksy);
         //const compilerKsy = cloneWithFilter(ksy, prop => !prop.startsWith("$"));
-        //const compiler = new KaitaiStructCompiler();
+        //const compiler = KaitaiStructCompiler;
         //console.log(ksy);
         //console.log(compilerKsy);
         //const compiled = await compiler.compile("javascript", compilerKsy, null, false);

@@ -4,16 +4,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "../utils", "../ui/ComponentLoader", "../ui/Components/ConverterPanel", "./ExportToJson", "../ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, utils_1, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
+define(["require", "exports", "localforage", "vue", "a11y-dialog", "./app.layout", "./app.files", "./parsedToTree", "./app.worker", "./FileDrop", "../utils", "../ui/ComponentLoader", "../ui/Components/ConverterPanel", "./ExportToJson", "../ui/Component", "./KaitaiServices", "./app.errors", "kaitai-struct-compiler"], function (require, exports, localforage, Vue, A11yDialog, app_layout_1, app_files_1, parsedToTree_1, app_worker_1, FileDrop_1, utils_1, ComponentLoader_1, ConverterPanel_1, ExportToJson_1, Component_1, KaitaiServices_1, app_errors_1, KaitaiStructCompiler) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     $.jstree.defaults.core.force_text = true;
-    function ga(category, action, label, value) {
-        console.log(`[GA Event] cat:${category} act:${action} lab:${label || ""}`);
-        if (typeof window["_ga"] !== "undefined")
-            window["_ga"]("send", "event", category, action, label, value);
-    }
-    exports.ga = ga;
     const qs = {};
     location.search.substr(1).split("&").map(x => x.split("=")).forEach(x => qs[x[0]] = x[1]);
     let AppVM = class AppVM extends Vue {
@@ -29,7 +23,23 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         selectInterval(interval) { this.selectionChanged(interval.start, interval.end); }
         selectionChanged(start, end) { this.ui.hexViewer.setSelection(start, end); }
         exportToJson(hex) { ExportToJson_1.exportToJson(hex).then(json => this.ui.layout.addEditorTab("json export", json, "json")); }
-        about() { $("#welcomeModal").modal(); }
+        about() {
+            this.aboutDialog.show();
+        }
+        initAboutDialog() {
+            // FIXME: eliminate duplication with "#newKsyModal"
+            const modal = $("#welcomeModal")[0];
+            this.aboutDialog = new A11yDialog(modal);
+            modal.addEventListener('click', () => this.aboutDialog.hide());
+            modal.querySelector('.dialog-content').addEventListener('click', e => e.stopPropagation());
+            const overlay = document.querySelector("#welcomeModalOverlay");
+            this.aboutDialog
+                .on('show', () => overlay.classList.remove("hidden"))
+                .on('hide', () => overlay.classList.add("hidden"));
+            if (localStorage.getItem("doNotShowWelcome") !== "true") {
+                this.aboutDialog.show();
+            }
+        }
     };
     AppVM = __decorate([
         Component_1.default
@@ -50,16 +60,15 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         init() {
             this.vm.ui = this.ui;
             this.ui.init();
+            this.vm.initAboutDialog();
             this.errors = new app_errors_1.ErrorWindowHandler(this.ui.layout.getLayoutNodeById("mainArea"));
             app_files_1.initFileTree();
         }
         isKsyFile(fn) { return fn.toLowerCase().endsWith(".ksy"); }
         compile(srcYamlFsItem, srcYaml, kslang, debug) {
             return this.compilerService.compile(srcYamlFsItem, srcYaml, kslang, debug).then(result => {
-                ga("compile", "success");
                 return result;
             }, (error) => {
-                ga("compile", "error", `${error.type}: ${error.error}`);
                 this.errors.handle(error.error);
                 return Promise.reject(error);
             });
@@ -91,26 +100,34 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 let debugCode = this.ui.genCodeDebugViewer.getValue();
                 let jsClassName = this.compilerService.ksySchema.meta.id.split("_").map((x) => x.ucFirst()).join("");
                 await app_worker_1.workerMethods.initCode(debugCode, jsClassName, this.compilerService.ksyTypes);
-                let exportedRoot = await app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing);
+                const { result: exportedRoot, error: parseError } = await app_worker_1.workerMethods.reparse(this.vm.disableLazyParsing);
                 kaitaiIde.root = exportedRoot;
                 //console.log("reparse exportedRoot", exportedRoot);
                 this.ui.parsedDataTreeHandler = new parsedToTree_1.ParsedTreeHandler(this.ui.parsedDataTreeCont.getElement(), exportedRoot, this.compilerService.ksyTypes);
-                await this.ui.parsedDataTreeHandler.initNodeReopenHandling();
-                this.ui.hexViewer.onSelectionChanged();
-                this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
-                    var node = selectNodeArgs.node;
-                    //console.log("node", node);
-                    var exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
-                    if (exp && exp.path)
-                        $("#parsedPath").text(exp.path.join("/"));
-                    if (!this.blockRecursive && exp && exp.start < exp.end) {
-                        this.selectedInTree = true;
-                        //console.log("setSelection", exp.ioOffset, exp.start);
-                        this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
-                        this.selectedInTree = false;
-                    }
+                this.ui.parsedDataTreeHandler.jstree.on("state_ready.jstree", () => {
+                    this.ui.parsedDataTreeHandler.jstree.on("select_node.jstree", (e, selectNodeArgs) => {
+                        const node = selectNodeArgs.node;
+                        //console.log("node", node);
+                        const exp = this.ui.parsedDataTreeHandler.getNodeData(node).exported;
+                        if (exp && exp.path)
+                            $("#parsedPath").text(exp.path.join("/"));
+                        if (exp) {
+                            if (exp.instanceError !== undefined) {
+                                exports.app.errors.handle(exp.instanceError);
+                            }
+                            else if (exp.validationError !== undefined) {
+                                exports.app.errors.handle(exp.validationError);
+                            }
+                        }
+                        if (!this.blockRecursive && exp && exp.start < exp.end) {
+                            this.selectedInTree = true;
+                            //console.log("setSelection", exp.ioOffset, exp.start);
+                            this.ui.hexViewer.setSelection(exp.ioOffset + exp.start, exp.ioOffset + exp.end - 1);
+                            this.selectedInTree = false;
+                        }
+                    });
                 });
-                this.errors.handle(null);
+                this.errors.handle(parseError);
             }
             catch (error) {
                 this.errors.handle(error);
@@ -182,18 +199,16 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
     exports.app = new AppController();
     var kaitaiIde = window["kaitaiIde"] = {};
     kaitaiIde.version = "0.1";
-    kaitaiIde.commitId = "e824b3e14fb930b954c749935f5af6e1273c06f8";
-    kaitaiIde.commitDate = "2022-07-08 23:13:36";
+    kaitaiIde.commitId = "a02d396e6a38b022db4aa74d984d3cd2ef295f5a";
+    kaitaiIde.commitDate = "2025-09-06 13:13:49";
     $(() => {
         $("#webIdeVersion").text(kaitaiIde.version);
         $("#webideCommitId")
             .attr("href", `https://github.com/kaitai-io/kaitai_struct_webide/commit/${kaitaiIde.commitId}`)
             .text(kaitaiIde.commitId.substr(0, 7));
         $("#webideCommitDate").text(kaitaiIde.commitDate);
-        $("#compilerVersion").text(new KaitaiStructCompiler().version + " (" + new KaitaiStructCompiler().buildDate + ")");
+        $("#compilerVersion").text(KaitaiStructCompiler.version + " (" + KaitaiStructCompiler.buildDate + ")");
         $("#welcomeDoNotShowAgain").click(() => localStorage.setItem("doNotShowWelcome", "true"));
-        if (localStorage.getItem("doNotShowWelcome") !== "true")
-            $("#welcomeModal").modal();
         exports.app.init();
         ComponentLoader_1.componentLoader.load(["Components/ConverterPanel", "Components/Stepper", "Components/SelectionInput"]).then(() => {
             new Vue({ data: { model: exports.app.vm.converterPanelModel } }).$mount("#converterPanel");
@@ -214,7 +229,8 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
         exports.app.inputReady = loadCachedFsItem("inputFsItem", "kaitai", "samples/sample1.zip");
         exports.app.formatReady = loadCachedFsItem(exports.app.ksyFsItemName, "kaitai", "formats/archive/zip.ksy");
         exports.app.inputReady.then(() => {
-            var storedSelection = JSON.parse(localStorage.getItem("selection"));
+            const value = localStorage.getItem("selection");
+            const storedSelection = value !== null ? JSON.parse(value) : null;
             if (storedSelection)
                 exports.app.ui.hexViewer.setSelection(storedSelection.start, storedSelection.end);
         });
@@ -223,8 +239,14 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
             exports.app.ui.ksyEditor.on("change", () => editDelay.do(() => exports.app.recompile()));
         var inputContextMenu = $("#inputContextMenu");
         var downloadInput = $("#inputContextMenu .downloadItem");
+        let inputContextMenuDialog;
         $("#hexViewer").on("contextmenu", e => {
             downloadInput.toggleClass("disabled", exports.app.ui.hexViewer.selectionStart === -1);
+            if (!inputContextMenuDialog) {
+                const modal = $("#inputContextMenuModal")[0];
+                inputContextMenuDialog = new A11yDialog(modal);
+            }
+            inputContextMenuDialog.show();
             inputContextMenu.css({ display: "block" });
             var x = Math.min(e.pageX, $(window).width() - inputContextMenu.width());
             var h = inputContextMenu.height();
@@ -237,20 +259,15 @@ define(["require", "exports", "localforage", "vue", "./app.layout", "./app.files
                 if (!obj.hasClass("disabled")) {
                     inputContextMenu.hide();
                     callback(e);
+                    inputContextMenuDialog.hide();
                 }
             });
         }
-        $(document).on("mousedown", e => {
-            if ($(e.target).parents(".dropdown-menu").length === 0)
-                $(".dropdown").hide();
-        });
         ctxAction(downloadInput, e => {
             var start = exports.app.ui.hexViewer.selectionStart, end = exports.app.ui.hexViewer.selectionEnd;
             var newFn = `${exports.app.inputFsItem.fn.split("/").last()}_0x${start.toString(16)}-0x${end.toString(16)}.bin`;
             utils_1.saveFile(new Uint8Array(exports.app.inputContent, start, end - start + 1), newFn);
         });
         kaitaiIde.app = exports.app;
-        utils_1.precallHook(exports.app.ui.layout.layout.constructor["__lm"].controls, "DragProxy", () => ga("layout", "window_drag"));
-        $("body").on("mousedown", ".lm_drag_handle", () => { ga("layout", "splitter_drag"); });
     });
 });
