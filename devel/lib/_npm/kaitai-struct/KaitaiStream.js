@@ -708,7 +708,7 @@
         KaitaiStream.bytesTerminateMulti = function (data, term, include) {
             var unitSize = term.length;
             if (unitSize === 0) {
-                return new Uint8Array();
+                return new Uint8Array(0);
             }
             var len = data.length;
             var iTerm = 0;
@@ -912,6 +912,9 @@
                 return al - bl;
             }
         };
+        // ========================================================================
+        // Internal implementation details
+        // ========================================================================
         /**
          * Ensures that we have at least `length` bytes left in the stream.
          * If not, throws an EOFError.
@@ -974,10 +977,10 @@
          * depending on the platform endianness.
          */
         KaitaiStream.endianness = new Int8Array(new Int16Array([1]).buffer)[0] > 0;
-        // ========================================================================
-        // Internal implementation details
-        // ========================================================================
-        KaitaiStream.EOFError = /** @class */ (function (_super) {
+        return KaitaiStream;
+    }());
+    (function (KaitaiStream) {
+        var EOFError = /** @class */ (function (_super) {
             __extends(EOFError, _super);
             /**
              * @param bytesReq The number of bytes requested.
@@ -994,10 +997,11 @@
             }
             return EOFError;
         }(Error));
+        KaitaiStream.EOFError = EOFError;
         /**
          * Unused since Kaitai Struct Compiler v0.9+ - compatibility with older versions.
          */
-        KaitaiStream.UnexpectedDataError = /** @class */ (function (_super) {
+        var UnexpectedDataError = /** @class */ (function (_super) {
             __extends(UnexpectedDataError, _super);
             /**
              * @param expected The expected value.
@@ -1014,7 +1018,8 @@
             }
             return UnexpectedDataError;
         }(Error));
-        KaitaiStream.UndecidedEndiannessError = /** @class */ (function (_super) {
+        KaitaiStream.UnexpectedDataError = UnexpectedDataError;
+        var UndecidedEndiannessError = /** @class */ (function (_super) {
             __extends(UndecidedEndiannessError, _super);
             function UndecidedEndiannessError() {
                 var _this = _super.call(this) || this;
@@ -1025,7 +1030,8 @@
             }
             return UndecidedEndiannessError;
         }(Error));
-        KaitaiStream.ValidationNotEqualError = /** @class */ (function (_super) {
+        KaitaiStream.UndecidedEndiannessError = UndecidedEndiannessError;
+        var ValidationNotEqualError = /** @class */ (function (_super) {
             __extends(ValidationNotEqualError, _super);
             /**
              * @param expected The expected value.
@@ -1042,7 +1048,8 @@
             }
             return ValidationNotEqualError;
         }(Error));
-        KaitaiStream.ValidationLessThanError = /** @class */ (function (_super) {
+        KaitaiStream.ValidationNotEqualError = ValidationNotEqualError;
+        var ValidationLessThanError = /** @class */ (function (_super) {
             __extends(ValidationLessThanError, _super);
             /**
              * @param min The minimum allowed value.
@@ -1059,7 +1066,8 @@
             }
             return ValidationLessThanError;
         }(Error));
-        KaitaiStream.ValidationGreaterThanError = /** @class */ (function (_super) {
+        KaitaiStream.ValidationLessThanError = ValidationLessThanError;
+        var ValidationGreaterThanError = /** @class */ (function (_super) {
             __extends(ValidationGreaterThanError, _super);
             /**
              * @param max The maximum allowed value.
@@ -1076,7 +1084,8 @@
             }
             return ValidationGreaterThanError;
         }(Error));
-        KaitaiStream.ValidationNotAnyOfError = /** @class */ (function (_super) {
+        KaitaiStream.ValidationGreaterThanError = ValidationGreaterThanError;
+        var ValidationNotAnyOfError = /** @class */ (function (_super) {
             __extends(ValidationNotAnyOfError, _super);
             /**
              * @param actual The actual value.
@@ -1091,7 +1100,8 @@
             }
             return ValidationNotAnyOfError;
         }(Error));
-        KaitaiStream.ValidationNotInEnumError = /** @class */ (function (_super) {
+        KaitaiStream.ValidationNotAnyOfError = ValidationNotAnyOfError;
+        var ValidationNotInEnumError = /** @class */ (function (_super) {
             __extends(ValidationNotInEnumError, _super);
             /**
              * @param actual The actual value.
@@ -1106,7 +1116,8 @@
             }
             return ValidationNotInEnumError;
         }(Error));
-        KaitaiStream.ValidationExprError = /** @class */ (function (_super) {
+        KaitaiStream.ValidationNotInEnumError = ValidationNotInEnumError;
+        var ValidationExprError = /** @class */ (function (_super) {
             __extends(ValidationExprError, _super);
             /**
              * @param actual The actual value.
@@ -1121,9 +1132,10 @@
             }
             return ValidationExprError;
         }(Error));
-        return KaitaiStream;
-    }());
+        KaitaiStream.ValidationExprError = ValidationExprError;
+    })(KaitaiStream || (KaitaiStream = {}));
+    var KaitaiStream_default = KaitaiStream;
 
-    return KaitaiStream;
+    return KaitaiStream_default;
 
 }));
